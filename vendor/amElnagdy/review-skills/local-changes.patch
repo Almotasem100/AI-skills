@@ -1,0 +1,48 @@
+diff --git a/skills/babysit-pr/SKILL.md b/skills/babysit-pr/SKILL.md
+index 26d68b6..841f33d 100644
+--- a/skills/babysit-pr/SKILL.md
++++ b/skills/babysit-pr/SKILL.md
+@@ -37,7 +37,8 @@ PR, and it is how a real bug gets lost.
+ 
+ Publish before you answer. A "fixed" reply is only true once the remote branch carries the fix.
+ Never post a confirmed reply, or resolve its thread, while the fix exists only locally. Rejections
+-need no push. Reply with evidence and resolve immediately.
++need no push. Reply with evidence and resolve once the user has approved the round's replies (LOCAL CHANGE,
++see "Fix the blockers, then ask before publishing").
+ 
+ ## Harvest the round
+ 
+@@ -127,9 +128,15 @@ main reviewer held the finding against a refutation, and the italic last line of
+ what the challenge was. That is a claim with a known counter-argument, not a weaker claim. Verify it
+ the same way, and say in your reply which side the code supports and why.
+ 
+-## Fix the blockers, autonomously
++## Fix the blockers, then ask before publishing
+ 
+-Don't stop to ask about blockers. Verify, fix, push, keep watching, report what you did.
++<!-- LOCAL CHANGE (agent-setup, 2026-09-25): upstream says "Don't stop to ask about blockers. Verify, fix,
++push, keep watching, report what you did." Changed so nothing is pushed or posted without the user's
++approval. See UPSTREAM.md. -->
++Don't stop to ask whether to *fix* blockers: verify and fix them locally. But **never push, reply or resolve
++without the user's approval.** Once the round's fixes are committed locally and the gate passes, show the
++user in one message: the commits to push, and every reply you intend to post (confirmed, rejected, deferred).
++Push and post only after they say yes. One approval covers the whole round.
+ 
+ - Reproduce first where you can. A probe that fails before the fix and passes after is what separates
+   a real fix from a plausible edit. This matters most on findings you initially disagreed with. Those
+@@ -147,11 +154,12 @@ Don't stop to ask about blockers. Verify, fix, push, keep watching, report what
+ ## Publish, then reply, then resolve
+ 
+ Work the round in one pass, not per finding: verify everything, reproduce confirmed blockers where
+-practical, fix them all, run the gate, then commit and push once and confirm the remote SHA. Only
+-then close the loops:
++practical, fix them all, run the gate, commit, get the user's approval (see above), then push once and
++confirm the remote SHA. Only then close the loops:
+ 
+ - Confirmed: reply naming the fix commit, then resolve.
+-- Rejected: reply with concrete evidence, then resolve. No push needed; these can close anytime.
++- Rejected: reply with concrete evidence, then resolve. No push needed; these can close as soon as the user
++  approves the reply (LOCAL CHANGE).
+ - Deferred: create the agreed issue, reply with its link, then resolve.
+ 
+ Non-blocker fixes the user approves ride the next consolidated push, never a dedicated push of their

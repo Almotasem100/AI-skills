@@ -1,0 +1,26 @@
+diff --git a/README.md b/README.md
+index 4ea9645..f57125a 100644
+--- a/README.md
++++ b/README.md
+@@ -113,7 +113,7 @@ capability can be subtracted, never enumerated. Where `zcode login` fails with `
+ not valid JSON`, the key comes from `ZCODE_API_KEY` / `ANTHROPIC_API_KEY` / `ZAI_API_KEY` instead.
+ 
+ Each skill name links to its `SKILL.md`, which owns that implementer's prerequisites, flags, and
+-caveats. Building one for another CLI? [Claim it first](../../issues?q=is%3Aissue+label%3Aimplementer),
++caveats. Building one for another CLI? [Claim it first](https://github.com/amElnagdy/delegate-skills/issues),
+ then see [CONTRIBUTING.md](CONTRIBUTING.md).
+ 
+ ## Install
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 4ce0ff0..5d29e7c 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -3,7 +3,7 @@
+ Two people have independently built the same delegate skill twice now. Both times someone's work was
+ wasted. So: **claim an implementer before you build it**, and check the open pull requests first.
+ 
+-[Open claims](../../issues?q=is%3Aissue+label%3Aimplementer) | [Open pull requests](../../pulls)
++Open claims: https://github.com/amElnagdy/delegate-skills/issues | Open pull requests: https://github.com/amElnagdy/delegate-skills/pulls
+ 
+ ## What counts as a delegate skill
+ 
