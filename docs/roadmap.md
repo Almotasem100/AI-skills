@@ -1,15 +1,27 @@
 # Roadmap — status, next steps, open decisions
 
 The living to-do list for this setup. Update it at the end of every session that changes the setup. The full
-history and reasoning (written while building it for the HDC project) is in
-`C:\Users\Mohamed\Downloads\HDC\HDC\documents\automation\Automation_Planning_Handoff.md`; the portable decisions are in
+history and reasoning (written while building it for the HDC project) is in the sibling HDC workspace at
+`HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-09-28 — migrated the setup into the AI-skills repository, fixed root-specific paths, and checked Markdown links. HDC docs live in HDC\HDC\documents\. Continue with docs/next-session-prompt.md._
+_Last updated: 2026-10-01 — documented HDC closeout in both canonical HDC docs and AI-skills, and drafted the scenario-test-cases skill from the owner's style guidance. The active plan below supersedes the parked v1 backlog for current priorities._
 
-## ⏸ Checkpoint — v1 frozen (owner, 2026-09-26)
-The setup is complete enough to use. **No more building until it is installed and used on real work.**
-Everything left below needs the workstation or a real ticket. Resume when one of these happens:
+## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
+The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
+
+## Active owner-approved plan
+1. **Gemini compatibility (in progress):** Gemini CLI 0.61.0 discovered all 17 installed curated skills (`gemini skills list`, 2026-09-30); current `gemini --version` reports 0.62.0. After the owner approved adding `C:\Users\malmotas\.agents\skills` to `context.includeDirectories` in `C:\Users\malmotas\.gemini\settings.json`, explicit `clean-code-guard` invocation succeeded read-only with `--model auto` and no per-run include flag. A natural-language “safe to merge?” review identified five positional arguments and suggested a config object, but did not clearly apply the skill's mandatory four-argument ceiling; automatic selection remains **inconclusive**. The owner then explicitly invoked `opencode-delegate` in an interactive Gemini PowerShell session. Its relay completed the read-only task in the disposable repo: OpenCode v2.0.20, agent `plan`, model `openai/gpt-6-luna#medium`, exit code 0. `result.json` confirms the review; `sample.js` and `brief.txt` remained unchanged, with only the expected test inputs and relay artifacts untracked. This verifies explicit Gemini → OpenCode delegation using the existing skill; no Gemini-specific delegate skill is needed for this path. A separate `delegate-setup` request in plan mode could not run discovery and returned an unverified CLI report, so the implementer inventory remains unverified. Next: use explicit skill invocation for now; don't build a Gemini delegate skill unless real use exposes a gap. Natural selection and write-capable delegation were not verified.
+2. **PR tooling:** install and verify `gh`, `jq`, Git Bash, and authenticated repository access before relying on `babysit-pr` or `debate-review` (owner plans this later).
+3. **HDC closeout (completed; native test pending):** updated the portable `session-closeout` skill to honor project profiles and reuse an existing scratchpad; added the reusable HDC profile under `templates/hdc-session-closeout-profile/`. With approval for these exact files, updated `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md`; the temporary session scratchpad was removed after checks. Citation checker: 7 OK, 0 warnings, 0 stale; `git diff --check` passed in both repos. Native closeout behavior remains untested.
+4. **Scenario test cases (initial implementation complete; validation pending):** built `skills/scenario-test-cases/` with a reusable Given/When/Then browser-scenario template based on the owner's style example. It derives scenarios from approved requirements and LLDs, consults a matching implementation-task handoff when available, and flags conflicts/gaps rather than inventing expected behavior. Browser-followable and automation-friendly, but emits no automation code. **Next:** review the skill/template and test it on a real or representative approved requirements + LLD + task handoff set while working; native agent testing remains pending. This owner-directed format replaces the earlier open question about locating a team template.
+5. **Delegation map:** test available implementers, decide who handles which task types and which model/settings are allowed, update HDC guidance, and only then configure approved lanes. Branch creation/naming remains owner-managed.
+6. **Pre-implementation design review:** build a generic, read-only two-model review of a proposed change (requirements + LLD/plan), separate from PR-oriented `debate-review`.
+7. **Implementation briefs:** first test the existing delegate skills' brief-writing flow with the approved plan/LLD context. Add a separate brief skill only if real use shows a gap.
+
+The setup freeze remains in place for work outside this approved list. The HDC code plan still gates further endpoint ports on A5 live acceptance.
+
+The original v1 backlog below is parked unless it appears in the active plan or the owner reopens it. Previously, work resumed when one of these happened:
 1. **Finish repository setup:** AI-skills is initialized with a starter commit. Confirm the remote is private, review and commit the migrated files, then run GUIDE.md §3. This unblocks install.ps1 (needs its agent list), Gemini CLI tests and gh.
 2. **A real ticket:** use the pipeline (`grill-me` → … → `describe-pr` → `session-closeout`), then fix what
    hurt. The first big ticket is the `create-lld` forward-mode test; the first frontend feature is the Spec Kit
@@ -49,9 +61,9 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | `delegates/` (lane configs) | Empty | Filled when `delegate-setup` first runs on the workstation |
 | `install.ps1` | Not written | Waits for the workstation's agent list |
 | AI-skills Git repo | Initialized | Destination repo has a starter commit; remote privacy is not verified. Migrated files await owner review and commit |
-| Installed on this laptop | `~/.claude/skills` and `~/.agents/skills` (read by Codex, verified): `describe-pr`, `create-lld`, `session-closeout` + 6 Pocock (incl. `two-axis-review`). `create-lld`/`describe-pr` appeared in `~/.agents/skills` at 00:18 on 2026-09-26, not copied by Claude (identical to `skills/`) | **Copies**: re-copy after every change. The tech lead's skills and, for other agents, `describe-pr`/`create-lld` are not installed here yet; `GUIDE.md` §3 does all of it in one block |
+| Installed on this laptop | `~/.claude/skills` and `~/.agents/skills` were previously read by Codex; `create-lld`/`describe-pr` were seen in `~/.agents/skills` at 00:18 on 2026-09-26, with copies identical to `skills/`. On 2026-09-30, installed 17 curated skills into both roots; inventories and `SKILL.md` files match. Gemini CLI 0.61.0 listed all 17; current CLI reports 0.62.0. Explicit `clean-code-guard` invocation succeeded read-only with the approved persistent `context.includeDirectories` setting and model `auto`. Explicit `opencode-delegate` invocation from Gemini completed a read-only dispatch through OpenCode v2.0.20 using `openai/gpt-6-luna#medium`. Natural selection remains inconclusive; write-capable delegation and OpenCode discovery remain untested. Includes the available `agy` and OpenCode delegate skills; pinned Pocock skills copied from exact commit `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` | **Copies**: re-copy after every change. Delegation lanes remain unconfigured; run `delegate-setup` after the implementer map is approved |
 
-## Next (in order)
+## Original v1 backlog (parked)
 _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install.ps1) come before the trials._
 1. ~~**git pre-commit hook** that *warns* about new files.~~ **Done 2026-09-26:** `templates/pre-commit-hook/`
    (tests and install in its `README.md`). Remaining: installing it in the HDC repos needs the owner's approval.
@@ -89,8 +101,11 @@ _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install
      (`clamp` lives on another branch) and filed it as unverified + open question; queued 2 write-backs and did
      **not** apply them (`Plan.md` unchanged); checker 6/6 OK, re-run by Claude with the same result. A first
      attempt, when Codex's shell tools failed, reported "closeout is blocked" instead of pretending: correct.
-     Gotcha for scripted runs: `codex exec` waits on stdin unless it's closed (`< /dev/null`). **Installed**
-     in `~/.claude/skills` and `~/.agents/skills` (owner approved, 2026-09-26). Not tested in Claude natively yet.
+      Gotcha for scripted runs: `codex exec` waits on stdin unless it's closed (`< /dev/null`). **Installed**
+      in `~/.claude/skills` and `~/.agents/skills` (owner approved, 2026-09-26). Not tested in Claude natively yet.
+      **Updated 2026-09-30:** the portable skill now honors a project profile that designates an existing
+      scratchpad; HDC's project-specific profile draft is tracked in `templates/hdc-session-closeout-profile/`.
+      HDC canonical guidance changes await approval of the exact files listed in the active plan above.
    - the B9 legacy-vs-new comparison tool (HDC-specific: `record` / `compare`). **In progress (2026-09-26,
      Claude):** checked blocker 3: none of the 14 B9 endpoints is ported yet (`api/resource/` has only
      `UserResource`, `HealthResource`), so the window is open. HTTP methods read from `HDCEndpoint.java`: 5 GET,

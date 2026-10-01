@@ -49,7 +49,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `vendor/` | Copied third-party skills I may modify, each with an `UPSTREAM.md` (source, base commit, my changes) and, when changed, a `local-changes.patch` |
 | `delegates/` | Delegate lane configs: which CLI and model does which job |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
-| `templates/` | Per-project starters. Built: `pre-commit-hook/` (warns about new files; install in its README). To come: `AGENTS.md` starter |
+| `templates/` | Per-project starters. Built: `pre-commit-hook/` (warns about new files; install in its README) and `hdc-session-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically). To come: general `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
@@ -79,7 +79,8 @@ example call.
 | Skill | Status | Use |
 |---|---|---|
 | `create-lld` | **v1 written 2026-09-25.** Scripts tested; retro mode tested in Claude on a real branch; forward mode not yet run on real customer slides | Forward: pasted internal ticket (ID, title, description) + customer slides + code → one LLD section written for architect review. Retro: finished diff + ticket → LLD, with reasons and alternatives marked `[NEEDS INPUT]` |
-| `session-closeout` | **v1 written 2026-09-26.** Citation checker tested on crafted cases and on the real HDC Plan | End of a session → dated scratchpad in the docs folder (verified vs unverified, decisions with who decided, deferred, open questions, repo changes) + queued write-backs; every `file:line` citation re-checked by script, **stale ones block**. Applies nothing without a yes |
+| `scenario-test-cases` | **Initial version written 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
+| `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
 | `describe-pr` | **v1 written 2026-09-25.** Scripts tested on two real repos; full skill tested in Claude, and natively in Codex on 2026-09-26 (picked without being named) | Git context (built by a script) + pasted ticket + optional LLD section → PR title and body. Asks at most 4 questions in one message; creates the PR only after approval |
 
 ### `describe-pr`
@@ -135,8 +136,22 @@ confirm and the most important `[NEEDS INPUT]` gaps. The status stays `Draft` un
 **Scripts on their own:**
 ```
 node skills/create-lld/scripts/slides.mjs customer.pptx --media-dir %TEMP%\slides
-node skills/create-lld/scripts/check-lld.mjs LLD_CADE-1234_navbar.md --size normal
+ node skills/create-lld/scripts/check-lld.mjs LLD_CADE-1234_navbar.md --size normal
 ```
+
+### `scenario-test-cases`
+**Needs:** approved requirements / acceptance criteria and the approved LLD. If either source is missing, the skill
+asks for it rather than deriving expected behavior from the implementation. A matching implementation-task
+handoff is used when available for scope and execution context; it does not override approved expected behavior.
+No scripts or agent-specific tools.
+
+**Use:** for automatic selection, ask naturally, e.g. *"Draft browser test scenarios from these approved
+requirements and the LLD. Check for the implementation-task handoff too."* If the agent does not select it, invoke
+explicitly: *"Use `scenario-test-cases` for this feature."*
+The skill follows numbered `Scenario N` headings with Given / When / Then / And, and cites source references.
+It returns Markdown in chat unless you request a file. Conflicts and missing expected behavior are called out
+under `Clarifications needed`, not filled with guesses. It creates test cases, not Playwright/Cypress/Selenium
+code; `test-guard` remains the review skill for automated test code.
 
 ### Tech lead's skills (copied in `vendor/amElnagdy/`)
 Details, review notes and local changes: each repo's `UPSTREAM.md`.

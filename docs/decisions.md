@@ -125,3 +125,33 @@ hard). Documented in `GUIDE.md` §4; lanes in `delegate-setup` should pin both.
 - **`handoff` kept, alongside `session-closeout`, not instead of it.** Closeout records what happened and
   queues doc updates; handoff briefs one specific next task. Its output lands in the OS temp folder, so copy it
   into the project's sessions folder when it must survive.
+
+## Setup follow-up after real use (owner, 2026-09-30)
+- Reopen the v1 freeze only for the owner-approved work listed in `docs/roadmap.md`; don't resume unrelated parked
+  builds or trials.
+- Validate skill discovery separately from actual invocation and delegation. A CLI listing a skill proves it can
+  see it, not that it follows the instructions or runs its scripts correctly. Test in a disposable repository and
+  report the tested CLI/version and exact scope.
+- Decide the task-to-implementer map before writing delegation lanes. Lanes are saved dispatch settings, not task
+  detection or model recommendations. Obtain approval before writing lane configuration.
+- Keep branch creation and naming owner-managed. No branch-naming automation is planned.
+- HDC closeout should consume the project's existing scratchpad, reconcile only relevant durable docs, conditionally
+  refresh generated maps and functional documentation, validate citations, and remove the scratchpad at wrap-up.
+  Do not create a second durable closeout report; offer `handoff` only for one specific next task. Keep these HDC
+  destinations and rules in HDC project guidance, not in a generic skill.
+- The `scenario-test-cases` skill uses numbered Given/When/Then browser scenarios, matching the owner's sample
+  style without reusing its feature content. It derives testable behavior from approved requirements and LLDs,
+  and consults a matching implementation-task handoff when available for scope/context. Missing or conflicting
+  expected behavior becomes a clarification, never an invented assertion. It produces browser-followable,
+  automation-friendly test cases, not automation code; it is distinct from `test-guard`, which reviews automated
+  test code.
+- A future pre-implementation design review is read-only and distinct from PR-oriented `debate-review`. It has two
+  independent reviewers challenge a proposed change before implementation; a human resolves the findings.
+- Reuse the existing delegate skills' brief-writing process first. Add a separate implementation-brief skill only if
+  real use shows it is insufficient; any brief should be scoped to an implementation slice, not become another
+  project-of-record document.
+- Before relying on PR review tools, install and verify `gh`, `jq`, Git Bash, and authenticated repository access.
+- Keep `session-closeout` portable. For HDC, maintain project-specific closeout rules in HDC guidance and a tracked
+  reusable profile template under `templates/hdc-session-closeout-profile/`; do not fork the generic skill or
+  create a second durable closeout report. The owner approved and the session updated only
+  `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md` on 2026-09-30.

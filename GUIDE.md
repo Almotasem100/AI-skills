@@ -58,8 +58,10 @@ posted.
 > "debate-review PR 123 --dry-run"
 
 ### 🌙 Ending a session
-**`session-closeout`: wrap up properly.** It writes a dated notes file (done, decided, still open), checks every
-code reference is still correct, and suggests doc updates. It changes your main docs only if you say yes.
+**`session-closeout`: wrap up properly.** It follows the project's closeout instructions: reuse an existing
+scratchpad when required, or write a dated one; check citations; and suggest only relevant doc updates. It changes
+main docs only if you say yes. The tracked HDC-specific profile is reconciled with the approved guidance in
+`HDC-documents/README.md` and its automation handoff; native profile-aware behavior remains untested.
 > "Close out this session"
 
 **`handoff` (by name): brief the next session** when it has one clear task. It writes a short brief to your
@@ -112,6 +114,7 @@ you change a skill here, copy it again.
 | Start of a big ticket | `grill-with-docs` | Same interview, and writes a glossary (`CONTEXT.md`) and decision records (`docs/adr/`) as you go | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Design | `create-lld` | Writes an LLD section in the team template, before the work (forward) or after it (retro) | Mine |
+| Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
 | Before pushing | `two-axis-review` | Reviews your diff against the repo's standards **and** against the spec (your LLD) | Pocock, renamed (copied) |
@@ -148,7 +151,9 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 ### Copy the skills (PowerShell)
 Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
 into both skills folders, so Claude and the other agents see the same set. **Tested 2026-09-25** on this laptop
-against a throwaway folder: all 18 skills landed in both targets (re-run 2026-09-26 after adding `session-closeout`), and the scripts ran from their new place.
+against a throwaway folder: all 18 then-listed skills landed in both targets (re-run 2026-09-26 after adding
+`session-closeout`), and the scripts ran from their new place. The newly added `scenario-test-cases` entry has
+not yet been included in an install test or tested natively.
 
 ```powershell
 $setup   = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills"
@@ -159,6 +164,7 @@ $targets = "$HOME\.claude\skills", "$HOME\.agents\skills"
 $folders = @(
   "skills\describe-pr",
   "skills\create-lld",
+  "skills\scenario-test-cases",
   "skills\session-closeout",
   "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
   "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
@@ -334,11 +340,17 @@ Same tail, with more up front:
 ### Any time
 - **`create-lld`**, retro mode, for finished work: *"write a retro LLD for this branch. CADE-1234, internal
   ticket 38939409."*
-- **`session-closeout`**, at the end of a session: *"close out this session"*. It writes
-  `YYYY-MM-DD_<Topic>_Scratchpad.md` in the docs folder (for HDC: `C:\Users\Mohamed\Downloads\HDC\HDC\documents\sessions`), lists
-  the proposed updates to the plan/roadmap, and checks every `file:line` citation. **If a citation is stale,
-  the closeout isn't finished** until it's fixed. It changes the plan or other main documents only after your
-  yes. To cite code that only exists on another branch, write `develop:path:line` (not checked).
+- **`scenario-test-cases`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
+  requirements and the LLD; check for the implementation-task handoff too."* Or call the skill by name. It uses
+  numbered Scenario headings with Given / When / Then / And; each case traces to its sources. It writes no
+  automation code and marks missing or conflicting expectations as questions rather than guessing.
+- **`session-closeout`**, at the end of a session: *"close out this session"*. It follows the project's
+  instructions for scratchpad location and reuse; otherwise it writes `YYYY-MM-DD_<Topic>_Scratchpad.md` in the
+  docs folder. It lists relevant proposed document updates and checks every `file:line` citation. **If a citation
+  is stale, the closeout isn't finished** until it's fixed. It changes the plan or other main documents only after
+  your yes. To cite code that only exists on another branch, write `develop:path:line` (not checked). The HDC
+  profile template is tracked at `templates/hdc-session-closeout-profile/`; HDC's canonical documents are not
+  changed by this template.
   The checker also works on its own:
   `node <skills folder>\session-closeout\scripts\check-citations.mjs <file.md> --root <repo> --root <repo2>`.
 - **Pre-commit hook** (warn about new files), once per clone. In PowerShell, inside the repo:
