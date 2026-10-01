@@ -170,16 +170,20 @@ rule for CLIs that support and require those choices.
   the upstream work on a local branch for the owner's real-work trial; do not publish it until the owner chooses to
   propose it. Do not modify the vendored archive while implementing the upstream contribution.
 - Normal work allocation: Gemini handles LLDs, browser test scenarios, comments, routine planning support, and
-  assessment of SonarQube/Copilot review findings. Luna is the default code implementer. Sol drafts plans; Gemini
-  challenges them and helps produce the final plan and implementation handoff. For unusually complex plans, use a
-  Sol–Opus debate selectively. Free models may draft PR descriptions and be trialled for simple session closeouts;
-  use Gemini for closeout if the free-model result is incomplete.
-- Prefer a structured debate over repeating broad reviews. In plan debate, the challenger cites concrete evidence,
-  the author answers each challenge, and the final artifact records decisions, assumptions, unresolved risks, and
-  the implementation handoff when needed. “No blocker found” is a go-ahead signal, not a guarantee. Models report
-  and challenge; they do not silently modify the implementation during a review.
+  assessment of SonarQube/Copilot review findings. Luna is the default code implementer. The owner approved these
+  initial global lanes on 2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini
+  Auto, and `challenge-plan` → Gemini Auto. Keep the map iterative while real work supplies evidence. Sol drafts
+  plans; Gemini challenges them and helps produce the final plan and implementation handoff. For unusually complex
+  plans, use a Sol–Opus debate selectively. Free models may draft PR descriptions and be trialled for simple session
+  closeouts; use Gemini for closeout if the free-model result is incomplete.
+- Prefer a structured debate over repeating broad reviews. The owner approved starting a plan-debate trial now:
+  Sol drafts; Gemini challenges with evidence; Sonnet independently reviews the draft and Gemini's critique; the
+  author responds; the owner resolves disagreements. The final artifact records decisions, assumptions, unresolved
+  risks, and the implementation handoff when needed. “No blocker found” is a go-ahead signal, not a guarantee.
+  Models report and challenge; they do not silently modify the implementation during a review. Verify a relay-
+  compatible Sonnet path before the first live debate.
 - Defer a code-debate skill and broad `debate-review` / complex-review lanes. Gemini can first help assess and
   address existing CI, SonarQube, and Copilot findings. Add another review loop only if real use shows a gap.
-- Do not configure delegation lanes until the Gemini implementer has been reviewed and the proposed lane map is
-  approved. Claude API use is an optional later escalation; the owner plans a $10/month credit budget, so avoid
-  routine calls and prioritize only unusually complex work.
+- Initial global lanes have now been approved and written; confirm dispatch capability during real use before
+  treating any lane as ready. Claude API use is an optional later escalation; the owner plans a $10/month credit
+  budget, so avoid routine calls and prioritize only unusually complex work.
