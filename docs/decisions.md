@@ -112,10 +112,17 @@ text parsing with every unresolved item listed, never guessed; problems reported
 (`NO_HANDLER`, `EXCLUDED_FROM_BUILD`, `AUTH_BYPASS_SUBSTRING`, …); refreshed by hand after each ported slice,
 no hook. Verified against grep counts, known facts and `check-citations.mjs`; reviewed with `two-axis-review`.
 
-## Every delegated run names its model and effort (2026-09-26)
+## Explicit model and effort where supported (owner, 2026-09-26)
 After six Codex test runs silently used the expensive default (`gpt-6-astra`, ~175k tokens), the owner's rule
-is: any run handed to another CLI names the model **and** effort (Codex: `gpt-6-luna` simple, `gpt-6-sol`
-hard). Documented in `GUIDE.md` §4; lanes in `delegate-setup` should pin both.
+is: name the model **and** effort for delegated runs when the CLI supports those dials (Codex: `gpt-6-luna`
+simple, `gpt-6-sol` hard). Documented in `GUIDE.md` §4; lanes in `delegate-setup` should pin both where
+supported.
+
+### Gemini Auto exception (owner, 2026-10-01)
+For Gemini CLI, the owner explicitly approves the CLI's Auto/default model selection based on months of use and
+quota familiarity. A model pin is optional; do not invent an effort dial Gemini's relay does not support. The
+live disposable-repo trial used Auto successfully. This exception does not change the explicit model/effort
+rule for CLIs that support and require those choices.
 
 ## `grill-with-docs` and `handoff` after real use (2026-09-26)
 - **`grill-with-docs` stays big-ticket only.** It's `grill-me` plus glossary/ADR upkeep, which pays off only
@@ -155,3 +162,24 @@ hard). Documented in `GUIDE.md` §4; lanes in `delegate-setup` should pin both.
   reusable profile template under `templates/hdc-session-closeout-profile/`; do not fork the generic skill or
   create a second durable closeout report. The owner approved and the session updated only
   `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md` on 2026-09-30.
+
+## Gemini-led workflow and plan debate (owner, 2026-10-01)
+- The owner has used Gemini CLI for months and is comfortable with Gemini Auto and its quota behavior. Treat that
+  lived experience as the basis for the workflow; do not add generic quota warnings absent new evidence.
+- Add Gemini CLI as a first-class implementer in Ahmed Nagdy's `delegate-skills`, including lane setup support. Keep
+  the upstream work on a local branch for the owner's real-work trial; do not publish it until the owner chooses to
+  propose it. Do not modify the vendored archive while implementing the upstream contribution.
+- Normal work allocation: Gemini handles LLDs, browser test scenarios, comments, routine planning support, and
+  assessment of SonarQube/Copilot review findings. Luna is the default code implementer. Sol drafts plans; Gemini
+  challenges them and helps produce the final plan and implementation handoff. For unusually complex plans, use a
+  Sol–Opus debate selectively. Free models may draft PR descriptions and be trialled for simple session closeouts;
+  use Gemini for closeout if the free-model result is incomplete.
+- Prefer a structured debate over repeating broad reviews. In plan debate, the challenger cites concrete evidence,
+  the author answers each challenge, and the final artifact records decisions, assumptions, unresolved risks, and
+  the implementation handoff when needed. “No blocker found” is a go-ahead signal, not a guarantee. Models report
+  and challenge; they do not silently modify the implementation during a review.
+- Defer a code-debate skill and broad `debate-review` / complex-review lanes. Gemini can first help assess and
+  address existing CI, SonarQube, and Copilot findings. Add another review loop only if real use shows a gap.
+- Do not configure delegation lanes until the Gemini implementer has been reviewed and the proposed lane map is
+  approved. Claude API use is an optional later escalation; the owner plans a $10/month credit budget, so avoid
+  routine calls and prioritize only unusually complex work.

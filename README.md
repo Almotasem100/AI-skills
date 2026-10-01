@@ -65,7 +65,7 @@ Two tracks that share the same tail:
 - **Small ticket:** grill-me → implement → guards → review → PR.
 - **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
 
-The tail: Delegate (any model, always with an explicit model + effort) → guards + linters + git pre-commit hook
+The tail: Delegate (name model + effort where supported; Gemini Auto is owner-approved) → guards + linters + git pre-commit hook
 → `two-axis-review` → describe PR → babysit PR, and `session-closeout` to end the session (plus `handoff`
 when the next session has one specific task). The URL map
 (`tools/url-map`) runs underneath as the code map. The LLD skill can be called on any ticket, in forward mode (before
@@ -173,6 +173,10 @@ where `debate-review` looks for the delegate relays.
 - From `guard-skills/skills/`: `clean-code-guard`, `test-guard`, `docs-guard`.
 
 Gemini CLI: `/skills reload` afterwards.
+
+`gemini-delegate` is currently a local, unpublished contribution branch in the separate upstream clone, not
+part of the vendored snapshot or this install list. Its live relay trial passed once in a disposable repo;
+see `docs/roadmap.md` before treating it as a generally available relay.
 
 **Use**
 1. **Set up lanes once per machine:** *"set up my delegation lanes"* → `delegate-setup` finds the installed

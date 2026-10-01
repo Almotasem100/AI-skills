@@ -30,7 +30,8 @@ template. **Retro** mode documents work that's already finished.
 
 ### 🔨 Building
 **Delegates: hand the coding to another AI.** Your agent sends the task to Codex (or another CLI), then
-checks the result. It never commits; you do. **Always name the model and the effort.**
+checks the result. It never commits; you do. Name the model and effort where supported; Gemini Auto is the
+owner-approved exception.
 > "Delegate this to codex with model gpt-6-luna, effort medium: add a clamp helper with tests"
 
 It can also run one of your skills: *"delegate to codex with model gpt-6-sol, effort medium: use your
@@ -213,10 +214,11 @@ Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs,
 
 ## 4. Use them
 
-### Always name the model and the effort
-Whenever a skill hands work to another CLI (the `*-delegate` relays, `debate-review`), **say which model and
-which effort**. Otherwise the CLI uses its own default, which can be an expensive model: on 2026-09-26 six short
-test runs through Codex silently used `gpt-6-astra` (~175k tokens) because no model was given.
+### Name the model and effort where supported
+For delegated runs, name the model and effort when the CLI supports those dials. Otherwise its default may be
+unexpected: on 2026-09-26 six short test runs through Codex silently used `gpt-6-astra` (~175k tokens) because
+no model was given. **Gemini is the owner-approved exception:** omit `--model` to use Gemini Auto/default; its
+relay has no effort dial. The owner has used Gemini Auto for months and approved this behavior.
 
 | Task | Codex model | Effort |
 |---|---|---|
@@ -232,6 +234,8 @@ How to say it:
 - Codex run directly (no relay): `codex exec -m gpt-6-luna -c model_reasoning_effort=medium "<task>"`.
 - To see which models your Codex offers: `node <skills folder>\delegate-setup\scripts\discover.mjs`.
 - Also worth doing: set a cheap default in `~/.codex/config.toml` (`model = "gpt-6-luna"`) as a safety net.
+- Gemini relay trial: use `gemini-delegate` only from the local upstream contribution branch until the owner
+  decides whether to propose it; its tested invocation omitted `--model` and used `--approval-mode auto_edit`.
 
 You can almost always just **ask in plain words**; the agent picks the skill from its description. If it
 doesn't, **name the skill**: *"use the describe-pr skill"*. A few skills can only be started by name (marked
@@ -269,10 +273,15 @@ and loaded `create-lld` from `~/.agents/skills` and correctly reported its input
 asks questions after drafting. **Not yet tested:** a full LLD written this way, and the answer-the-questions
 round trip.
 
-**Gemini:** there's no `gemini-delegate` relay in the tech lead's pack. The options are `agy-delegate`
-(Antigravity) or `opencode-delegate` with a Gemini model, with the same wording (*"delegate to agy with model
-<gemini model>: use your create-lld skill …"*; add the effort if that CLI supports one). **Untested:** neither CLI is installed on the laptop,
-and whether they read `~/.agents/skills` is unverified. Check on the workstation.
+**Gemini delegation:** a `gemini-delegate` contribution is under owner review on the local, unpublished
+`feature/gemini-delegate` branch in a separate upstream clone; it has not been merged into the vendored pack.
+The relay was live-tested on 2026-10-01 with Gemini CLI 0.62.0 in a disposable Git repo, using the CLI's
+default Auto model selection and `auto_edit`. It added a bounded helper and tests; the diff was reviewed and
+the test command independently passed 5/5. This verifies one direct relay dispatch, not automatic skill
+selection or saved-lane dispatch. The full upstream smoke suite still has five existing non-Gemini
+`orphan-near-timeout` failures; their cause has not been investigated. `npx skills add . --list` has not been
+run. Decide whether to propose the branch
+upstream before adding it to the normal install instructions.
 
 ### Small ticket
 1. **`grill-me`** (by name): *"/grill-me — ticket 38939409: add the shared header"*. It asks questions in

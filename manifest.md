@@ -10,7 +10,7 @@ merge the changes in keeping my additions, then record the new base.
 
 | Skill(s) | Source | Base commit | Status | Role |
 |---|---|---|---|---|
-| delegate-skills (relays + `delegate-setup`) | https://github.com/amElnagdy/delegate-skills | `6826b363` (copied 2026-09-25) | Keep — core | Model-agnostic implement layer. For Gemini, try `agy-delegate` or `opencode-delegate` first; a Gemini relay would be my addition here. No local changes |
+| delegate-skills (relays + `delegate-setup`) | https://github.com/amElnagdy/delegate-skills | `6826b363` (copied 2026-09-25) | Keep — core | Model-agnostic implement layer. The vendored snapshot has no Gemini relay and remains unchanged. A separate local, unpublished `feature/gemini-delegate` contribution branch has passed one live Gemini CLI 0.62.0 dispatch in a disposable repo; the owner is deciding whether to propose it upstream. |
 | review-skills: `babysit-pr` | https://github.com/amElnagdy/review-skills | `5b748c65` (copied 2026-09-25) | Keep — core | Copilot/review-thread loop. **Local change: asks before pushing or posting** (upstream pushed on its own) |
 | review-skills: `debate-review` | same repo | same | Optional | Big tickets only. Needs delegate lanes `review-main` and `review-debate` |
 | mattpocock/skills: `code-review` → **`two-axis-review`** | https://github.com/mattpocock/skills (MIT) | `c55ee460` (copied 2026-09-25) | Keep — local pre-push review | Standards axis (repo docs + Fowler smell baseline) + Spec axis (spec = the LLD: pass its path). **Local change: renamed** (clash with Claude Code's built-in `code-review`). Ignore its prompt to run `setup-matt-pocock-skills` |
