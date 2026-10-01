@@ -24,9 +24,23 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
 > `/grill-with-docs new approval workflow for checklists, write CONTEXT.md under C:\...\HDC\documents`
 
-**`create-lld`: the design document.** Big ticket, after the grill. It writes the LLD section in the team
-template. **Retro** mode documents work that's already finished.
-> "Write the LLD for CADE-1234, ticket 38939409 'Navbar'. Slides: C:\path\customer.pptx"
+**`create-lld`: functional and technical design.** Big ticket, after the grill. With customer slides, it drafts
+two separate documents: a Functional Design (what users and business processes should observe) and an LLD (how
+the software will implement it). Without slides, it writes only the LLD unless you ask for both. **Retro** mode
+documents finished work and flags slide-vs-code differences.
+> "Write the Functional Design and LLD for CADE-1234, ticket 38939409 'Navbar'. Slides: C:\path\customer.pptx"
+
+### 🧭 Planning before implementation
+**`plan-review`:** a one-shot, read-only critique of a plan, working session scratchpad, or existing handoff.
+It returns prioritized findings with source evidence, assumptions, missing decisions, risks, and questions; it
+does not edit the input.
+> "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
+
+**`plan-debate`:** a structured challenge/response workflow that keeps the draft, evidence, reviewer comments,
+author responses, owner decisions, and unresolved disagreements in one working scratchpad. Name the available
+reviewers; disclose unavailable participants rather than silently substituting. The owner resolves disagreements,
+and the skill stops before applying the draft to project documents.
+> "Run a plan debate on this scratchpad with the available reviewers"
 
 ### 🔨 Building
 **Delegates: hand the coding to another AI.** Your agent sends the task to Codex (or another CLI), then
@@ -88,17 +102,25 @@ without your yes (§5).
 
 ## 1. The idea in one minute
 
-A **skill** is a folder with a `SKILL.md` file: instructions (and sometimes small Node scripts) that an AI
-agent loads when a task matches. The same folder works in Claude Code, Gemini CLI, Codex, OpenCode and other
-agents that read `SKILL.md`.
+A **skill** is a folder with a `SKILL.md` file: instructions (and sometimes small Node scripts) that a compatible
+agent can load when a task matches. The same skill content is model-agnostic, but discovery depends on the host:
+the AI model does not search your disk itself, and not every agent supports this convention. After you copy a
+skill to a host's skills folder, confirm that host lists it; start a new session or reload skills if needed.
 
 An agent only sees a skill if the folder sits in **its skills folder**:
 
-| Agent | User-level skills folder (all projects) | Tested here? |
+| Agent | User-level skills folder (all projects) | Evidence |
 |---|---|---|
-| Claude Code | `C:\Users\<you>\.claude\skills\` | Yes: Claude lists the skills after they are copied there |
-| Codex | `C:\Users\<you>\.agents\skills\` | Yes (2026-09-26, codex-cli 0.157.0): Codex listed the skills from there and picked `describe-pr` by itself |
-| Gemini CLI, OpenCode and other `SKILL.md` agents | `C:\Users\<you>\.agents\skills\` | Not yet. Check your agent's docs if a skill doesn't appear |
+| Claude Code | `C:\Users\<you>\.claude\skills\` | Previously tested with other skills; these two new skills have not been tested in Claude Code |
+| Codex | `C:\Users\<you>\.agents\skills\` | Previously tested (2026-09-26, codex-cli 0.157.0) with other skills; these two have not been tested in Codex |
+| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 lists both new skills as enabled and passed read-only smoke tests using Auto |
+| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode v2.0.20 exposed both skills in this session; other hosts/models are not verified, so check their current skill-loading documentation |
+
+**Plan-skill smoke tests (2026-10-01):** both skills were exercised on a synthetic plan in read-only mode. Gemini
+CLI 0.62.0 found the client-support contradiction, unsupported rollback estimate, monitoring concern, and missing
+rollback ownership. OpenCode used `plan-review` in this session and coordinated a Gemini evidence challenge for
+`plan-debate`; the exchange and author response stayed in a temporary scratchpad. No project file was changed by
+the tests. Claude Code and Codex are not installed here, and no claim is made for every agent or model.
 
 Both folders start with a dot, so Windows Explorer may hide them: type the path in the address bar.
 
@@ -116,6 +138,8 @@ you change a skill here, copy it again.
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Design | `create-lld` | Writes an LLD section in the team template, before the work (forward) or after it (retro) | Mine |
 | Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
+| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
+| Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
 | Before pushing | `two-axis-review` | Reviews your diff against the repo's standards **and** against the spec (your LLD) | Pocock, renamed (copied) |
@@ -151,10 +175,14 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 
 ### Copy the skills (PowerShell)
 Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
-into both skills folders, so Claude and the other agents see the same set. **Tested 2026-09-25** on this laptop
+into both skills folders, so compatible agents see the same set. **Tested 2026-09-25** on this laptop
 against a throwaway folder: all 18 then-listed skills landed in both targets (re-run 2026-09-26 after adding
 `session-closeout`), and the scripts ran from their new place. The newly added `scenario-test-cases` entry has
-not yet been included in an install test or tested natively.
+not yet been included in an install test or tested natively. On 2026-10-01, `plan-review` and `plan-debate` were
+copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
+Gemini CLI 0.62.0 lists both as enabled; OpenCode v2.0.20 exposed both in this session. Gemini and OpenCode
+smoke-tested the workflows on synthetic input. These checks establish availability in those hosts here, not
+universal support by every model or agent.
 
 ```powershell
 $setup   = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills"
@@ -166,6 +194,8 @@ $folders = @(
   "skills\describe-pr",
   "skills\create-lld",
   "skills\scenario-test-cases",
+  "skills\plan-review",
+  "skills\plan-debate",
   "skills\session-closeout",
   "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
   "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
@@ -341,7 +371,9 @@ Same tail, with more up front:
      plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
 2. **`create-lld`**, forward mode: *"write the LLD for CADE-1234, internal ticket 38939409 'Navbar':
    <description>. Slides: C:\path\customer.pptx."* The status stays `Draft` until you approve it.
-3. Plan, implement in slices, then steps 3–6 above.
+3. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
+   challenge and respond in a shared scratchpad. Review the scratchpad and resolve open decisions before
+   implementation; then implement in slices and continue with steps 3–6 above.
 4. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
    the lanes `review-main` and `review-debate`: pin their models and effort in `delegate-setup`); without
    `--dry-run` it posts it. *"debate-review --local"* reviews your working tree before a PR exists.

@@ -1,8 +1,9 @@
 # AI-skills
 
 My personal, model-agnostic setup for AI-assisted development: the skills I wrote, the pinned third-party
-skills I use, and how to install and use each one on a new machine. It works with any coding agent that reads
-`SKILL.md` skills (Claude Code, Codex, Gemini CLI / Antigravity, OpenCode, …).
+skills I use, and how to install and use each one on a new machine. The instructions are portable across agents
+that support `SKILL.md` skills (Claude Code, Codex, Gemini CLI / Antigravity, OpenCode, …); discovery depends on
+each host's skill-loading behavior, so no install guarantees availability in every agent or model.
 
 ## Rules for this repo
 - **Three kinds of skills, three places:**
@@ -78,8 +79,10 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `create-lld` | **v1 written 2026-09-25.** Scripts tested; retro mode tested in Claude on a real branch; forward mode not yet run on real customer slides | Forward: pasted internal ticket (ID, title, description) + customer slides + code → one LLD section written for architect review. Retro: finished diff + ticket → LLD, with reasons and alternatives marked `[NEEDS INPUT]` |
+| `create-lld` | **Updated 2026-10-01:** when slides are supplied, drafts a companion Functional Design beside the LLD. Existing scripts tested; the new paired output has not yet been tested on a real ticket | Forward: pasted ticket + slides + code → a Functional Design of expected behavior plus an LLD of technical design. Retro: finished diff + ticket → LLD; with slides, also documents functional behavior and flags differences from implementation. Unknowns remain `[NEEDS INPUT]` |
 | `scenario-test-cases` | **Initial version written 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
+| `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
+| `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
 | `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
 | `describe-pr` | **v1 written 2026-09-25.** Scripts tested on two real repos; full skill tested in Claude, and natively in Codex on 2026-09-26 (picked without being named) | Git context (built by a script) + pasted ticket + optional LLD section → PR title and body. Asks at most 4 questions in one message; creates the PR only after approval |
 
@@ -121,8 +124,10 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 - **Retro**, for finished work:
   > write a retro LLD for this branch. CADE-1234, internal ticket 38939409 "Navbar".
 
-The agent drafts the LLD, runs the checker, and asks at most 5 questions in one message: the decisions to
-confirm and the most important `[NEEDS INPUT]` gaps. The status stays `Draft` until you approve it.
+When slides are supplied, the agent drafts both a Functional Design (expected behavior) and an LLD
+(technical design); without slides it drafts only the LLD unless you ask otherwise. It runs the LLD checker
+and asks at most 5 questions in one message: the decisions to confirm and the most important `[NEEDS INPUT]`
+gaps. Both statuses stay `Draft` until you approve them.
 
 **What it guarantees:**
 - Every design statement names what it touches.
@@ -152,6 +157,29 @@ The skill follows numbered `Scenario N` headings with Given / When / Then / And,
 It returns Markdown in chat unless you request a file. Conflicts and missing expected behavior are called out
 under `Clarifications needed`, not filled with guesses. It creates test cases, not Playwright/Cypress/Selenium
 code; `test-guard` remains the review skill for automated test code.
+
+### `plan-review` and `plan-debate`
+Both accept a proposed plan directly, including as a working session scratchpad or existing handoff; no separate
+implementation-brief artifact is needed. A scratchpad can hold task notes, necessary source references/excerpts,
+grill answers, findings, the draft, review exchanges, decisions, and unresolved questions. Preserve source
+locators and verify consequential claims against originals when available. Reuse a project's designated
+scratchpad only if its profile permits; otherwise use a separate temporary working file. It is a working draft,
+not a project document of record or a replacement for `handoff` or `session-closeout`.
+
+- **`plan-review`:** one-shot, read-only critique. It returns prioritized findings with evidence, assumptions,
+  missing decisions, risks, and questions, distinguishing observed contradictions from concerns and unsupported
+  assertions. It does not edit the plan or scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
+  unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
+  handoff."*
+- **`plan-debate`:** coordinates declared reviewers through challenge and response, retaining disagreement and
+  owner arbitration in the same scratchpad. The intended live roles are Sol as author, Gemini as evidence-based
+  challenger, an independent Sonnet or Opus reviewer when connected, the author responding, and the owner
+  resolving disagreements. State unavailable reviewers; do not silently substitute. Ask naturally, e.g.
+  *"Run a plan debate on this scratchpad with the available reviewers."* Or invoke it explicitly: *"Use
+  `plan-debate` for this proposed plan."* It stops before applying anything to project documents. A clean debate
+  is a go-ahead signal, not proof of safety.
+
+Neither skill reviews code or PRs; use `two-axis-review`, `debate-review`, or `babysit-pr` for those workflows.
 
 ### Tech lead's skills (copied in `vendor/amElnagdy/`)
 Details, review notes and local changes: each repo's `UPSTREAM.md`.

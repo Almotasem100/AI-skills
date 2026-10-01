@@ -5,8 +5,11 @@ description: Write a low-level design (LLD) section for one ticket, in the team'
 
 # create-lld
 
-Writes one LLD section in `templates/lld-section.md`, for an architect who will review it. It explains what
-the problem is, what was chosen, what else was possible, and why — with every claim checkable in the code.
+Writes an LLD section in `templates/lld-section.md`, for an architect who will review it. When customer
+slides are provided, it also writes a companion Functional Design using
+`templates/functional-design.md`. The Functional Design describes expected behavior; the LLD describes
+technical structure and implementation choices. It explains what the problem is, what was chosen, what else
+was possible, and why — with every claim checkable against its source.
 
 `<skill-dir>` below means the folder that contains this file.
 
@@ -19,6 +22,8 @@ message (step 6), never guessed.
 - Release / sprint, tech designer name.
 - Optional: constraints, notes, what the user already decided.
 - **Retro mode**: the branch or commit range that holds the finished work.
+- **Functional Design**: produced alongside the LLD by default when slides are supplied; can also be
+  requested without slides when the ticket contains enough functional requirements.
 - Where to save the LLD. If not given: the location in the project's `AGENTS.md`, otherwise the system temp
   folder. **Never create files inside a code repository unless the user says so.**
 
@@ -40,13 +45,24 @@ message (step 6), never guessed.
    the current behaviour counts), and a *why* tied to a fact or constraint. Recommend; don't decide alone when
    the project's rules say design choices belong to the user. If the ticket is too ambiguous for that, say so
    and suggest a grilling/interview session first.
-5. **Write the LLD** following `references/writing-guide.md`; `references/example-lld.md` shows the bar.
-   Status: `Draft`.
+5. **Write the Functional Design and LLD as separate artifacts** when slides are supplied.
+   - Functional Design: describe the user/business-visible behavior, actors, flows, business rules, acceptance
+     criteria, UI behavior and user-visible errors supported by the sources. Trace each requirement to its
+     ticket/story or slide. Copy business-rule tables exactly. Mark missing decisions `[NEEDS INPUT]`; do not
+     turn design suggestions or slide examples into approved requirements.
+   - LLD: follow `references/writing-guide.md`; `references/example-lld.md` shows the bar. Focus on the
+     technical design, implementation choices, alternatives, impacts and verification. Refer to Functional
+     Design requirements by ID instead of duplicating their full descriptions.
+   Both artifacts start as `Draft`. If no slides were supplied, produce only the LLD unless the user asks for
+   a Functional Design.
 6. **Check and ask — in one message.** Run
    `node <skill-dir>/scripts/check-lld.mjs <lld.md> --size <small|normal>`, fix every error, then show the
-   user the LLD, the remaining warnings, and **at most 5 questions**: the decisions to confirm, and the
-   `[NEEDS INPUT]` gaps that matter most. Confirmation-shaped with a guess where possible.
-7. **Revise** with the answers and re-run the check. The status becomes `Approved` only when the user says so.
+   user both artifacts when applicable, the remaining LLD warnings, and **at most 5 questions**: the decisions
+   to confirm and the `[NEEDS INPUT]` gaps that matter most. Manually verify the Functional Design's source
+   traceability and behavior claims; `check-lld.mjs` checks only the LLD. Confirmation-shaped with a guess
+   where possible.
+7. **Revise** with the answers and re-run the LLD check. Each artifact remains `Draft` or `In review` until the
+   user approves it; mark both `Approved` only if the user approves both.
 
 ## Reading customer slides
 - **Skip the boilerplate** most change-request decks carry: agile definitions, "what is an acceptance
@@ -80,10 +96,15 @@ message (step 6), never guessed.
    - Where the code differs from the slides, say so neutrally in the open questions: the difference may be a
      later agreement, or a gap.
    - *Verification*: cite tests in the diff as evidence; anything else is `[NEEDS INPUT]`.
-3. **Check and ask** as in forward steps 6–7, focusing the questions on the decisions' *why*.
+3. If slides exist, also write the companion Functional Design. Distinguish intended behavior in the slides/ticket
+   from behavior actually implemented; record discrepancies as open questions rather than silently reconciling
+   them. Keep the LLD's *Chosen* statements grounded in the code.
+4. **Check and ask** as in forward steps 6–7, focusing the questions on the decisions' *why*.
 
 ## Output
-- One markdown file named `LLD_<JIRA-ID>_<short-title>.md`.
+- One markdown file named `LLD_<JIRA-ID>_<short-title>.md`; when slides are supplied, also
+  `Functional_<JIRA-ID>_<short-title>.md` in the same folder. If the user gives a save location, save both
+  there; otherwise follow the existing LLD default and place both together.
 - Tell the user it's ready to paste into the release's design document. Google Docs can paste markdown with
   formatting when markdown is enabled in its preferences; otherwise paste as plain text and fix the headings.
 - The LLD feeds the PR later: its verification plan becomes the PR's testing section, its decisions the
@@ -91,6 +112,8 @@ message (step 6), never guessed.
 
 ## Files
 - `templates/lld-section.md`: the approved template, with its rules in comments.
+- `templates/functional-design.md`: the companion functional-behavior template, adapted from the shared
+  release-design document while excluding its application-specific examples and draft placeholders.
 - `scripts/slides.mjs`: text, speaker notes and images from a `.pptx`, slide by slide. No dependencies.
 - `scripts/check-lld.mjs`: checks header, required sections, empty sections, "N/A", decision rows, risks,
   named identifiers, verification phrasing, vague wording; counts `[NEEDS INPUT]`.
