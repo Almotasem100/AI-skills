@@ -60,12 +60,15 @@ and its decisions feed the PR's reviewer notes.
   acceptance criteria and UI-visible behavior). Exclude its application-specific architecture examples and
   draft placeholders. Do not invent requirements; keep unresolved items as `[NEEDS INPUT]`.
 - No separate implementation-brief skill is planned: a plan-review can review a plan document or handoff
-  directly. Plan review/debate will use one working session scratchpad containing task notes, relevant findings,
-  grill answers, the draft plan, review comments, and unresolved questions. Cite source documents and include only
-  the excerpts needed to check a claim, rather than forwarding every source document to every reviewer. Review
-  the scratchpad before proposing any write to project documents. This is a working draft, not a new project
-  document or a replacement for the closeout record; the existing handoff remains available when another
-  session needs to continue a specific task.
+  directly. Plan review/debate uses one working session scratchpad containing task notes, relevant findings, grill
+  answers, the draft plan, review comments, and unresolved questions. The orchestrator alone writes it; owner-
+  authorized delegates may read it when the host can enforce read-only access, otherwise they receive immutable
+  snapshots. They return separate Markdown findings or an authorized `minipad.md`; the orchestrator records,
+  attributes, and merges their output. Delegates never edit the shared scratchpad. Cite source documents and include
+  only the excerpts needed to check a claim,
+  rather than forwarding every source document to every reviewer. Review the scratchpad before proposing any write
+  to project documents. This is a working draft, not a new project document or a replacement for the closeout
+  record; the existing handoff remains available when another session needs to continue a specific task.
 
 ## Team repo (`gisacc_ai_tools`, reviewed 2026-09-25)
 Two Gemini-oriented skills: `backend-utils` (the team's Spring backend-template library; not used by HDC) and
@@ -86,7 +89,7 @@ GitHub token; the owner should revoke it. Never copy that file.
 | babysit-pr | Keep | Review-thread loop; ask before push |
 | Graphify | Trialled 2026-09-25 — not adopted | Correct Java structure, but none of the config-driven links (see below) |
 | debate-review | Optional | Big tickets only |
-| security review | Optional | Occasional |
+| security-audit (mine) | Optional | Scoped, read-only security review; findings cite evidence and uncertainty, not compliance claims |
 | handoff | Worth a look | Brief for another agent |
 | Spec Kit | Postponed | Competes with grill + LLD + plan; decide by one trial. Borrow its task breakdown, converge step, constitution |
 | Superpowers | Drop | Makes its workflows mandatory via a session-start hook; would take over the pipeline |
@@ -184,16 +187,16 @@ rule for CLIs that support and require those choices.
 - Add Gemini CLI as a first-class implementer in Ahmed Nagdy's `delegate-skills`, including lane setup support. Keep
   the upstream work on a local branch for the owner's real-work trial; do not publish it until the owner chooses to
   propose it. Do not modify the vendored archive while implementing the upstream contribution.
-- Normal work allocation: Gemini handles LLDs, browser test scenarios, comments, routine planning support, and
-  assessment of SonarQube/Copilot review findings. Luna is the default code implementer. The owner approved these
-  initial global lanes on 2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini
-  Auto, and `challenge-plan` → Gemini Auto. Keep the map iterative while real work supplies evidence. Sol drafts
-  plans; Gemini challenges them and helps produce the final plan and implementation handoff. For unusually complex
-  plans, use a Sol–Opus debate selectively. The owner prefers Gemini (not free models) for PR work and session
-  closeout. Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying on `babysit-pr`; native
-  `session-closeout` behavior also remains to be validated.
-- For routine code changes, ask Luna to load and apply `clean-code-guard` in the same implementation session;
-  ask Gemini to apply `test-guard` when it writes tests. Always run the project's deterministic gates. Do not
+- Normal work allocation: Gemini can handle LLDs, browser test scenarios, comments, routine planning support, and
+  assessment of SonarQube/Copilot review findings when directed. The owner approved these initial global lanes on
+  2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini Auto, and
+  `challenge-plan` → Gemini Auto. These lanes are available options, not automatic dispatch: the manually selected
+  active model is the orchestrator and plans/grills by default; delegate only when the owner explicitly directs it.
+  Claude Opus and Sonnet are never called unless the owner names one for that specific task. The owner prefers
+  Gemini for PR work and session closeout. Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying
+  on `babysit-pr`; native `session-closeout` behavior also remains to be validated.
+- When the owner directs a model to implement routine code changes, Luna may load and apply `clean-code-guard`
+  in that implementation session; Gemini may apply `test-guard` when it writes tests. Always run the project's deterministic gates. Do not
   spend a separate Sol call on every guard; reserve an independent guard review for higher-risk changes or
   combine it with Gemini's PR review. A model checking its own work is not an independent review.
 - Prefer a structured debate over repeating broad reviews. The owner approved separate `plan-review` (one-shot
@@ -202,9 +205,11 @@ rule for CLIs that support and require those choices.
   observed contradictions, concerns, and unsupported assertions. The scratchpad may contain task notes, source
   references/excerpts, grill answers, findings, proposed plan, review exchanges, decisions, and unresolved
   questions. Review it before proposing final project-document updates; no separate implementation-brief artifact
-  is needed. For a live debate, Sol drafts, Gemini challenges with evidence, Sonnet or Opus independently reviews
-  when connected, the author responds, and the owner resolves disagreements. Missing optional review is disclosed,
-  never silently substituted. Keep code review with existing `two-axis-review` and `debate-review`; use
+  is needed. For a live debate, the active orchestrator drafts by default; other authors/reviewers participate only
+  when explicitly directed by the owner for that task. Delegates may read the shared scratchpad but never write it;
+  return changes separately for the orchestrator to merge. Opus/Sonnet require specific task-level authorization.
+  Missing optional review is disclosed, never silently substituted. Keep code review with existing `two-axis-review`
+  and `debate-review`; use
   `babysit-pr` for PR bot-round management. A clean debate is a go-ahead signal, not a guarantee; models report
   and challenge but do not silently modify implementation during review. On 2026-10-01, the two skills passed
   synthetic read-only smoke tests across the OpenCode session and Gemini CLI 0.62.0; this does not establish

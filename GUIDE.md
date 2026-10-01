@@ -13,6 +13,12 @@ _Written 2026-09-25. What has and hasn't been tested is marked; don't assume mor
 Think of the skills as helpers you call at each stage of a ticket. Most start on their own when you describe
 what you want; the ones marked **(by name)** only start when you type their command.
 
+**Orchestration rule:** the model you manually opened and selected is the working orchestrator by default. It
+listens to your orders, discusses and pushes back with reasons, and handles intake, grilling, and planning itself.
+It delegates only when you explicitly direct it to. Claude Opus and Sonnet are never called unless you name one
+for that specific task; their presence in the model list is not permission. Asking for a debate does not authorize
+an Opus/Sonnet call.
+
 ### 🟢 Starting a ticket
 **`grill-me` (by name): think it through first.** Small ticket, before any code. It asks you questions in
 rounds, each with a suggested answer, until nothing is unclear.
@@ -37,10 +43,17 @@ does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
 **`plan-debate`:** a structured challenge/response workflow that keeps the draft, evidence, reviewer comments,
-author responses, owner decisions, and unresolved disagreements in one working scratchpad. Name the available
-reviewers; disclose unavailable participants rather than silently substituting. The owner resolves disagreements,
-and the skill stops before applying the draft to project documents.
-> "Run a plan debate on this scratchpad with the available reviewers"
+author responses, owner decisions, and unresolved disagreements in one working scratchpad. The orchestrator alone
+writes it. Delegates may read it read-only when the host can enforce that; otherwise give them an immutable copy.
+They return separate Markdown findings or an authorized `minipad.md`, never edits to the shared scratchpad. Name
+reviewers only if you want them dispatched; the active orchestrator plans by default. Opus/Sonnet require explicit,
+task-specific instruction.
+> "Have Gemini and Opus independently review this plan; return findings only, with no scratchpad access"
+
+**`security-audit`:** a read-only review of a scoped change against approved security requirements when supplied.
+It cites evidence, distinguishes risks from missing evidence, reports coverage limits, and does not claim compliance
+or perform active testing.
+> "Audit this change for relevant security risks and evidence gaps"
 
 ### 🔨 Building
 **Delegates: hand the coding to another AI.** Your agent sends the task to Codex (or another CLI), then
@@ -140,6 +153,7 @@ you change a skill here, copy it again.
 | Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
+| Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
 | Before pushing | `two-axis-review` | Reviews your diff against the repo's standards **and** against the spec (your LLD) | Pocock, renamed (copied) |
@@ -182,7 +196,12 @@ not yet been included in an install test or tested natively. On 2026-10-01, `pla
 copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
 Gemini CLI 0.62.0 lists both as enabled; OpenCode v2.0.20 exposed both in this session. Gemini and OpenCode
 smoke-tested the workflows on synthetic input. These checks establish availability in those hosts here, not
-universal support by every model or agent.
+universal support by every model or agent. `security-audit` was copied to both user-level roots with matching
+hashes on 2026-10-01. Gemini CLI 0.62.0 smoke-tested it on a synthetic endpoint excerpt; OpenCode loaded the skill
+in this session, but did not run the same audit fixture. These checks do not validate real vulnerability detection
+or establish support by every model or agent. On 2026-10-01, `scenario-test-cases` was installed in both roots;
+`plan-debate`, `plan-review`, `create-lld`, and `session-closeout` were synchronized from the repository after
+drift checks. The synchronized skill files match their repository copies; no user-only skill edits were found.
 
 ```powershell
 $setup   = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills"
@@ -196,6 +215,7 @@ $folders = @(
   "skills\scenario-test-cases",
   "skills\plan-review",
   "skills\plan-debate",
+  "skills\security-audit",
   "skills\session-closeout",
   "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
   "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
@@ -292,6 +312,12 @@ CLI loads the skill from **its own** skills folder, so the skill must be install
 4. Your agent shows you the report and the questions. You answer; your agent sends the answers back to the
    **same Codex session** (`--session <id>` from the result), and Codex finishes the LLD.
 5. Your agent reviews the LLD. Nothing is committed or published.
+
+**Scratchpad rule for any delegate:** it may read the current scratchpad when needed for the explicitly authorized
+task, but it must not edit, append to, reformat, or delete that shared file. Return notes/findings to the
+orchestrator or write a separate `minipad.md` only in an explicitly authorized output location. The orchestrator
+alone merges material into the session scratchpad. If the host cannot enforce read-only access, use an immutable
+copy instead of exposing the live file.
 
 The same pattern works for any skill that runs well on its own: *"delegate to codex with model gpt-6-luna,
 effort low: use your **describe-pr** skill for this branch; don't create the PR"*, or *"…use your

@@ -23,6 +23,9 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 - The scratchpad is a working draft, not a project document of record or a substitute for a task handoff or
   session closeout. This skill never edits the scratchpad, plan, handoff, code, or project documents, and never
   proposes applying document changes without owner approval.
+- The orchestrator is the only writer of a shared session scratchpad. Owner-authorized reviewers may read it only
+  when the host can enforce read-only access; otherwise provide an immutable snapshot. This skill itself does not
+  dispatch reviewers; any delegated review must follow the separate `plan-debate` workflow.
 
 ## Review
 

@@ -61,12 +61,18 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 `install.ps1` will later turn that block into one command.
 
 ## The workflow
+The manually selected, active model is the **orchestrator by default**: it takes the owner's orders, discusses
+tradeoffs, pushes back with reasons when warranted, and does intake, grilling, and planning itself. It delegates
+only when the owner explicitly orders delegation. Never call Claude Opus or Sonnet unless the owner explicitly
+names one for that specific task; availability is not permission. A request to debate or review does not itself
+authorize those model calls.
+
 Two tracks that share the same tail:
 
 - **Small ticket:** grill-me → implement → guards → review → PR.
 - **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
 
-The tail: Delegate (name model + effort where supported; Gemini Auto is owner-approved) → guards + linters + git pre-commit hook
+The tail: when directed, delegate a bounded slice (name model + effort where supported; Gemini Auto is owner-approved) → guards + linters + git pre-commit hook
 → `two-axis-review` → describe PR → babysit PR, and `session-closeout` to end the session (plus `handoff`
 when the next session has one specific task). The URL map
 (`tools/url-map`) runs underneath as the code map. The LLD skill can be called on any ticket, in forward mode (before
@@ -80,9 +86,10 @@ example call.
 | Skill | Status | Use |
 |---|---|---|
 | `create-lld` | **Updated 2026-10-01:** when slides are supplied, drafts a companion Functional Design beside the LLD. Existing scripts tested; the new paired output has not yet been tested on a real ticket | Forward: pasted ticket + slides + code → a Functional Design of expected behavior plus an LLD of technical design. Retro: finished diff + ticket → LLD; with slides, also documents functional behavior and flags differences from implementation. Unknowns remain `[NEEDS INPUT]` |
-| `scenario-test-cases` | **Initial version written 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
+| `scenario-test-cases` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
 | `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
+| `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
 | `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
 | `describe-pr` | **v1 written 2026-09-25.** Scripts tested on two real repos; full skill tested in Claude, and natively in Codex on 2026-09-26 (picked without being named) | Git context (built by a script) + pasted ticket + optional LLD section → PR title and body. Asks at most 4 questions in one message; creates the PR only after approval |
 
@@ -171,15 +178,29 @@ not a project document of record or a replacement for `handoff` or `session-clos
   assertions. It does not edit the plan or scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
   handoff."*
-- **`plan-debate`:** coordinates declared reviewers through challenge and response, retaining disagreement and
-  owner arbitration in the same scratchpad. The intended live roles are Sol as author, Gemini as evidence-based
-  challenger, an independent Sonnet or Opus reviewer when connected, the author responding, and the owner
-  resolving disagreements. State unavailable reviewers; do not silently substitute. Ask naturally, e.g.
-  *"Run a plan debate on this scratchpad with the available reviewers."* Or invoke it explicitly: *"Use
-  `plan-debate` for this proposed plan."* It stops before applying anything to project documents. A clean debate
-  is a go-ahead signal, not proof of safety.
+- **`plan-debate`:** the orchestrator alone writes the shared scratchpad. Owner-authorized delegates may read it
+  read-only when the host can enforce that; otherwise they receive an immutable snapshot. They return separate
+  Markdown findings or an authorized `minipad.md`; the orchestrator attributes and merges results. Delegates never
+  edit the shared scratchpad.
+  The owner chooses any delegated author/reviewers; the active orchestrator drafts by default. Dispatch only
+  reviewers explicitly authorized for this task, and disclose unavailable reviewers without substitution. In
+  particular, do not call Opus or Sonnet unless the owner names one for this specific task. Ask naturally, e.g.
+  *"Have Gemini and Opus independently review this plan; return separate findings and don't give them scratchpad
+  access."* It stops before applying anything to project documents. A clean debate is not proof of safety.
 
 Neither skill reviews code or PRs; use `two-axis-review`, `debate-review`, or `babysit-pr` for those workflows.
+
+### `security-audit`
+**Use:** request a security audit of a ticket, plan, LLD, handoff, or scoped implementation. It uses approved project
+security requirements when supplied; otherwise it identifies missing requirements and uncertainty. Ask naturally,
+e.g. *"Audit this change for relevant security risks and evidence gaps."* Or invoke explicitly: *"Use
+`security-audit` on this plan and the supplied security requirements."*
+
+It returns evidence-linked findings with severity, conditions, impact, uncertainty, validation/fix suggestions,
+coverage, and unreviewed areas. It considers only security areas relevant to the change. It is read-only: it does
+not edit files, execute payloads, probe live systems, or transmit data; it never repeats secret values. It does not
+certify compliance or prove a system secure. Gemini CLI's synthetic smoke test returned a conditional authorization
+risk and explicitly identified the missing DAO evidence; it did not validate real vulnerability detection.
 
 ### Tech lead's skills (copied in `vendor/amElnagdy/`)
 Details, review notes and local changes: each repo's `UPSTREAM.md`.
