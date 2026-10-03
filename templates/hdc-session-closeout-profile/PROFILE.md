@@ -30,6 +30,9 @@ Read the target section before proposing a write-back. Do not refresh every proj
   regeneration.
 - Update triage, a runbook, or other documents of record only when the session produced evidence or an approved
   decision relevant to that document.
+- Distinguish unfinished work in the agreed task from separate future work. When the owner closes the bounded
+  task, record remaining audit, acceptance, retirement or cleanup follow-ups in the Plan with their gates.
+  Separate follow-ups do not by themselves keep the completed task open or require retaining its scratchpad.
 
 ## Approval, citation check, and removal
 
@@ -40,8 +43,10 @@ Read the target section before proposing a write-back. Do not refresh every proj
   after the feature or agreed bounded non-feature task is complete, approved write-backs are reconciled and
   verification/citation checks pass. Follow the canonical README's cleanup approval/inventory rule. If work,
   approval or verification is pending, retain everything and report that closeout is not finished.
-- Do not push, deploy, run dispatch commands, or change GCP resources as part of closeout. Follow HDC's current
-  commit/review instructions; do not infer authorization to commit from a request to close out. The backend
-  exact-file approval rule still applies to any proposed code work.
+- Keep external temporary directories and registered worktrees outside current-session cleanup. Inventory
+  them separately and obtain exact cleanup approval; use Git's worktree operations for registered worktrees.
+- Closeout alone does not authorize staging, committing, pushing, deploying, dispatching or changing GCP
+  resources. Perform only separately authorized actions and report actual outcomes, including blocked pushes.
+  Follow HDC's current commit/review instructions; the backend exact-file approval rule still applies.
 - Do not invoke or offer `handoff` at the end of HDC closeout. Use it only at the owner's request to pause or
   transfer unfinished work, preserving the current scratchpad and inputs.
