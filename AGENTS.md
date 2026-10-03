@@ -49,14 +49,14 @@ sample repo does not establish that the skill was tested natively in Gemini CLI.
 
 ## HDC/PDC/TDC project work
 
-Most of this repository is generic. When a task concerns the HDC/PDC/TDC modernization, first read the
-`▶ START HERE` block in
-`C:\Users\Mohamed\Downloads\HDC\HDC\documents\automation\Automation_Planning_Handoff.md`, then §0a in
-`C:\Users\Mohamed\Downloads\HDC\HDC\documents\HDC_Modernization_Development_Plan.md`.
+Most of this repository is generic. When a task concerns HDC/PDC/TDC modernization, first read the
+canonical sibling workspace's `../HDC/HDC-documents/README.md`, then
+`../HDC/HDC-documents/HDC_Modernization_Development_Plan.md` §0a. Locate the equivalent canonical
+checkout on another machine; do not use the old laptop's legacy documents mirror or assume its paths exist.
 
 Apply these project rules:
 
 - Do not add a file to the `cb379_hdc_pdc` backend repository until the owner approves the exact file list.
-- Port legacy logic verbatim. Raise design choices with the owner before implementing them.
+- Port legacy logic verbatim except for the canonical project's explicitly approved exceptions; raise other design choices before implementation.
 - Keep code movement and behavior fixes in separate changes.
-- Never deploy to ACP or production.
+- Do not deploy; the owner executes releases. Follow the canonical runbook's separate dev/ACP targets and current ACP timing. Prod remains out of scope until migration completion and its specific readiness checks.

@@ -8,8 +8,8 @@ HDC's canonical instructions are `HDC-documents/README.md`; its current state an
 
 - Follow HDC's scratchpad-first rule. During the work, record encounters, decisions and their owners, verified vs.
   unverified work, created or changed files, and open items in the current HDC session scratchpad.
-- If a session scratchpad must be created, use the `sessions/<Topic>_Session_Scratchpad.md` convention listed in
-  `HDC-documents/README.md`.
+- Use only `HDC-documents/current-session/scratchpad.md`, with session inputs adjacent in the fixed folder.
+  Read/reuse unfinished work across chat/model handoffs; do not create another dated scratchpad or archive.
 - At closeout, use that scratchpad as the source record. Add/reconcile its closeout details in place; **do not
   create a second closeout report**. Preserve the scratchpad's existing structure; add a concise citation-check
   result if it has no place to record one.
@@ -36,10 +36,12 @@ Read the target section before proposing a write-back. Do not refresh every proj
 - Present exact proposed text and target sections. Apply document-of-record changes only after the owner approves
   the exact write-backs. Re-run `check-citations.mjs` against the scratchpad and every changed document, with roots
   for the HDC docs and code repositories containing cited files. Any STALE citation blocks completion.
-- Remove the session scratchpad only after approved write-backs are reconciled and the citation check has no
-  STALE results. If approval or verification is pending, retain it and report that closeout is not finished.
+- Clear only the approved contents of `HDC-documents/current-session/`, including the scratchpad and inputs,
+  after the feature or agreed bounded non-feature task is complete, approved write-backs are reconciled and
+  verification/citation checks pass. Follow the canonical README's cleanup approval/inventory rule. If work,
+  approval or verification is pending, retain everything and report that closeout is not finished.
 - Do not push, deploy, run dispatch commands, or change GCP resources as part of closeout. Follow HDC's current
   commit/review instructions; do not infer authorization to commit from a request to close out. The backend
   exact-file approval rule still applies to any proposed code work.
-- Offer `handoff` only when there is one specific next task. It is optional and does not replace the scratchpad
-  closeout.
+- Do not invoke or offer `handoff` at the end of HDC closeout. Use it only at the owner's request to pause or
+  transfer unfinished work, preserving the current scratchpad and inputs.
