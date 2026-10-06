@@ -1,45 +1,25 @@
-# Writing guide — an LLD an architect can review
+﻿# Writing guide — concise design artifacts
 
-The reader is an architect who will review the design and give an opinion. They need to see **what the
-problem is, what was chosen, what else was possible, and why** — and be able to check every claim against the
-code.
+## Audience and timing
+- The **Functional Design** is for the customer: observable behavior, rules, flows and acceptance outcomes.
+- The **LLD** is for the Architect before implementation: the proposed boundaries and essential technical shape.
+- The **Technical Design** is for the Architect after implementation: the delivered shape and verified outcomes.
+- The plan is a separate execution artifact between approved LLD and implementation.
 
 ## Rules
-1. **Name what you touch.** Every design statement names the class, endpoint, table, component or file, in
-   backticks. "Add a filter interceptor on task-worker routes" is uncheckable; "Add `OfyTaskFilter` on
-   `/taskqueues/*` in `web.xml`" is checkable.
-2. **Context before design, with evidence.** Numbers, `file:line`, observed behaviour. If there's no
-   measurement, write `[NEEDS INPUT]` — never estimate one.
-3. **A decision needs a real alternative.** If nothing else was possible, it isn't a decision; put it in the
-   design sections. The current behaviour is a valid alternative ("keep doing X").
-4. **Why is tied to a constraint or a fact**, not to taste: a bottleneck, a requirement from the slides, a
-   project rule, a cost.
-5. **Every risk has a mitigation.** If there is none, say so in the open questions.
-6. **Verification is observable**: "Verified <behaviour> <outcome>", checkable by someone else.
-7. **Scale to the ticket.** Remove sections and subsections that don't apply; never write "N/A".
-8. **No vague wording**: "seamlessly", "robust", "cleanly", "leverage", "absolute", "etc." say nothing
-   checkable. Say what actually happens.
-9. **Never invent** measurements, reasons, test results, names of endpoints that don't exist yet, or the
-   customer's intent. Use `[NEEDS INPUT]` and ask.
+1. **Use only the Jira ticket ID** in deliverables. Internal/CB tracking IDs are not customer-facing identifiers.
+2. **Inputs are evidence, not citations.** Read supplied PDFs, slides, screenshots, CSS and source code as needed, but never name or cite those artifacts in the deliverables.
+3. **Keep source locators internal.** Verify claims against real source and retain evidence in working notes, but omit source-code file paths and line numbers from all three deliverables.
+4. **Be concise.** State the agreed or proposed behavior and only the component/API boundary needed for the design. Avoid long rationales, alternatives essays, source inventories, repeated scope, and speculative file-level detail.
+5. **Do not invent.** Missing requirements, approvals, API contracts, deviations, measurements, or test outcomes remain questions or are marked as not verified.
+6. **Functional Design has no Purpose/Scope duplicate, Status, or link to the LLD.** It is customer-facing and should not expose technical implementation.
+7. **LLD is forward design; Technical Design is as-built.** Do not present a proposal as implemented or a proposed test as a passed check.
+8. Use user-approved terms and decisions. Ask about consequential ambiguity instead of filling it with assumptions.
 
-## Forward vs retro
-- **Forward** (before the work): you are proposing a design. Decisions are recommendations; the status stays
-  `Draft` until the user approves. If the project's rules say design choices belong to the user (see its
-  `AGENTS.md`), present every decision as a proposal and ask, don't pick.
-- **Retro** (after the work): you are documenting what was built. *Chosen* comes from the code. *Alternatives*
-  and *Why* come only from the user, the ticket, the slides, commit messages or code comments; otherwise
-  `[NEEDS INPUT]`. Tests in the diff may be cited in section 7 as evidence ("Verified by `AuthGuardSpec`: …").
+## Forward vs. as-built
+- **Forward LLD:** draft after requirements are understood and before plan approval/implementation. It can name logical components and public API routes, but not source file locations.
+- **As-built Technical Design:** draft only after plan implementation. Compare actual behavior with the approved LLD/plan and state only verified outcomes; submit it for Architect review.
 
-## Citing sources
-Say where a fact comes from when it isn't the code: "(PO, slide 9)", "(ticket description)", "(comment in
-`auth.ts`)". An architect can then tell a customer requirement from a design choice.
-
-## Small vs normal
-- **Small** (one concern, one layer, no new endpoint, no data change): sections 1, 2, 4 and/or 5, 7, plus 3
-  only if a real choice was made.
-- **Normal**: everything, minus subsections that don't apply.
-
-## Example
-`example-lld.md` is the team's CADE-1421 entry (Projects list performance) rewritten into this template. It
-uses only facts from the original; everything the original didn't say is `[NEEDS INPUT]`, which is exactly what
-the skill must do too.
+## Verification
+- Run the LLD checker. Manually review Functional Design behavior against the approved Jira requirements and Technical Design claims against the implemented change.
+- A checker pass is not an Architect approval or an implementation/test result.

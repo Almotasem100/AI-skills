@@ -10,7 +10,7 @@ const REQUIRED = {
   normal: ['1', '2', '3', '6', '7', '8'],
   small: ['1', '2', '7'],
 };
-const HEADER = /^\[([A-Z][A-Z0-9]*-\d+|NEEDS INPUT)\]\[(Story|Bug|Enabler|Technical)\] \S.* · Internal ticket: #(\d{6,10}|\[NEEDS INPUT\])\s*$/;
+const HEADER = /^# LLD — [A-Z][A-Z0-9]*-\d+: .+\s*$/;
 // Wording that sounds precise but names nothing an architect can check.
 const VAGUE = /\b(seamless(ly)?|robust|absolute|cleanly|leverag(e|es|ing)|best[- ]in[- ]class|state[- ]of[- ]the[- ]art|etc\.?)(?![\w-])/gi;
 
@@ -47,7 +47,7 @@ function main() {
 
   const firstLine = md.split('\n').find(l => l.trim() !== '') || '';
   if (!HEADER.test(firstLine.trim())) {
-    errors.push('First line must be: [<JIRA-ID>][<Story|Bug|Enabler|Technical>] <Title> · Internal ticket: #<internal-id>');
+    errors.push('First line must be: # LLD — <JIRA-ID>: <Title>');
   }
   if (!/\*\*Release \/ Sprint:\*\*.*\*\*Tech designer:\*\*.*\*\*Status:\*\*/.test(md)) {
     errors.push('Missing the metadata line: **Release / Sprint:** … · **Tech designer:** … · **Status:** …');
@@ -74,9 +74,8 @@ function main() {
     const rows = tableRows(s['3'].body);
     if (!rows.length) errors.push('Section 3 has no decisions in its table.');
     rows.forEach((r, i) => {
-      if (r.length !== 4) return errors.push(`Decision row ${i + 1} must have 4 columns: Decision | Chosen | Alternatives considered | Why.`);
-      if (!r[3]) errors.push(`Decision row ${i + 1} ("${r[0]}") has no Why.`);
-      if (!r[2] || /^(none|-|—)$/i.test(r[2])) warnings.push(`Decision row ${i + 1} ("${r[0]}") lists no real alternative; if there was no choice, it is not a decision.`);
+      if (r.length !== 4) return errors.push(`Decision row ${i + 1} must have 4 columns: Area | Planned design | Alternative or deferred option | Key boundary.`);
+      if (!r[1]) errors.push(`Decision row ${i + 1} ("${r[0]}") has no planned design.`);
     });
   }
 
@@ -86,17 +85,10 @@ function main() {
     });
   }
 
-  for (const n of ['4', '5']) {
-    if (!s[n]) continue;
-    const bullets = s[n].body.split('\n').filter(l => /^\s*([-*]|\d+\.)\s+/.test(l));
-    const unnamed = bullets.filter(l => !/`[^`]+`/.test(l));
-    if (unnamed.length) warnings.push(`Section ${n}: ${unnamed.length} of ${bullets.length} bullets name no class, endpoint, table or file in backticks.`);
-  }
-
   if (s['7']) {
     const lines = s['7'].body.split('\n').filter(l => /^\s*([-*]|\d+\.)\s+/.test(l));
-    const loose = lines.filter(l => !/^\s*([-*]|\d+\.)\s+(Verified\b|\[NEEDS INPUT\])/.test(l));
-    if (loose.length) warnings.push(`Section 7: ${loose.length} line(s) are not phrased as "Verified <behaviour> <outcome>".`);
+    const loose = lines.filter(l => !/^\s*([-*]|\d+\.)\s+(Verify\b|Verified\b|\[NEEDS INPUT\])/.test(l));
+    if (loose.length) warnings.push(`Section 7: ${loose.length} line(s) are not phrased as a verification check ("Verify …").`);
   }
 
   const vague = [...new Set([...md.matchAll(VAGUE)].map(m => m[0].toLowerCase()))];

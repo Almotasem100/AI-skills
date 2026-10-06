@@ -1,0 +1,1602 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index c18f60cfd8046ba5eb9f52b5cd9e6f0db76d4fdd..df6cc8083bf0c7626260032e5f63b5dfe5761e84 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -2,14 +2,13 @@
+ 
+ This repo is a [Skills CLI](https://github.com/vercel-labs/skills) package of **delegation skills** —
+ skills that let an orchestrating agent drive a separate CLI coding agent as an implementer, then review
+-and land the result. Seventeen implementer skills ship today: `claude-delegate` (Claude Code),
++and land the result. Eighteen implementer skills ship today: `claude-delegate` (Claude Code),
+ `cline-delegate` (Cline CLI), `codex-delegate` (OpenAI Codex), `opencode-delegate` (OpenCode),
+ `agy-delegate` (Google Antigravity), `grok-delegate` (Grok Build), `kimi-delegate` (Kimi Code),
+ `qoder-delegate` (Qoder CLI), `vibe-delegate` (Mistral Vibe), `cursor-delegate` (Cursor Agent CLI),
+ `pi-delegate` (Pi CLI), `omp-delegate` (Oh My Pi), `aider-delegate` (Aider), `copilot-delegate` (GitHub Copilot CLI),
+-`warp-delegate` (Warp Agent CLI), `zcode-delegate` (Z.AI ZCode), and `commandcode-delegate` (Command Code); siblings like
+-`gemini-delegate` can be added
+-later without renaming the repo. One **utility** skill
++`warp-delegate` (Warp Agent CLI), `zcode-delegate` (Z.AI ZCode), `commandcode-delegate` (Command Code),
++and `gemini-delegate` (Gemini CLI). One **utility** skill
+ ships alongside them: `delegate-setup` (configure fleet lanes — setup only, never dispatches).
+ 
+ ## Vocabulary
+@@ -21,7 +20,7 @@ jargon. Use these terms; don't invent synonyms.
+ | --- | --- | --- |
+ | **delegate** / **delegation** | the activity, and this skill family | "relay" (as the activity), "hand-off", "offload" |
+ | **orchestrator** | the driving agent (Claude Code, …) | "controller", "driver" |
+-| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code) | "worker", "sub-agent", "executor" |
++| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code, Gemini) | "worker", "sub-agent", "executor" |
+ | **brief** | the self-contained task spec sent to the implementer | "task file", "the prompt", "the spec" |
+ | **gates** | the project's test/lint/build commands | "checks", "CI" |
+ | **dispatch** | sending the brief to the implementer | "fire off", "kick off" |
+@@ -31,6 +30,7 @@ jargon. Use these terms; don't invent synonyms.
+ | **fleet** | the user's set of lanes (which CLI handles which kind of work) | — |
+ | **setup skill** / `delegate-setup` | utility that discovers CLIs and writes the lane map after approval | a `*-delegate` skill |
+ | `exec`, `sandbox`, `resume`, `session` | Codex's own terms — use verbatim | don't paraphrase them |
++| `--prompt`, `--model`, `--approval-mode` (`default`/`auto_edit`/`yolo`/`plan`), `--output-format stream-json`, `--resume`, `--list-sessions`, `session` | Gemini CLI's own terms — use verbatim | don't call approval modes a sandbox; don't imply `plan` is an enforced read-only boundary (settings can downgrade it); no required model pin |
+ | `-p` / `--print`, `--yolo` (`--dangerously-skip-permissions`), `--permission-mode` (`standard`/`plan`/`auto-accept`), `--tools-all`, `--resume`, `--continue`, `--effort`, `--max-turns` | Command Code's own terms — use verbatim when discussing `cmd` | never say Command Code has a sandbox, or a write-capable mode between withheld-tools and `--yolo`: `--permission-mode auto-accept` and `--tools-all` do not enable edits headlessly. Never call the binary "the cmd shell" |
+ | `run`, `agent` (`build`/`plan`), `session` | OpenCode's own terms — use verbatim | "sandbox" (OpenCode has no sandbox enum; autonomy is the agent) |
+ | `project`, `conversation`, `model`, `permissions`, `sandbox`, `TUI`, `tasks`, `subagents` | Antigravity's own terms — use verbatim when discussing `agy` | don't use `subagents` as a generic synonym for implementer |
+@@ -55,7 +55,7 @@ version a run was made against is what makes the claim checkable; and claims tha
+ ("verified" without a run → hedge or cut). Every
+ CLI flag, field, and command in the docs must match the installed implementer CLI (`claude` /
+ `cline` / `codex` / `opencode` / `agy` / `grok` / `kimi` / `qodercli` / `vibe` / `cursor-agent` / `pi` /
+-`aider` / `copilot` / `oz` / `omp` / `zcode` / `cmd`) and the skill's `relay.mjs`.
++`aider` / `copilot` / `oz` / `omp` / `zcode` / `cmd` / `gemini`) and the skill's `relay.mjs`.
+ 
+ ## Conventions
+ 
+@@ -90,9 +90,9 @@ CLI flag, field, and command in the docs must match the installed implementer CL
+ - Smoke-test any changed script directly (e.g. `node skills/<skill>/scripts/relay.mjs --help`, and a
+   no-write or read-only run against a throwaway repo) before relying on it.
+ - If you touch how a `relay.mjs` launches its implementer CLI, smoke-test on Windows too (native
+-  PowerShell/cmd, not just Git Bash/WSL): the `codex`, `opencode`, `grok`, `pi`, `cline`, `copilot`, and `commandcode` launches
++  PowerShell/cmd, not just Git Bash/WSL): the `codex`, `opencode`, `grok`, `pi`, `cline`, `copilot`, `commandcode`, and `gemini` launches
+   need `shell:true` on win32 to resolve the `.cmd` shim. Cline streams its brief on stdin and uses the
+-  child process cwd; Command Code also streams its brief on stdin. The other launches quote spaceable
++  child process cwd; Command Code and Gemini also stream their briefs on stdin. The other launches quote spaceable
+   args, and all value flags are token-validated.
+   The `claude` and `cursor-agent` launches serialize a pre-joined
+   command string through the shell on win32 for the same shim reason; `agy`, `kimi`, current
+diff --git a/README.md b/README.md
+index 4ea9645403563c0b290c34f5b2e2e6d3b378eaf7..7ddcd7a6e243e972abe4816db90ea7f2309bb2f2 100644
+--- a/README.md
++++ b/README.md
+@@ -71,6 +71,7 @@ Skip setup when you want one implementer or one-off dials. Pick the skill for a
+ | [`codex-delegate`](skills/codex-delegate/SKILL.md) | [OpenAI Codex](https://github.com/openai/codex) (`codex`) | `--sandbox workspace-write` | `--read-only` | `--resume-last`, `--session <id>` |
+ | [`commandcode-delegate`](skills/commandcode-delegate/SKILL.md) | [Command Code](https://commandcode.ai/docs/headless) (`cmd`; `cmdc` on Windows) | `--yolo` — the only headless write state; no sandbox [^commandcode] | `--read-only` (withheld tools + `plan`) | `--continue-last`, `--session <id>` |
+ | [`cursor-delegate`](skills/cursor-delegate/SKILL.md) | [Cursor Agent](https://cursor.com/cli) (`cursor-agent`) | `--force`; `--no-force` withholds command approval | `--read-only` (plan mode) | `--resume-last`, `--session <id>` |
++| [`gemini-delegate`](skills/gemini-delegate/SKILL.md) | [Gemini CLI](https://geminicli.com) (`gemini`) | `--approval-mode auto_edit` (edit tools, not all shell actions); `yolo` opt-in | No enforced read-only promise; `--approval-mode plan` can be downgraded by CLI settings | `--resume <index>`, `--resume-last` |
+ | [`grok-delegate`](skills/grok-delegate/SKILL.md) | Grok Build (`grok`) | workspace-scoped; `--full-access` opt-in | `--read-only` — best-effort [^grok] | `--resume-last`, `--session <id>` |
+ | [`kimi-delegate`](skills/kimi-delegate/SKILL.md) | [Kimi Code](https://moonshotai.github.io/kimi-code/en/) (`kimi`) | `auto permission mode`, always | — [^none] | `--resume-last`, `--session <id>` |
+ | [`opencode-delegate`](skills/opencode-delegate/SKILL.md) | [OpenCode](https://opencode.ai) (`opencode`) | agent `build` (`--model` required) | `--read-only` (agent `plan`) | `--resume-last`, `--session <id>` |
+@@ -372,6 +373,13 @@ Per skill — platform, CLI version, and what the run exercised:
+   project overlay, global write without creating `.delegate/`, and `--lane` resolve / wrong-skill /
+   flag-override against relays. The smoke suite runs live discovery against installed CLIs
+   (versions vary by machine). Native Windows discover smoke not yet claimed.
++- `gemini-delegate` — native Windows, `gemini` 0.62.0: offline `--help`/`--version`
++  inspected; stream fields and plan-mode fallback grounded in installed CLI source.
++  Fake-CLI contract tests cover npm `.cmd` stdin transport, optional model/default,
++  approval modes, resume selectors, result/error parsing, Git state reporting,
++  missing binary, bounded preflight, and the shared timeout matrix. No live model
++  dispatch, headless write approval, or enforced read-only behavior is claimed;
++  POSIX launch/abort remains unverified locally. Gemini discovery only probes version.
+ 
+ Not yet verified: native Windows launches for `claude`, exact-head `cline`, `grok`, `kimi`,
+ `pi`, `qoder`, `vibe`, and `omp` (`codex`/`opencode`/`grok`/`commandcode` have contract-tested `.cmd` shim handling;
+diff --git a/skills.sh.json b/skills.sh.json
+index a5e737a0e87256128d732e7766414ae36b5973ee..f663121ba34623282a16534ba107ebeea40e6fad 100644
+--- a/skills.sh.json
++++ b/skills.sh.json
+@@ -15,6 +15,7 @@
+         "qoder-delegate",
+         "vibe-delegate",
+         "cursor-delegate",
++        "gemini-delegate",
+         "pi-delegate",
+         "omp-delegate",
+         "aider-delegate",
+diff --git a/skills/delegate-setup/references/schema.md b/skills/delegate-setup/references/schema.md
+index caf66c5d2a0a43cc55f22b62f1603800195621c3..5a05437929faf3f21e89e2952c96e7a748265af3 100644
+--- a/skills/delegate-setup/references/schema.md
++++ b/skills/delegate-setup/references/schema.md
+@@ -52,6 +52,7 @@ later-edited project config fails closed until it is reviewed and written again
+ | `commandcode` | commandcode-delegate | `cmd` | model, effort, timeout, readOnly |
+ | `opencode` | opencode-delegate | `opencode` | model, **variant**, timeout, readOnly |
+ | `agy` | agy-delegate | `agy` | model, effort, timeout, readOnly |
++| `gemini` | gemini-delegate | `gemini` | model, permissionMode (`--approval-mode`), timeout |
+ | `grok` | grok-delegate | `grok` | model, effort, sandbox, timeout, readOnly |
+ | `kimi` | kimi-delegate | `kimi` | model, timeout |
+ | `qoder` | qoder-delegate | `qodercli` | model, permissionMode, timeout, readOnly |
+@@ -70,6 +71,13 @@ write tool and exit 0 having changed nothing. ZCode has no `--model` flag — th
+ the CLI's own config file — so `model` is not a dial for `zcode` lanes. ZCode also ships its CLI
+ inside the desktop app rather than on PATH, so discovery falls back to the installed app bundle.
+ 
++Gemini carries `--approval-mode` as `permissionMode`: `default`, `auto_edit`, `yolo`, or
++`plan`. Omit it for the relay default `auto_edit` (auto-approve edit tools, not all shell
++actions); `yolo` is all-tool approval. `readOnly` and `sandbox` are not supported lane
++dials: CLI settings can downgrade `plan`, so the relay does not promise read-only enforcement.
++Omit `model` to preserve Gemini Auto/default; an explicit model remains optional.
++Discovery only probes `gemini --version`; auth, models, and usage remain unknown.
++
+ OpenCode uses `variant` for reasoning intensity, not `effort`. Do not write `effort` on an `opencode` lane.
+ Oh My Pi (`omp`) uses the lane `effort` dial for omp's `--thinking` (`off`, `auto`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`). Do not write `thinking` as a lane field.
+ OpenCode lanes **require** `model` in `provider/model` form, with a non-empty provider before the first
+@@ -80,7 +88,7 @@ Boolean dials: `readOnly`, `force`. All other dials are non-empty strings. Durat
+ `timeout` use `h`/`m`/`s` (e.g. `30m`) and must fit the relay watchdog ceiling (~24.8 days).
+ Do not combine `readOnly: true` with a write-capable `sandbox` / `permissionMode` / `force`.
+ `model` / `provider` / OpenCode `variant` must match the bound relay’s token rules (e.g. Claude
+-rejects spaces; Grok/Pi/Oh My Pi/OpenCode/Codex/Command Code use a shell-safe token set — Windows `shell:true`
++rejects spaces; Gemini/Grok/Pi/Oh My Pi/OpenCode/Codex/Command Code use a shell-safe token set — Windows `shell:true`
+ launches, and Oh My Pi's flag-injection defense even without a shell).
+ 
+ ## Helpers
+diff --git a/skills/delegate-setup/scripts/config.mjs b/skills/delegate-setup/scripts/config.mjs
+index 7d36cdd4fe5cacff34347572e027fbce7316e4f0..6d6a17c751ffaea775a44a5027fc4261804fff21 100644
+--- a/skills/delegate-setup/scripts/config.mjs
++++ b/skills/delegate-setup/scripts/config.mjs
+@@ -35,6 +35,7 @@ import {
+   CODEX_SANDBOX,
+   CONFIG_VERSION,
+   GROK_SANDBOX,
++  GEMINI_APPROVAL,
+   IMPLEMENTER_BY_KEY,
+   LANE_NAME,
+   MODEL_TOKEN,
+@@ -251,6 +252,9 @@ function validateDialValue(implementer, field, value, laneName, label) {
+   if (field === "permissionMode" && implementer === "qoder" && !QODER_PERMISSION.includes(value)) {
+     return `${label}: lane ${laneName}.permissionMode must be one of: ${QODER_PERMISSION.join(", ")}`;
+   }
++  if (field === "permissionMode" && implementer === "gemini" && !GEMINI_APPROVAL.includes(value)) {
++    return `${label}: lane ${laneName}.permissionMode must be one of: ${GEMINI_APPROVAL.join(", ")}`;
++  }
+   // ZCode carries --mode here. build/edit are excluded on purpose: headless runs
+   // have no permission client, so they change nothing and still exit 0.
+   if (field === "permissionMode" && implementer === "zcode" && !ZCODE_MODE.includes(value)) {
+diff --git a/skills/delegate-setup/scripts/implementers.mjs b/skills/delegate-setup/scripts/implementers.mjs
+index f0630f07f162c58e7a5cb8c5ad77f803f1786bec..e1021118d7eacba94e392c14100b596a7bac3304 100644
+--- a/skills/delegate-setup/scripts/implementers.mjs
++++ b/skills/delegate-setup/scripts/implementers.mjs
+@@ -45,6 +45,20 @@
+  * }[]}
+  */
+ export const IMPLEMENTERS = Object.freeze([
++  {
++    key: "gemini",
++    skill: "gemini-delegate",
++    binary: "gemini",
++    versionArgs: ["--version"],
++    // Only the offline version probe is verified. Do not launch a prompt to
++    // infer auth or models, or open settings/session files to guess either.
++    authProbe: null,
++    modelProbe: null,
++    usageProbe: null,
++    // permissionMode carries --approval-mode; plan is not a readOnly promise.
++    supports: ["model", "permissionMode", "timeout"],
++    winShell: true,
++  },
+   {
+     key: "claude",
+     skill: "claude-delegate",
+@@ -396,6 +410,7 @@ export const COPILOT_EFFORT = Object.freeze(["low", "medium", "high", "xhigh", "
+ export const OMP_THINKING = Object.freeze(["off", "auto", "minimal", "low", "medium", "high", "xhigh", "max"]);
+ export const CODEX_SANDBOX = Object.freeze(["read-only", "workspace-write", "danger-full-access"]);
+ export const GROK_SANDBOX = Object.freeze(["workspace", "read-only", "off"]);
++export const GEMINI_APPROVAL = Object.freeze(["default", "auto_edit", "yolo", "plan"]);
+ export const QODER_PERMISSION = Object.freeze([
+   "default",
+   "accept_edits",
+@@ -423,7 +438,7 @@ export const MODEL_TOKEN = Object.freeze({
+   claude: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]-]*$/,
+   /** Keep in lockstep with cursor-delegate SAFE_MODEL. */
+   cursor: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]\,=-]*$/,
+-  /** Keep in lockstep with grok/pi/codex/commandcode shell-safe tokens. */
++  /** Keep in lockstep with gemini/grok/pi/codex/commandcode shell-safe tokens. */
+   shellSafe: /^[A-Za-z0-9][A-Za-z0-9._:\/-]*$/,
+   /** Keep in lockstep with opencode-delegate MODEL_TOKEN: adds # for provider/model#variant (opencode 2.x). */
+   opencode: /^[A-Za-z0-9][A-Za-z0-9._:\/#-]*$/,
+diff --git a/skills/delegate-setup/scripts/lane.mjs b/skills/delegate-setup/scripts/lane.mjs
+index c44c890c0872d988d24a12a4a342bd2c50b03eae..34364485c149694a5c8995de766b6cdba4d71cc5 100644
+--- a/skills/delegate-setup/scripts/lane.mjs
++++ b/skills/delegate-setup/scripts/lane.mjs
+@@ -77,6 +77,10 @@ export function resolveLaneForRelay(cwd, laneName, implementerKey) {
+ 
+ function normalizeDials(implementerKey, raw) {
+   const dials = { ...raw };
++  if (implementerKey === "gemini" && typeof dials.permissionMode === "string") {
++    dials.approvalMode = dials.permissionMode;
++    delete dials.permissionMode;
++  }
+   if (implementerKey === "grok") {
+     if (typeof dials.sandbox === "string") {
+       const map = {
+diff --git a/skills/gemini-delegate/SKILL.md b/skills/gemini-delegate/SKILL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f2e86e4586112f42bebfe1c02f2d7c5ca72751ea
+--- /dev/null
++++ b/skills/gemini-delegate/SKILL.md
+@@ -0,0 +1,90 @@
++---
++name: gemini-delegate
++description: >-
++  Delegate a coding task to Gemini CLI (`gemini`) as a background implementer, then
++  review its diff and land it yourself. Use when the user wants to delegate implementation
++  work to Gemini - "have Gemini implement X", "delegate this to gemini", "run it through
++  Gemini", or "use Gemini to implement/fix/refactor" - or run a queue of coding tasks
++  through Gemini while staying the reviewer. DO NOT USE for tasks small enough to do
++  inline, or when the user wants code written directly without delegating.
++license: MIT
++compatibility: Requires Gemini CLI (`gemini`) installed and authenticated through its interactive `gemini` sign-in or its configured provider, Node 18+, and git. The orchestrator must run shell commands and read files.
++metadata:
++  version: 0.5.0
++---
++
++# Gemini Delegate
++
++You are the **orchestrator**. Send a bounded, self-contained **brief** to Gemini CLI as
++a separate **implementer**, review its working-tree diff, run the project's **gates**,
++then **land** the work yourself. The relay never commits.
++
++## Prerequisites
++
++- Have `gemini` installed on PATH and authenticate through interactive `gemini` or
++  the CLI's configured provider. The relay inherits that configuration; it does not
++  read or write credentials.
++- Confirm `gemini --version` and inspect `gemini --help` for the documented flags.
++- Use a clean target git repository or isolated worktree. Brief scope is guidance,
++  not containment; do not delegate irreversible or sensitive operations without approval.
++
++## Model selection (optional)
++
++Omit `--model` to preserve the CLI's own Auto/default behavior. An explicit
++`--model <id>` or saved lane model is optional; no model pin is required. Use a
++model identifier your CLI supports, not a guessed catalog. Tokens accept letters,
++digits, and `. _ : / -` because argv reaches an npm `.cmd` shim on Windows.
++
++## The loop
++
++1. **Write a brief** with the goal, allowed scope, exclusions, real gates, and a
++   closing report contract. Gemini cannot see the orchestrator's chat history.
++   Read [writing-the-brief.md](references/writing-the-brief.md).
++2. **Dispatch** using the bundled relay, preferably with the orchestrator's
++   background-command facility:
++
++   ```bash
++   node "<skill-dir>/scripts/relay.mjs" --brief brief.txt --cd /path/to/repo
++   # saved lane:          add --lane feature
++   # optional model:      add --model <id>
++   # planning request:    add --approval-mode plan (not a read-only guarantee)
++   # all-tool approval:   add --approval-mode yolo (explicit full trust)
++   # resume:              add --resume <index> or --resume-last, with a delta brief
++   # longer watchdog:     add --timeout 2h (default: 30m)
++   ```
++
++   `<skill-dir>` contains this skill's `SKILL.md`. The child cwd sets the workspace;
++   the brief stays on stdin behind a fixed headless `--prompt`. Native Windows
++   launches the npm `.cmd` shim with `shell:true`, keeping brief and paths out of argv.
++3. **Wait** for the relay to exit and read its atomic `result.json`, not progress text.
++   See [dispatch-and-poll.md](references/dispatch-and-poll.md) for the result contract.
++4. **Review** the diff against the brief and independently re-run the gates. A
++   success event is not proof of a correct implementation. See
++   [review-and-land.md](references/review-and-land.md).
++5. **Land** only verified work, when authorized. Otherwise resume with a narrow
++   correction brief and review again. For queues, read
++   [multi-task-queues.md](references/multi-task-queues.md).
++
++## Approval modes and limits
++
++The relay defaults to `--approval-mode auto_edit`, which auto-approves edit tools,
++not all shell actions. `default` prompts for approvals; approval-required actions
++may be unavailable in a headless run. `yolo` auto-approves all tools and must be
++explicitly selected or present in an approved lane. No mode is an OS sandbox.
++
++Gemini calls `plan` read-only in its help, but CLI settings can disable plan and
++downgrade it to `default`. The relay therefore exposes the exact `--approval-mode`
++without a `--read-only` alias or `readOnly` lane dial. It does not configure sandbox,
++policy, extensions, hooks, MCP, or workspace trust bypasses. Inherited CLI settings
++and project instructions still apply. Do not use this skill when an enforced
++read-only boundary is required; use OS-enforced isolation instead.
++
++Saved Gemini lanes support `model`, `permissionMode` (mapped to `--approval-mode`),
++and `timeout`. Explicit flags win. Discovery probes only `gemini --version`;
++authentication, model catalog, and usage remain unknown rather than guessed.
++
++## Verification
++
++Contract-tested with a fake CLI; no live model dispatch is recorded. Offline CLI
++help/version and installed-source inspection ground the launch and stream fields.
++Neither headless write approval nor plan-mode containment has been live-tested.
+diff --git a/skills/gemini-delegate/references/dispatch-and-poll.md b/skills/gemini-delegate/references/dispatch-and-poll.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..701fc7d30aa6611b2332825924044df7ae3027d9
+--- /dev/null
++++ b/skills/gemini-delegate/references/dispatch-and-poll.md
+@@ -0,0 +1,95 @@
++# Dispatch and poll
++
++```bash
++node "<skill-dir>/scripts/relay.mjs" --brief brief.txt --cd /path/to/repo
++```
++
++## Flags and launch
++
++| Relay flag | Effect |
++| --- | --- |
++| `--brief <file>` | Read the brief from a file; omitted means relay stdin. |
++| `--cd <dir>` | Child cwd; default current directory. |
++| `--lane <name>` | Resolve an approved fleet lane for `gemini`; explicit dials win. |
++| `--model <id>` | Optional explicit model. Omit to keep Gemini Auto/default. Shell-safe token. |
++| `--approval-mode <mode>` | `default`, `auto_edit`, `yolo`, `plan`; default `auto_edit`. |
++| `--resume <selector>` | `latest` or a positive index from `gemini --list-sessions` in the target project. |
++| `--resume-last` | Alias for `--resume latest`; conflicts with `--resume`. |
++| `--timeout <dur>` | Relay watchdog, default `30m`; positive h/m/s duration up to ~24.8 days. |
++| `--out-dir <dir>` | Run artifacts; default a fresh system-temp directory. |
++| `-h`, `--help` | Relay help; no dispatch. |
++
++The launch is equivalent to this command **in the target directory**:
++
++```bash
++gemini --output-format stream-json --approval-mode auto_edit \
++  --prompt "Follow the task instructions provided on stdin." < brief.txt
++# optional: --model <id>, --resume <selector>, or a different --approval-mode
++```
++
++The prompt is appended to stdin by Gemini. Native Windows resolves `gemini.cmd`
++through `shell:true`; the fixed prompt is quoted and dynamic argv is token-validated.
++The brief and cwd never reach shell argv. No trust/sandbox/policy flags are added.
++`auto_edit` does not grant every shell action; `yolo` grants all-tool approval, not
++workspace containment. Plan can be downgraded by settings and is not enforced as
++read-only by this relay. Approval mode in the result is the **requested** mode.
++
++Resume selectors are intentionally limited to the help-documented latest/index
++forms. `sessionId` is captured for diagnostics, not accepted as a relay resume flag.
++Gemini may start a new session when `latest` finds none; `resumed` records the
++request, not proof that earlier context was loaded.
++
++## Result contract and artifacts
++
++Artifacts: exact `brief.txt`, raw stdout `events.jsonl`, complete `stderr.txt`,
++`final.txt` when assistant text exists, and atomic `result.json`. Reusing an
++`--out-dir` clears old final/result files and truncates event/stderr logs. Keep
++artifacts outside the worktree if they should not appear in `touchedFiles`.
++
++`result.json` speaks `delegate-relay.result.v1`:
++
++- `schema`, `tool: "gemini"`, `status` (`completed`, `failed`, `timeout`, `aborted`,
++  `gemini_unavailable`), `exitCode`, nullable `signal`.
++- `workdir`, nullable requested `model`, requested `approvalMode`, nullable
++  `resume`, request boolean `resumed`, nullable `lane` and `laneSource`.
++- `geminiVersion`, `startedAt`, `finishedAt`, artifact paths `briefPath`,
++  `eventsPath`, `stderrPath`, and nullable `finalPath`.
++- Nullable `sessionId` and `initialModel` from the `init` event's `session_id`
++  and `model`. The initial model may be an Auto alias, not the final routed model.
++- Nullable `resultStatus` and `stats` from the `result` event. Stats are retained
++  as Gemini emits them, not synthesized as billing or a model catalog.
++- `finalMessage`: joined assistant `message.content` text, including streamed
++  deltas. It can include intermediate narration; user/tool text is excluded.
++- `touchedFiles`: final `git status --porcelain` lines under `--cd`. `[]` means
++  clean, `null` means Git could not report. Pre-existing dirt is included; this
++  is not attribution, and cannot show ignored files, reverted edits, or writes
++  outside the repository.
++- `error` on failure; `stderrTail` holds up to 20 non-empty lines of the retained
++  stderr suffix. Complete diagnostics remain in `stderr.txt` and `events.jsonl`.
++
++Completion requires child exit 0 and a `result.status: "success"`, with no
++error-severity stream event. Missing/malformed result, error result, error-severity
++event, or non-zero exit fails. Warning events and recovered tool errors are not
++alone fatal; review the event log and diff for unmet requirements.
++
++## Waiting and failures
++
++Run in the orchestrator's background-command facility and wait for the process
++to finish. Poll `result.json` if needed; it is published by an atomic rename.
++
++- Usage errors exit **2**, before creating artifacts or a result.
++- Missing `gemini` exits **127** with `gemini_unavailable` and nullable final path.
++- A bounded `--version` preflight (10s cap, limited by `--timeout`) runs before
++  dispatch. Failed version exits preserve a non-zero CLI code; a hung preflight
++  reports `timeout`/124 and says dispatch did not start.
++- A failed dispatch preserves non-zero child exits; a zero exit with a failed
++  stream maps to 1. Signal exits map to 128 plus the signal number.
++- Watchdog timeouts kill the whole process tree (POSIX process group with a 10s
++  escalation, native Windows `taskkill /t /f`) and cannot report completed even
++  if the child exits 0 during shutdown. Inspect partial edits before retrying.
++- Catchable relay signals write `aborted` and forward termination; the final Git
++  snapshot is refreshed after the shutdown grace. Native Windows hard kills
++  are uncatchable and may leave no result: inspect the tree and logs directly.
++
++No live Gemini dispatch is recorded. Contract tests cover the transport and event
++contract, not model correctness, trust/approval policy, or enforced read-only behavior.
+diff --git a/skills/gemini-delegate/references/multi-task-queues.md b/skills/gemini-delegate/references/multi-task-queues.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7c4807faf451cf3e046db537f8395ec263780737
+--- /dev/null
++++ b/skills/gemini-delegate/references/multi-task-queues.md
+@@ -0,0 +1,30 @@
++# Multi-task queues
++
++Run sequentially in a shared working tree. One task, one brief, one artifact
++directory, one independently verified diff. Do not dispatch overlapping writers.
++
++Track task status, run directory, session id (when emitted), changes, gate outcomes,
++and blockers. Use `--lane` only with the matching Gemini skill; deliberate explicit
++model/approval flags override saved lane dials.
++
++For each task:
++
++1. Record the current tree and prepare a self-contained brief with scope,
++   exclusions, real gates, no-commit/no-push instructions, and report contract.
++2. Dispatch in the correct `--cd`, wait, read the result, and inspect the diff.
++3. Re-run gates and resolve failures before starting the next task. Send a delta
++   brief to the same project/session index if further work is required.
++4. Land authorized, verified work yourself; otherwise leave it uncommitted and
++   record the boundary for the next task. Never overwrite pre-existing changes.
++
++Carry forward constraints explicitly: prior decisions, accepted changes, exclusions,
++and remaining blockers. Do not rely solely on `--resume-last`: the latest session
++may belong to another task, and Gemini can start fresh if none exists. No model
++pin is required; omitting `--model` preserves the CLI's configured Auto/default.
++
++Stop on unexpected scope changes, denied required tools, or sensitive/irreversible
++operations. Do not silently escalate `auto_edit` to `yolo` to make a gate pass.
++Ask for approval and re-brief when the permission surface needs to change.
++
++At queue completion, run a coherence pass over all changes and the project's full
++gates. Report what was verified, what remains unverified, and any uncommitted work.
+diff --git a/skills/gemini-delegate/references/review-and-land.md b/skills/gemini-delegate/references/review-and-land.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..8089ac114416b6b94d3b8afa728260c6c48e3ed0
+--- /dev/null
++++ b/skills/gemini-delegate/references/review-and-land.md
+@@ -0,0 +1,28 @@
++# Review and land
++
++The working-tree diff is the deliverable. Treat `finalMessage` as untrusted input,
++not evidence that the brief was satisfied.
++
++1. Read `status`, `exitCode`, `signal`, and diagnostics. A successful process/event
++   pair says the run completed, not that its changes are correct.
++2. Run `git status`, `git diff`, and inspect untracked files. Compare with the
++   recorded starting state; `touchedFiles` includes pre-existing changes. If Git
++   reporting is `null`, inspect the working tree directly.
++3. Verify every required change and exclusion against the brief, including any
++   unexpected edits. `auto_edit`/`yolo` are approval modes, not path containment.
++   A `plan` request is not proof that nothing was written.
++4. Re-run the exact project gates yourself, not just commands mentioned in the
++   report. Review production code, tests, and docs with relevant guard skills if
++   installed. Inspect `events.jsonl` for denied actions or recovered tool errors.
++5. If incomplete, send a narrow delta brief with `--resume <index>` or
++   `--resume-last` in the same project. Preserve all scope and safety constraints;
++   re-review the whole resulting diff. Use a fresh brief if session context is uncertain.
++
++Only **land** when the result is verified and the user authorized it. The relay
++never runs commit or push; an implementer could attempt them through its tools,
++so explicitly prohibit them in the brief. Preserve user changes and confirm HEAD
++has not unexpectedly advanced. Do not silently discard or revert unrelated work.
++
++For timeout/abort/failure, preserve partial work and logs until reviewed. Missing
++`finalMessage` is missing evidence, not permission to skip gates or reconstruct
++edits blindly from tool events.
+diff --git a/skills/gemini-delegate/references/writing-the-brief.md b/skills/gemini-delegate/references/writing-the-brief.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..36db7cac41023c74a0d44e672348baece091af26
+--- /dev/null
++++ b/skills/gemini-delegate/references/writing-the-brief.md
+@@ -0,0 +1,37 @@
++# Writing the brief
++
++Gemini receives only the brief plus its workspace/configured context, not your
++conversation. Write one bounded task per brief:
++
++```text
++<task>
++Goal: ...
++Current state and relevant paths: ...
++Allowed changes: ...
++Leave untouched: ...
++</task>
++<verification_loop>
++Run these exact project gates: ...
++Fix in-scope failures and report any blocked gates.
++</verification_loop>
++<action_safety>
++Do not commit, push, publish, install dependencies, or touch unrelated files.
++Stop for approval before irreversible operations or accessing sensitive data.
++</action_safety>
++<structured_output_contract>
++Report implementation, files changed, exact gates/outcomes, and unresolved limits.
++</structured_output_contract>
++```
++
++Use real paths and commands grounded in the repository. Keep secrets out of the
++brief and artifacts. The relay stores `brief.txt` and streams it on stdin with a
++fixed `--prompt`; the user text never reaches the Windows shell argv. Gemini may
++interpret its own prompt syntax (including file references), so review the brief.
++
++List path scope as instructions, never as a sandbox boundary. Start from a clean
++tree; otherwise record pre-existing changes before dispatch. Request an end report
++but rely on the diff and your own gate runs, not the implementer's claims.
++
++On resume, send a **delta brief**: what failed review, exact corrections, retained
++constraints, and the gates to rerun. Use the same `--cd`; Gemini sessions are
++project-scoped. Re-pass approval and model choices deliberately on each dispatch.
+diff --git a/skills/gemini-delegate/scripts/relay.mjs b/skills/gemini-delegate/scripts/relay.mjs
+new file mode 100644
+index 0000000..40744bc90e3f0f4a00e9bf7fed2e3ba4dfd9aa69
+--- /dev/null
++++ b/skills/gemini-delegate/scripts/relay.mjs
+@@ -0,0 +1,562 @@
++#!/usr/bin/env node
++/**
++ * delegate-skills · gemini-delegate · relay.mjs
++ *
++ * Dispatch a brief to Gemini CLI in headless stream-json mode. Node built-ins
++ * only; no network calls of its own, credentials, telemetry, or commits.
++ * Launches gemini and git, where.exe/taskkill on Windows, and node for --lane.
++ * Gemini authenticates and uses its own services as configured by the user.
++ *
++ * Usage:
++ *   node relay.mjs --brief <file> [options]
++ *   cat brief.txt | node relay.mjs [options]
++ *
++ * Options:
++ *   --brief <file>          Brief path; omitted means stdin.
++ *   --cd <dir>              Child working directory (default: current directory).
++ *   --lane <name>           Saved fleet lane; explicit dial flags win.
++ *   --model <id>            Optional model; omitted preserves CLI Auto/default.
++ *                           Letters, digits, and . _ : / - only.
++ *   --approval-mode <mode>  default | auto_edit | yolo | plan (default: auto_edit).
++ *   --resume <selector>     latest or positive session index from --list-sessions.
++ *   --resume-last           Alias for --resume latest; send a delta brief.
++ *   --timeout <dur>         Relay watchdog (default: 30m; h/m/s strings).
++ *   --out-dir <dir>         Artifacts (default: fresh directory in system temp).
++ *   -h, --help              Show this help.
++ *
++ * auto_edit auto-approves edit tools, not all shell actions. default may require
++ * approvals unavailable headlessly; yolo auto-approves all tools. plan is the
++ * CLI's planning mode, NOT an enforced read-only promise here (settings can
++ * downgrade it). No --read-only, sandbox, or trust bypass is configured.
++ * The brief stays on stdin; only fixed/token-validated argv reaches the Windows
++ * npm .cmd shim via shell:true. Workspace and artifact paths stay out of argv.
++ *
++ * Artifacts: brief.txt, events.jsonl, stderr.txt, nullable final.txt, result.json.
++ * Result schema: delegate-relay.result.v1; status, exitCode, signal, sessionId,
++ * finalMessage, touchedFiles (git porcelain; null if unavailable, [] if clean),
++ * requested model/approvalMode/resume, initialModel, stats, geminiVersion,
++ * timestamps, lane provenance, artifact paths, and error diagnostics on failure.
++ * finalMessage joins assistant message content; it may include intermediate
++ * narration. Completion requires a success result event AND child exit 0.
++ * Tool errors remain in events.jsonl; a recovered tool error is not alone fatal.
++ *
++ * Usage errors exit 2 before artifacts; missing gemini exits 127 WITH a result.
++ * Other outcomes: completed, failed, timeout, aborted, gemini_unavailable.
++ * Watchdog timeout is failed even if the child exits 0. POSIX signals are
++ * forwarded to the process group; Windows taskkill kills the whole tree.
++ * A hard kill of this relay on Windows is uncatchable and may leave no result.
++ */
++
++import { spawn, execFileSync, spawnSync } from "node:child_process";
++import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
++import { join, resolve, basename, dirname } from "node:path";
++import { fileURLToPath } from "node:url";
++import { constants, tmpdir } from "node:os";
++import { StringDecoder } from "node:string_decoder";
++
++const DEFAULT_TIMEOUT = "30m";
++const MAX_TIMER_MS = 2_147_483_647;
++const MAX_BUFFERED_CHARS = 1_048_576;
++const VERSION_TIMEOUT_MS = 10_000;
++const STDIN_PROMPT = "Follow the task instructions provided on stdin.";
++const SAFE_TOKEN = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
++const APPROVAL_MODES = new Set(["default", "auto_edit", "yolo", "plan"]);
++
++function fail(message, code = 2) {
++  process.stderr.write(`relay: ${message}\n`);
++  process.exit(code);
++}
++
++function applyFleetLane(opts, flagged) {
++  if (!opts.lane) return;
++  const script = join(dirname(fileURLToPath(import.meta.url)), "../../delegate-setup/scripts/lane.mjs");
++  if (!existsSync(script)) fail("--lane requires the delegate-setup skill installed beside this relay");
++  const r = spawnSync(process.execPath, [script, "resolve", "--cwd", opts.cd, "--lane", opts.lane, "--implementer", "gemini"], {
++    encoding: "utf8", env: process.env,
++  });
++  if (r.error) fail(`lane resolve failed: ${r.error.message}`);
++  if (r.status !== 0) fail((r.stderr || "lane resolve failed").trim().replace(/^lane\.mjs:\s*/, ""));
++  let resolved;
++  try { resolved = JSON.parse(r.stdout.trim()); } catch { fail("lane resolve returned invalid JSON"); }
++  opts.laneSource = resolved.source;
++  for (const [field, value] of Object.entries(resolved.dials || {})) {
++    if (!flagged.has(field)) opts[field] = value;
++  }
++}
++
++function parseDuration(duration) {
++  const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(duration);
++  if (!match || (!match[1] && !match[2] && !match[3])) return null;
++  try {
++    const seconds =
++      BigInt(match[1] || 0) * 3600n +
++      BigInt(match[2] || 0) * 60n +
++      BigInt(match[3] || 0);
++    const milliseconds = seconds * 1000n;
++    if (milliseconds <= 0n || milliseconds > BigInt(MAX_TIMER_MS)) return null;
++    return Number(milliseconds);
++  } catch {
++    return null;
++  }
++}
++
++function parseArgs(argv) {
++  const opts = { brief: null, cd: process.cwd(), lane: null, laneSource: null, model: null, approvalMode: "auto_edit", resume: null, timeout: DEFAULT_TIMEOUT, outDir: null };
++  const flagged = new Set();
++  for (let i = 0; i < argv.length; i += 1) {
++    const arg = argv[i];
++    const next = () => {
++      const value = argv[++i];
++      if (value === undefined) fail(`${arg} requires a value`);
++      return value;
++    };
++    switch (arg) {
++      case "-h":
++      case "--help": process.stdout.write(headerComment()); process.exit(0); break;
++      case "--brief": opts.brief = next(); break;
++      case "--cd": opts.cd = resolve(next()); break;
++      case "--lane": opts.lane = next(); break;
++      case "--model": opts.model = next(); flagged.add("model"); break;
++      case "--approval-mode": opts.approvalMode = next(); flagged.add("approvalMode"); break;
++      case "--resume":
++      case "--resume-last":
++        if (opts.resume !== null) fail("--resume and --resume-last are mutually exclusive and cannot be repeated");
++        opts.resume = arg === "--resume-last" ? "latest" : next();
++        break;
++      case "--timeout": opts.timeout = next(); flagged.add("timeout"); break;
++      case "--out-dir": opts.outDir = resolve(next()); break;
++      default: fail(`unknown option: ${arg}`);
++    }
++  }
++  applyFleetLane(opts, flagged);
++  if (opts.model !== null && !SAFE_TOKEN.test(opts.model)) fail("--model has unsupported characters (allowed: letters, digits, . _ : / -)");
++  if (!APPROVAL_MODES.has(opts.approvalMode)) fail("--approval-mode must be default, auto_edit, yolo, or plan");
++  if (opts.resume !== null && opts.resume !== "latest" && !/^[1-9][0-9]*$/.test(opts.resume)) fail("--resume must be latest or a positive session index from gemini --list-sessions");
++  if (parseDuration(opts.timeout) === null) fail(`--timeout "${opts.timeout}" is not a positive schedulable duration; use h/m/s strings (maximum ~24.8 days)`);
++  if (!existsSync(opts.cd) || !statSync(opts.cd).isDirectory()) fail(`working directory not found: ${opts.cd}`);
++  return opts;
++}
++
++function headerComment() {
++  const source = readFileSync(new URL(import.meta.url), "utf8");
++  return `${source.match(/\/\*\*([\s\S]*?)\*\//)[1].replace(/^\s*\* ?/gm, "").trim()}\n`;
++}
++
++function readBrief(opts) {
++  if (opts.brief) {
++    if (!existsSync(opts.brief)) fail(`brief file not found: ${opts.brief}`);
++    try { return readFileSync(opts.brief, "utf8"); } catch (error) { fail(`cannot read brief: ${error.message}`); }
++  }
++  if (process.stdin.isTTY) fail("no --brief given and stdin is a TTY; pass --brief <file> or pipe the brief on stdin");
++  try { return readFileSync(0, "utf8"); } catch { return ""; }
++}
++
++function killChild(child, signal = "SIGTERM") {
++  if (!child || !child.pid) return;
++  if (process.platform === "win32") {
++    if (signal !== "SIGTERM") return;
++    try {
++      execFileSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
++        stdio: ["ignore", "ignore", "inherit"],
++      });
++    } catch {
++      // The process tree already exited.
++    }
++    return;
++  }
++  try {
++    process.kill(-child.pid, signal);
++  } catch {
++    try {
++      child.kill(signal);
++    } catch {
++      // The process group already exited.
++    }
++  }
++}
++
++async function geminiVersion(timeoutMs, onChild) {
++  const limit = Math.min(timeoutMs, VERSION_TIMEOUT_MS);
++  const runProbe = (command, argv, options = {}) => new Promise((resolveProbe) => {
++    const child = spawn(command, argv, { stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32", ...options });
++    onChild(child);
++    let stdout = "";
++    let stderr = "";
++    let settled = false;
++    let timedOut = false;
++    let timer;
++    const finish = (result) => {
++      if (settled) return;
++      settled = true;
++      clearTimeout(timer);
++      resolveProbe({ stdout, stderr, ...result });
++    };
++    child.stdout.on("data", (chunk) => { stdout = (stdout + chunk).slice(-MAX_BUFFERED_CHARS); });
++    child.stderr.on("data", (chunk) => { stderr = (stderr + chunk).slice(-MAX_BUFFERED_CHARS); });
++    child.on("error", (error) => finish({ code: null, error, timedOut: false }));
++    child.on("close", (code) => finish({ code, error: null, timedOut }));
++    child.once("exit", () => {
++      const drain = setTimeout(() => { child.stdout.destroy(); child.stderr.destroy(); }, 500);
++      drain.unref();
++    });
++    timer = setTimeout(() => {
++      timedOut = true;
++      killChild(child, process.platform === "win32" ? "SIGTERM" : "SIGKILL");
++    }, limit);
++  });
++  if (process.platform === "win32") {
++    const wherePath = join(process.env.SystemRoot || process.env.WINDIR || "C:\\Windows", "System32", "where.exe");
++    const found = await runProbe(wherePath, ["gemini"]);
++    if (found.timedOut) return { version: null, error: Object.assign(new Error("where.exe gemini timed out"), { code: "ETIMEDOUT", stderr: found.stderr }) };
++    if (found.error) return { version: null, error: found.error };
++    if (found.code !== 0) return { version: null, error: null };
++  }
++  const probe = await runProbe("gemini", ["--version"], { shell: process.platform === "win32" });
++  if (probe.timedOut) return { version: null, error: Object.assign(new Error("gemini --version timed out"), { code: "ETIMEDOUT", stderr: probe.stderr }) };
++  if (probe.error?.code === "ENOENT") return { version: null, error: null };
++  if (probe.error) return { version: null, error: probe.error };
++  if (probe.code !== 0) return { version: null, error: Object.assign(new Error("gemini --version failed"), { status: probe.code, stderr: probe.stderr }) };
++  return { version: probe.stdout.trim() || "unknown", error: null };
++}
++
++function gitTouchedFiles(cwd) {
++  try {
++    const output = execFileSync("git", ["status", "--porcelain"], {
++      cwd,
++      encoding: "utf8",
++      timeout: 10_000,
++      killSignal: "SIGKILL",
++      stdio: ["ignore", "pipe", "ignore"],
++      maxBuffer: 64 * 1024 * 1024,
++    });
++    return output.split("\n").map((line) => line.trimEnd()).filter(Boolean);
++  } catch {
++    return null;
++  }
++}
++
++function buildArgv(opts) {
++  const argv = ["--output-format", "stream-json", "--approval-mode", opts.approvalMode];
++  if (opts.model) argv.push("--model", opts.model);
++  if (opts.resume) argv.push("--resume", opts.resume);
++  argv.push("--prompt", process.platform === "win32" ? `"${STDIN_PROMPT}"` : STDIN_PROMPT);
++  return argv;
++}
++
++function createEventScannerState() {
++  return { buf: "", index: 0, depth: 0, start: -1, inString: false, escaped: false };
++}
++
++function resetEventScannerState(state) {
++  Object.assign(state, { index: 0, start: -1, depth: 0, inString: false, escaped: false });
++}
++
++function consumeEventScannerCharacter(state, onObject) {
++  const { buf, index } = state;
++  const ch = buf[index];
++  if (state.inString) {
++    if (state.escaped) state.escaped = false;
++    else if (ch === "\\") state.escaped = true;
++    else if (ch === '"') state.inString = false;
++  } else if (ch === '"') {
++    if (state.depth > 0) state.inString = true;
++  } else if (ch === "{") {
++    if (state.depth === 0) state.start = index;
++    state.depth += 1;
++  } else if (ch === "}" && state.depth > 0) {
++    state.depth -= 1;
++    emitEventScannerObject(state, onObject, index);
++  }
++  state.index += 1;
++}
++
++function emitEventScannerObject(state, onObject, index) {
++  if (state.depth !== 0 || state.start === -1) return;
++  try { onObject(JSON.parse(state.buf.slice(state.start, index + 1))); } catch { /* skip malformed */ }
++  state.start = -1;
++}
++
++function discardOversizedEventScannerPartial(state) {
++  state.buf = state.buf.slice(state.start + MAX_BUFFERED_CHARS);
++  resetEventScannerState(state);
++}
++
++function retainOrClearEventScannerBuffer(state) {
++  if (state.depth > 0 && state.start !== -1) {
++    if (state.start > 0) {
++      state.buf = state.buf.slice(state.start);
++      state.index -= state.start;
++      state.start = 0;
++    }
++    return;
++  }
++  state.buf = "";
++  resetEventScannerState(state);
++}
++
++function scanEventScannerChunk(state, onObject, chunk) {
++  if (!chunk) return;
++  state.buf += chunk;
++  for (;;) {
++    while (state.index < state.buf.length) consumeEventScannerCharacter(state, onObject);
++    if (state.depth === 0 || state.start === -1 || state.buf.length - state.start <= MAX_BUFFERED_CHARS) break;
++    // A complete object may exceed the retained-input cap within this chunk.
++    // Drop only an oversized partial, then rescan its suffix so a later
++    // concatenated event is not lost.
++    discardOversizedEventScannerPartial(state);
++  }
++  retainOrClearEventScannerBuffer(state);
++}
++
++function makeEventScanner(onObject) {
++  const state = createEventScannerState();
++  return (chunk) => scanEventScannerChunk(state, onObject, chunk);
++}
++
++function recordGeminiEvent(state, event) {
++  if (event.type === "init") {
++    if (typeof event.session_id === "string") state.sessionId = event.session_id;
++    if (typeof event.model === "string") state.initialModel = event.model;
++  }
++  if (event.type === "message" && event.role === "assistant" && typeof event.content === "string") state.report += event.content;
++  if (event.type === "error" && event.severity === "error") {
++    state.errorSeen = true;
++    if (typeof event.message === "string") state.streamError = event.message;
++  }
++  if (event.type === "result") {
++    if (typeof event.status === "string") state.resultStatus = event.status;
++    if (event.status !== "success") state.errorSeen = true;
++    if (event.stats && typeof event.stats === "object") state.stats = event.stats;
++    if (typeof event.error?.message === "string") state.streamError = event.error.message;
++  }
++}
++
++function trackGeminiEvents() {
++  const state = { sessionId: null, initialModel: null, stats: null, resultStatus: null, report: "", streamError: null, errorSeen: false };
++  return { state, scan: makeEventScanner((event) => recordGeminiEvent(state, event)) };
++}
++
++function captureGeminiOutput(child, run, scan) {
++  const stdoutDecoder = new StringDecoder("utf8");
++  const stderrDecoder = new StringDecoder("utf8");
++  let stderrText = "";
++  child.stdout.on("data", (chunk) => { appendFileSync(run.eventsPath, chunk); scan(stdoutDecoder.write(chunk)); });
++  child.stderr.on("data", (chunk) => {
++    process.stderr.write(chunk);
++    appendFileSync(run.stderrPath, chunk);
++    stderrText = (stderrText + stderrDecoder.write(chunk)).slice(-MAX_BUFFERED_CHARS);
++  });
++  return {
++    finishStdout: () => scan(stdoutDecoder.end()),
++    finishStderr: () => { stderrText += stderrDecoder.end(); },
++    stderrTail: () => stderrText.split(/\r?\n/).filter((line) => line.trim()).slice(-20),
++  };
++}
++
++function makeGeminiFields(opts, run, state, output) {
++  return () => {
++    if (state.report) writeFileSync(run.finalPath, state.report, "utf8");
++    return { sessionId: state.sessionId, initialModel: state.initialModel, stats: state.stats, resultStatus: state.resultStatus, finalMessage: state.report, touchedFiles: gitTouchedFiles(opts.cd), stderrTail: output.stderrTail() };
++  };
++}
++
++function handleGeminiDispatchSignal(context, sig) {
++  if (context.settled) return;
++  context.settled = true;
++  clearGeminiWatchdog(context);
++  const abortedFields = {
++    ...context.fields(), status: "aborted",
++    exitCode: 128 + (constants.signals[sig] || 15), signal: sig,
++    error: `the relay was killed by ${sig}; gemini was terminated with it — inspect the working tree before re-dispatching`,
++  };
++  const result = context.writeResult(abortedFields);
++  printSummary(result, context.run.resultPath);
++  killChild(context.child);
++  setTimeout(() => finishGeminiAbort(context, abortedFields, result.exitCode), 2000);
++}
++
++function finishGeminiAbort(context, abortedFields, exitCode) {
++  killChild(context.child, "SIGKILL");
++  context.writeResult({ ...abortedFields, touchedFiles: gitTouchedFiles(context.opts.cd) });
++  process.exit(exitCode);
++}
++
++function installGeminiDispatchSignals(context) {
++  for (const sig of ["SIGTERM", "SIGINT", "SIGHUP"]) {
++    process.on(sig, () => handleGeminiDispatchSignal(context, sig));
++  }
++}
++
++function prepareRunDir(opts, brief) {
++  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
++  const outDir = opts.outDir || join(tmpdir(), "delegate-relay", `${basename(opts.cd) || "repo"}-${stamp}`);
++  mkdirSync(outDir, { recursive: true });
++  const run = { startedAt: new Date().toISOString(), briefPath: join(outDir, "brief.txt"), finalPath: join(outDir, "final.txt"), eventsPath: join(outDir, "events.jsonl"), stderrPath: join(outDir, "stderr.txt"), resultPath: join(outDir, "result.json") };
++  rmSync(run.finalPath, { force: true });
++  rmSync(run.resultPath, { force: true });
++  writeFileSync(run.briefPath, brief, "utf8");
++  writeFileSync(run.eventsPath, "", "utf8");
++  writeFileSync(run.stderrPath, "", "utf8");
++  return run;
++}
++
++function makeResultWriter(opts, version, run) {
++  return (extra) => {
++    const result = {
++      schema: "delegate-relay.result.v1", tool: "gemini", workdir: opts.cd,
++      lane: opts.lane, laneSource: opts.laneSource, model: opts.model,
++      approvalMode: opts.approvalMode, resume: opts.resume, resumed: opts.resume !== null,
++      geminiVersion: version, startedAt: run.startedAt, finishedAt: new Date().toISOString(),
++      briefPath: run.briefPath, finalPath: existsSync(run.finalPath) ? run.finalPath : null,
++      eventsPath: run.eventsPath, stderrPath: run.stderrPath,
++      sessionId: null, initialModel: null, stats: null, resultStatus: null,
++      finalMessage: "", signal: null, touchedFiles: null, ...extra,
++    };
++    const temporary = `${run.resultPath}.${process.pid}.tmp`;
++    writeFileSync(temporary, `${JSON.stringify(result, null, 2)}\n`, "utf8");
++    renameSync(temporary, run.resultPath);
++    return result;
++  };
++}
++
++function printSummary(result, resultPath) {
++  process.stdout.write(`\nrelay: ${result.status} (exit ${result.exitCode}${result.signal ? `, killed by ${result.signal}` : ""}) · gemini ${result.geminiVersion ?? "?"}\n`);
++  if (result.signal === "SIGKILL" && result.status === "failed") process.stdout.write("hint: the host killed the process (possibly OOM or a supervisor timeout); inspect the working tree before re-dispatching.\n");
++  process.stdout.write(`approval mode requested: ${result.approvalMode}\nresult: ${resultPath}\n${result.finalMessage || "(no final message captured)"}\nrelay does not commit. Review the diff and re-run the project gates yourself.\n`);
++}
++
++function installPreflightSignalHandlers(opts, run, writeResult, getChild) {
++  const handlers = new Map();
++  for (const sig of ["SIGTERM", "SIGINT", "SIGHUP"]) {
++    const handler = () => {
++      const result = writeResult({ status: "aborted", exitCode: 128 + (constants.signals[sig] || 15), signal: sig, touchedFiles: gitTouchedFiles(opts.cd), error: `the relay was killed by ${sig} during the gemini version preflight; gemini was not dispatched` });
++      printSummary(result, run.resultPath);
++      killChild(getChild(), process.platform === "win32" ? "SIGTERM" : "SIGKILL");
++      process.exit(result.exitCode);
++    };
++    handlers.set(sig, handler);
++    process.on(sig, handler);
++  }
++  return () => { for (const [sig, handler] of handlers) process.removeListener(sig, handler); };
++}
++
++function createGeminiDispatchContext(opts, brief, run, writeResult) {
++  const child = spawn("gemini", buildArgv(opts), {
++    cwd: opts.cd, stdio: ["pipe", "pipe", "pipe"],
++    shell: process.platform === "win32", detached: process.platform !== "win32",
++  });
++  const { state, scan } = trackGeminiEvents();
++  const output = captureGeminiOutput(child, run, scan);
++  child.stdin.on("error", () => {}); // EPIPE from an early startup failure is reported by exit.
++  child.stdin.end(brief);
++  return {
++    opts, run, child, state, output, writeResult,
++    fields: makeGeminiFields(opts, run, state, output),
++    settled: false, watchdogFired: false, sigkillTimer: null, watchdogTimer: null,
++  };
++}
++
++function installGeminiWatchdog(context) {
++  context.watchdogTimer = setTimeout(() => {
++    context.watchdogFired = true;
++    context.child.once("exit", () => { context.child.stdout.destroy(); context.child.stderr.destroy(); });
++    killChild(context.child);
++    context.sigkillTimer = setTimeout(() => {
++      if (!context.settled) killChild(context.child, "SIGKILL");
++    }, 10_000);
++  }, parseDuration(context.opts.timeout));
++}
++
++function clearGeminiWatchdog(context) {
++  clearTimeout(context.watchdogTimer);
++  if (context.sigkillTimer) clearTimeout(context.sigkillTimer);
++}
++
++function handleGeminiChildExit(context) {
++  if (!context.watchdogFired) clearGeminiWatchdog(context);
++  const drain = setTimeout(() => {
++    if (!context.settled) { context.child.stdout.destroy(); context.child.stderr.destroy(); }
++  }, 500);
++  drain.unref();
++}
++
++function classifyGeminiCompletion(context, code, signal) {
++  const succeeded = code === 0 && !context.watchdogFired && !context.state.errorSeen && context.state.resultStatus === "success";
++  const mapped = code ?? (constants.signals[signal] ? 128 + constants.signals[signal] : 1);
++  const error = context.watchdogFired
++    ? `gemini did not finish within --timeout ${context.opts.timeout}; killed by the relay watchdog`
++    : context.state.streamError || (context.state.resultStatus !== "success"
++      ? `gemini ended without a success result (result status: ${context.state.resultStatus ?? "absent"})`
++      : `gemini exited with code ${mapped}`);
++  return {
++    status: succeeded ? "completed" : context.watchdogFired ? "timeout" : "failed",
++    exitCode: succeeded ? 0 : mapped === 0 ? 1 : mapped,
++    signal: signal ?? null,
++    ...(succeeded ? {} : { error }),
++  };
++}
++
++function handleGeminiChildError(context, error) {
++  if (context.settled) return;
++  context.settled = true;
++  clearGeminiWatchdog(context);
++  const result = context.writeResult({ ...context.fields(), status: "failed", exitCode: 1, error: error.message });
++  printSummary(result, context.run.resultPath);
++  process.exit(1);
++}
++
++function handleGeminiChildClose(context, code, signal) {
++  if (context.settled) return;
++  context.settled = true;
++  clearGeminiWatchdog(context);
++  if (context.watchdogFired) killChild(context.child, "SIGKILL");
++  context.output.finishStdout();
++  context.output.finishStderr();
++  const outcome = classifyGeminiCompletion(context, code, signal);
++  const result = context.writeResult({ ...context.fields(), ...outcome });
++  printSummary(result, context.run.resultPath);
++  process.exit(result.exitCode);
++}
++
++function installGeminiChildHandlers(context) {
++  context.child.once("exit", () => handleGeminiChildExit(context));
++  context.child.on("error", (error) => handleGeminiChildError(context, error));
++  context.child.on("close", (code, signal) => handleGeminiChildClose(context, code, signal));
++}
++
++function dispatchToGemini(opts, brief, run, writeResult) {
++  const context = createGeminiDispatchContext(opts, brief, run, writeResult);
++  installGeminiWatchdog(context);
++  installGeminiDispatchSignals(context);
++  installGeminiChildHandlers(context);
++}
++
++async function main() {
++  const opts = parseArgs(process.argv.slice(2));
++  const brief = readBrief(opts);
++  if (!brief.trim()) fail("empty brief (pass --brief <file> or pipe the brief on stdin)");
++  const run = prepareRunDir(opts, brief);
++  let writeResult = makeResultWriter(opts, null, run);
++  let preflightChild = null;
++  const clearSignals = installPreflightSignalHandlers(opts, run, writeResult, () => preflightChild);
++  const probe = await geminiVersion(parseDuration(opts.timeout), (child) => { preflightChild = child; });
++  writeResult = makeResultWriter(opts, probe.version, run);
++  clearSignals();
++  if (!probe.version) {
++    const missing = !probe.error;
++    const timedOut = probe.error?.code === "ETIMEDOUT";
++    const stderr = String(probe.error?.stderr || "").trim();
++    if (stderr) writeFileSync(run.stderrPath, `${stderr}\n`, "utf8");
++    const result = writeResult({
++      status: missing ? "gemini_unavailable" : timedOut ? "timeout" : "failed",
++      exitCode: missing ? 127 : timedOut ? 124 : Number.isInteger(probe.error?.status) ? probe.error.status : 1,
++      stderrTail: stderr.split(/\r?\n/).filter(Boolean).slice(-20),
++      error: missing ? "gemini not found on PATH" : `gemini --version preflight ${timedOut ? "timed out" : "failed"}; gemini was not dispatched`,
++    });
++    printSummary(result, run.resultPath);
++    process.exit(result.exitCode);
++  }
++  dispatchToGemini(opts, brief, run, writeResult);
++}
++
++main().catch((error) => { process.stderr.write(`relay: unexpected internal error: ${error.stack || error}\n`); process.exit(2); });
+diff --git a/test/event-scanner.mjs b/test/event-scanner.mjs
+index e535c94..3baee09 100644
+--- a/test/event-scanner.mjs
++++ b/test/event-scanner.mjs
+@@ -30,9 +30,17 @@ function loadScanner(relay, symbol, onVisit) {
+   const source = readFileSync(join(here, "..", "skills", `${relay}-delegate`, "scripts", "relay.mjs"), "utf8");
+   const maxBufferedChars = extract(source, "MAX_BUFFERED_CHARS", "const", relay);
+   let scanner = extract(source, symbol, "function", relay);
++  const helperNames = relay === "gemini" && symbol === "makeEventScanner"
++    ? ["createEventScannerState", "resetEventScannerState", "consumeEventScannerCharacter", "emitEventScannerObject", "discardOversizedEventScannerPartial", "retainOrClearEventScannerBuffer", "scanEventScannerChunk"]
++    : [];
++  const helpers = helperNames.map((name) => extract(source, name, "function", relay));
+   if (onVisit) {
+     // Issue #51 needs a deterministic work bound; source instrumentation avoids a wall-clock assertion.
+-    const instrumented = symbol === "makeEventScanner"
++    const instrumented = relay === "gemini" && symbol === "makeEventScanner"
++      ? helpers.map((helper, index) => helperNames[index] === "consumeEventScannerCharacter"
++        ? helper.replace(/(\s+)(const ch = buf\[[^\]]+\];)/, "$1onVisit();$1$2")
++        : helper)
++      : symbol === "makeEventScanner"
+       ? scanner.replace(
+         /(\s+)(const ch = buf\[[^\]]+\];)/,
+         "$1onVisit();$1$2",
+@@ -46,14 +54,20 @@ function loadScanner(relay, symbol, onVisit) {
+           /(\s+)(const end = chunk\.indexOf\("\\n", start\);)/,
+           "$1onVisit(chunk.length - start);$1$2",
+         );
+-    if (instrumented === scanner) throw new Error(`${relay}: could not instrument ${symbol}`);
+-    scanner = instrumented;
++    if (Array.isArray(instrumented)) {
++      if (instrumented.every((helper, index) => helper === helpers[index])) throw new Error(`${relay}: could not instrument ${symbol}`);
++      helpers.splice(0, helpers.length, ...instrumented);
++    } else {
++      if (instrumented === scanner) throw new Error(`${relay}: could not instrument ${symbol}`);
++      scanner = instrumented;
++    }
+   }
+-  return new Function("onVisit", `${maxBufferedChars}\n${scanner}\nreturn ${symbol};`)(onVisit);
++  return new Function("onVisit", `${maxBufferedChars}\n${helpers.join("\n")}\n${scanner}\nreturn ${symbol};`)(onVisit);
+ }
+ 
+ // Parity covers every makeEventScanner copy; Vibe's makeLineScanner is tested directly.
+ const makeEventScanner = loadScanner("claude", "makeEventScanner");
++const makeGeminiEventScanner = loadScanner("gemini", "makeEventScanner");
+ const makeLineScanner = loadScanner("vibe", "makeLineScanner");
+ 
+ let passed = 0;
+@@ -185,6 +199,29 @@ test("event scanner: post-reset partial event continues in the next chunk", () =
+   assert.deepEqual(events, [{ later: 1 }]);
+ });
+ 
++test("gemini event scanner: split and concatenated objects preserve boundaries", () => {
++  const { events, scan } = collectScanner(makeGeminiEventScanner);
++  scan('{"a":');
++  scan('1}{"b":2}');
++  assert.deepEqual(events, [{ a: 1 }, { b: 2 }]);
++});
++
++test("gemini event scanner: oversized partial does not hide a later event", () => {
++  const { events, scan } = collectScanner(makeGeminiEventScanner);
++  scan(`{"broken":"${"x".repeat(1_100_000)}{"ok":1}`);
++  assert.deepEqual(events, [{ ok: 1 }]);
++});
++
++test("gemini event scanner: many small chunks examine each character once", () => {
++  let visits = 0;
++  const factory = loadScanner("gemini", "makeEventScanner", () => { visits += 1; });
++  const { events, scan } = collectScanner(factory);
++  const event = JSON.stringify({ result: "x".repeat(4096) });
++  for (let i = 0; i < event.length; i += 16) scan(event.slice(i, i + 16));
++  assert.equal(visits, event.length);
++  assert.deepEqual(events, [{ result: "x".repeat(4096) }]);
++});
++
+ test("line scanner: one object per line", () => {
+   const { events, scan } = collectScanner(makeLineScanner);
+   scan('{"a":1}\n{"b":2}\n');
+diff --git a/test/fixtures/fake-cli.cjs b/test/fixtures/fake-cli.cjs
+index 638eb6c08d09d0491b439b6fdcfee36165b12ab2..27dec16d19e3517d82e65df0fbcde7b3f7d15eeb 100644
+--- a/test/fixtures/fake-cli.cjs
++++ b/test/fixtures/fake-cli.cjs
+@@ -48,6 +48,32 @@ if (versionProbe && process.env.SMOKE_MODE === "grok-spawn-error" && process.pla
+   console.log(fakeVersion);
+   process.exit(0);
+ }
++if (/^gemini-(?!version)/.test(process.env.SMOKE_MODE || "")) {
++  const mode = process.env.SMOKE_MODE;
++  let brief = "";
++  process.stdin.setEncoding("utf8");
++  process.stdin.on("data", (chunk) => { brief += chunk; });
++  process.stdin.on("end", () => {
++    if (process.env.SMOKE_ARGS_FILE) fs.writeFileSync(process.env.SMOKE_ARGS_FILE, JSON.stringify({ args, brief, cwd: process.cwd() }));
++    if (process.env.SMOKE_WRITE_FILE) fs.writeFileSync(process.env.SMOKE_WRITE_FILE, "written by fake gemini\n");
++    if (process.env.SMOKE_EDIT_FILE) fs.appendFileSync(process.env.SMOKE_EDIT_FILE, "edited by fake gemini\n");
++    const emit = (event) => fs.writeSync(1, JSON.stringify(event) + "\n");
++    if (mode === "gemini-garbled") { fs.writeSync(1, '{"type":"result","status":'); process.exit(0); }
++    emit({ type: "init", session_id: "gemini-session-1", model: "auto" });
++    emit({ type: "message", role: "user", content: "not the report" });
++    emit({ type: "message", role: "assistant", content: "fake gemini ", delta: true });
++    emit({ type: "tool_use", tool_name: "read_file", tool_id: "read-1", parameters: {} });
++    emit({ type: "tool_result", tool_id: "read-1", status: "error", error: { type: "FILE_NOT_FOUND", message: "recoverable" } });
++    // Byte-split UTF-8 and adjacent objects exercise the peer event scanner.
++    const tail = Buffer.from(JSON.stringify({ type: "message", role: "assistant", content: "completed café 🐎", delta: true }) + "\n");
++    for (const byte of tail) fs.writeSync(1, Buffer.from([byte]));
++    if (mode === "gemini-warning") emit({ type: "error", severity: "warning", message: "retry recovered" });
++    if (mode === "gemini-stream-error") emit({ type: "error", severity: "error", message: "semantic failure" });
++    if (mode !== "gemini-no-result") emit({ type: "result", status: mode === "gemini-error" ? "error" : "success", stats: { total_tokens: 9, input_tokens: 7, output_tokens: 2, duration_ms: 42 }, ...(mode === "gemini-error" ? { error: { type: "API_ERROR", message: "fake API error" } } : {}) });
++    process.exit(mode === "gemini-exit-nonzero" ? 7 : 0);
++  });
++  return;
++}
+ if (process.env.SMOKE_MODE === "capture") {
+   fs.writeFileSync(process.env.SMOKE_ARGS_FILE, JSON.stringify(args));
+   if (process.env.SMOKE_ENV_FILE) fs.writeFileSync(process.env.SMOKE_ENV_FILE, JSON.stringify(capturedEnv()));
+diff --git a/test/harness/constants.mjs b/test/harness/constants.mjs
+index a0dbe866e5076f47ff20f2daacb372fee11f90dd..f97e484f95ca17825bc475df22f60a7e3ff8f925 100644
+--- a/test/harness/constants.mjs
++++ b/test/harness/constants.mjs
+@@ -1,6 +1,6 @@
+ import { join } from "node:path";
+ 
+-export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+ 
+ export const EXTRA_ARGS = {
+   claude: [],
+@@ -20,6 +20,7 @@ export const EXTRA_ARGS = {
+   warp: [],
+   zcode: [],
+   commandcode: [],
++  gemini: [],
+ };
+ 
+ export const WIN = process.platform === "win32";
+diff --git a/test/harness/install-shim.mjs b/test/harness/install-shim.mjs
+index 52437841761b86f21e068d2dff95885d4ce3ebea..3eaa6b67efbaf8393e7edbfdc4ab0aa7eaa3b915 100644
+--- a/test/harness/install-shim.mjs
++++ b/test/harness/install-shim.mjs
+@@ -14,7 +14,7 @@ export function installShim(h) {
+   copyFileSync(join(fixturesDir, "fake-cli.cjs"), join(shimDir, "fake-cli.cjs"));
+ 
+   if (WIN) {
+-    for (const skill of ["claude", "cline", "codex", "opencode", "grok", "cursor", "pi", "copilot", "zcode", "commandcode"]) {
++    for (const skill of ["claude", "cline", "codex", "opencode", "grok", "cursor", "pi", "copilot", "zcode", "commandcode", "gemini"]) {
+       writeFileSync(join(shimDir, `${binaryName(skill)}.cmd`), `@node "%~dp0fake-cli.cjs" %*\r\n`);
+     }
+     const windir = process.env.WINDIR || "C:\\Windows";
+diff --git a/test/relay-isolated.mjs b/test/relay-isolated.mjs
+index 47cbbcbb000da62eb734b6477a40c9d2508be595..dc4dcdae5f416f78665e9f80a24d5918029b48ef 100644
+--- a/test/relay-isolated.mjs
++++ b/test/relay-isolated.mjs
+@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
+ import { fileURLToPath } from "node:url";
+ 
+ const here = dirname(fileURLToPath(import.meta.url));
+-const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+ let failed = 0;
+ const check = (name, condition) => {
+   console.log(`${condition ? "  ok " : "  FAIL"}  ${name}`);
+diff --git a/test/relay-parity.mjs b/test/relay-parity.mjs
+index ca3cfa8..299aa42 100644
+--- a/test/relay-parity.mjs
++++ b/test/relay-parity.mjs
+@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
+ import { fileURLToPath } from "node:url";
+ 
+ const here = dirname(fileURLToPath(import.meta.url));
+-const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+ const READ_ONLY_TRIPWIRE_RELAYS = ["claude", "grok", "zcode", "commandcode"];
+ const SYMBOLS = [
+   ["MAX_TIMER_MS", "const", RELAYS],
+@@ -27,7 +27,7 @@ const SYMBOLS = [
+   ["fingerprintDirtyPaths", "function", READ_ONLY_TRIPWIRE_RELAYS],
+   ["changedDirtyPaths", "function", READ_ONLY_TRIPWIRE_RELAYS],
+   ["readOnlyVerdict", "function", READ_ONLY_TRIPWIRE_RELAYS],
+-  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode"]],
++  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode", "gemini"]],
+   ["makeLineScanner", "function", ["vibe", "copilot"]],
+   ["makeEventScanner", "function", ["claude", "cline", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "warp"]],
+ ];
+@@ -37,6 +37,9 @@ const SYMBOLS = [
+ // recorded here with its reason, so a new relay can never quietly widen the
+ // ungated surface.
+ const UNGATED_DEFINITIONS = new Map([
++  // Gemini has the same scanner contract, but its local relay decomposes the
++  // scanner into helpers; test/event-scanner.mjs exercises that implementation.
++  ["makeEventScanner", ["gemini"]],
+   // agy takes one sha256 over the whole worktree (gitWorktreeFingerprint:
+   // status, both raw diffs, then hash-object per dirty path) rather than the
+   // per-path fingerprints the other four share, so its readOnlyVerdict has a
+diff --git a/test/relay-smoke.mjs b/test/relay-smoke.mjs
+index 17aee32880777303c69a827efbc320ec1c8cc21d..5f21880b2371368904252a764729dedd062bf1c2 100644
+--- a/test/relay-smoke.mjs
++++ b/test/relay-smoke.mjs
+@@ -10,7 +10,7 @@
+  *                 result.json reports status "timeout". Driven for the timeout
+  *                 matrix on both platforms. On Windows, claude and cursor
+  *                 launch a .cmd shim through a serialized cmd.exe invocation,
+- *                 while codex/opencode/grok/pi/cline/zcode/commandcode use shell:true. These are exactly the
++ *                 while codex/opencode/grok/pi/cline/zcode/commandcode/gemini use shell:true. These are exactly the
+  *                 cases a plain child.kill would miss; agy, aider, kimi, qoder, vibe, oz, and omp spawn a
+  *                 native binary directly — a .cmd stand-in cannot represent them,
+  *                 so the smoke compiles a real fake .exe with the C# compiler
+@@ -23,7 +23,7 @@
+  *   2. aborted  — killing the relay itself still produces result.json with
+  *                 status "aborted", and files the implementer flushes during
+  *                 the shutdown grace window appear in the refreshed
+- *                 touchedFiles. Driven for all sixteen relays on POSIX; Windows
++ *                 touchedFiles. Driven for all registered relays on POSIX; Windows
+  *                 delivers no catchable SIGTERM, so the scenario cannot be
+  *                 driven there (the skill docs carry the same caveat).
+  *
+@@ -31,10 +31,10 @@
+  * `changelog`), and can be told to hang or fail that probe by mode name, so a
+  * relay whose preflight is unbounded — wedging before any result.json exists —
+  * or which reports a broken CLI as a missing one is caught here.
+- * A shared matrix also drives all sixteen through the --timeout values no
++ * A shared matrix also drives all registered relays through the --timeout values no
+  * watchdog can honour — malformed, zero, and past Node's timer ceiling — each of
+  * which would otherwise fire on the next tick as a silent instant "timeout".
+- * Quick Claude, Cline, Cursor, OpenCode, Qoder, Vibe, Pi, Oh My Pi, and ZCode success cases verify
++ * Quick Claude, Cline, Cursor, OpenCode, Qoder, Vibe, Pi, Oh My Pi, Gemini, and ZCode success cases verify
+  * brief delivery, launch arguments, environment handling, and result-event parsing. The
+  * timeout/abort cases otherwise run until killed and spawn a subprocess of
+  * their own; both assert that this grandchild dies with the implementer.
+diff --git a/test/relay/gemini.mjs b/test/relay/gemini.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..61acf7571b13c144b352ba728c08c0da61688289
+--- /dev/null
++++ b/test/relay/gemini.mjs
+@@ -0,0 +1,226 @@
++import { spawnSync } from "node:child_process";
++import { chmodSync, existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
++import { delimiter, dirname, join } from "node:path";
++import { IMPLEMENTERS, IMPLEMENTER_BY_KEY } from "../../skills/delegate-setup/scripts/implementers.mjs";
++import { parseConfigDocument } from "../../skills/delegate-setup/scripts/config.mjs";
++
++export async function runGemini(h) {
++  const workDir = h.freshRepo("work gemini & ! paths");
++  let serial = 0;
++  const dispatch = (flags = [], mode = "gemini-success", extraEnv = {}, cwd = workDir, brief = h.briefPath) => {
++    const id = serial++;
++    const out = join(h.scratch, `out-gemini-${id}`);
++    const argsFile = join(h.scratch, `args-gemini-${id}.json`);
++    const run = spawnSync(process.execPath, [h.relayPath("gemini"), "--brief", brief, "--cd", cwd, "--out-dir", out, ...flags], {
++      env: { ...h.baseEnv, SMOKE_MODE: mode, SMOKE_ARGS_FILE: argsFile, ...extraEnv }, encoding: "utf8", timeout: 15_000,
++    });
++    const value = existsSync(join(out, "result.json")) ? h.result(out) : null;
++    const capture = existsSync(argsFile) ? JSON.parse(readFileSync(argsFile, "utf8")) : null;
++    return { run, value, capture, out };
++  };
++  const success = dispatch();
++  h.check("gemini: default argv is exact; Auto/default model is not pinned",
++    success.run.status === 0 && JSON.stringify(success.capture?.args) === JSON.stringify([
++      "--output-format", "stream-json", "--approval-mode", "auto_edit", "--prompt", "Follow the task instructions provided on stdin.",
++    ]) && success.value?.model === null);
++  h.check("gemini: brief on stdin and workspace only in spawn cwd",
++    success.capture?.brief === "smoke brief: run until killed." && realpathSync(success.capture.cwd) === realpathSync(workDir));
++  h.check("gemini: v1 result records session, initial model, stats, assistant-only Unicode report, and clean tree",
++    success.value?.schema === "delegate-relay.result.v1" && success.value.tool === "gemini" &&
++    success.value.status === "completed" && success.value.exitCode === 0 && success.value.signal === null &&
++    success.value.sessionId === "gemini-session-1" && success.value.initialModel === "auto" &&
++    success.value.stats?.total_tokens === 9 && success.value.stats.duration_ms === 42 &&
++    success.value.resultStatus === "success" && success.value.approvalMode === "auto_edit" &&
++    success.value.geminiVersion === "fake-cli 0.0.0-smoke" &&
++    success.value.finalMessage === "fake gemini completed café 🐎" &&
++    JSON.stringify(success.value.touchedFiles) === "[]" && success.value.resume === null && success.value.resumed === false);
++  h.check("gemini: final and raw events artifacts are preserved",
++    readFileSync(success.value.finalPath, "utf8") === success.value.finalMessage &&
++    /recoverable/.test(readFileSync(success.value.eventsPath, "utf8")) &&
++    readFileSync(success.value.briefPath, "utf8") === success.capture.brief);
++
++  for (const approval of ["default", "auto_edit", "yolo", "plan"]) {
++    const result = dispatch(["--approval-mode", approval, "--model", "fake-model"]);
++    h.check(`gemini: explicit ${approval} approval mode and model are passed without a read-only claim`,
++      result.run.status === 0 && h.pair(result.capture.args, "--approval-mode", approval) &&
++      h.pair(result.capture.args, "--model", "fake-model") && result.value.approvalMode === approval &&
++      result.value.model === "fake-model" && !("readOnly" in result.value));
++  }
++  for (const [flags, selector] of [[["--resume", "5"], "5"], [["--resume-last"], "latest"]]) {
++    const resumed = dispatch([...flags, "--approval-mode", "plan", "--model", "fake-model"]);
++    h.check(`gemini: resume ${selector} retains explicit dials and stdin delta brief`,
++      resumed.run.status === 0 && h.pair(resumed.capture.args, "--resume", selector) &&
++      h.pair(resumed.capture.args, "--approval-mode", "plan") &&
++      h.pair(resumed.capture.args, "--model", "fake-model") && resumed.value.resume === selector &&
++      resumed.value.resumed === true && resumed.capture.brief === success.capture.brief);
++  }
++  const unsafeBrief = join(h.scratch, "brief gemini !.txt");
++  const briefText = "100% now! \"fix\" it\r\nthen test & | ^ < > café 🐎";
++  writeFileSync(unsafeBrief, briefText);
++  const transported = dispatch([], "gemini-success", {}, workDir, unsafeBrief);
++  h.check("gemini: shell metacharacters/newlines/Unicode in brief and cwd survive stdin transport",
++    transported.run.status === 0 && transported.capture.brief === briefText &&
++    realpathSync(transported.capture.cwd) === realpathSync(workDir));
++  const piped = spawnSync(process.execPath, [h.relayPath("gemini"), "--cd", workDir, "--out-dir", join(h.scratch, "gemini-piped")], {
++    input: briefText, encoding: "utf8", env: { ...h.baseEnv, SMOKE_MODE: "gemini-success", SMOKE_ARGS_FILE: join(h.scratch, "gemini-piped.json") },
++  });
++  h.check("gemini: omitted --brief reads relay stdin", piped.status === 0 &&
++    JSON.parse(readFileSync(join(h.scratch, "gemini-piped.json"), "utf8")).brief === briefText);
++
++  for (const flags of [
++    ["--model", "fake & whoami"], ["--model", "-option"], ["--model", ""],
++    ["--approval-mode", "auto"], ["--approval-mode", "plan&whoami"],
++    ["--resume", "0"], ["--resume", "5&whoami"], ["--resume", "-flag"],
++    ["--resume", "5", "--resume-last"], ["--read-only"], ["--sandbox", "read-only"],
++    ["--model"], ["--timeout", "0s"], ["--unknown"],
++  ]) {
++    const invalid = dispatch(flags);
++    h.check(`gemini: usage error ${JSON.stringify(flags)} exits 2 before result/artifacts`,
++      invalid.run.status === 2 && invalid.value === null && invalid.capture === null && !existsSync(invalid.out));
++  }
++  const emptyBrief = join(h.scratch, "empty-gemini.txt");
++  writeFileSync(emptyBrief, " \n");
++  const empty = dispatch([], "gemini-success", {}, workDir, emptyBrief);
++  h.check("gemini: empty brief exits 2 without artifacts", empty.run.status === 2 && !existsSync(empty.out));
++  const missingBrief = dispatch([], "gemini-success", {}, workDir, join(h.scratch, "missing-gemini.txt"));
++  h.check("gemini: missing brief exits 2 without artifacts", missingBrief.run.status === 2 && !existsSync(missingBrief.out));
++
++  for (const [mode, expectedExit, expectedStatus] of [
++    ["gemini-error", 1, "error"], ["gemini-stream-error", 1, "success"],
++    ["gemini-no-result", 1, null], ["gemini-garbled", 1, null],
++    ["gemini-exit-nonzero", 7, "success"], ["gemini-warning", 0, "success"],
++  ]) {
++    const result = dispatch([], mode);
++    h.check(`gemini: ${mode} completion classification`, result.run.status === expectedExit &&
++      result.value?.status === (expectedExit === 0 ? "completed" : "failed") &&
++      result.value.exitCode === expectedExit && result.value.resultStatus === expectedStatus &&
++      (expectedExit === 0 || typeof result.value.error === "string"));
++    if (mode === "gemini-garbled") h.check("gemini: absent text has nullable finalPath", result.value.finalPath === null && result.value.finalMessage === "");
++  }
++
++  // Final Git status is a snapshot, never attribution or read-only enforcement.
++  const dirtyFile = join(workDir, "already-dirty.txt");
++  writeFileSync(dirtyFile, "pre-existing\n");
++  const dirty = dispatch();
++  const sameDirty = dispatch([], "gemini-success", { SMOKE_EDIT_FILE: dirtyFile });
++  h.check("gemini: pre-dirty and same-dirty-path writes retain exact final porcelain snapshot",
++    JSON.stringify(dirty.value.touchedFiles) === '["?? already-dirty.txt"]' &&
++    JSON.stringify(sameDirty.value.touchedFiles) === JSON.stringify(dirty.value.touchedFiles) &&
++    readFileSync(dirtyFile, "utf8") === "pre-existing\nedited by fake gemini\n");
++  const changed = dispatch([], "gemini-success", { SMOKE_WRITE_FILE: join(workDir, "new.txt") });
++  h.check("gemini: fake edit appears as a Git-visible change without a commit",
++    changed.value.touchedFiles.includes("?? new.txt") &&
++    spawnSync("git", ["-C", workDir, "rev-parse", "--verify", "HEAD"], { encoding: "utf8" }).status !== 0);
++
++  // Build a minimal submodule fixture using object plumbing, not git add/commit.
++  const sub = h.freshRepo("gemini-submodule");
++  const git = (cwd, args, input) => {
++    const r = spawnSync("git", ["-C", cwd, ...args], { input, encoding: "utf8" });
++    if (r.status !== 0) throw new Error(r.stderr);
++    return r.stdout.trim();
++  };
++  const tree = git(sub, ["hash-object", "-t", "tree", "-w", "--stdin"], "");
++  const oid = git(sub, ["hash-object", "-t", "commit", "-w", "--stdin"], `tree ${tree}\nauthor Smoke <smoke@example.invalid> 1 +0000\ncommitter Smoke <smoke@example.invalid> 1 +0000\n\nfixture\n`);
++  git(sub, ["update-ref", "HEAD", oid]);
++  const subParent = h.freshRepo("gemini-submodule-parent");
++  const subCheckout = join(subParent, "sub");
++  git(subParent, ["clone", "-q", sub, subCheckout]);
++  git(subParent, ["update-index", "--add", "--cacheinfo", `160000,${oid},sub`]);
++  writeFileSync(join(subCheckout, "dirty.txt"), "pre-existing submodule dirt\n");
++  const withSubmodule = dispatch([], "gemini-success", {}, subParent);
++  h.check("gemini: dirty submodule snapshot matches final Git porcelain",
++    withSubmodule.run.status === 0 && withSubmodule.value.touchedFiles.some((line) => line.endsWith(" sub")) &&
++    JSON.stringify(withSubmodule.value.touchedFiles) === JSON.stringify(git(subParent, ["status", "--porcelain"]).split("\n")));
++  const noGitDir = join(h.scratch, "gemini-not-a-repo");
++  mkdirSync(noGitDir);
++  const noGit = dispatch([], "gemini-success", {}, noGitDir);
++  h.check("gemini: unavailable Git reporting is null, not clean []", noGit.run.status === 0 && noGit.value.touchedFiles === null);
++
++  const reusedOut = success.out;
++  const reused = spawnSync(process.execPath, [h.relayPath("gemini"), "--brief", h.briefPath, "--cd", workDir, "--out-dir", reusedOut], {
++    encoding: "utf8", env: { ...h.baseEnv, SMOKE_MODE: "gemini-garbled" },
++  });
++  h.check("gemini: reused out-dir cannot leak stale final report/result",
++    reused.status === 1 && h.result(reusedOut).finalPath === null && !existsSync(join(reusedOut, "final.txt")) &&
++    readFileSync(join(reusedOut, "events.jsonl"), "utf8") === '{"type":"result","status":');
++
++  const missing = dispatch([], "gemini-success", { PATH: "" });
++  h.check("gemini: missing binary exits 127 with complete unavailable contract",
++    missing.run.status === 127 && missing.value?.status === "gemini_unavailable" && missing.value.exitCode === 127 &&
++    missing.value.signal === null && missing.value.sessionId === null && missing.value.touchedFiles === null &&
++    missing.value.finalPath === null && missing.value.finalMessage === "");
++  for (const [mode, status, code] of [["gemini-version-fail", "failed", 7], ["gemini-version-fail-silent", "failed", 7], ["gemini-version-hang", "timeout", 124]]) {
++    const probe = dispatch(["--timeout", "1s"], mode);
++    h.check(`gemini: ${mode} preflight prevents dispatch`, probe.run.status === code && probe.value?.status === status &&
++      /version preflight/.test(probe.value.error) && /was not dispatched/.test(probe.value.error) && probe.capture === null);
++  }
++
++  h.check("gemini registry: canonical registry and shared smoke matrix stay in lockstep",
++    JSON.stringify(IMPLEMENTERS.map((impl) => impl.key).sort()) === JSON.stringify([...h.SKILLS].sort()) &&
++    IMPLEMENTER_BY_KEY.gemini.binary === "gemini" && IMPLEMENTER_BY_KEY.gemini.winShell === true);
++  const document = (dials) => JSON.stringify({ version: "delegate-fleet.v1", lanes: { ordinary: { implementer: "gemini", ...dials } } });
++  for (const mode of [undefined, "default", "auto_edit", "yolo", "plan"]) {
++    h.check(`gemini config: optional model and approval ${mode ?? "omitted"} accepted`,
++      parseConfigDocument(document(mode ? { permissionMode: mode, timeout: "90s" } : {})).ok === true);
++  }
++  for (const dials of [{ model: "bad & whoami" }, { permissionMode: "auto" }, { permissionMode: "plan&whoami" }, { readOnly: true }, { sandbox: "read-only" }, { effort: "high" }, { provider: "google" }, { timeout: "999999999h" }]) {
++    h.check(`gemini config: unsupported dial rejected ${JSON.stringify(dials)}`, parseConfigDocument(document(dials)).ok === false);
++  }
++
++  const setupDir = join(h.testDir, "..", "skills", "delegate-setup", "scripts");
++  const cfgHome = join(h.scratch, "gemini-config-home");
++  const laneFile = join(h.scratch, "gemini-lanes.json");
++  writeFileSync(laneFile, document({ model: "lane-model", permissionMode: "plan", timeout: "90s" }));
++  const fleetEnv = { XDG_CONFIG_HOME: cfgHome };
++  const setup = (script, args) => spawnSync(process.execPath, [join(setupDir, script), ...args], { encoding: "utf8", env: { ...h.baseEnv, ...fleetEnv } });
++  h.check("gemini lane: global config write succeeds", setup("config.mjs", ["write", "--scope", "global", laneFile]).status === 0);
++  const resolve = setup("lane.mjs", ["resolve", "--cwd", workDir, "--lane", "ordinary", "--implementer", "gemini"]);
++  h.check("gemini lane: permissionMode normalizes to approvalMode", resolve.status === 0 &&
++    JSON.stringify(JSON.parse(resolve.stdout).dials) === JSON.stringify({ model: "lane-model", timeout: "90s", approvalMode: "plan" }));
++  const lane = dispatch(["--lane", "ordinary"], "gemini-success", fleetEnv);
++  h.check("gemini lane: saved dials and global provenance reach dispatch", lane.run.status === 0 &&
++    h.pair(lane.capture.args, "--model", "lane-model") && h.pair(lane.capture.args, "--approval-mode", "plan") &&
++    lane.value.lane === "ordinary" && lane.value.laneSource === "global");
++  const override = dispatch(["--lane", "ordinary", "--model", "flag-model", "--approval-mode", "yolo", "--timeout", "1s"], "gemini-success", fleetEnv);
++  h.check("gemini lane: explicit model/approval/timeout flags win", override.run.status === 0 &&
++    h.pair(override.capture.args, "--model", "flag-model") && h.pair(override.capture.args, "--approval-mode", "yolo"));
++  const timeoutOverride = dispatch(["--lane", "ordinary", "--timeout", "1s"], "timeout", {
++    ...fleetEnv,
++    SMOKE_PID_FILE: join(h.scratch, "gemini-lane-timeout-pid"),
++    SMOKE_GRAND_PID_FILE: join(h.scratch, "gemini-lane-timeout-grandpid"),
++  });
++  h.check("gemini lane: explicit 1s watchdog overrides saved 90s timeout",
++    timeoutOverride.run.error === undefined && timeoutOverride.value?.status === "timeout" &&
++    timeoutOverride.value.exitCode !== 0 && /--timeout 1s/.test(timeoutOverride.value.error));
++  const wrong = setup("lane.mjs", ["resolve", "--cwd", workDir, "--lane", "ordinary", "--implementer", "cline"]);
++  h.check("gemini lane: wrong implementer fails loud", wrong.status === 2 && /use gemini-delegate/.test(wrong.stderr));
++  writeFileSync(laneFile, document({}));
++  h.check("gemini lane: approved project write accepts omitted model", setup("config.mjs", ["write", "--scope", "project", "--cwd", workDir, laneFile]).status === 0);
++  const project = dispatch(["--lane", "ordinary"], "gemini-success", fleetEnv);
++  h.check("gemini lane: project whole-lane replacement preserves Auto/default and relay approval default",
++    project.run.status === 0 && project.value.laneSource === "project" && project.value.model === null &&
++    project.value.approvalMode === "auto_edit" && !project.capture.args.includes("--model"));
++  writeFileSync(join(workDir, ".delegate", "config.json"), document({ permissionMode: "yolo" }));
++  const untrusted = dispatch(["--lane", "ordinary"], "gemini-success", fleetEnv);
++  h.check("gemini lane: changed project config fails closed before artifacts", untrusted.run.status === 2 &&
++    /not trusted/.test(untrusted.run.stderr) && !existsSync(untrusted.out));
++
++  // An isolated version-only fake proves discovery cannot accidentally dispatch.
++  const discoveryDir = join(h.scratch, "gemini discovery shim");
++  mkdirSync(discoveryDir);
++  const source = 'if (process.argv.slice(2).join(" ") !== "--version") process.exit(2); console.log("fake-gemini-version");';
++  if (h.WIN) {
++    writeFileSync(join(discoveryDir, "probe.cjs"), source);
++    writeFileSync(join(discoveryDir, "gemini.cmd"), `@"${process.execPath}" "%~dp0probe.cjs" %*\r\n`);
++  } else {
++    writeFileSync(join(discoveryDir, "gemini"), `#!${process.execPath}\n${source}\n`);
++    chmodSync(join(discoveryDir, "gemini"), 0o755);
++  }
++  const discover = spawnSync(process.execPath, [join(setupDir, "discover.mjs"), "--usage"], {
++    encoding: "utf8", env: { ...h.baseEnv, PATH: discoveryDir + delimiter + dirname(process.execPath), COMMANDCODE_BIN: "", LOCALAPPDATA: h.scratch, HOME: cfgHome, USERPROFILE: cfgHome },
++  });
++  const entry = discover.status === 0 ? JSON.parse(discover.stdout).discovered.find((impl) => impl.key === "gemini") : null;
++  h.check("gemini discovery: Windows npm shim/version works; auth/models/usage stay unknown",
++    entry?.version === "fake-gemini-version" && entry.authenticated === null && entry.models.status === "unsupported" && entry.usage === null &&
++    JSON.stringify(entry.supports) === JSON.stringify(["model", "permissionMode", "timeout"]));
++}
+diff --git a/test/relay/index.mjs b/test/relay/index.mjs
+index ad2dbe6f27f8f72200c40deb0cae1fb3737040c7..4425e40f8bbe4b09281c0a5f83b6d88410dfdb2c 100644
+--- a/test/relay/index.mjs
++++ b/test/relay/index.mjs
+@@ -23,10 +23,12 @@ import { runCopilot } from "./copilot.mjs";
+ import { runCommandcode } from "./commandcode.mjs";
+ import { runZcode } from "./zcode.mjs";
+ import { runGrokGitTrust } from "./grok-git-trust.mjs";
++import { runGemini } from "./gemini.mjs";
+ 
+ export const runners = [
+   ["package-shape", runPackageShape],
+   ["syntax", runSyntax],
++  ["gemini", runGemini],
+   ["codex", runCodex],
+   ["cline", runCline],
+   ["agy", runAgy],
+diff --git a/test/relay/orphan-stdio.mjs b/test/relay/orphan-stdio.mjs
+index 6d33d27fab3284917e21634d9aec4a5414881a98..4cc31a32f017783dae048573112933fb46ea9887 100644
+--- a/test/relay/orphan-stdio.mjs
++++ b/test/relay/orphan-stdio.mjs
+@@ -45,14 +45,17 @@ for (const skill of h.SKILLS) {
+         ...h.baseEnv,
+         SMOKE_MODE: "orphan-holds-stdio",
+         SMOKE_GRAND_PID_FILE: grandPidFile,
+-        SMOKE_ORPHAN_EXIT_DELAY_MS: "800",
++        // Gemini's npm shim startup counts against the watchdog. A 500 ms fake
++        // run plus startup still overlaps the 500 ms drain grace with the 1s
++        // watchdog, without depending on startup fitting inside just 200 ms.
++        SMOKE_ORPHAN_EXIT_DELAY_MS: skill === "gemini" ? "500" : "800",
+       },
+       encoding: "utf8",
+       timeout: 25_000,
+     });
+   const result = existsSync(join(outDir, "result.json")) ? h.result(outDir) : null;
+   h.check(`${skill} orphan-near-timeout: the relay exits`, run.signal === null);
+-  if (skill === "claude" || skill === "cline") {
++  if (skill === "claude" || skill === "cline" || skill === "gemini") {
+     // These relays treat a missing result event as failed even on a 0 child exit.
+     h.check(`${skill} orphan-near-timeout: the watchdog does not relabel the run as timeout (got ${result?.status})`,
+       result != null && result.status !== "timeout");
+diff --git a/test/relay/timeout-tree.mjs b/test/relay/timeout-tree.mjs
+index 40e704fcfbe87b936e6b01fb0b2880b29a11b784..88a42fd61e03c9c17254552f59b016bafe43aee1 100644
+--- a/test/relay/timeout-tree.mjs
++++ b/test/relay/timeout-tree.mjs
+@@ -6,6 +6,7 @@ export async function runTimeoutTree(h) {
+ const TIMEOUT_CASES = [
+   { skill: "claude", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+   { skill: "cline", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
++  { skill: "gemini", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+   { skill: "codex", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+   { skill: "opencode", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+   { skill: "grok", flags: ["--timeout", "6s"], exitDeadline: 45_000 },

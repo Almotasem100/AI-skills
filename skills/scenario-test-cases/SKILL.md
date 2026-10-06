@@ -66,6 +66,13 @@ which source governs; do not silently choose. LLD open questions remain open, no
   an expected result.
 - Do not generate Selenium, Playwright, Cypress, or other automation code unless separately requested.
 - Do not claim the scenarios were run or verified in a browser unless that actually happened.
+- When the owner asks for a **simple tester-facing handoff**, use this opt-in format:
+  - Write a short numbered list of user actions and observable expected results. Use Given / When / Then when requested or shown in the supplied example.
+  - Include only the cases the owner wants tested; do not try to provide exhaustive coverage.
+  - Omit the title, scope, source-authority section, citations, changelog, summary/coverage, and clarification/uncovered-requirement sections unless the owner asks for them.
+  - Do not include request-failure or negative-input cases unless requested. Intended no-op or hidden-control behavior may still be an expected result.
+  - Continue deriving expected behavior from approved sources, but do not mention design documents in the tester-facing list. If behavior is undecided, ask the owner separately or leave that case out; never guess or put the question in the test list.
+  - These presentation rules override the default output sections above only; they do not change source authority, resolve open requirements, or permit invented behavior. The detailed, traceable format remains the default when simple handoff mode is not requested.
 
 ## What this skill does not do
 

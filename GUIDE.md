@@ -30,11 +30,12 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
 > `/grill-with-docs new approval workflow for checklists, write CONTEXT.md under C:\...\HDC\documents`
 
-**`create-lld`: functional and technical design.** Big ticket, after the grill. With customer slides, it drafts
-two separate documents: a Functional Design (what users and business processes should observe) and an LLD (how
-the software will implement it). Without slides, it writes only the LLD unless you ask for both. **Retro** mode
-documents finished work and flags slide-vs-code differences.
-> "Write the Functional Design and LLD for CADE-1234, ticket 38939409 'Navbar'. Slides: C:\path\customer.pptx"
+**`create-lld`: forward LLD and later as-built Technical Design.** After requirements are settled, it drafts a
+concise architect-facing LLD before the plan/implementation. It can also prepare a customer-facing Functional
+Design when the project workflow requires one. After the approved plan is implemented, invoke its Technical
+Design mode to summarize the built solution for Architect review. Source materials and code are inspected
+internally; deliverables omit attachment citations and source-code paths/lines.
+> "Write the LLD for CADE-1234, 'Navbar', from these requirements. Release R4, Sprint 1."
 
 ### 🧭 Planning before implementation
 **`plan-review`:** a one-shot, read-only critique of a plan, working session scratchpad, or existing handoff.
@@ -395,8 +396,8 @@ Same tail, with more up front:
    - **Not yet seen:** it writing `CONTEXT.md` entries (the trial stopped before any term was settled).
    - **Small tickets:** it runs on any size, but use `grill-me` there. `grill-with-docs` is the same interview
      plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
-2. **`create-lld`**, forward mode: *"write the LLD for CADE-1234, internal ticket 38939409 'Navbar':
-   <description>. Slides: C:\path\customer.pptx."* The status stays `Draft` until you approve it.
+2. **`create-lld`**, forward mode: *"write the LLD for CADE-1234, 'Navbar', from the approved requirements."*
+   The LLD stays `Draft` until you approve it; the plan follows that approval.
 3. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
    challenge and respond in a shared scratchpad. Review the scratchpad and resolve open decisions before
    implementation; then implement in slices and continue with steps 3–6 above.
@@ -405,8 +406,8 @@ Same tail, with more up front:
    `--dry-run` it posts it. *"debate-review --local"* reviews your working tree before a PR exists.
 
 ### Any time
-- **`create-lld`**, retro mode, for finished work: *"write a retro LLD for this branch. CADE-1234, internal
-  ticket 38939409."*
+- **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
+  CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
 - **`scenario-test-cases`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
   requirements and the LLD; check for the implementation-task handoff too."* Or call the skill by name. It uses
   numbered Scenario headings with Given / When / Then / And; each case traces to its sources. It writes no

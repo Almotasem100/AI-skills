@@ -70,6 +70,16 @@ and its decisions feed the PR's reviewer notes.
   to project documents. This is a working draft, not a new project document or a replacement for the closeout
   record; the existing handoff remains available when another session needs to continue a specific task.
 
+## Concise Jira design artifacts (owner, 2026-10-05)
+- One Jira ticket is the design unit even when internal/CB tracking divides the work into stages or child records.
+- Forward LLD: before plan approval/implementation; concise and architect-facing, with only essential component/API
+  boundaries. Functional Design: customer-facing observable behavior, without duplicate Purpose/Scope, Status, or
+  a link to the LLD. Post-implementation Technical Design: concise as-built summary for Architect review.
+- Supplied requirements material and source code may be inspected internally, but deliverables must not cite input
+  attachment names/pages or source-code paths/line numbers. Keep trace evidence in working notes. Avoid lengthy
+  rationale, alternatives essays and file-level implementation detail.
+- `docs-guard` remains unchanged; it continues to verify source claims internally.
+
 ## Team repo (`gisacc_ai_tools`, reviewed 2026-09-25)
 Two Gemini-oriented skills: `backend-utils` (the team's Spring backend-template library; not used by HDC) and
 `str-ui` (the team's PrimeNG-based Angular library; no Artifactory access and no Angular 20 build, so reference

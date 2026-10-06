@@ -10,6 +10,12 @@ HDC's canonical instructions are `HDC-documents/README.md`; its current state an
   unverified work, created or changed files, and open items in the current HDC session scratchpad.
 - Use only `HDC-documents/current-session/scratchpad.md`, with session inputs adjacent in the fixed folder.
   Read/reuse unfinished work across chat/model handoffs; do not create another dated scratchpad or archive.
+- Put session-created working documents and visual artifacts (plans, briefs, design drafts, review findings,
+  reports, diagrams and charts), whether authored by the orchestrator or a delegate, in
+  `HDC-documents/current-session/`, not an agent's temporary directory. Delegates may create supporting artifacts
+  there but must not edit the live scratchpad; the orchestrator reviews and incorporates their findings. Code,
+  tests, approved project-document deliverables, execution logs, compiled outputs and worktrees use their approved
+  repository or tool locations; relay metadata may remain in tool-managed temporary storage.
 - At closeout, use that scratchpad as the source record. Add/reconcile its closeout details in place; **do not
   create a second closeout report**. Preserve the scratchpad's existing structure; add a concise citation-check
   result if it has no place to record one.
@@ -41,8 +47,10 @@ Read the target section before proposing a write-back. Do not refresh every proj
   for the HDC docs and code repositories containing cited files. Any STALE citation blocks completion.
 - Clear only the approved contents of `HDC-documents/current-session/`, including the scratchpad and inputs,
   after the feature or agreed bounded non-feature task is complete, approved write-backs are reconciled and
-  verification/citation checks pass. Follow the canonical README's cleanup approval/inventory rule. If work,
-  approval or verification is pending, retain everything and report that closeout is not finished.
+  verification/citation checks pass. Then present the exact cleanup inventory and explicitly ask the owner
+  whether they want those contents cleared. Clear only after an explicit yes; if declined, retain them. Follow
+  the canonical README's cleanup approval/inventory rule. If work, write-back approval or verification is pending,
+  retain everything and report that closeout is not finished.
 - Keep external temporary directories and registered worktrees outside current-session cleanup. Inventory
   them separately and obtain exact cleanup approval; use Git's worktree operations for registered worktrees.
 - Closeout alone does not authorize staging, committing, pushing, deploying, dispatching or changing GCP

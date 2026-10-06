@@ -48,6 +48,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `manifest.md` | Third-party skills: source, pinned commit, status |
 | `skills/` | My own skills, one folder each with a `SKILL.md` |
 | `vendor/` | Copied third-party skills I may modify, each with an `UPSTREAM.md` (source, base commit, my changes) and, when changed, a `local-changes.patch` |
+| `overlays/` | Local contributions/patches kept separate from upstream/vendor snapshots; each overlay documents its base and application procedure |
 | `delegates/` | Delegate lane configs: which CLI and model does which job |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
 | `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `hdc-session-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically), and `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
@@ -85,7 +86,7 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `create-lld` | **Updated 2026-10-01:** when slides are supplied, drafts a companion Functional Design beside the LLD. Existing scripts tested; the new paired output has not yet been tested on a real ticket | Forward: pasted ticket + slides + code → a Functional Design of expected behavior plus an LLD of technical design. Retro: finished diff + ticket → LLD; with slides, also documents functional behavior and flags differences from implementation. Unknowns remain `[NEEDS INPUT]` |
+| `create-lld` | **Updated 2026-10-05:** concise Jira-only LLD, customer-facing Functional Design, and separate as-built Technical Design after implementation. Checker passed on the approved HDC LLD; all 8 source files hash-match both host copies. Native skill invocation remains untested. | Forward: Jira ticket + approved requirements → LLD before plan/implementation, plus Functional Design when required. After implementing the approved plan → concise as-built Technical Design for Architect review. |
 | `scenario-test-cases` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
 | `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
@@ -126,20 +127,23 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 
 **Use:**
 - **Forward**, before the work:
-  > write the LLD for CADE-1234, internal ticket 38939409 "Navbar": <paste the description>. Slides attached:
-  > C:\path\customer.pptx. Release R2.23, designer Mohamed. Save it in my docs folder.
-- **Retro**, for finished work:
-  > write a retro LLD for this branch. CADE-1234, internal ticket 38939409 "Navbar".
+  > write the LLD for CADE-1234, "Navbar", from the approved requirements. Release R4, Sprint 1. Save it in my docs folder.
+- **Technical Design**, after implementing the approved plan:
+  > write the as-built Technical Design for CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review.
 
-When slides are supplied, the agent drafts both a Functional Design (expected behavior) and an LLD
-(technical design); without slides it drafts only the LLD unless you ask otherwise. It runs the LLD checker
-and asks at most 5 questions in one message: the decisions to confirm and the most important `[NEEDS INPUT]`
-gaps. Both statuses stay `Draft` until you approve them.
+The LLD is drafted before the plan/implementation. A Functional Design is prepared when the project workflow
+requires it or you ask; it is customer-facing and does not duplicate Purpose/Scope already in the requirements
+document. After implementation of the approved plan, ask for an as-built Technical Design for Architect review.
+The skill inspects supporting materials and code internally, but deliverables use the Jira ID only and do not
+cite attachment names or source-code files/lines. The LLD checker runs before presentation; drafts remain
+unapproved until you approve them.
 
 **What it guarantees:**
-- Every design statement names what it touches.
-- Every decision has a real alternative and a reason.
-- No invented numbers, reasons or test results; they show as `[NEEDS INPUT]`.
+- The LLD contains the essential component/API boundaries, without file paths or line citations.
+- Functional Design describes observable customer behavior, not technical implementation.
+- Technical Design documents the implemented result, and reports only verified checks.
+- Supporting artifacts and source code are used as internal evidence, not cited in the deliverables.
+- No invented requirements, decisions, measurements, deviations or test results; unresolved items remain explicit.
 - No "N/A".
 - Nothing written inside a code repository unless you say so.
 
@@ -223,9 +227,10 @@ where `debate-review` looks for the delegate relays.
 
 Gemini CLI: `/skills reload` afterwards.
 
-`gemini-delegate` is currently a local, unpublished contribution branch in the separate upstream clone, not
-part of the vendored snapshot or this install list. Its live relay trial passed once in a disposable repo;
-see `docs/roadmap.md` before treating it as a generally available relay.
+`gemini-delegate` is currently a local, unpublished contribution in a separate upstream clone. Its complete
+worktree delta is preserved as a base-pinned patch in [`overlays/gemini-delegate/`](overlays/gemini-delegate/);
+it is not part of the vendored snapshot or this install list. Its live relay trial passed once in a disposable
+repo; see `docs/roadmap.md` before treating it as a generally available relay.
 
 **Use**
 1. **Set up lanes once per machine:** *"set up my delegation lanes"* → `delegate-setup` finds the installed

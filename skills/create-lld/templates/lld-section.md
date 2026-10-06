@@ -1,55 +1,41 @@
-<!--
-LLD section template — approved 2026-09-25.
-Written for an architect who reviews the design and gives an opinion. One section per ticket; it pastes into
-the team's per-release technical design document.
-
-Rules:
-- Every design statement names the class, endpoint, table, component or file it touches.
-- Scale to the ticket. Small ticket: sections 1, 2, 4 and/or 5, and 7; section 3 only if a real choice was made.
-  Remove sections that don't apply — never write "N/A".
-- Never invent what the code or the inputs can't show (reasons, rejected alternatives, measurements, test
-  results). Write [NEEDS INPUT] instead. In retro mode this applies especially to section 3.
+﻿<!--
+Concise forward LLD for one Jira ticket, written for an Architect.
+Use source material internally; do not cite input artifacts or source-code files/lines in the deliverable.
+Include only applicable sections. Keep technical detail to the component/API boundary needed for review.
 -->
 
-[<JIRA-ID>][<Story|Bug|Enabler|Technical>] <Title> · Internal ticket: #<internal-id>
+# LLD — <JIRA-ID>: <Title>
 
-**Release / Sprint:** <release> / <sprint> · **Tech designer:** <name> · **Status:** Draft | In review | Approved
+**Release / Sprint:** <release> / <sprint> · **Tech designer:** <name(s)> · **Status:** Draft | In review | Approved
 
 ## 1. Context
-<!-- The problem and the current state, with evidence: numbers, file:line, observed behaviour. 3–6 lines. -->
+<!-- One short statement of the problem and intended change. No attachment or source-code citations. -->
 
 ## 2. Objectives & constraints
-<!-- One bullet each: **Objective or constraint:** one-line explanation. -->
+<!-- Concise outcomes and constraints for this Jira ticket. -->
 
 **Out of scope:**
-<!-- What this change deliberately does not do. -->
+<!-- Only scope boundaries that are not already clear from the approved requirements. -->
 
 ## 3. Key decisions
-| Decision | Chosen | Alternatives considered | Why |
+| Area | Planned design | Alternative or deferred option | Key boundary |
 |---|---|---|---|
-| <!-- e.g. Where the freshness check lives --> | | | |
+| <!-- Meaningful decision --> | | | |
 
 ## 4. Backend design
-### 4.1 Data model & migrations
-### 4.2 API contract
-<!-- For each new or changed endpoint: method, path, request, response, status codes. Mark breaking changes. -->
-### 4.3 Services & logic
-### 4.4 Background jobs
-<!-- Cron jobs, task queues, async workers. -->
+<!-- Essential API, data, and service boundaries only; omit if not applicable. -->
 
 ## 5. Frontend design
-### 5.1 State & services
-### 5.2 Components & UI
-### 5.3 Routing & guards
+<!-- Essential component, state, and navigation boundaries only; omit if not applicable. -->
 
 ## 6. Impact & risks
-| Area | Impact | Mitigation |
-|---|---|---|
-| <!-- Compatibility / Performance / Security & permissions / Data --> | | |
+<!-- Only material impacts or risks and their handling. Keep brief. -->
 
 ## 7. Verification plan
-<!-- One observable check per line: "Verified <behaviour> <outcome>." This becomes the PR's "How it was tested". -->
+<!-- Observable checks to perform after implementation; do not imply they have run. -->
 
 ## 8. Rollout & rollback
+<!-- Include only if relevant to the Jira change. -->
 
-## 9. Open questions for the reviewer
+## 9. Open questions
+<!-- Only consequential decisions still awaiting the owner or reviewer. -->
