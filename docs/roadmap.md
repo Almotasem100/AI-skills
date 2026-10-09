@@ -5,10 +5,21 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-05 — updated `create-lld` artifact roles/output rules after owner review; canonical and both host copies are synchronized, and the checker passes on the approved HDC LLD. Native agent selection/invocation remains untested. Prior updates record HDC closeout guidance and the initial plan/security skills._
+_Last updated: 2026-10-09 — refreshed vendored delegate/review skills from their recorded upstream bases, preserving local patches; orchestration refactor remains on `refactor/orchestration-contract` pending HDC-document alignment before any PR._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
+
+## Vendor refresh — 2026-10-09
+
+On `refactor/orchestration-contract`, refreshed `vendor/amElnagdy/delegate-skills` from base
+`6826b363085dcc80875372315fe7d208c4bf733f` to upstream `8ef02103ad99b53801f2b13d04755313fbbfafb2`, and
+`vendor/amElnagdy/review-skills` from base `5b748c654bb060ef6bf86d0e7ae123979082a88a` to upstream
+`3cfce3963b4d4d99a8b9059f1ece6726405b7bd3`. Delegate changes include Windows/Node 24 launch fixes and
+OpenCode 2.x/catalog compatibility; review-skills adds `debate-review --check`. The delegate documentation-link
+patch and review-skills `babysit-pr` ask-before-publish patch remain intact. Upstream push CI is green for both
+selected heads. No PR was opened; the orchestration branch remains the integration point until the stable HDC
+snapshot is audited.
 
 ## Active owner-approved plan
 1. **Gemini CLI implementer (local upstream contribution; real-use trial complete):** Gemini skill listing and explicit invocation have been tested; the owner reports months of successful Gemini CLI use, including Auto and its quotas. Earlier Gemini → OpenCode delegation proved Gemini can orchestrate an existing implementer, but did not let Gemini itself act as an implementer. The owner approved adding `gemini-delegate` to Ahmed Nagdy's upstream `delegate-skills`, including lane-registry support. Work remains uncommitted and unpublished on local branch `feature/gemini-delegate` in a separate upstream clone now located at `../delegate-skills-gemini`; its complete 24-file worktree delta is also preserved as `overlays/gemini-delegate/changes.patch`, pinned to base `6826b363085dcc80875372315fe7d208c4bf733f` in this personal repo. The vendored snapshot is untouched. Sol 6.1 implemented the relay and lane integration. Native Windows `gemini --help` / `--version`, relay `--help`, focused fake-CLI checks, and `node test/relay-smoke.mjs --only gemini,package-shape,syntax` passed. On 2026-10-01, the owner approved a live relay trial in a disposable temp Git repo: Gemini CLI 0.62.0, default Auto (`initialModel: auto`), `auto_edit`; it added a bounded `clamp` helper and tests in the two briefed files. The relay completed successfully, the diff matched scope, and an independent `node --test test/math.test.mjs` passed 5/5. The disposable repo contains only its local baseline commit; no Gemini-produced commit or upstream contribution commit/push was made. This did not test Gemini's natural skill selection or lane dispatch. The full `node test/relay-smoke.mjs` gate is not green: five non-Gemini `orphan-near-timeout` cases failed (Claude, OpenCode, Cursor, Copilot, ZCode). Source inspection shows this uses fake CLIs with a 1-second watchdog and a deliberately near-deadline exit; it is not a live Gemini request or an approval prompt. Launch/drain timing is implicated, but the suite has not been fixed or rerun. Gemini's own fake-CLI near-timeout case passed in that run. `npx skills add . --list` remains unrun because it would download the Skills CLI. **Next:** use Gemini on bounded, disposable local tasks and review each diff; decide whether to propose the upstream branch after more real use. No contribution-branch commit or push is authorized.
