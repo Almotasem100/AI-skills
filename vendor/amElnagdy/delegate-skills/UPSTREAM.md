@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Source | https://github.com/amElnagdy/delegate-skills |
-| Base commit | `6826b363085dcc80875372315fe7d208c4bf733f` (upstream commit dated 2026-09-20) |
+| Base commit | `8ef02103ad99b53801f2b13d04755313fbbfafb2` (upstream master dated 2026-10-07) |
 | Copied | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
 | Local changes | One documentation-only link and repository-root update, described below and saved in local-changes.patch. |
@@ -26,12 +26,19 @@ The upstream README and contribution guide used relative issue/PR links. In this
   for Gemini and other models before writing any relay of my own.
 - The other relays stay in the copy (so upstream diffs apply cleanly) but are unused.
 
+## Upstream update — 2026-10-09
+
+Synced upstream `6826b363085dcc80875372315fe7d208c4bf733f..8ef02103ad99b53801f2b13d04755313fbbfafb2`.
+Reviewed the changed relay/setup scripts before taking the update. The material changes are Windows/Node 24
+shell-launch compatibility, OpenCode 2.x `--pure` handling, OpenCode catalog model IDs containing `@` / `~`,
+and native-Windows Claude verification. The existing documentation-only local link changes were preserved.
+
 ## Taking an upstream update
 1. Clone upstream to a temp folder and look at what changed:
-   `git -C <clone> log --oneline 6826b363..HEAD` and `git -C <clone> diff 6826b363..HEAD --stat`
+   `git -C <clone> log --oneline 8ef02103..HEAD` and `git -C <clone> diff 8ef02103..HEAD --stat`
 2. Read the changed scripts (same review as above).
 3. Apply the changes on top of my copy, keeping my local changes:
-   `git -C <clone> diff 6826b363..HEAD | git apply --3way --directory=vendor/amElnagdy/delegate-skills`
+   `git -C <clone> diff 8ef02103..HEAD | git apply --3way --directory=vendor/amElnagdy/delegate-skills`
    (run from the root of the AI-skills repo). If a file I changed locally was also
    changed upstream, `git apply` can reject it: merge that one file by hand.
 4. Re-apply `local-changes.patch` if it exists and a file it touches changed.

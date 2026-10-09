@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Source | https://github.com/amElnagdy/review-skills |
-| Base commit | `5b748c654bb060ef6bf86d0e7ae123979082a88a` (upstream commit dated 2026-08-26) |
+| Base commit | `3cfce3963b4d4d99a8b9059f1ece6726405b7bd3` (upstream master dated 2026-10-09) |
 | Copied | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
 | Local changes | **1** — `babysit-pr` asks before publishing. Diff in `local-changes.patch`. |
@@ -33,8 +33,14 @@ Worth proposing upstream as an option (e.g. an "ask before publish" mode), so th
 - `babysit-pr` (core): the Copilot / review-thread loop.
 - `debate-review` (optional): big tickets only; two models cost tokens.
 
+## Upstream update — 2026-10-09
+
+Synced upstream `5b748c654bb060ef6bf86d0e7ae123979082a88a..3cfce3963b4d4d99a8b9059f1ece6726405b7bd3`.
+The upstream change adds `debate-review --check` so configured reviewer lanes can be started and validated
+before a PR needs them. It does not touch `babysit-pr`, so the local ask-before-publish safety change remains intact.
+
 ## Taking an upstream update
-As in `delegate-skills/UPSTREAM.md`, with base `5b748c65`. After applying upstream changes, check whether
+As in `delegate-skills/UPSTREAM.md`, with base `3cfce396`. After applying upstream changes, check whether
 `skills/babysit-pr/SKILL.md` changed; if so, re-apply `local-changes.patch`
 (`git apply --3way --directory=vendor/amElnagdy/review-skills local-changes.patch`) and re-read the result, since
 upstream may have added new autonomous push or post steps.
