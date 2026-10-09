@@ -23,9 +23,10 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 - The scratchpad is a working draft, not a project document of record or a substitute for a task handoff or
   session closeout. This skill never edits the scratchpad, plan, handoff, code, or project documents, and never
   proposes applying document changes without owner approval.
-- The orchestrator is the only writer of a shared session scratchpad. Owner-authorized reviewers may read it only
-  when the host can enforce read-only access; otherwise provide an immutable snapshot. This skill itself does not
-  dispatch reviewers; any delegated review must follow the separate `plan-debate` workflow.
+- When reviewing a shared session record, do not edit it. Use enforced read-only access when available; when a real
+  containment boundary requires read-only access but the host cannot enforce it, use an immutable snapshot of the
+  relevant material instead. This skill itself does not dispatch reviewers; any delegated multi-reviewer exchange
+  follows the separate `plan-debate` workflow.
 
 ## Review
 
@@ -59,6 +60,7 @@ Return a concise review in the conversation, not edits to files:
 - **Risks and questions:** residual risks after proposed fixes and a short, prioritized set of questions for
   the owner. Do not silently answer open questions or turn a suggested choice into an approved one.
 
-If no blocker is found, say only that none was found in the inspected material, name significant unverified
-sources or limits, and leave the go/no-go decision with the owner. Do not dispatch other reviewers or implement
-anything as part of this skill.
+If no blocker is found, say that none was found in the inspected material and name significant unverified
+sources or limits. Return control to the calling workflow. A clean review is not proof of safety and does not
+itself authorize unrelated work, but it also does not cancel an existing workflow authorization or create a new
+approval gate. This skill does not dispatch other reviewers or implement anything itself.
