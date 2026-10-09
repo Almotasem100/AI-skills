@@ -62,22 +62,44 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 `install.ps1` will later turn that block into one command.
 
 ## The workflow
-The manually selected, active model is the **orchestrator by default**: it takes the owner's orders, discusses
-tradeoffs, pushes back with reasons when warranted, and does intake, grilling, and planning itself. It delegates
-only when the owner explicitly orders delegation. Never call Claude Opus or Sonnet unless the owner explicitly
-names one for that specific task; availability is not permission. A request to debate or review does not itself
-authorize those model calls.
 
-Two tracks that share the same tail:
+The active model is the **orchestrator by default**. It coordinates work rather than owning every specialist
+artifact itself: understand the objective, choose the smallest sufficient workflow, resolve required roles to
+configured delegation lanes, track progress and exceptions, and move the authorized work forward.
 
-- **Small ticket:** grill-me → implement → guards → review → PR.
-- **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
+Delegation is role-based. Skills and workflow descriptions refer to roles such as planner, implementer,
+reviewer or tester; the lane configuration decides which CLI, provider, model and supported effort currently
+fills that role. Changing the model behind a lane must not require rewriting the workflow or skill.
 
-The tail: when directed, delegate a bounded slice (name model + effort where supported; Gemini Auto is owner-approved) → guards + linters + git pre-commit hook
-→ `two-axis-review` → describe PR → babysit PR, and `session-closeout` to end the session (plus `handoff`
-when the next session has one specific task). The URL map
-(`tools/url-map`) runs underneath as the code map. The LLD skill can be called on any ticket, in forward mode (before
-the work) or retro mode (documenting finished work).
+A request authorizes the normal internal progression needed to achieve its stated outcome and scope unless the
+owner gives an explicit checkpoint. Do not stop merely because one routine stage completed. Stop when the
+requested outcome is complete, at an owner-requested checkpoint, or when a genuine exception requires a
+decision or new authorization.
+
+The workflow is composed from reusable stages rather than one mandatory pipeline. Choose the **smallest
+sufficient workflow** for the task and adapt it when investigation changes the apparent complexity.
+
+Examples:
+
+- **Small bug:** reproduce/diagnose → implement → focused test → verify.
+- **Bounded enhancement:** clarify intent as needed → lightweight plan → implement → review/test → verify.
+- **Large feature or ticket:** requirements/grilling → Functional Design/LLD where required → plan →
+  plan review/debate where justified → implementation slices → guards/review → build/tests → routine fixes and
+  re-verification → required documentation/closeout.
+
+Stages that add no value for the current task may be skipped. A task that grows in risk or scope may escalate
+to a stronger workflow; a task that proves simpler may shrink. Completion is defined by the requested outcome
+and appropriate verification, not by traversing every available stage.
+
+A delegated role owns its assigned artifact or bounded change. The orchestrator does not recreate a planner's
+plan or an implementer's code as a verification technique; use independent review, guards and deterministic
+checks for that purpose. Give workers the minimum useful context and canonical source access their role needs.
+Use frozen snapshots or isolated worktrees only when an actual access or concurrency boundary requires them.
+
+Routine lanes are selected automatically from configuration. The owner may always override the inferred route,
+participants, workflow boundary or checkpoint. The URL map (`tools/url-map`) can run underneath as the code map.
+The LLD skill remains available in forward mode before implementation or retro mode for documenting completed
+work.
 
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
@@ -182,15 +204,16 @@ not a project document of record or a replacement for `handoff` or `session-clos
   assertions. It does not edit the plan or scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
   handoff."*
-- **`plan-debate`:** the orchestrator alone writes the shared scratchpad. Owner-authorized delegates may read it
-  read-only when the host can enforce that; otherwise they receive an immutable snapshot. They return separate
-  Markdown findings or an authorized `minipad.md`; the orchestrator attributes and merges results. Delegates never
-  edit the shared scratchpad.
-  The owner chooses any delegated author/reviewers; the active orchestrator drafts by default. Dispatch only
-  reviewers explicitly authorized for this task, and disclose unavailable reviewers without substitution. In
-  particular, do not call Opus or Sonnet unless the owner names one for this specific task. Ask naturally, e.g.
-  *"Have Gemini and Opus independently review this plan; return separate findings and don't give them scratchpad
-  access."* It stops before applying anything to project documents. A clean debate is not proof of safety.
+- **`plan-debate`:** structured multi-role challenge/response around a proposed plan. The orchestrator coordinates
+  the exchange and is the sole writer of the shared coordination scratchpad; that does **not** make it the plan
+  author. The workflow selects a plan-author role and the required challenge/independent-review roles from
+  configured lanes unless the owner explicitly chooses participants. Reviewers return attributed findings and
+  the plan author responds to them; the orchestrator routes the rounds, records state and escalates only material
+  unresolved decisions. Give each participant only the context and source access needed for its role. Use an
+  immutable scratchpad/plan snapshot when an enforced read-only boundary is required and unavailable on the live
+  record. The skill itself stops before implementation, but a clean debate does not create a new approval gate:
+  an already-authorized parent workflow may continue unless the owner requested a checkpoint or a genuine blocker
+  remains. A clean debate is not proof of safety.
 
 Neither skill reviews code or PRs; use `two-axis-review`, `debate-review`, or `babysit-pr` for those workflows.
 
