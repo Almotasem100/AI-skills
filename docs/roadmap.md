@@ -24,12 +24,12 @@ snapshot is audited.
 ## Matt Pocock selective refresh — 2026-10-10
 
 Reviewed upstream `mattpocock/skills` from `c55ee460` to `49dd158d` (73 commits). Updated the vendored
-`two-axis-review` from current upstream `code-review` while preserving the local rename, and advanced the
-unchanged/source-installed pins for `grill-me`, `grilling`, and `handoff` to `49dd158d`. Deliberately kept
-`grill-with-docs` and `domain-modeling` at `c55ee460` until the stable HDC documents snapshot is audited:
-upstream changed their glossary file contract from `CONTEXT.md` / `CONTEXT-MAP.md` to `GLOSSARY.md` /
-`GLOSSARY-MAP.md`, which may conflict with HDC's current project-specific documentation conventions. No HDC
-files or user-level installed skill copies were changed in this refresh.
+`two-axis-review` while preserving the local rename and advanced `grill-me`, `grilling`, and `handoff`.
+After the stable HDC audit, also advanced `grill-with-docs` and `domain-modeling` to `49dd158d`. Their new
+`GLOSSARY.md` / `GLOSSARY-MAP.md` + ADR working-file contract fits HDC only when run from
+`HDC-documents/current-session/`; accepted durable decisions still reconcile into
+`HDC_Architecture_Decisions.md`. Source/install guidance is updated; user-level installed Pocock copies have not
+been re-copied or natively tested after this pin bump.
 
 
 ## HDC orchestration alignment — 2026-10-10
@@ -103,9 +103,7 @@ configure, or trial them before then:
   ready; begin read-only and keep posting/replies explicitly approval-gated.
 - **Documentation lookup MCP:** retrieve authoritative framework/library documentation when API verification is
   useful (for example, Context7 or an equivalent verified source).
-- **OpenCode plugin concepts:** stage commands that preserve user approval gates; optionally investigate a strict,
-  explicit delegation-consent guard. Do not build a brittle guard that tries to infer consent from natural-language
-  wording; first verify OpenCode V2 offers a reliable enforcement point.
+- **OpenCode plugin concepts:** stage commands that preserve workflow authorization and external-action gates; optionally investigate route observability or guards against unconfigured/materially different substitutions. Do not add a per-dispatch delegation-consent gate that would reintroduce manual orchestration.
 
 For every candidate, review maintainer/provenance, data handling, least-privilege scopes, credential storage,
 project-vs-global exposure, context/token cost, and maintenance burden. Prefer read-only and project-scoped access;
@@ -142,7 +140,7 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | `skills/describe-pr` | v1.1 (2026-09-26) | Scripts tested on two real repos; full flow run by hand in Claude. **Tested natively in Codex** (picked without being named; fixed a paraphrasing bug, see item 2). Not yet in Gemini CLI. PR creation through `gh` not tested (no `gh` on the laptop) |
 | `skills/create-lld` | v1 built | Checker, slide extraction and retro mode tested; DC-459 retro LLD passes. Forward mode on a new ticket not yet run. Not yet tested natively or in Gemini CLI |
 | `vendor/amElnagdy/*` | Copied, reviewed | Base commits in each `UPSTREAM.md`. Local change: `babysit-pr` asks before pushing or posting |
-| Pocock skills | Pinned `c55ee460`, installed (2026-09-25). **`grill-me`/`grilling` and `two-axis-review` used for real on 2026-09-26** (url-map); `grill-with-docs` trialled 2026-09-26 (round 1 only); `handoff` used 2026-09-26 (B9 audit brief) | Five pinned (`grill-me`, `grilling`, `grill-with-docs`, `domain-modeling`, `handoff`); `code-review` moved to `vendor/mattpocock/skills/` and **renamed `two-axis-review`** (clash with Claude's built-in; after the rename Claude lists both). Plain copies in `~/.claude/skills` and `~/.agents/skills`, `diff -r` identical to the source. **Not yet run** in any agent |
+| Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `current-session/` workspace. |
 | `GUIDE.md` | Written (2026-09-25), updated 2026-10-01 | Install + use for every skill, any agent; §4 names model and effort where supported, with owner-approved Gemini Auto exception; real-use notes for `grill-me`, `two-axis-review`, `grill-with-docs`, `handoff`; quick start and tool instructions. Gemini relay trial is documented separately; the local contribution is not in the normal install list. |
 | `AGENTS.md` | Revised 2026-09-28 | Clarifies the v1 freeze, repository rules, validation claims, authorization boundaries, and HDC safety gates; no workflow or design decisions changed |
 | `tools/json-compare/`, `tools/url-map/` | Built (2026-09-26) | See item 3. HDC outputs live in `HDC\HDC\documents\` |
@@ -152,7 +150,7 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | `delegates/` (lane configs) | Empty | Filled when `delegate-setup` first runs on the workstation |
 | `install.ps1` | Not written | Waits for the workstation's agent list |
 | AI-skills Git repo | Initialized | Destination repo has a starter commit; remote privacy is not verified. Migrated files await owner review and commit |
-| Installed on this laptop | `~/.claude/skills` and `~/.agents/skills` were previously read by Codex; `create-lld`/`describe-pr` were seen in `~/.agents/skills` at 00:18 on 2026-09-26, with copies identical to `skills/`. On 2026-09-30, installed 17 curated skills into both roots; inventories and `SKILL.md` files match. Gemini CLI 0.61.0 listed all 17; current CLI reports 0.62.0. Explicit `clean-code-guard` invocation succeeded read-only with the approved persistent `context.includeDirectories` setting and model `auto`. Explicit `opencode-delegate` invocation from Gemini completed a read-only dispatch through OpenCode v2.0.20 using `openai/gpt-6-luna#medium`. Natural selection remains inconclusive; write-capable delegation and OpenCode discovery remain untested. Includes the available `agy` and OpenCode delegate skills; pinned Pocock skills copied from exact commit `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` | **Copies**: re-copy after every change. Delegation lanes remain unconfigured; run `delegate-setup` after the implementer map is approved |
+| Installed on this laptop | `~/.claude/skills` and `~/.agents/skills` were previously read by Codex; `create-lld`/`describe-pr` were seen in `~/.agents/skills` at 00:18 on 2026-09-26, with copies identical to `skills/`. On 2026-09-30, installed 17 curated skills into both roots; inventories and `SKILL.md` files match. Gemini CLI 0.61.0 listed all 17; current CLI reports 0.62.0. Explicit `clean-code-guard` invocation succeeded read-only with the approved persistent `context.includeDirectories` setting and model `auto`. Explicit `opencode-delegate` invocation from Gemini completed a read-only dispatch through OpenCode v2.0.20 using `openai/gpt-6-luna#medium`. Natural selection remains inconclusive; write-capable delegation and OpenCode discovery remain untested. Includes the available `agy` and OpenCode delegate skills; the installed Pocock copies were historically sourced from `c55ee460`, while the repository pins are now `49dd158d` and need re-copying before installed-version claims are updated. | **Copies**: re-copy after every change. Configured lanes should be verified by real dispatch before depending on them. |
 
 ## Original v1 backlog (parked)
 _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install.ps1) come before the trials._
@@ -320,8 +318,7 @@ reasoning, not just the list. The owner decides.
   open files itself.
 - `create-lld`: `.pptx` is read by script; PDFs and images depend on the agent (fallback: `pdftotext`, then
   screenshots).
-- Pocock `grill-with-docs` writes `CONTEXT.md` and `docs/adr/` at the working root: run it from a docs folder,
-  never a code repo that restricts new files.
+- Pocock `grill-with-docs` now writes `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files at its working root. For HDC, run it from `HDC-documents/current-session/`, never a code repo or the HDC docs root; reconcile accepted durable decisions into the canonical HDC decisions document.
 
 ## Global collaboration profile — owner-directed, 2026-10-02
 
