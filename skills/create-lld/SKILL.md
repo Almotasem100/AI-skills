@@ -17,14 +17,20 @@ Use this skill for one Jira ticket. A ticket may contain multiple stages or impl
 ## Deliverable rules
 
 1. Use the Jira ticket ID as the only ticket identifier in deliverables. Do not include internal/CB ticket IDs or describe internal ticket breakdowns.
-2. Read supplied requirements, screenshots, PDFs, slides, CSS, code and project instructions as needed, but treat them as working inputs only. Do not mention or cite input artifact names/pages in the deliverables.
+2. Read supplied requirements, screenshots, PDFs, slides, CSS, code and project instructions as needed. If a
+   `task-context` working synthesis exists, use it as the navigation map for the task, then verify consequential
+   claims against authoritative sources as needed. Treat all of these as working inputs only; do not mention or
+   cite input artifact names/pages in the deliverables.
 3. Inspect relevant source code and verify consequential claims internally. Do not include source-code filenames, paths, line numbers, or code-location inventories in the deliverables. Keep evidence in the project's working notes when its workflow provides them.
 4. Keep each artifact concise and focused on what is required or planned. Avoid repeating scope already in the customer requirements, long rationale, rejected-option essays, and speculative implementation detail. Include only enough component/API-boundary information for an Architect to assess the LLD or Technical Design.
 5. Never invent requirements, decisions, names, endpoints, measurements, implementation details, or test results. Ask the owner about consequential gaps, one at a time, and keep artifacts in Draft until approved.
 
 ## Forward mode: LLD before implementation
 
-1. Read the Jira ticket, applicable project instructions, and supplied requirements. Use supporting artifacts as evidence internally; do not cite them in the LLD or Functional Design.
+1. Read the Jira ticket, applicable project instructions, supplied requirements, and an existing task-context
+   synthesis when available. The task context helps avoid rereading every raw input, but it does not replace
+   authoritative requirements. Use supporting artifacts as evidence internally; do not cite them in the LLD or
+   Functional Design.
 2. Inspect relevant code and architecture as needed. Record source locators in working notes, not in customer/architect deliverables.
 3. Grill only unresolved decisions that affect scope, user behavior, data/API contracts, permissions, or acceptance. Respect project approval gates.
 4. Draft one concise LLD for the Jira ticket, covering all approved stages in that ticket. Name logical components and API boundaries where useful; do not give code file paths or line citations.
@@ -47,7 +53,8 @@ Use this skill for one Jira ticket. A ticket may contain multiple stages or impl
 ## Inputs
 
 - Jira ID and pasted ticket title/description/acceptance criteria (ticket systems may not be reachable).
-- Project instructions and approved requirements; optional supporting artifacts and source code for internal inspection.
+- Project instructions and approved requirements; an optional task-context working synthesis; optional supporting
+  artifacts and source code for internal inspection.
 - Release/sprint, tech designer names, and approved save location when applicable.
 - For Technical Design mode: approved LLD/plan, implemented change, and verification evidence.
 
