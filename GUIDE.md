@@ -234,14 +234,23 @@ foreach ($t in $targets) {
   foreach ($f in $folders) { Copy-Item -Recurse -Force "$setup\$f" $t }
 }
 
-# 2. Pocock's pinned skills, from the source at the exact commit in manifest.md.
+# 2. Pocock's pinned skills, from the exact per-skill commits in manifest.md.
 $pocock = "$env:TEMP\mattpocock-skills"
 if (-not (Test-Path $pocock)) { git clone --quiet https://github.com/mattpocock/skills $pocock }
-git -C $pocock checkout --quiet c55ee46073ed923f86ce59a5eb3b6d895095d1b7
-$pinned = "productivity\grill-me", "productivity\grilling", "productivity\handoff",
-          "engineering\grill-with-docs", "engineering\domain-modeling"
+
+# Safe upstream updates reviewed 2026-10-10.
+git -C $pocock checkout --quiet 49dd158d1076134a641b33efb035946536778336
+$currentPinned = "productivity\grill-me", "productivity\grilling", "productivity\handoff"
 foreach ($t in $targets) {
-  foreach ($p in $pinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
+  foreach ($p in $currentPinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
+}
+
+# HDC-sensitive pair intentionally held at the older pin until the stable HDC docs audit.
+# Upstream renamed the glossary contract from CONTEXT.md to GLOSSARY.md.
+git -C $pocock checkout --quiet c55ee46073ed923f86ce59a5eb3b6d895095d1b7
+$heldPinned = "engineering\grill-with-docs", "engineering\domain-modeling"
+foreach ($t in $targets) {
+  foreach ($p in $heldPinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
 }
 
 # 3. Check.

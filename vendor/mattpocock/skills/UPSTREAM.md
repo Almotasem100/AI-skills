@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Source | https://github.com/mattpocock/skills (MIT, `LICENSE` copied alongside) |
-| Base commit | `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` (upstream commit dated 2026-09-18) |
+| Base commit | `49dd158d1076134a641b33efb035946536778336` (upstream main dated 2026-10-09) |
 | Copied | 2026-09-25: only `skills/engineering/code-review/` → `skills/two-axis-review/`, plus `LICENSE` |
 | Local changes | **1**: renamed. Diff in `local-changes.patch` |
 
@@ -25,6 +25,19 @@ Instructions only, no scripts. It runs `git diff`, `git log`, `git rev-parse` an
 (agents without sub-agents run the two reviews one after the other). If `docs/agents/issue-tracker.md` is
 missing, it tells you to run `setup-matt-pocock-skills`: **ignore that** (it writes files into the repo) and
 give it the LLD path as the spec instead.
+
+## Upstream update — 2026-10-10
+
+Synced the renamed `two-axis-review` copy from upstream `code-review` at
+`c55ee46073ed923f86ce59a5eb3b6d895095d1b7..49dd158d1076134a641b33efb035946536778336`.
+The upstream changes broaden standards-file discovery, loosen the issue-tracker wording so it is not tied to one
+hard-coded path, and clarify that the two review sub-agents should be issued together in the foreground. The local
+rename remains the only local behavior change.
+
+The other Pocock skills are still installed from pinned source commits recorded in `manifest.md`; some now use the
+latest upstream pin, while `grill-with-docs` + `domain-modeling` deliberately remain on the older pin until the
+stable HDC documents snapshot is audited because upstream renamed the glossary contract from `CONTEXT.md` to
+`GLOSSARY.md`.
 
 ## Taking an upstream update
 1. Clone upstream outside this repo and read what changed in `skills/engineering/code-review/` since the base.
