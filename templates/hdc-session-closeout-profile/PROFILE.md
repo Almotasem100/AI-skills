@@ -11,9 +11,10 @@ HDC's canonical instructions are `HDC-documents/README.md`; its current state an
 - Use only `HDC-documents/current-session/scratchpad.md`, with session inputs adjacent in the fixed folder.
   Read/reuse unfinished work across chat/model handoffs; do not create another dated scratchpad or archive.
 - Put session-created working documents and visual artifacts (plans, briefs, design drafts, review findings,
-  reports, diagrams and charts), whether authored by the orchestrator or a delegate, in
-  `HDC-documents/current-session/`, not an agent's temporary directory. Delegates may create supporting artifacts
-  there but must not edit the live scratchpad; the orchestrator reviews and incorporates their findings. Code,
+  reports, diagrams and charts), whether authored by the orchestrator or a delegated role, in
+  `HDC-documents/current-session/`, not an agent's temporary directory. The orchestrator is the sole writer of
+  the shared scratchpad because it owns coordination state; delegated roles own their assigned artifacts/findings,
+  and the orchestrator records or links those outputs rather than recreating them. Code,
   tests, approved project-document deliverables, execution logs, compiled outputs and worktrees use their approved
   repository or tool locations; relay metadata may remain in tool-managed temporary storage.
 - At closeout, use that scratchpad as the source record. Add/reconcile its closeout details in place; **do not
