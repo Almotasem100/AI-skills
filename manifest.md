@@ -21,19 +21,20 @@ Each copy has an `UPSTREAM.md` (base commit, review notes, local changes, how to
 ## Used unchanged (pinned; installed from source)
 | Skill(s) | Source | Pinned commit | Status | Role |
 |---|---|---|---|---|
-| mattpocock/skills: `grill-with-docs` | https://github.com/mattpocock/skills (MIT) | `c55ee460` (held pending HDC docs audit) | Keep — big-ticket intake | A 1-line wrapper: calls `grilling` + `domain-modeling`. User-invoked only. **Run it from the docs folder, not a code repo:** `domain-modeling` writes `CONTEXT.md` and `docs/adr/` at the working root, with no setting to move them |
+| mattpocock/skills: `grill-with-docs` | https://github.com/mattpocock/skills (MIT) | `49dd158d` (2026-10-09; reviewed against HDC 2026-10-10) | Keep — big-ticket intake | A 1-line wrapper: calls `grilling` + `domain-modeling`. User-invoked only. `domain-modeling` now writes `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR working files at the working root. For HDC, run it from `HDC-documents/current-session/` and reconcile accepted durable decisions into the canonical decisions document at closeout |
 | mattpocock/skills: `grill-me` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Keep — small-ticket intake | A 1-line wrapper: calls `grilling`. User-invoked only |
 | mattpocock/skills: `grilling` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Required by both grills | The actual interview: rounds of numbered questions, each with a recommended answer. Model-invoked |
-| mattpocock/skills: `domain-modeling` | same repo | `c55ee460` (held pending HDC docs audit) | Required by `grill-with-docs` | Glossary (`CONTEXT.md`) + ADRs, created lazily. Model-invoked |
+| mattpocock/skills: `domain-modeling` | same repo | `49dd158d` (2026-10-09; reviewed against HDC 2026-10-10) | Required by `grill-with-docs` | Glossary (`GLOSSARY.md` / `GLOSSARY-MAP.md`) + ADR working files, created lazily. Model-invoked |
 | mattpocock/skills: `code-review` | same repo | same | **Moved to `vendor/mattpocock/skills/` as `two-axis-review`** (2026-09-25) | Renamed because it clashed with Claude Code's built-in `code-review`. See the "Copied into `vendor/`" table above |
 | mattpocock/skills: `handoff` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Worth a look | Session → brief for another agent, saved to the OS temp folder. User-invoked only |
 
-The currently used Pocock skills are intentionally split across two reviewed pins. `grill-me`, `grilling`,
-`handoff`, and the vendored `two-axis-review` have been reviewed against `49dd158d`. `grill-with-docs` and
-`domain-modeling` remain pinned at `c55ee460` until the stable HDC documents snapshot is audited because
-upstream renamed the glossary contract from `CONTEXT.md` / `CONTEXT-MAP.md` to `GLOSSARY.md` /
-`GLOSSARY-MAP.md`. At the original `c55ee460` review, the six folders above were checked as `SKILL.md` + `agents/openai.yaml`, plus `domain-modeling`'s two format files; also, the repo's `README.md`, `LICENSE`, `.claude-plugin/plugin.json` and `.agents/` notes. **No
-scripts** in any of the six. Not used: the Claude plugin (installs all 25 skills, including the dropped
+All currently used Pocock skills have now been reviewed against `49dd158d`. The HDC audit confirmed the
+new `GLOSSARY.md` / `GLOSSARY-MAP.md` contract can be used safely when `grill-with-docs` runs inside
+`HDC-documents/current-session/`: those glossary/ADR files are task working artifacts, while accepted durable
+decisions are reconciled into `HDC_Architecture_Decisions.md` during HDC closeout. The six folders were reviewed
+as `SKILL.md` + `agents/openai.yaml`, plus `domain-modeling`'s format files; the repo `README.md`,
+`LICENSE`, `.claude-plugin/plugin.json` and `.agents/` notes were also inspected. **No scripts** are used by
+these six skills. Not used: the Claude plugin (installs all 25 skills, including the dropped
 `implement`, and auto-updates, so it can't be pinned) and `npx skills` (runs an npm package at install time).
 Install is a plain copy from the exact per-skill pins above; `GUIDE.md` checks out each pin before copying its group.
 Claude-only frontmatter (`disable-model-invocation`) is left as-is: other agents ignore it, so there the
