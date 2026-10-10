@@ -119,9 +119,12 @@ example call.
 | `describe-pr` | **Evidence contract updated 2026-10-10; new task-context behavior not yet natively tested.** Earlier scripts/full-flow evidence remains from 2026-09-25/26. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
 
 ### `task-context`
+**Install:** copy `skills/task-context/` into the same skills folder as the other first-party skills.
+
 Use it when the task understanding is scattered across several inputs or will be reused by several downstream
-roles. Ask naturally, e.g. *"synthesize the task context from this ticket, requirements, grilling decisions and
-screenshots."* If the task is already simple and clear, skip it.
+roles. For automatic selection, ask naturally, e.g. *"synthesize the task context from this ticket, requirements,
+grilling decisions and screenshots."* If the agent does not select it, invoke it explicitly: *"Use
+`task-context` for this task."* If the task is already simple and clear, skip it.
 
 The result is a temporary working artifact: objective, business rationale, approved behavior, business/UX/technical
 constraints, acceptance expectations, decisions, non-goals, estimates/targets, assumptions, open questions and a
