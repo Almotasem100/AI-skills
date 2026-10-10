@@ -5,7 +5,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-10 — audited the stable HDC documents snapshot, aligned HDC's active orchestration rules on a dedicated branch, rebased the Gemini delegate overlay, and completed the current vendor refresh. The AI-skills PR remains intentionally unopened._
+_Last updated: 2026-10-10 — added the adaptive task-context layer, updated create-lld/describe-pr evidence flow, synchronized the latest HDC master Plan onto the HDC alignment branch, and kept both PRs unopened._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
@@ -48,6 +48,27 @@ requirements/design → plan → specialist implementation → review/guards →
 without per-stage approval, while exact new backend paths, material port deviations, fixture/data mutations,
 deployment, commit/push/PR, and closeout cleanup still respect their project-specific gates.
 
+## Task-context workflow — 2026-10-10
+
+Added `skills/task-context/` with a structured working-context template. The skill is intentionally adaptive:
+use it when ticket understanding is fragmented across requirements, grilling answers, screenshots/CSS, project
+decisions or code constraints, or when several downstream roles need the same understanding. Skip it for trivial
+tasks. It is a temporary synthesis, not a project-of-record document and not a replacement for the compact
+orchestration scratchpad.
+
+`create-lld` remains concise and human-facing; when task context exists it uses that artifact as a navigation
+map and verifies consequential claims against authoritative sources as needed. `describe-pr` now separates
+evidence by purpose: task context/approved requirements for Why, git/implementation for What changed, and actual
+verification/user report for Testing. It preserves estimate/target qualifiers and must not infer business rationale
+from the diff. This directly addresses the CADE-1812 PR-description failure where business rationale already
+existed in the requirements but was initially guessed from code.
+
+Structural/document review is complete. The new task-context skill and revised describe-pr/create-lld interaction
+have **not** yet been copied to user-level skill roots or tested natively in an agent. Next real-use regression:
+run a representative ticket with requirements containing an explicitly estimated business benefit and verify that
+task context preserves the qualifier, create-lld stays concise, and describe-pr uses that rationale without asking
+the owner to repeat it.
+
 ## Active owner-approved plan
 1. **Gemini CLI implementer (local upstream contribution; rebased 2026-10-10):** the contribution is preserved as
    `overlays/gemini-delegate/changes.patch`, now a 25-file delta based on Ahmed's current vendored upstream
@@ -76,7 +97,7 @@ deployment, commit/push/PR, and closeout cleanup still respect their project-spe
    ritual. The 2026-10-01 synthetic smoke evidence still applies only to the versions/hosts actually tested.
 7. **Briefs:**** no separate implementation-brief skill is planned. Plan review/debate uses the scratchpad or an existing handoff directly; a delegate's brief remains the task instructions sent to the coding implementer, not a project artifact.
 8. **Security audit skill (initial implementation complete; one native smoke test):** added `skills/security-audit/SKILL.md` as a read-only, evidence-citing audit that uses approved project security requirements when supplied, flags missing requirements/uncertainty, protects secret values, and makes no compliance claim. Its scope covers relevant trust boundaries, authentication/authorization, input handling, sensitive data/secrets, dependencies/configuration, abuse controls, and security tests without treating every category as mandatory. On 2026-10-01, Gemini CLI 0.62.0 audited a synthetic endpoint excerpt, identified a conditional authorization risk, and called out missing DAO evidence; OpenCode loaded the skill in this session but did not audit the fixture. The test establishes neither real vulnerability detection nor general host/model support. **Next:** review the skill and run another synthetic smoke test in a distinct agent when available; no target-system audit was performed.
-9. **`create-lld` concise design-artifact workflow (owner-approved 2026-10-05; updated and synchronized):** one Jira ticket is the unit of design. The forward LLD is concise and architect-facing before the plan/implementation; Functional Design is customer-facing with no duplicate Purpose/Scope, Status, or LLD link; the separate Technical Design is produced after implementing the plan for Architect review. Deliverables do not cite input attachment names or source-code paths/lines; internal source inspection remains part of accuracy checks. Canonical `skills/create-lld/` and all eight files in both `.agents` and `.claude` host copies match; `docs-guard` is unchanged. The updated checker passes on the approved HDC LLD with no warnings or missing inputs. Native agent selection/use remains untested.
+9. **`create-lld` concise design-artifact workflow (updated 2026-10-10):** one Jira ticket remains the unit of design. Functional Design, LLD and Technical Design stay concise and audience-specific. The source skill can now consume an optional `task-context` working synthesis without bloating the deliverables. Previously installed host copies predate this update and need re-copying before installed-version claims are refreshed. The LLD checker behavior itself is unchanged.
 
 10. **Orchestrator and model-call policy (superseded by role-based orchestration, 2026-10-10):** the selected model
     is the control plane: understand the objective, choose the smallest sufficient workflow, resolve roles to
@@ -137,8 +158,8 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 ## Status
 | Item | State | Evidence / notes |
 |---|---|---|
-| `skills/describe-pr` | v1.1 (2026-09-26) | Scripts tested on two real repos; full flow run by hand in Claude. **Tested natively in Codex** (picked without being named; fixed a paraphrasing bug, see item 2). Not yet in Gemini CLI. PR creation through `gh` not tested (no `gh` on the laptop) |
-| `skills/create-lld` | v1 built | Checker, slide extraction and retro mode tested; DC-459 retro LLD passes. Forward mode on a new ticket not yet run. Not yet tested natively or in Gemini CLI |
+| `skills/describe-pr` | Evidence contract updated 2026-10-10 | Earlier script/native Codex evidence still applies to the old flow. New behavior prefers task context/approved requirements for Why, preserves estimate qualifiers and asks only after checking available task evidence. This revision is not yet natively tested. |
+| `skills/create-lld` | Concise artifact contract retained; task-context consumption added 2026-10-10 | Existing checker/slide evidence remains; the new interaction with task-context is not yet natively tested. |
 | `vendor/amElnagdy/*` | Copied, reviewed | Base commits in each `UPSTREAM.md`. Local change: `babysit-pr` asks before pushing or posting |
 | Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `current-session/` workspace. |
 | `GUIDE.md` | Written (2026-09-25), updated 2026-10-01 | Install + use for every skill, any agent; §4 names model and effort where supported, with owner-approved Gemini Auto exception; real-use notes for `grill-me`, `two-axis-review`, `grill-with-docs`, `handoff`; quick start and tool instructions. Gemini relay trial is documented separately; the local contribution is not in the normal install list. |
