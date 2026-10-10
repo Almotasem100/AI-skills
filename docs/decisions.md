@@ -230,3 +230,29 @@ still need real verification before being treated as proven.
 - Initial global lanes have now been approved and written; confirm dispatch capability during real use before
   treating any lane as ready. Claude API use is an optional later escalation; the owner plans a $10/month credit
   budget, so avoid routine calls and prioritize only unusually complex work.
+
+## Task context separates workflow memory from human design artifacts (owner, 2026-10-10)
+
+Real HDC use exposed a gap between concise team-facing design documents and downstream AI context needs.
+The owner intentionally shortened Functional Design and LLD outputs because those artifacts are submitted to
+people who expect concise templates. Re-expanding them merely to feed later AI stages would make the human
+deliverables worse.
+
+Decision:
+- Keep `create-lld` concise and audience-specific.
+- Add a separate adaptive `task-context` skill that synthesizes fragmented ticket/requirements/grilling/UX/code
+  evidence into one rich **temporary working artifact**.
+- Do not make `task-context` a mandatory stage. Use it when evidence is fragmented or several downstream roles
+  would otherwise reread the same raw material; skip it for simple work.
+- Keep the task context distinct from the compact session scratchpad and from project-of-record documentation.
+- Preserve provenance and evidence class: fact, decision, estimate/target, assumption, open question. Never turn
+  projected value into a measured result.
+- Downstream roles consume task context plus the minimum additional canonical source access needed to verify
+  consequential claims.
+- `describe-pr` uses task context / approved requirements for **Why**, git/implementation evidence for **What**,
+  and actual verification evidence or the developer report for **Testing**. It must not infer business rationale
+  from the diff or ask the developer for rationale already available in authoritative task evidence.
+
+For HDC, `HDC-documents/current-session/` is the natural working location for a task-context artifact; durable
+decisions/state still reconcile into their existing canonical HDC documents at closeout.
+
