@@ -28,7 +28,7 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 
 **`grill-with-docs` (by name): the same, for big tickets.** Use it when the ticket brings new business terms;
 it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
-> `/grill-with-docs new approval workflow for checklists, write CONTEXT.md under C:\...\HDC\documents`
+> `/grill-with-docs new approval workflow for checklists`
 
 **`create-lld`: forward LLD and later as-built Technical Design.** After requirements are settled, it drafts a
 concise architect-facing LLD before the plan/implementation. It can also prepare a customer-facing Functional
@@ -148,7 +148,7 @@ you change a skill here, copy it again.
 | When | Skill | What it does | Where it comes from |
 |---|---|---|---|
 | Start of a small ticket | `grill-me` | Interviews you about the plan until nothing is left assumed | Pocock (pinned) |
-| Start of a big ticket | `grill-with-docs` | Same interview, and writes a glossary (`CONTEXT.md`) and decision records (`docs/adr/`) as you go | Pocock (pinned) |
+| Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Design | `create-lld` | Writes an LLD section in the team template, before the work (forward) or after it (retro) | Mine |
 | Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
@@ -234,23 +234,13 @@ foreach ($t in $targets) {
   foreach ($f in $folders) { Copy-Item -Recurse -Force "$setup\$f" $t }
 }
 
-# 2. Pocock's pinned skills, from the exact per-skill commits in manifest.md.
+# 2. Pocock's pinned skills, from the reviewed commit in manifest.md.
 $pocock = "$env:TEMP\mattpocock-skills"
 if (-not (Test-Path $pocock)) { git clone --quiet https://github.com/mattpocock/skills $pocock }
-
-# Safe upstream updates reviewed 2026-10-10.
 git -C $pocock checkout --quiet 49dd158d1076134a641b33efb035946536778336
-$currentPinned = "productivity\grill-me", "productivity\grilling", "productivity\handoff"
+$pinned = "productivity\grill-me", "productivity\grilling", "productivity\handoff", "engineering\grill-with-docs", "engineering\domain-modeling"
 foreach ($t in $targets) {
-  foreach ($p in $currentPinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
-}
-
-# HDC-sensitive pair intentionally held at the older pin until the stable HDC docs audit.
-# Upstream renamed the glossary contract from CONTEXT.md to GLOSSARY.md.
-git -C $pocock checkout --quiet c55ee46073ed923f86ce59a5eb3b6d895095d1b7
-$heldPinned = "engineering\grill-with-docs", "engineering\domain-modeling"
-foreach ($t in $targets) {
-  foreach ($p in $heldPinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
+  foreach ($p in $pinned) { Copy-Item -Recurse -Force "$pocock\skills\$p" $t }
 }
 
 # 3. Check.
@@ -390,19 +380,21 @@ upstream before adding it to the normal install instructions.
 
 ### Big ticket
 Same tail, with more up front:
-1. **`grill-with-docs`** (by name), **run from the docs folder, never from a code repo**: it creates
-   `CONTEXT.md` and `docs/adr/` wherever it runs. For HDC: start the agent in
+1. **`grill-with-docs`** (by name), **run from an approved working-docs location, never from a code repo**:
+   current upstream creates `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files wherever it runs. For HDC,
+   start the agent in `HDC-documents/current-session/`; treat those files as working artifacts and reconcile any
+   accepted durable decision into `HDC_Architecture_Decisions.md` during closeout. The historical trial started in
    `C:\Users\Mohamed\Downloads\HDC\HDC\documents`, not in `cb379_hdc_pdc`.
    **Trialled 2026-09-26** (HDC domain glossary, in Claude; stopped after round 1 on purpose). What to know:
    - It works: `/grill-with-docs` loaded `grilling` + `domain-modeling`, read the Charter and the entity classes
      itself (read-only), then asked 7 numbered questions with recommendations. It caught a real doc/code clash
      (the Charter says review stages are fixed DR1–DR4; the code makes them a configurable per-tool list).
-   - **Where it writes:** you can name a folder in the command (*"write CONTEXT.md under …"*); it follows that.
+   - **Where it writes:** the skill writes its glossary/ADR working files at its working root; choose that root deliberately.
      If the project already keeps a decision log (HDC: `HDC_Architecture_Decisions.md`), tell it to propose
      decisions there instead of starting a second one in `docs/adr/`.
    - **Glossary questions need your domain knowledge** (what an Element *is*, what P/T stand for). Budget a
      real session for it; it can't be answered from code.
-   - **Not yet seen:** it writing `CONTEXT.md` entries (the trial stopped before any term was settled).
+   - **Historical trial limit:** the 2026-09-26 run stopped before any glossary term was settled; the current `GLOSSARY.md` behavior has not yet been exercised natively on HDC.
    - **Small tickets:** it runs on any size, but use `grill-me` there. `grill-with-docs` is the same interview
      plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
 2. **`create-lld`**, forward mode: *"write the LLD for CADE-1234, 'Navbar', from the approved requirements."*
@@ -464,7 +456,7 @@ Same tail, with more up front:
 - No lane config written (`delegate-setup`).
 - No file written in a code repo by `describe-pr` or `create-lld` unless you say where.
 
-The exception to watch: `grill-with-docs` writes its glossary and ADRs where it runs. Run it from a docs folder.
+The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/current-session/`, not a code repository or the HDC docs root.
 
 ---
 
