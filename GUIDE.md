@@ -104,9 +104,12 @@ temp folder; copy the brief somewhere safe if you want to keep it.
 Commands for all three are in §2 and §4.
 
 ### The whole flow in one line
-- **Small ticket:** grill-me → build (delegate) → guards → two-axis-review → describe-pr → babysit-pr
-- **Big ticket:** grill-with-docs → create-lld → the same steps
-- **End of any session:** session-closeout (+ handoff if the next task is clear)
+- **Tiny/simple task:** clarify only what is needed → implement → targeted verification → describe-pr.
+- **Small/medium ticket with fragmented inputs:** grill-me as needed → task-context → lightweight plan/design as needed → implement → guards/review → describe-pr.
+- **Big ticket:** grill-with-docs → task-context → create-lld → plan/review → implementation → verification → describe-pr.
+- **End of any session:** session-closeout (+ handoff only when unfinished work is being transferred).
+
+`task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
 
 The sections below have the details: install (§3), full usage and real-use notes (§4), what never happens
 without your yes (§5).
@@ -149,7 +152,8 @@ you change a skill here, copy it again.
 | Start of a small ticket | `grill-me` | Interviews you about the plan until nothing is left assumed | Pocock (pinned) |
 | Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
-| Design | `create-lld` | Writes an LLD section in the team template, before the work (forward) or after it (retro) | Mine |
+| Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
+| Design | `create-lld` | Writes concise Functional Design / LLD / Technical Design artifacts; can consume task context without making human-facing documents verbose | Mine |
 | Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
@@ -211,6 +215,7 @@ $targets = "$HOME\.claude\skills", "$HOME\.agents\skills"
 #    Delegate relays: keep only the ones for CLIs you actually have.
 $folders = @(
   "skills\describe-pr",
+  "skills\task-context",
   "skills\create-lld",
   "skills\scenario-test-cases",
   "skills\plan-review",
@@ -361,7 +366,7 @@ upstream before adding it to the normal install instructions.
      reason. Don't apply findings blindly.
    - It does **not** merge the two reports, on purpose: code can match the spec and still break the standards,
      or the other way round.
-5. **`describe-pr`**: *"write the PR description. Ticket 38939409 'Navbar'. Tested: ng build, 108/108 specs."*
+5. **`describe-pr`**: *"write the PR description. Use the task context for the rationale. Tested: ng build, 108/108 specs."*
    It asks at most 4 questions in one message and creates the PR only after your yes.
 6. **`babysit-pr`**: *"babysit PR 123"*. It checks each bot comment against the code and fixes real problems
    locally, then shows you the commits and replies. **It pushes and posts only after your yes.**
@@ -385,16 +390,23 @@ Same tail, with more up front:
    - **Historical trial limit:** the 2026-09-26 run stopped before any glossary term was settled; the current `GLOSSARY.md` behavior has not yet been exercised natively on HDC.
    - **Small tickets:** it runs on any size, but use `grill-me` there. `grill-with-docs` is the same interview
      plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
-2. **`create-lld`**, forward mode: *"write the LLD for CADE-1234, 'Navbar', from the approved requirements."*
-   The LLD stays `Draft` until you approve it; the plan follows that approval.
-3. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
+2. **`task-context`**, when the ticket has several inputs/decisions or several downstream consumers:
+   *"Synthesize the task context from the ticket, requirements, grilling answers, screenshots/CSS and current project decisions."*
+   Save it in the project's approved working-artifact location. It is rich temporary context, not a team deliverable.
+3. **`create-lld`**, forward mode: *"write the LLD for CADE-1234 from the task context and approved requirements."*
+   The Functional Design/LLD remain concise and audience-specific; task context carries the detail they deliberately omit.
+4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
    challenge and respond in a shared scratchpad. Review the scratchpad and resolve open decisions before
    implementation; then implement in slices and continue with steps 3–6 above.
-4. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
+5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
    the lanes `review-main` and `review-debate`: pin their models and effort in `delegate-setup`); without
    `--dry-run` it posts it. *"debate-review --local"* reviews your working tree before a PR exists.
 
 ### Any time
+- **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
+  same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
+  assumptions and unresolved questions distinct. In HDC, the intended working location is
+  `HDC-documents/current-session/`, not the documentation root.
 - **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
   CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
 - **`scenario-test-cases`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
