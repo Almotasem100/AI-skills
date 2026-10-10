@@ -1,7 +1,8 @@
 # Writing guide
 
-The goal is not a nice description. It is: **extract the *what* automatically, and get the *why* from the
-developer with as little friction as possible.** A short accurate description beats a long polished one.
+The goal is not a nice description. It is: **derive the *what* from implementation evidence, recover the *why*
+from authoritative task evidence, and ask the developer only for what the workflow does not already know.**
+A short accurate description beats a long polished one.
 
 ## Title
 `<type>(<scope>): <imperative summary> [#<ticketId>]`, at most 72 characters.
@@ -9,6 +10,16 @@ developer with as little friction as possible.** A short accurate description be
 - It must stand alone: someone reading only the title in a release list understands the change.
 - `fix(checklist): restrict category import to empty checklists [#18581400]`
 - `feat(kpi): add project status and multi-code filtering [#14972296]`
+
+## Evidence split
+- **Why / problem:** task context and approved requirements are primary. Concise design docs are useful secondary
+  evidence; the diff is never enough to invent business rationale.
+- **What changed:** git/diff and implemented code are primary.
+- **Testing:** actual verification evidence or the developer's report is primary.
+- **Impact/risk:** combine approved requirements with the actual implementation; distinguish expected impact from
+  measured results.
+- Preserve qualifiers such as **estimated**, **expected**, **target**, **projected**, **reported**, and
+  **observed**. Do not strengthen them.
 
 ## Body
 - **Problem, then fix, per concern.** State what was wrong or requested before what changed.
