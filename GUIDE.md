@@ -13,11 +13,11 @@ _Written 2026-09-25. What has and hasn't been tested is marked; don't assume mor
 Think of the skills as helpers you call at each stage of a ticket. Most start on their own when you describe
 what you want; the ones marked **(by name)** only start when you type their command.
 
-**Orchestration rule:** the model you manually opened and selected is the working orchestrator by default. It
-listens to your orders, discusses and pushes back with reasons, and handles intake, grilling, and planning itself.
-It delegates only when you explicitly direct it to. Claude Opus and Sonnet are never called unless you name one
-for that specific task; their presence in the model list is not permission. Asking for a debate does not authorize
-an Opus/Sonnet call.
+**Orchestration rule:** the model you opened is the workflow orchestrator/control plane by default. It understands
+the objective, chooses the smallest sufficient workflow, resolves needed roles (planner, implementer, reviewer,
+tester, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
+describe the outcome and any checkpoint; you do **not** need to name a model, lane or effort for routine delegation.
+Explicit route/checkpoint instructions still override the inferred workflow.
 
 ### 🟢 Starting a ticket
 **`grill-me` (by name): think it through first.** Small ticket, before any code. It asks you questions in
@@ -43,13 +43,11 @@ It returns prioritized findings with source evidence, assumptions, missing decis
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
-**`plan-debate`:** a structured challenge/response workflow that keeps the draft, evidence, reviewer comments,
-author responses, owner decisions, and unresolved disagreements in one working scratchpad. The orchestrator alone
-writes it. Delegates may read it read-only when the host can enforce that; otherwise give them an immutable copy.
-They return separate Markdown findings or an authorized `minipad.md`, never edits to the shared scratchpad. Name
-reviewers only if you want them dispatched; the active orchestrator plans by default. Opus/Sonnet require explicit,
-task-specific instruction.
-> "Have Gemini and Opus independently review this plan; return findings only, with no scratchpad access"
+**`plan-debate`:** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
+exchange and owns the shared coordination state; the plan-author and reviewer roles own their substantive outputs.
+Configured lanes select the actual providers/models unless you override them. Give each role only the context and
+source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
+> "Stress-test this implementation plan before coding and resolve the findings"
 
 **`security-audit`:** a read-only review of a scoped change against approved security requirements when supplied.
 It cites evidence, distinguishes risks from missing evidence, reports coverage limits, and does not claim compliance
@@ -57,13 +55,14 @@ or perform active testing.
 > "Audit this change for relevant security risks and evidence gaps"
 
 ### 🔨 Building
-**Delegates: hand the coding to another AI.** Your agent sends the task to Codex (or another CLI), then
-checks the result. It never commits; you do. Name the model and effort where supported; Gemini Auto is the
-owner-approved exception.
-> "Delegate this to codex with model gpt-6-luna, effort medium: add a clamp helper with tests"
+**Implementation roles:** once implementation is inside the authorized workflow, the orchestrator routes it through
+the configured implementer lane when delegation is useful. You normally state the task, not the transport details.
+The delegate relay itself never commits.
+> "Implement the approved plan and run the targeted tests"
 
-It can also run one of your skills: *"delegate to codex with model gpt-6-sol, effort medium: use your
-create-lld skill for CADE-1234 …"* (see §4, "Have another agent run one of your skills").
+You can still override the route when you care which provider/model should do a specific task, but that is an
+exception rather than the normal interface. The same role routing can run another installed skill when appropriate
+(see §4, "Have another agent run one of your skills").
 
 **Guards: a second look** after the code is written, at the code, the tests or the docs.
 > "Run clean-code-guard on this change"
@@ -264,33 +263,24 @@ Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs,
 
 ## 4. Use them
 
-### Name the model and effort where supported
-For delegated runs, name the model and effort when the CLI supports those dials. Otherwise its default may be
-unexpected: on 2026-09-26 six short test runs through Codex silently used `gpt-6-astra` (~175k tokens) because
-no model was given. **Gemini is the owner-approved exception:** omit `--model` to use Gemini Auto/default; its
-relay has no effort dial. The owner has used Gemini Auto for months and approved this behavior.
+### Roles choose work; lanes choose provider/model/effort
+The normal interface is intent, not transport configuration. Configure lanes once, then let the orchestrator resolve
+the needed role automatically. This preserves the original cost-control lesson—never fall into an expensive unknown
+default—without making you repeat model and effort on every run.
 
-| Task | Codex model | Effort |
-|---|---|---|
-| Simple (small fix, tests, docs, a review) | `gpt-6-luna` | `low` or `medium` |
-| Hard (a GIANT endpoint, tricky logic, a design question) | `gpt-6-sol` | `medium` or `high` |
+Example lane ideas:
 
-How to say it:
-- One task: *"delegate this to codex with model gpt-6-luna, effort medium: <task>"*. The relay passes
-  `--model gpt-6-luna --effort medium`.
-- Once for all tasks: *"set up my delegation lanes"* (`delegate-setup`) and pin a model **and** effort per lane,
-  e.g. `simple` → codex `gpt-6-luna` / `medium`, `hard` → codex `gpt-6-sol` / `high`. Then:
-  *"delegate this on the hard lane: <task>"*.
-- Codex run directly (no relay): `codex exec -m gpt-6-luna -c model_reasoning_effort=medium "<task>"`.
-- To see which models your Codex offers: `node <skills folder>\delegate-setup\scripts\discover.mjs`.
-- Also worth doing: set a cheap default in `~/.codex/config.toml` (`model = "gpt-6-luna"`) as a safety net.
-- Gemini relay trial: use `gemini-delegate` only from the local upstream contribution branch until the owner
-  decides whether to propose it; its tested invocation omitted `--model` and used `--approval-mode auto_edit`.
+| Role | Example route |
+|---|---|
+| Routine implementation | OpenCode / Luna, configured effort/variant |
+| Hard implementation or planning | a stronger configured lane |
+| Test-scenario author | Gemini Auto |
+| Plan challenger | Gemini Auto |
 
-You can almost always just **ask in plain words**; the agent picks the skill from its description. If it
-doesn't, **name the skill**: *"use the describe-pr skill"*. A few skills can only be started by name (marked
-"by name" below). In Claude Code, type them as `/name`; in Codex, `$name`; in other agents, ask for the skill
-by name. (Codex hides the "by name" skills from its own list; that's expected.)
+You can override a route explicitly for a particular task. To inspect the configured/available implementers, use
+`delegate-setup` discovery. A configured lane is not proof the CLI is installed/authenticated; verify real dispatch
+before depending on it.
+
 
 ### Have another agent run one of your skills (e.g. Codex writes the LLD)
 Your main agent (e.g. Claude) can hand a whole skill run to another CLI through its delegate relay. The other
@@ -298,26 +288,25 @@ CLI loads the skill from **its own** skills folder, so the skill must be install
 `~/.agents/skills`; §3 does that).
 
 **What to say** (to your main agent):
-> *"Delegate to codex with model gpt-6-sol, effort medium: use your **create-lld** skill in forward mode for
-> CADE-1234, internal ticket 38939409 'Navbar'. Description: <paste>. Slides: C:\path\customer.pptx.
-> Designer: <name>. Save the LLD in C:\path\to\docs\folder. Don't ask me questions during the run: list them at
-> the end of your report."*
+> *"Create the forward LLD for CADE-1234 from this ticket and these slides. Use the configured planning/document
+> role, save it in C:\path\to\docs\folder, and list unresolved questions at the end."*
+
+If you specifically want Codex/Gemini/etc. for that run, say so as an override.
 
 **What happens:**
 1. Your agent writes a **brief**. Codex sees only the brief, no chat history, so every input goes in it:
    ticket, description, slide path, designer, save folder, and *"use your create-lld skill"*.
-2. It runs the relay with the model and effort you named, and `--cd` set to the **folder the LLD goes in**
-   (Codex may only write inside that folder; it can still read the repo and the slides elsewhere).
+2. It resolves the requested role to the configured lane and runs the relay with `--cd` set to the **folder the
+   LLD goes in** (subject to the selected relay's actual access model).
 3. Codex loads `create-lld`, drafts the LLD, runs its checker, and ends with its questions (up to five).
 4. Your agent shows you the report and the questions. You answer; your agent sends the answers back to the
    **same Codex session** (`--session <id>` from the result), and Codex finishes the LLD.
 5. Your agent reviews the LLD. Nothing is committed or published.
 
-**Scratchpad rule for any delegate:** it may read the current scratchpad when needed for the explicitly authorized
-task, but it must not edit, append to, reformat, or delete that shared file. Return notes/findings to the
-orchestrator or write a separate `minipad.md` only in an explicitly authorized output location. The orchestrator
-alone merges material into the session scratchpad. If the host cannot enforce read-only access, use an immutable
-copy instead of exposing the live file.
+**Shared-state rule:** the orchestrator is the sole writer of the shared session scratchpad because it owns
+coordination state. A delegated specialist owns its assigned artifact/change and returns or links that result
+without the orchestrator recreating it. Give the role minimum useful context and canonical source access. Use an
+immutable snapshot/worktree only when a real containment or concurrency boundary requires it.
 
 The same pattern works for any skill that runs well on its own: *"delegate to codex with model gpt-6-luna,
 effort low: use your **describe-pr** skill for this branch; don't create the PR"*, or *"…use your
@@ -353,10 +342,9 @@ upstream before adding it to the normal install instructions.
      read the file. Expect that; it's the point.
    - In Claude, `/grill-me` can only be typed by you. An agent that wants the interview itself uses `grilling`
      (the engine behind it).
-2. **Implement**, yourself or by delegating: *"delegate this to codex with model gpt-6-luna, effort medium:
-   <task>"* (always name both; see above). The relay runs the CLI in the
-   background; your agent reviews the diff and re-runs the checks. **It never commits; you do.** Add
-   *"read-only"* for a review or diagnosis without edits.
+2. **Implement** the approved scope. The orchestrator may handle a tiny change directly or route the implementation
+   role through its configured lane; use the smallest sufficient workflow. The relay never commits. For a review or
+   diagnosis, route a read-only/reviewer role rather than turning implementation into a write-capable run.
 3. **Guards**: *"run clean-code-guard on this change"* (also `test-guard` for tests, `docs-guard` for docs). On
    ported legacy code (HDC): write the findings down; don't fix them in the same change.
 4. **`two-axis-review`**: *"review since develop, the spec is C:\...\LLD_CADE-1234.md"*. You get a
@@ -366,8 +354,8 @@ upstream before adding it to the normal install instructions.
    - It needs a **git diff**: a fixed point (branch, tag or commit) and committed changes after it. Uncommitted
      work isn't reviewed. Without a repo, commit the spec, then the code, in a throwaway repo, and review from
      the spec commit.
-   - It runs **two reviewers in parallel** (sub-agents). Name their model like any delegated run (that run:
-     Sonnet; Claude sub-agents take no effort setting). Cost that run: ~155k tokens for a ~400-line diff.
+   - It runs **two reviewers in parallel** (sub-agents). Their actual model/provider is a host/configuration detail;
+     the 2026-09-26 historical run happened to use Sonnet and cost ~155k tokens for a ~400-line diff.
    - Read both reports, then **triage**: that run found 3 real spec gaps and 3 smells; one finding was wrong
      (it wanted `AMBIGUOUS` on dispatch rules, which route many handlers by design) and was rejected with a
      reason. Don't apply findings blindly.
