@@ -83,7 +83,8 @@ Examples:
 
 - **Small bug:** reproduce/diagnose → implement → focused test → verify.
 - **Bounded enhancement:** clarify intent as needed → lightweight plan → implement → review/test → verify.
-- **Large feature or ticket:** requirements/grilling → Functional Design/LLD where required → plan →
+- **Large feature or ticket:** requirements/grilling → task-context synthesis when the evidence is fragmented or
+  several downstream roles need the same understanding → Functional Design/LLD where required → plan →
   plan review/debate where justified → implementation slices → guards/review → build/tests → routine fixes and
   re-verification → required documentation/closeout.
 
@@ -108,13 +109,28 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `create-lld` | **Updated 2026-10-05:** concise Jira-only LLD, customer-facing Functional Design, and separate as-built Technical Design after implementation. Checker passed on the approved HDC LLD; all 8 source files hash-match both host copies. Native skill invocation remains untested. | Forward: Jira ticket + approved requirements → LLD before plan/implementation, plus Functional Design when required. After implementing the approved plan → concise as-built Technical Design for Architect review. |
+| `task-context` | **Added 2026-10-10; structural review only, native testing pending.** | Fragmented Jira/requirements/grilling/UX/project evidence → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
+| `create-lld` | **Updated 2026-10-10:** concise Jira-only LLD, customer-facing Functional Design, and separate as-built Technical Design after implementation; can consume task context without making the deliverables verbose. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. After implementation → concise as-built Technical Design for Architect review. |
 | `scenario-test-cases` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
 | `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
 | `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
 | `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
-| `describe-pr` | **v1 written 2026-09-25.** Scripts tested on two real repos; full skill tested in Claude, and natively in Codex on 2026-09-26 (picked without being named) | Git context (built by a script) + pasted ticket + optional LLD section → PR title and body. Asks at most 4 questions in one message; creates the PR only after approval |
+| `describe-pr` | **Evidence contract updated 2026-10-10; new task-context behavior not yet natively tested.** Earlier scripts/full-flow evidence remains from 2026-09-25/26. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
+
+### `task-context`
+Use it when the task understanding is scattered across several inputs or will be reused by several downstream
+roles. Ask naturally, e.g. *"synthesize the task context from this ticket, requirements, grilling decisions and
+screenshots."* If the task is already simple and clear, skip it.
+
+The result is a temporary working artifact: objective, business rationale, approved behavior, business/UX/technical
+constraints, acceptance expectations, decisions, non-goals, estimates/targets, assumptions, open questions and a
+compact source map. Facts, decisions, estimates and assumptions stay explicitly distinct. It summarizes evidence
+rather than copying whole PDFs or chats, and it is not promoted into permanent project documentation by default.
+
+For projects with an approved current-work folder, save it there. Otherwise present it in chat or write it only to
+an approved working path. Downstream skills still verify consequential claims against authoritative sources when
+needed.
 
 ### `describe-pr`
 **Needs:** Node 18+ and git. Optional: `gh` (to create or update the PR; set `GH_HOST` for GitHub Enterprise).
@@ -123,8 +139,9 @@ example call.
 Gemini CLI, Claude Code, Codex and others), or your agent's user-level skills folder to have it everywhere.
 Gemini CLI: run `/skills reload` afterwards.
 
-**Use:** on your branch, ask *"write the PR description"*. It works best with the ticket pasted and one line on
-why and how you tested:
+**Use:** on your branch, ask *"write the PR description"*. When a task-context artifact exists, the skill uses it
+for the business rationale before asking you. Without one, it checks the relevant approved ticket/requirements/design
+evidence already available. It still needs actual verification evidence or your report for testing:
 > write the PR description. Ticket 38939409 "Navbar": add the shared header with profile menu. Tested: ng build,
 > 108/108 specs, header checked in the browser.
 
@@ -132,9 +149,10 @@ If the agent doesn't pick the skill up by itself, name it: *"use the describe-pr
 `activate_skill` with `describe-pr`). Add a `.describe-pr.json` at the repo root to set scopes, base branches
 or your own templates (example in `references/describe-pr.example.json`).
 
-**What it guarantees:** it never invents reasons, test results or rollback steps (they show as
-`[NEEDS INPUT]`); it never opens files flagged as sensitive; it never pushes, creates or edits a PR without
-your explicit yes; and it writes nothing inside the repo.
+**What it guarantees:** it never invents reasons, test results or rollback steps; it never derives business
+rationale from the diff alone; it preserves qualifiers such as estimated/expected/target rather than presenting
+them as measured results; it never opens files flagged as sensitive; it never pushes, creates or edits a PR
+without your explicit yes; and it writes nothing inside the repo.
 
 **Scripts on their own** (useful with any agent, or none):
 ```
@@ -153,9 +171,10 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 - **Technical Design**, after implementing the approved plan:
   > write the as-built Technical Design for CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review.
 
-The LLD is drafted before the plan/implementation. A Functional Design is prepared when the project workflow
-requires it or you ask; it is customer-facing and does not duplicate Purpose/Scope already in the requirements
-document. After implementation of the approved plan, ask for an as-built Technical Design for Architect review.
+The LLD is drafted before the plan/implementation. When a task-context synthesis exists, `create-lld` uses it as
+a navigation map while keeping authoritative requirements available for verification; the design deliverables
+remain deliberately concise. A Functional Design is prepared when the project workflow requires it or you ask; it
+is customer-facing and does not duplicate Purpose/Scope already in the requirements document. After implementation of the approved plan, ask for an as-built Technical Design for Architect review.
 The skill inspects supporting materials and code internally, but deliverables use the Jira ID only and do not
 cite attachment names or source-code files/lines. The LLD checker runs before presentation; drafts remain
 unapproved until you approve them.
