@@ -140,17 +140,17 @@ text parsing with every unresolved item listed, never guessed; problems reported
 (`NO_HANDLER`, `EXCLUDED_FROM_BUILD`, `AUTH_BYPASS_SUBSTRING`, …); refreshed by hand after each ported slice,
 no hook. Verified against grep counts, known facts and `check-citations.mjs`; reviewed with `two-axis-review`.
 
-## Explicit model and effort where supported (owner, 2026-09-26)
-After six Codex test runs silently used the expensive default (`gpt-6-astra`, ~175k tokens), the owner's rule
-is: name the model **and** effort for delegated runs when the CLI supports those dials (Codex: `gpt-6-luna`
-simple, `gpt-6-sol` hard). Documented in `GUIDE.md` §4; lanes in `delegate-setup` should pin both where
-supported.
+## Role/lane routing supersedes per-dispatch model selection (owner, 2026-10-10)
+The 2026-09-26 rule to name a model and effort on every delegated run solved a real problem: six Codex trials
+silently used an expensive default. The durable fix is now configuration rather than repeated user instructions.
+Workflow semantics choose a role; the configured lane chooses provider/model/effort/variant. The owner may override
+that route explicitly, but routine delegation does not require restating the model or effort and saved lanes are
+now the intended dispatch mechanism. Do not silently substitute an unconfigured route; use configured fallbacks
+when present or report the capability gap.
 
-### Gemini Auto exception (owner, 2026-10-01)
-For Gemini CLI, the owner explicitly approves the CLI's Auto/default model selection based on months of use and
-quota familiarity. A model pin is optional; do not invent an effort dial Gemini's relay does not support. The
-live disposable-repo trial used Auto successfully. This exception does not change the explicit model/effort
-rule for CLIs that support and require those choices.
+Gemini Auto/default remains an intentional lane choice. Do not invent an unsupported effort dial. This decision
+changes orchestration policy, not the evidence standard: configured model availability and successful dispatch
+still need real verification before being treated as proven.
 
 ## `grill-with-docs` and `handoff` after real use (2026-09-26)
 - **`grill-with-docs` stays big-ticket only.** It's `grill-me` plus glossary/ADR upkeep, which pays off only
@@ -167,8 +167,9 @@ rule for CLIs that support and require those choices.
 - Validate skill discovery separately from actual invocation and delegation. A CLI listing a skill proves it can
   see it, not that it follows the instructions or runs its scripts correctly. Test in a disposable repository and
   report the tested CLI/version and exact scope.
-- Decide the task-to-implementer map before writing delegation lanes. Lanes are saved dispatch settings, not task
-  detection or model recommendations. Obtain approval before writing lane configuration.
+- Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/tester intent;
+  lanes map those roles to provider/model/effort. Changes to persistent lane configuration remain deliberate setup
+  changes, but using an already configured lane inside an authorized workflow is routine orchestration.
 - Keep branch creation and naming owner-managed. No branch-naming automation is planned.
 - HDC closeout should consume the project's existing scratchpad, reconcile only relevant durable docs, conditionally
   refresh generated maps and functional documentation, validate citations, and remove the scratchpad at wrap-up.
@@ -200,11 +201,12 @@ rule for CLIs that support and require those choices.
 - Normal work allocation: Gemini can handle LLDs, browser test scenarios, comments, routine planning support, and
   assessment of SonarQube/Copilot review findings when directed. The owner approved these initial global lanes on
   2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini Auto, and
-  `challenge-plan` → Gemini Auto. These lanes are available options, not automatic dispatch: the manually selected
-  active model is the orchestrator and plans/grills by default; delegate only when the owner explicitly directs it.
-  Claude Opus and Sonnet are never called unless the owner names one for that specific task. The owner prefers
-  Gemini for PR work and session closeout. Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying
-  on `babysit-pr`; native `session-closeout` behavior also remains to be validated.
+  `challenge-plan` → Gemini Auto. These are configured routes, so an authorized workflow may select them
+  automatically when their role is needed. The active model remains the orchestrator/control plane; it does not
+  become the default specialist merely because it is active. The owner may override any route. Materially different
+  unconfigured substitutions are not silent fallbacks. The owner prefers Gemini for PR work and session closeout.
+  Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying on `babysit-pr`; native
+  `session-closeout` behavior also remains to be validated.
 - When the owner directs a model to implement routine code changes, Luna may load and apply `clean-code-guard`
   in that implementation session; Gemini may apply `test-guard` when it writes tests. Always run the project's deterministic gates. Do not
   spend a separate Sol call on every guard; reserve an independent guard review for higher-risk changes or
@@ -215,10 +217,11 @@ rule for CLIs that support and require those choices.
   observed contradictions, concerns, and unsupported assertions. The scratchpad may contain task notes, source
   references/excerpts, grill answers, findings, proposed plan, review exchanges, decisions, and unresolved
   questions. Review it before proposing final project-document updates; no separate implementation-brief artifact
-  is needed. For a live debate, the active orchestrator drafts by default; other authors/reviewers participate only
-  when explicitly directed by the owner for that task. Delegates may read the shared scratchpad but never write it;
-  return changes separately for the orchestrator to merge. Opus/Sonnet require specific task-level authorization.
-  Missing optional review is disclosed, never silently substituted. Keep code review with existing `two-axis-review`
+  is needed. For a live debate, the workflow selects a plan-author role and challenge/reviewer roles through
+  configured lanes unless the owner overrides them. The orchestrator chairs the exchange and is the sole writer of
+  shared coordination state; delegated specialists own their plan/review outputs and return them attributed rather
+  than having the orchestrator recreate their reasoning. Give each role minimum useful context. Missing required
+  capability is disclosed; configured fallback may be used, but unconfigured substitution is never silent. Keep code review with existing `two-axis-review`
   and `debate-review`; use
   `babysit-pr` for PR bot-round management. A clean debate is a go-ahead signal, not a guarantee; models report
   and challenge but do not silently modify implementation during review. On 2026-10-01, the two skills passed
