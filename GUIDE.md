@@ -161,7 +161,7 @@ you change a skill here, copy it again.
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
 | Before pushing | `two-axis-review` | Reviews your diff against the repo's standards **and** against the spec (your LLD) | Pocock, renamed (copied) |
-| PR | `describe-pr` | Writes the PR title and description from git + the ticket | Mine |
+| PR | `describe-pr` | Writes What from git/implementation, Why from task context/approved requirements, and Testing from verified evidence or your report | Mine |
 | After the PR is open | `babysit-pr` | Works through bot and Copilot review comments; **asks before pushing or posting** | Tech lead (copied, changed) |
 | Big tickets, optional | `debate-review` | Two models review a PR and argue before posting | Tech lead (copied) |
 | End of a session | `session-closeout` | Writes a dated scratchpad in the docs folder + proposed doc updates, and checks every `file:line` citation against the real files | Mine |
@@ -397,9 +397,9 @@ Same tail, with more up front:
    The Functional Design/LLD remain concise and audience-specific; task context carries the detail they deliberately omit.
 4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
    challenge and respond in a shared scratchpad. Review the scratchpad and resolve open decisions before
-   implementation; then implement in slices and continue with steps 3–6 above.
+   implementation; then continue through the appropriate implementation, verification and PR stages.
 5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
-   the lanes `review-main` and `review-debate`: pin their models and effort in `delegate-setup`); without
+   the configured `review-main` and `review-debate` lanes); without
    `--dry-run` it posts it. *"debate-review --local"* reviews your working tree before a PR exists.
 
 ### Any time
