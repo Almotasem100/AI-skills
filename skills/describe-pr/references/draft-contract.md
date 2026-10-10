@@ -17,7 +17,7 @@ body, so the agent never formats markdown headings itself.
     "foundIn": "R2.21 / prod"  // bugfix/hotfix only
   },
   "sections": {                // keys depend on the template (see below)
-    "why":         { "text": "...", "confidence": "high", "source": "userNote" },
+    "why":         { "text": "...", "confidence": "high", "source": "taskContext" },
     "whatChanged": { "text": "...", "confidence": "high", "source": "diff" },
     "testing":     { "text": "[NEEDS INPUT]", "confidence": "low", "source": "none" }
   },
@@ -43,14 +43,17 @@ The context's `requiredSections` says which keys must appear. A required key lef
 `[NEEDS INPUT]`. An optional key left empty is dropped with its heading — never write "N/A".
 
 ## `source` and `confidence`
-- `source`: where the text came from — `diff`, `commits`, `ticket` (pasted by the user), `lld`, `userNote`,
-  `inferred`, or `none`.
+- `source`: where the text came from — `diff`, `commits`, `taskContext`, `ticket`, `requirements`,
+  `functionalDesign`, `lld`, `technicalDesign`, `userNote`, `inferred`, or `none`.
 - `confidence`: `high` when the source states it directly, `low` when it is an inference.
 - Low-confidence fields are what the questions are for.
 
 ## Hard rules
 - **Never invent** test results, measurements, business impact, reasons, severity or rollback steps. Write
   `[NEEDS INPUT]` and ask.
-- `why` / `problem` come from the user's note, the pasted ticket or the LLD — never from the diff alone.
-- `testing` / `regressionAndTesting` come from the user only.
+- `why` / `problem` use this evidence order: explicit user rationale -> task context -> approved
+  ticket/requirements -> relevant approved design artifact -> ask. Never derive business rationale from the diff.
+- Preserve qualifiers on value/measurement claims. `estimated 20%` cannot become `improved by 20%`.
+- `testing` / `regressionAndTesting` come from verified execution evidence or the user; never infer them from
+  requirements or implementation alone.
 - `rollback` is asked for when the context has a `migration` signal, and always for a hotfix.
