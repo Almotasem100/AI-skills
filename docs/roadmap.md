@@ -298,6 +298,17 @@ Evidence remains outside the repositories under `C:/Users/malmotas/AppData/Local
 
 Four owner-approved synthetic diagnostics passed with Gemini CLI 0.62.0 and unchanged Auto/default settings: direct and relay one-read trials, eight sequential relay reads, and native update_topic followed by the same eight reads. Independent checks verified required tool sequences, expected outputs and unchanged fixtures. The original HTTP 400 was not reproduced and its cause remains unknown; no fix or broader HDC-workflow acceptance is claimed. On 2026-10-03 the owner directed removing debugging from future steps and closing this incident unless it recurs. No further diagnostic work is queued. Retain existing evidence; this disposition does not authorize cleanup, configuration/authentication changes, publication or automatic retries. Unrelated skill-verification gaps remain separate.
 
+## Gemini delegate rebase — 2026-10-10
+
+Reconciled the local `gemini-delegate` contribution overlay from upstream base `6826b363` onto
+`8ef02103`, the delegate-skills version now vendored on `refactor/orchestration-contract`. The rebase
+preserves Gemini's lane/config integration, updates its Windows `.cmd` version/dispatch launch to the same
+Node 24-safe serialized-shell pattern adopted upstream, and adds Gemini to the upstream Node 24 preflight matrix.
+The refreshed overlay remains unpublished and does not alter the vendored delegate snapshot or installed
+user-level skill copies. Verification in this repo is structural: the regenerated patch is based on the new
+upstream files and the affected merge points were reconciled. A native Windows run of the Gemini-focused tests
+and upstream preflight/relay suite is still required before any upstream proposal.
+
 ## Gemini local contribution refresh — 2026-10-03
 
 Following review of the relay refactor, refreshed `overlays/gemini-delegate/changes.patch`; the 24-path patch applies to its pinned base `6826b363085dcc80875372315fe7d208c4bf733f`, and the applied relay blob matches the separate `feature/gemini-delegate` checkout. The owner also asked to update the user-level `.agents/skills/gemini-delegate` installation: only `scripts/relay.mjs` was stale, so that file was copied from the reviewed source. All six installed files now hash-match the contribution checkout. `node test/relay-smoke.mjs --only gemini,package-shape,syntax`, `node test/event-scanner.mjs` (26 passed), and `node test/relay-parity.mjs` all passed in the source checkout; installed relay `node --check` and `--help` also passed. This remains a local, unpublished contribution outside the vendored snapshot and curated install list. No commit or push was made; live Gemini behavior was not retested.

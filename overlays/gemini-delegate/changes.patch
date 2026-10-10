@@ -59,10 +59,9 @@ index c18f60cfd8046ba5eb9f52b5cd9e6f0db76d4fdd..df6cc8083bf0c7626260032e5f63b5df
    The `claude` and `cursor-agent` launches serialize a pre-joined
    command string through the shell on win32 for the same shim reason; `agy`, `kimi`, current
 diff --git a/README.md b/README.md
-index 4ea9645403563c0b290c34f5b2e2e6d3b378eaf7..7ddcd7a6e243e972abe4816db90ea7f2309bb2f2 100644
 --- a/README.md
 +++ b/README.md
-@@ -71,6 +71,7 @@ Skip setup when you want one implementer or one-off dials. Pick the skill for a
+@@ -71,6 +71,7 @@
  | [`codex-delegate`](skills/codex-delegate/SKILL.md) | [OpenAI Codex](https://github.com/openai/codex) (`codex`) | `--sandbox workspace-write` | `--read-only` | `--resume-last`, `--session <id>` |
  | [`commandcode-delegate`](skills/commandcode-delegate/SKILL.md) | [Command Code](https://commandcode.ai/docs/headless) (`cmd`; `cmdc` on Windows) | `--yolo` — the only headless write state; no sandbox [^commandcode] | `--read-only` (withheld tools + `plan`) | `--continue-last`, `--session <id>` |
  | [`cursor-delegate`](skills/cursor-delegate/SKILL.md) | [Cursor Agent](https://cursor.com/cli) (`cursor-agent`) | `--force`; `--no-force` withholds command approval | `--read-only` (plan mode) | `--resume-last`, `--session <id>` |
@@ -70,19 +69,21 @@ index 4ea9645403563c0b290c34f5b2e2e6d3b378eaf7..7ddcd7a6e243e972abe4816db90ea7f2
  | [`grok-delegate`](skills/grok-delegate/SKILL.md) | Grok Build (`grok`) | workspace-scoped; `--full-access` opt-in | `--read-only` — best-effort [^grok] | `--resume-last`, `--session <id>` |
  | [`kimi-delegate`](skills/kimi-delegate/SKILL.md) | [Kimi Code](https://moonshotai.github.io/kimi-code/en/) (`kimi`) | `auto permission mode`, always | — [^none] | `--resume-last`, `--session <id>` |
  | [`opencode-delegate`](skills/opencode-delegate/SKILL.md) | [OpenCode](https://opencode.ai) (`opencode`) | agent `build` (`--model` required) | `--read-only` (agent `plan`) | `--resume-last`, `--session <id>` |
-@@ -372,6 +373,13 @@ Per skill — platform, CLI version, and what the run exercised:
-   project overlay, global write without creating `.delegate/`, and `--lane` resolve / wrong-skill /
+@@ -386,6 +387,15 @@
    flag-override against relays. The smoke suite runs live discovery against installed CLIs
    (versions vary by machine). Native Windows discover smoke not yet claimed.
+ 
 +- `gemini-delegate` — native Windows, `gemini` 0.62.0: offline `--help`/`--version`
 +  inspected; stream fields and plan-mode fallback grounded in installed CLI source.
 +  Fake-CLI contract tests cover npm `.cmd` stdin transport, optional model/default,
 +  approval modes, resume selectors, result/error parsing, Git state reporting,
-+  missing binary, bounded preflight, and the shared timeout matrix. No live model
-+  dispatch, headless write approval, or enforced read-only behavior is claimed;
-+  POSIX launch/abort remains unverified locally. Gemini discovery only probes version.
- 
- Not yet verified: native Windows launches for `claude`, exact-head `cline`, `grok`, `kimi`,
++  missing binary, bounded preflight, the shared timeout matrix, and Node 24-safe
++  Windows version/dispatch launching. No live model dispatch, headless write approval,
++  or enforced read-only behavior is claimed; POSIX launch/abort remains unverified locally.
++  Gemini discovery only probes version.
++
+ Not yet verified: native Windows launches for a directly spawned `claude.exe` (the npm `claude.cmd`
+ shim path has a run above), exact-head `cline`, `grok`, `kimi`,
  `pi`, `qoder`, `vibe`, and `omp` (`codex`/`opencode`/`grok`/`commandcode` have contract-tested `.cmd` shim handling;
 diff --git a/skills.sh.json b/skills.sh.json
 index a5e737a0e87256128d732e7766414ae36b5973ee..f663121ba34623282a16534ba107ebeea40e6fad 100644
@@ -132,10 +133,9 @@ index caf66c5d2a0a43cc55f22b62f1603800195621c3..5a05437929faf3f21e89e2952c96e7a7
  
  ## Helpers
 diff --git a/skills/delegate-setup/scripts/config.mjs b/skills/delegate-setup/scripts/config.mjs
-index 7d36cdd4fe5cacff34347572e027fbce7316e4f0..6d6a17c751ffaea775a44a5027fc4261804fff21 100644
 --- a/skills/delegate-setup/scripts/config.mjs
 +++ b/skills/delegate-setup/scripts/config.mjs
-@@ -35,6 +35,7 @@ import {
+@@ -35,6 +35,7 @@
    CODEX_SANDBOX,
    CONFIG_VERSION,
    GROK_SANDBOX,
@@ -143,7 +143,7 @@ index 7d36cdd4fe5cacff34347572e027fbce7316e4f0..6d6a17c751ffaea775a44a5027fc4261
    IMPLEMENTER_BY_KEY,
    LANE_NAME,
    MODEL_TOKEN,
-@@ -251,6 +252,9 @@ function validateDialValue(implementer, field, value, laneName, label) {
+@@ -251,6 +252,9 @@
    if (field === "permissionMode" && implementer === "qoder" && !QODER_PERMISSION.includes(value)) {
      return `${label}: lane ${laneName}.permissionMode must be one of: ${QODER_PERMISSION.join(", ")}`;
    }
@@ -154,14 +154,12 @@ index 7d36cdd4fe5cacff34347572e027fbce7316e4f0..6d6a17c751ffaea775a44a5027fc4261
    // have no permission client, so they change nothing and still exit 0.
    if (field === "permissionMode" && implementer === "zcode" && !ZCODE_MODE.includes(value)) {
 diff --git a/skills/delegate-setup/scripts/implementers.mjs b/skills/delegate-setup/scripts/implementers.mjs
-index f0630f07f162c58e7a5cb8c5ad77f803f1786bec..e1021118d7eacba94e392c14100b596a7bac3304 100644
 --- a/skills/delegate-setup/scripts/implementers.mjs
 +++ b/skills/delegate-setup/scripts/implementers.mjs
-@@ -45,6 +45,20 @@
-  * }[]}
+@@ -46,6 +46,20 @@
   */
  export const IMPLEMENTERS = Object.freeze([
-+  {
+   {
 +    key: "gemini",
 +    skill: "gemini-delegate",
 +    binary: "gemini",
@@ -175,10 +173,11 @@ index f0630f07f162c58e7a5cb8c5ad77f803f1786bec..e1021118d7eacba94e392c14100b596a
 +    supports: ["model", "permissionMode", "timeout"],
 +    winShell: true,
 +  },
-   {
++  {
      key: "claude",
      skill: "claude-delegate",
-@@ -396,6 +410,7 @@ export const COPILOT_EFFORT = Object.freeze(["low", "medium", "high", "xhigh", "
+     binary: "claude",
+@@ -396,6 +410,7 @@
  export const OMP_THINKING = Object.freeze(["off", "auto", "minimal", "low", "medium", "high", "xhigh", "max"]);
  export const CODEX_SANDBOX = Object.freeze(["read-only", "workspace-write", "danger-full-access"]);
  export const GROK_SANDBOX = Object.freeze(["workspace", "read-only", "off"]);
@@ -186,15 +185,15 @@ index f0630f07f162c58e7a5cb8c5ad77f803f1786bec..e1021118d7eacba94e392c14100b596a
  export const QODER_PERMISSION = Object.freeze([
    "default",
    "accept_edits",
-@@ -423,7 +438,7 @@ export const MODEL_TOKEN = Object.freeze({
+@@ -423,7 +438,7 @@
    claude: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]-]*$/,
    /** Keep in lockstep with cursor-delegate SAFE_MODEL. */
    cursor: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]\,=-]*$/,
--  /** Keep in lockstep with grok/pi/codex/commandcode shell-safe tokens. */
 +  /** Keep in lockstep with gemini/grok/pi/codex/commandcode shell-safe tokens. */
+-  /** Keep in lockstep with grok/pi/codex/commandcode shell-safe tokens. */
    shellSafe: /^[A-Za-z0-9][A-Za-z0-9._:\/-]*$/,
-   /** Keep in lockstep with opencode-delegate MODEL_TOKEN: adds # for provider/model#variant (opencode 2.x). */
-   opencode: /^[A-Za-z0-9][A-Za-z0-9._:\/#-]*$/,
+   /** Keep in lockstep with opencode-delegate MODEL_TOKEN: adds # for provider/model#variant (opencode 2.x), plus @ and ~ for catalog ids (@cf/..., model@default, ~vendor/model-latest). */
+   opencode: /^[A-Za-z0-9][A-Za-z0-9._:@~\/#-]*$/,
 diff --git a/skills/delegate-setup/scripts/lane.mjs b/skills/delegate-setup/scripts/lane.mjs
 index c44c890c0872d988d24a12a4a342bd2c50b03eae..34364485c149694a5c8995de766b6cdba4d71cc5 100644
 --- a/skills/delegate-setup/scripts/lane.mjs
@@ -522,10 +521,9 @@ index 0000000000000000000000000000000000000000..36db7cac41023c74a0d44e672348baec
 +project-scoped. Re-pass approval and model choices deliberately on each dispatch.
 diff --git a/skills/gemini-delegate/scripts/relay.mjs b/skills/gemini-delegate/scripts/relay.mjs
 new file mode 100644
-index 0000000..40744bc90e3f0f4a00e9bf7fed2e3ba4dfd9aa69
 --- /dev/null
 +++ b/skills/gemini-delegate/scripts/relay.mjs
-@@ -0,0 +1,562 @@
+@@ -0,0 +1,571 @@
 +#!/usr/bin/env node
 +/**
 + * delegate-skills · gemini-delegate · relay.mjs
@@ -703,10 +701,20 @@ index 0000000..40744bc90e3f0f4a00e9bf7fed2e3ba4dfd9aa69
 +  }
 +}
 +
++function spawnShellLaunch(binary, argv, options, useShell) {
++  if (!useShell) return spawn(binary, argv, options);
++  // Node 24 warns when shell:true is paired with an args array. Gemini's dynamic
++  // values are token-validated and the fixed prompt is already quoted for cmd.exe,
++  // so serialize the command once before handing it to the shell.
++  return spawn([binary, ...argv].join(" "), { ...options, shell: true });
++}
++
 +async function geminiVersion(timeoutMs, onChild) {
 +  const limit = Math.min(timeoutMs, VERSION_TIMEOUT_MS);
 +  const runProbe = (command, argv, options = {}) => new Promise((resolveProbe) => {
-+    const child = spawn(command, argv, { stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32", ...options });
++    const useShell = options.shell === true;
++    const { shell: _shell, ...launchOptions } = options;
++    const child = spawnShellLaunch(command, argv, { stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32", ...launchOptions }, useShell);
 +    onChild(child);
 +    let stdout = "";
 +    let stderr = "";
@@ -969,10 +977,9 @@ index 0000000..40744bc90e3f0f4a00e9bf7fed2e3ba4dfd9aa69
 +}
 +
 +function createGeminiDispatchContext(opts, brief, run, writeResult) {
-+  const child = spawn("gemini", buildArgv(opts), {
-+    cwd: opts.cd, stdio: ["pipe", "pipe", "pipe"],
-+    shell: process.platform === "win32", detached: process.platform !== "win32",
-+  });
++  const child = spawnShellLaunch("gemini", buildArgv(opts), {
++    cwd: opts.cd, stdio: ["pipe", "pipe", "pipe"], detached: process.platform !== "win32",
++  }, process.platform === "win32");
 +  const { state, scan } = trackGeminiEvents();
 +  const output = captureGeminiOutput(child, run, scan);
 +  child.stdin.on("error", () => {}); // EPIPE from an early startup failure is reported by exit.
@@ -1600,3 +1607,24 @@ index 40e704fcfbe87b936e6b01fb0b2880b29a11b784..88a42fd61e03c9c17254552f59b016ba
    { skill: "codex", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
    { skill: "opencode", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
    { skill: "grok", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+diff --git a/test/relay/preflight.mjs b/test/relay/preflight.mjs
+--- a/test/relay/preflight.mjs
++++ b/test/relay/preflight.mjs
+@@ -3,7 +3,7 @@
+ import { join } from "node:path";
+ 
+ export async function runPreflight(h) {
++for (const skill of ["gemini", "codex", "opencode", "grok", "kimi", "warp"]) {
+-for (const skill of ["codex", "opencode", "grok", "kimi", "warp"]) {
+   const workDir = h.freshRepo(`work-preflight-${skill}`);
+   for (const [suffix, expectedStatus, expectedExit] of [
+     ["version-hang", "timeout", 124],
+@@ -62,7 +62,7 @@
+ // Node 24 warns for shell:true plus an args array. Exercise both each .cmd
+ // version probe and its dispatch through the native Windows shim harness.
+ if (h.WIN && Number(process.versions.node.split(".")[0]) >= 24) {
++  for (const skill of ["gemini", "cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
+-  for (const skill of ["cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
+     const workDir = h.freshRepo(`work-dep0190-${skill}`);
+     const outDir = join(h.scratch, `out-dep0190-${skill}`);
+     const argsPath = join(h.scratch, `args-dep0190-${skill}.json`);

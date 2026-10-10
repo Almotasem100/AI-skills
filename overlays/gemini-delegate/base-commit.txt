@@ -1,4 +1,1 @@
-Repository: Ahmed Nagdy/delegate-skills
-Branch at capture: feature/gemini-delegate
-Base commit: 6826b363085dcc80875372315fe7d208c4bf733f
-Captured: 2026-10-03
+8ef02103ad99b53801f2b13d04755313fbbfafb2
