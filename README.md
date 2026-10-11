@@ -113,7 +113,7 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented Jira/requirements/grilling/UX/project evidence → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
+| `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented feature/task requirements, decisions, UX/project evidence and constraints → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
 | `create-lld` | **Updated 2026-10-10; bounded native smoke 2026-10-11:** Gemini CLI 0.62.0 discovered the skill after its UTF-8 BOM was removed. Its LLD copied task-context evidence pointers; both LLD and Functional Design repeated content and added unsupported speculative details. The same LLD smoke passed through OpenCode v2.0.22 with the skill loaded. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. The cross-host difference points to a Gemini adherence limitation in these bounded runs, not a generally weak LLD contract; broader behavior remains unverified. |
 | `qa-scenarios` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
@@ -174,7 +174,7 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 
 **Use:**
 - **Forward**, before the work:
-  > write the LLD for CADE-1234, "Navbar", from the approved requirements. Release R4, Sprint 1. Save it in my docs folder.
+  > write the LLD for APP-123, "Navbar", from the approved requirements. Save it in the project-approved design location.
 - **Technical Design (optional):** only when the active project/team explicitly requires a separate as-built design artifact. It is not part of the default lifecycle.
 
 The design artifacts stay feature-level when a project uses parent features plus delivery slices. Functional Design
@@ -196,7 +196,7 @@ unless separately requested.
 
 
 ### `plan-review` and `plan-debate`
-Both accept a proposed plan directly, including as a working session scratchpad or existing handoff; no separate
+Both accept a proposed plan directly, including as a working scratchpad or existing handoff; no separate
 implementation-brief artifact is needed. A scratchpad can hold task notes, necessary source references/excerpts,
 grill answers, findings, the draft, review exchanges, decisions, and unresolved questions. Preserve source
 locators and verify consequential claims against originals when available. Reuse a project's designated

@@ -26,7 +26,7 @@ Explicit route/checkpoint instructions still override the inferred workflow.
 
 ### 🟢 Starting a ticket
 **`grill-me` (by name): clarify when a small ticket actually needs clarification.** It asks focused questions in rounds. Skip it when the bug/task is already clear enough to inspect, fix and verify directly.
-> `/grill-me ticket 38939409: add the shared header to every page`
+> `/grill-me ticket APP-123: add the shared header to every page`
 
 Answer "agree" or "agree except Q3: …". Save its final summary: that's your spec.
 
@@ -35,7 +35,7 @@ it also builds a glossary as you answer. Run it from the docs folder, never a co
 > `/grill-with-docs new approval workflow for checklists`
 
 **`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A separate as-built Technical Design is optional only when the active project/team explicitly requires one. Source materials and code are inspected internally; deliverables omit evidence inventories and source-code paths/lines.
-> "Write the LLD for CADE-1234, 'Navbar', from these requirements. Release R4, Sprint 1."
+> "Write the LLD for APP-123, 'Navbar', from these requirements."
 
 ### 🧭 Planning before implementation
 **`plan-review`:** a one-shot, read-only critique of a plan, working session scratchpad, or existing handoff.
@@ -75,7 +75,7 @@ grill summary), as two separate reports. Don't apply findings blindly; some will
 ### 📬 The pull request
 **`describe-pr`: writes the PR for you.** It reads your changes, asks at most 4 questions, and opens the PR
 only after you say yes.
-> "Write the PR description. Ticket 38939409 'Navbar'. Tested: ng build, 108/108 specs."
+> "Write the PR description. Ticket APP-123 'Navbar'. Tested: ng build, 108/108 specs."
 
 **`babysit-pr`: handles review comments.** Copilot or bot comments on your PR: it fixes the real problems
 locally, then asks before pushing or replying.
@@ -190,7 +190,7 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 ### Copy the skills (PowerShell)
 Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
 into both skills folders, so compatible agents see the same set. **Tested 2026-09-25** on this laptop
-against a throwaway folder: all 18 then-listed skills landed in both targets (re-run 2026-09-26 after adding
+against a throwaway folder: the then-listed skill set landed in both targets (re-run 2026-09-26 after adding
 `work-closeout`), and the scripts ran from their new place. The newly added `qa-scenarios` entry has
 not yet been included in an install test or tested natively. On 2026-10-01, `plan-review` and `plan-debate` were
 copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
@@ -401,8 +401,7 @@ Same tail, with more up front:
 ### Any time
 - **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
   same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
-  assumptions and unresolved questions distinct. In HDC, the intended working location is
-  `HDC-documents/active-work/`, not the documentation root.
+  assumptions and unresolved questions distinct. Use the active project's approved working location; the generic skill does not choose a project-specific path.
 - **`create-lld`**, optional Technical Design mode: invoke only when the active project/team explicitly requires a separate as-built design artifact after implementation.
 
 - **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.
@@ -433,7 +432,7 @@ Same tail, with more up front:
   or the current request says otherwise.
 
 
-The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/active-work/`, not a code repository or the HDC docs root.
+The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. Run it only from the active project's approved working location, not an arbitrary code-repository root.
 
 ---
 
