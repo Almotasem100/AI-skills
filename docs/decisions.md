@@ -60,7 +60,7 @@ and its decisions feed the PR's reviewer notes.
   acceptance criteria and UI-visible behavior). Exclude its application-specific architecture examples and
   draft placeholders. Do not invent requirements; keep unresolved items as `[NEEDS INPUT]`.
 - No separate implementation-brief skill is planned: a plan-review can review a plan document or handoff
-  directly. Plan review/debate uses one working session scratchpad containing task notes, relevant findings, grill
+  directly. Plan review/debate uses one working scratchpad containing task notes, relevant findings, grill
   answers, the draft plan, review comments, and unresolved questions. The orchestrator alone writes it; owner-
   authorized delegates may read it when the host can enforce read-only access, otherwise they receive immutable
   snapshots. They return separate Markdown findings or an authorized `minipad.md`; the orchestrator records,
@@ -110,7 +110,7 @@ GitHub token; the owner should revoke it. Never copy that file.
 in config rather than code (servlet URLs, cron jobs, task queues, dispatch routes)?
 
 **How it was run:** Graphify `4000de15` (v0.9.68) installed from the reviewed source into a throwaway venv in the
-session scratchpad; `graphify extract <copy> --code-only --out <scratchpad>` on a **copy** of the HDC backend's
+working scratchpad; `graphify extract <copy> --code-only --out <scratchpad>` on a **copy** of the HDC backend's
 `HDC/src` + `dispatch.yaml` (255 `.java` files). Offline, no LLM. Nothing written to the repo or any agent config.
 Review before running was targeted (install path, extract path, network, subprocess, output location), not the
 whole ~99k lines.
@@ -193,7 +193,7 @@ still need real verification before being treated as proven.
   become the default specialist merely because it is active. The owner may override any route. Materially different
   unconfigured substitutions are not silent fallbacks. Historical preference at that date: Gemini for PR work and closeout; current routing remains role/config/evidence driven.
   Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying on `babysit-pr`; native
-  `session-closeout` behavior also remains to be validated.
+  `work-closeout` behavior after the 2026-10-11 rename/refinement remains to be validated.
 - When the owner directs a model to implement routine code changes, Luna may load and apply `clean-code-guard`
   in that implementation session; Gemini may apply `test-guard` when it writes tests. Always run the project's deterministic gates. Do not
   spend a separate Sol call on every guard; reserve an independent guard review for higher-risk changes or
