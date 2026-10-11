@@ -339,11 +339,10 @@ _Reordered by the owner on 2026-09-25: the builds (work-closeout, B9, install.ps
    - repeat in Gemini CLI
    - Pocock skills: `/grill-me` on a small ticket; `two-axis-review` with the LLD as spec
    - on the workstation: run `GUIDE.md` §3 for real
-6. **Per-project `AGENTS.md`** (rules, glossary, PR scopes, where LLDs go). For HDC it needs the user's approval
-   of the exact files first. **The HDC frontend one must carry the intake rule** (the owner's idea, recorded in
-   the handoff but in no skill or agent file yet): on a new frontend task, wait for the Figma screenshots and
-   copied CSS, ask the missing questions (grill), and only then plan. It is project-specific, so it belongs in
-   that project's `AGENTS.md`, not in a generic skill.
+6. **Per-project instructions:** portable semantics stay in AI-skills; each project owns tracker mappings,
+   physical paths, architecture/environment gates, design-input requirements and publication/deployment policy.
+   For HDC the canonical shared policy is `HDC-documents/README.md`; a workspace `AGENTS.md` should remain a thin
+   navigation/entrypoint layer rather than a second independently evolving constitution.
 7. Later, with the team: `pr-standard.md` (branch naming, title format, CI checks); propose the `babysit-pr`
    "ask before publish" option upstream.
 
