@@ -29,8 +29,9 @@ history.
 - Never create a file in `cb379_hdc_pdc` or `cb379_dc_frontend` without my approval of the exact file list.
 - Never edit `vendor/` silently: mark `LOCAL CHANGE`, record it in that repo's `UPSTREAM.md` and its
   `local-changes.patch`.
-- **Every run handed to another CLI names the model and effort** (Codex: `gpt-6-luna` simple, `gpt-6-sol`
-  hard). Never rely on a CLI's default model. See `GUIDE.md` §4.
+- Routine delegation follows the authorized task scope: select the needed role and resolve it through a configured
+  lane; provider, model and supported effort come from lane configuration. Honor explicit owner checkpoints and
+  material approval gates. The user may override the lane or model when they explicitly want a particular route.
 - **Never touch anything inside the HDC repos** (`cb379_hdc_pdc`, `cb379_dc_frontend`): read-only. Repo-side
   steps are my own to-dos (HDC cleanup rule R1).
 - Test for real and say exactly what was tested and how. Don't invent facts about my projects or tools; if

@@ -5,7 +5,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-10 — added the adaptive task-context layer, updated create-lld/describe-pr evidence flow, synchronized the latest HDC master Plan onto the HDC alignment branch, and kept both PRs unopened._
+_Last updated: 2026-10-11 — merged the approved orchestration branches to both masters; synchronized the three first-party skills and mirrored global instructions; completed bounded Gemini/OpenCode verification below._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
@@ -63,11 +63,60 @@ verification/user report for Testing. It preserves estimate/target qualifiers an
 from the diff. This directly addresses the CADE-1812 PR-description failure where business rationale already
 existed in the requirements but was initially guessed from code.
 
-Structural/document review is complete. The new task-context skill and revised describe-pr/create-lld interaction
-have **not** yet been copied to user-level skill roots or tested natively in an agent. Next real-use regression:
-run a representative ticket with requirements containing an explicitly estimated business benefit and verify that
-task context preserves the qualifier, create-lld stays concise, and describe-pr uses that rationale without asking
-the owner to repeat it.
+The task-context, create-lld and describe-pr source directories are installed in both user-level skill roots and
+match their sources byte-for-byte. Gemini CLI 0.62.0 now lists all three. The create-lld discovery defect was
+confirmed by the before/after inventory: its source `SKILL.md` began with UTF-8 BOM bytes `EF BB BF`, contrary to
+Gemini's documented frontmatter-first rule; removing only those bytes and synchronizing the installs made the
+skill discoverable. Its text and frontmatter semantics were otherwise unchanged.
+
+Bounded Gemini CLI 0.62.0 native smokes: task-context again preserved the estimated 20% qualifier, distinct
+evidence classes, and temporary-context boundary. create-lld preserved the estimate and did not invent actual
+release/sprint values, components, endpoints, decisions, or rollback procedures, but **did not pass** the
+deliverable check: the 45-line LLD repeated the evidence-class/source-pointer inventory in its body, duplicated
+requirements across sections, and introduced speculative questions about runtime, APIs, and deployment. The
+deterministic LLD checker returned no errors/warnings (2 needs-input markers); that structural result does not
+override the native concision/grounding failure. The skill already forbids copying the evidence map and speculative
+detail, so this run demonstrates model non-compliance/creative overreach, not an identified missing contract; no
+create-lld text change was made.
+
+The same forward-LLD request and fixture were then run read-only through the configured OpenCode `implement-code`
+lane. OpenCode v2.0.22 explicitly called the `create-lld` skill tool, returned a concise design, preserved the
+estimate, omitted evidence internals/repeated requirements, and left one consequential integration boundary as an
+open question; reported cost was $0. No workspace changes resulted. This material cross-host difference points to
+Gemini model/host adherence rather than a generally weak LLD contract. A separate Gemini Functional Design smoke
+preserved the estimate and did not expose source pointers or invent UI/API details, but was verbose and redundant
+(requirements repeated across FR/BR/AC), asserted unsupported non-interactive generation, and asked speculative
+release/delivery/review questions. It therefore did not pass its concision/grounding check. No create-lld contract or
+template change was made.
+
+The first describe-pr smoke used a misleading fixture: its one-line diff asserted that a section was added without
+actually adding one. The synthetic fixture was corrected to add a real `Requirements evidence` heading and bullet.
+On rerun, Gemini used task evidence for Why, described only that heading and bullet from the diff for What,
+preserved “estimated,” and left Testing as `[NEEDS INPUT]`. Precision caveat: Why connected the estimate to the
+task-context synthesis (“by synthesizing…”), while the synthetic requirements state the estimate and synthesis
+objective separately and do not explicitly establish that causal link. The first response was fenced JSON; after
+removing only the fences, render reported no warnings and one missing-input question. A focused retry returned raw
+JSON with the same wording; Gemini's attempt to glob a broader temp path was denied by its workspace boundary,
+after which it still returned the draft. No PR was created or published.
+
+A separate causation smoke used the same source distinction: the task objective is to synthesize fragmented evidence;
+the requirements separately estimate a 20% time reduction without saying synthesis causes that benefit. Gemini
+reproduced the unsupported “by synthesizing” link. An **uncommitted experiment** added one narrow hard rule to
+`skills/describe-pr/references/draft-contract.md` and synchronized that file into both installed roots. The single
+post-change native retry still generated the same causal wording, so this host did not follow the new rule; no further
+contract edits were made. The experimental contract change is intentionally excluded from the commits below.
+
+The vendored delegate-setup registry lacked `key: "gemini"`, while the installed registry supports Gemini with
+`model`, `permissionMode`, and `timeout` dials. The minimal registry entry was added to the vendor copy and
+recorded in `UPSTREAM.md` and `local-changes.patch`. Vendored `config.mjs validate` and `load` now accept the
+existing seven-lane map; no lane assignments changed and no paid lane was dispatched. The earlier read-only
+`implement-code` dispatch remains the actual dispatch evidence: OpenCode 2.0.22, exit 0, reported $0, no edits;
+it was not repeated. Other lanes/fallback remain untested.
+
+The stale per-dispatch model/effort requirement was removed from `docs/next-session-prompt.md`; the HDC workspace
+`AGENTS.md` was separately updated at the specifically authorized path. That AGENTS file is at the HDC workspace
+root, outside its three child Git repositories. The synthetic fixture and evidence outputs remain in the approved
+OpenCode temp directory and were not cleaned up.
 
 ## Active owner-approved plan
 1. **Gemini CLI implementer (local upstream contribution; rebased 2026-10-10):** the contribution is preserved as
@@ -83,11 +132,12 @@ the owner to repeat it.
    **2026-10-02, owner-approved fixed HDC work context:** HDC uses `HDC-documents/current-session/scratchpad.md` and adjacent inputs, not new per-session scratchpad folders. Chat/model handoffs preserve that work context; completed-feature/agreed-bounded-task closeout clears the approved folder contents after approved write-backs and verification. The HDC profile location/cleanup rules and canonical guidance are aligned. Generic/source-installed skills remain unchanged; native enforcement is untested. Historical HDC session records are retained; testing-directory design remains a separate pending discussion.
    **2026-10-03, owner-approved HDC-only closeout clarification:** the HDC profile, canonical README and workspace instructions prohibit invoking/offering handoff at completed-task closeout. Separate future audit/acceptance/retirement/cleanup work belongs in the Plan with explicit gates, not as an automatic reason to retain an owner-completed task's scratchpad. Clear only approved current-session contents after write-backs and verification; external temp/worktree cleanup stays separately scoped. Git publication needs separate authorization and actual outcomes must be reported, including blocked pushes. The original portable skill and installed copies remain unchanged. Text alignment is verified; this is not a new native-agent enforcement test.
 4. **Scenario test cases (initial implementation complete; installed; validation pending):** built `skills/scenario-test-cases/` with a reusable Given/When/Then browser-scenario template based on the owner's style example. It derives scenarios from approved requirements and LLDs, consults a matching implementation-task handoff when available, and flags conflicts/gaps rather than inventing expected behavior. Browser-followable and automation-friendly, but emits no automation code. On 2026-10-01, copied it into both user-level skill roots and verified source-file hashes. **Next:** review the skill/template and test it on a real or representative approved requirements + LLD + task handoff set while working; native agent testing remains pending. This owner-directed format replaces the earlier open question about locating a team template.
-5. **Delegation lanes (configured; automatic role routing is now the intended contract):** the initial routes include
-   `implement-code` → OpenCode Luna/high, `write-test-cases` → Gemini Auto, and `challenge-plan` → Gemini Auto.
-   Workflow semantics choose the role; lane configuration chooses provider/model/effort. The owner may override a
-   route, but routine authorized delegation should not require naming a lane/model/effort again. Saved-lane dispatch
-   and fallback/error behavior still need real-use verification; do not claim availability from configuration alone.
+5. **Delegation lanes (configured; automatic role routing is now the intended contract):** the current workstation
+   map has seven lanes. `implement-code` maps to OpenCode `openai/gpt-6.1-sol`/low and passed one read-only relay
+   dispatch (OpenCode 2.0.22, exit 0, reported $0); Gemini `gemini-3.8-flash` was used for bounded skill smokes.
+   Vendored config validation now accepts the existing Gemini mappings; other configured lanes and
+   fallback/error behavior remain untested. Workflow semantics choose the role; lane configuration chooses
+   provider/model/effort. Do not claim any untested lane ready.
 6. **Plan review and debate (implemented and orchestration contract updated):** `plan-review` remains a bounded
    one-shot critique. `plan-debate` now treats the orchestrator as chair/control-plane rather than default author:
    the workflow selects plan-author/challenge/reviewer roles through configured lanes, specialists own their
@@ -97,7 +147,7 @@ the owner to repeat it.
    ritual. The 2026-10-01 synthetic smoke evidence still applies only to the versions/hosts actually tested.
 7. **Briefs:**** no separate implementation-brief skill is planned. Plan review/debate uses the scratchpad or an existing handoff directly; a delegate's brief remains the task instructions sent to the coding implementer, not a project artifact.
 8. **Security audit skill (initial implementation complete; one native smoke test):** added `skills/security-audit/SKILL.md` as a read-only, evidence-citing audit that uses approved project security requirements when supplied, flags missing requirements/uncertainty, protects secret values, and makes no compliance claim. Its scope covers relevant trust boundaries, authentication/authorization, input handling, sensitive data/secrets, dependencies/configuration, abuse controls, and security tests without treating every category as mandatory. On 2026-10-01, Gemini CLI 0.62.0 audited a synthetic endpoint excerpt, identified a conditional authorization risk, and called out missing DAO evidence; OpenCode loaded the skill in this session but did not audit the fixture. The test establishes neither real vulnerability detection nor general host/model support. **Next:** review the skill and run another synthetic smoke test in a distinct agent when available; no target-system audit was performed.
-9. **`create-lld` concise design-artifact workflow (updated 2026-10-10):** one Jira ticket remains the unit of design. Functional Design, LLD and Technical Design stay concise and audience-specific. The source skill can now consume an optional `task-context` working synthesis without bloating the deliverables. Previously installed host copies predate this update and need re-copying before installed-version claims are refreshed. The LLD checker behavior itself is unchanged.
+9. **`create-lld` concise design-artifact workflow (updated 2026-10-10):** one Jira ticket remains the unit of design. Functional Design, LLD and Technical Design stay concise and audience-specific. Installed copies match source and Gemini CLI 0.62.0 now discovers the skill after removing the `SKILL.md` BOM. The bounded native smoke preserved the estimate but failed concision/containment by copying task-context evidence categories and adding speculative questions; the existing contract already disallows those behaviors. No skill-contract redesign was made. The LLD checker behavior itself is unchanged.
 
 10. **Orchestrator and model-call policy (superseded by role-based orchestration, 2026-10-10):** the selected model
     is the control plane: understand the objective, choose the smallest sufficient workflow, resolve roles to
@@ -158,9 +208,10 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 ## Status
 | Item | State | Evidence / notes |
 |---|---|---|
-| `skills/describe-pr` | Evidence contract updated 2026-10-10 | Earlier script/native Codex evidence still applies to the old flow. New behavior prefers task context/approved requirements for Why, preserves estimate qualifiers and asks only after checking available task evidence. This revision is not yet natively tested. |
-| `skills/create-lld` | Concise artifact contract retained; task-context consumption added 2026-10-10 | Existing checker/slide evidence remains; the new interaction with task-context is not yet natively tested. |
-| `vendor/amElnagdy/*` | Copied, reviewed | Base commits in each `UPSTREAM.md`. Local change: `babysit-pr` asks before pushing or posting |
+| `skills/task-context` | Installed in both user-level roots; native smoke passed (2026-10-11) | Complete directory SHA-256 matches source in `.agents` and `.claude`; Gemini CLI 0.62.0 listed and natively exercised the skill, preserving the estimate and temporary-context boundary. Bounded only. |
+| `skills/describe-pr` | Evidence flow smoke-tested on a corrected synthetic fixture (2026-10-11) | What was accurate and Testing remained `[NEEDS INPUT]`; Gemini inferred unsupported causation in Why. One experimental causal-inference rule remains uncommitted and did not change the retry output. No PR was published. |
+| `skills/create-lld` | BOM discovery fix applied; installed and listed; Gemini native output-quality checks failed; OpenCode LLD smoke passed (2026-10-11) | Source and both installed directories match byte-for-byte. Gemini LLD/Functional Design smokes over-expanded and added unsupported process details; OpenCode v2.0.22 loaded the skill and returned a concise, grounded LLD through the read-only configured lane ($0 reported). Evidence favors Gemini adherence, not missing LLD contract; broader host/model acceptance remains unverified. |
+| `vendor/amElnagdy/*` | Copied, reviewed; Gemini config validation compatibility locally patched (2026-10-11) | Base commits in each `UPSTREAM.md`. Existing documentation changes and the new delegate-setup Gemini registry entry are recorded in `local-changes.patch`; the entry enables config validation only, not a new relay. |
 | Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `current-session/` workspace. |
 | `GUIDE.md` | Written (2026-09-25), updated 2026-10-01 | Install + use for every skill, any agent; §4 names model and effort where supported, with owner-approved Gemini Auto exception; real-use notes for `grill-me`, `two-axis-review`, `grill-with-docs`, `handoff`; quick start and tool instructions. Gemini relay trial is documented separately; the local contribution is not in the normal install list. |
 | `AGENTS.md` | Revised 2026-09-28 | Clarifies the v1 freeze, repository rules, validation claims, authorization boundaries, and HDC safety gates; no workflow or design decisions changed |
@@ -343,7 +394,7 @@ reasoning, not just the list. The owner decides.
 
 ## Global collaboration profile — owner-directed, 2026-10-02
 
-The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend file permissions, deployment/environment policy and exact closeout rules remain project-specific. File/content verification is not proof of native loading or compliance: confirm in a new host session; no model smoke test, CLI configuration change or arbitrary-app installation is included. Keep all copies aligned from the source; a future installer is not implemented or authorized.
+The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend file permissions, deployment/environment policy and exact closeout rules remain project-specific. On 2026-10-11 all three workstation copies SHA-256 matched the canonical source; file/content verification does not prove every host loaded or complies with them. Keep all copies aligned from the source; a future installer is not implemented or authorized.
 
 Bounded HDC alignment removes obsolete laptop startup paths/blanket ACP wording from this repo's agent instructions, corrects the workspace ACP timing summary and implementation-delegate shared-record restriction, and records future supporting Markdown beside HDC's single scratchpad. The website transfer is complete; detailed owner audit and the historical-retirement/reference transition remain separate project follow-ups. Owner directed clearing the completed task's current-session files on 2026-10-03. On 2026-10-03, the owner requested that future HDC closeout explicitly ask whether to clear the listed current-session contents after all checks pass; the profile now requires an explicit yes and retains contents on a no. On 2026-10-03, the owner approved placing orchestrator- or delegate-created session documents and visual artifacts in HDC `current-session/`, while excluding code, tests, approved deliverables, execution/build artifacts and tool relay metadata. No generic skill or installed delegation relay is changed.
 
