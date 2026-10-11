@@ -27,7 +27,9 @@
 - Keep one mutation owner per bounded change. Parallelize independent analysis, not competing writers on the same
   unstable surface unless competing proposals are intentional.
 - Persistent lane configuration is not rewritten because one run fails. Use configured fallbacks only when allowed,
-  record fallback use, and distinguish runtime recovery from configuration governance.
+  record fallback use, and distinguish runtime recovery from configuration governance. Within configured choices,
+  route proportionately to quality need, risk, cost, latency, context capacity and availability rather than always
+  choosing either the strongest or cheapest model.
 
 ## Evidence, review and failure handling
 
