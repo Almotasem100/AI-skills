@@ -39,7 +39,7 @@ real use, can proceed; record setup changes in the roadmap at the end of the ses
   change a project repository. A direct request authorizes the action it clearly names; ask only about
   additional actions outside that scope. Project-specific structural and environment gates live in that project's
   canonical instructions; do not duplicate superseded project rules here.
-- **Close out setup changes.** When a session changes this setup, update `docs/roadmap.md` with the relevant
+- **Close out setup changes.** When work changes this setup, update `docs/roadmap.md` with the relevant
   status, next step, or open decision. Do not change the roadmap just to record a read-only review.
 
 ## Working with the owner
