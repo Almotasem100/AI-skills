@@ -1,41 +1,31 @@
-﻿<!--
-Concise forward LLD for one Jira ticket, written for an Architect.
-Use source material internally; do not cite input artifacts or source-code files/lines in the deliverable.
-Include only applicable sections. Keep technical detail to the component/API boundary needed for review.
--->
+<!-- Concise forward LLD for one feature/parent work item. Omit conditional sections that add no value. -->
+# LLD — <FEATURE-ID>: <Title>
 
-# LLD — <JIRA-ID>: <Title>
+<!-- Optional metadata when supplied: release/sprint, tech designer, status. -->
 
-**Release / Sprint:** <release> / <sprint> · **Tech designer:** <name(s)> · **Status:** Draft | In review | Approved
+## Context
+<!-- One short statement of the problem and intended change. -->
 
-## 1. Context
-<!-- One short statement of the problem and intended change. No attachment or source-code citations. -->
+## Objectives & constraints
+<!-- Concise outcomes and material constraints. Include out-of-scope only when it prevents ambiguity. -->
 
-## 2. Objectives & constraints
-<!-- Concise outcomes and constraints for this Jira ticket. -->
+## Design
+<!-- Use only applicable subheadings: Backend / Frontend / API & data / Security. Essential boundaries only. -->
 
-**Out of scope:**
-<!-- Only scope boundaries that are not already clear from the approved requirements. -->
+## Material decisions
+<!-- OPTIONAL. Omit when there is no decision important enough for architect review. -->
+| Decision | Chosen approach | Important boundary / rationale |
+|---|---|---|
+| <!-- meaningful decisions only --> | | |
 
-## 3. Key decisions
-| Area | Planned design | Alternative or deferred option | Key boundary |
-|---|---|---|---|
-| <!-- Meaningful decision --> | | | |
+## Impact & risks
+<!-- OPTIONAL. Omit when none are worth calling out. -->
 
-## 4. Backend design
-<!-- Essential API, data, and service boundaries only; omit if not applicable. -->
+## Verification intent
+<!-- OPTIONAL. Observable design-level checks only. -->
 
-## 5. Frontend design
-<!-- Essential component, state, and navigation boundaries only; omit if not applicable. -->
+## Rollout & rollback
+<!-- OPTIONAL. Include only for a genuine rollout/migration/recovery concern. -->
 
-## 6. Impact & risks
-<!-- Only material impacts or risks and their handling. Keep brief. -->
-
-## 7. Verification plan
-<!-- Observable checks to perform after implementation; do not imply they have run. -->
-
-## 8. Rollout & rollback
-<!-- Include only if relevant to the Jira change. -->
-
-## 9. Open questions
-<!-- Only consequential decisions still awaiting the owner or reviewer. -->
+## Open questions
+<!-- OPTIONAL. Consequential unresolved decisions only. -->

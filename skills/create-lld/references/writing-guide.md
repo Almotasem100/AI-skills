@@ -1,25 +1,20 @@
-﻿# Writing guide — concise design artifacts
+# Writing guide — concise design artifacts
 
-## Audience and timing
-- The **Functional Design** is for the customer: observable behavior, rules, flows and acceptance outcomes.
-- The **LLD** is for the Architect before implementation: the proposed boundaries and essential technical shape.
-- The **Technical Design** is for the Architect after implementation: the delivered shape and verified outcomes.
-- The plan is a separate execution artifact between approved LLD and implementation.
+- Functional Design: customer/business-facing observable behavior; create only when required/requested.
+- LLD: architect-facing forward design before implementation planning.
+- Technical Design: optional as-built artifact only when the project/team explicitly requires one.
+- Implementation plan: separate artifact that sequences delivery slices, dependencies, branch/order strategy,
+  implementation and concrete verification.
 
-## Rules
-1. **Use only the Jira ticket ID** in deliverables. Internal/CB tracking IDs are not customer-facing identifiers.
-2. **Inputs are evidence, not citations.** Read supplied PDFs, slides, screenshots, CSS and source code as needed, but never name or cite those artifacts in the deliverables.
-3. **Keep source locators internal.** Verify claims against real source and retain evidence in working notes, but omit source-code file paths and line numbers from all three deliverables.
-4. **Be concise.** State the agreed or proposed behavior and only the component/API boundary needed for the design. Avoid long rationales, alternatives essays, source inventories, repeated scope, and speculative file-level detail.
-5. **Do not invent.** Missing requirements, approvals, API contracts, deviations, measurements, or test outcomes remain questions or are marked as not verified.
-6. **Functional Design has no Purpose/Scope duplicate, Status, or link to the LLD.** It is customer-facing and should not expose technical implementation.
-7. **LLD is forward design; Technical Design is as-built.** Do not present a proposal as implemented or a proposed test as a passed check.
-8. Use user-approved terms and decisions. Ask about consequential ambiguity instead of filling it with assumptions.
+Rules:
+1. Design at the parent-feature scope when a project uses feature + delivery-slice tracking.
+2. Use project-approved identifiers; do not expose child-ticket mechanics unless the audience needs them.
+3. Inputs are evidence, not deliverable citations. Keep source locators/evidence maps in working notes.
+4. Be concise. Do not repeat requirements in multiple sections or write alternatives essays/source inventories.
+5. Omit conditional sections rather than inventing rollout, risks, questions, components or metadata.
+6. Functional Design says **what** is observable; LLD says the intended **technical boundary**.
+7. Preserve estimates/targets/assumptions as such. Never present proposed verification as passed.
+8. Ask only about consequential ambiguity.
 
-## Forward vs. as-built
-- **Forward LLD:** draft after requirements are understood and before plan approval/implementation. It can name logical components and public API routes, but not source file locations.
-- **As-built Technical Design:** draft only after plan implementation. Compare actual behavior with the approved LLD/plan and state only verified outcomes; submit it for Architect review.
-
-## Verification
-- Run the LLD checker. Manually review Functional Design behavior against the approved Jira requirements and Technical Design claims against the implemented change.
-- A checker pass is not an Architect approval or an implementation/test result.
+Run the structural LLD checker, then manually check concision, grounding and audience fit. A checker pass is not
+approval or implementation evidence.

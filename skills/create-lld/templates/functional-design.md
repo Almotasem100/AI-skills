@@ -1,29 +1,24 @@
-﻿<!--
-Customer-facing functional behavior for one Jira ticket. Use requirements and supporting materials internally,
-but do not cite input artifact names/pages, source-code files/lines, or the LLD. Do not repeat Purpose/Scope already
-present in the customer requirements document. This artifact has no Status field.
--->
+<!-- Customer/business-facing functional behavior. Do not duplicate behavior across sections. Omit empty sections. -->
+# Functional Design — <FEATURE-ID>: <Title>
 
-# Functional Design — <JIRA-ID>: <Title>
+<!-- Optional release/sprint metadata only when supplied. -->
 
-**Release / Sprint:** <release> / <sprint>
-
-## 1. Functional requirements
+## Functional requirements
 | ID | User-visible requirement |
 |---|---|
 | FR-1 | |
 
-## 2. User flows
-<!-- Concise main and error flows with observable outcomes. -->
+## User flows
+<!-- Meaningful interaction sequence and observable outcomes. -->
 
-## 3. Business rules
-<!-- Include only approved rules that affect user-visible behavior. -->
+## Business rules
+<!-- Approved conditions/permissions/rules affecting visible behavior. -->
 
-## 4. User-visible states and actions
-<!-- Controls, permissions, messages, loading/empty/error outcomes. Do not describe implementation. -->
+## User-visible states and actions
+<!-- Meaningful controls, permissions, loading/empty/error/disabled states only. -->
 
-## 5. Acceptance criteria
-<!-- Observable outcomes linked to the requirement IDs above. -->
+## Acceptance criteria
+<!-- Externally testable completion outcomes; avoid repeating requirements verbatim. -->
 
-## 6. Open questions
-<!-- Only unresolved customer/business behavior. -->
+## Open questions
+<!-- OPTIONAL. Unresolved customer/business behavior only. -->

@@ -1,11 +1,41 @@
 # Roadmap — status, next steps, open decisions
 
+## Portable workflow v2 redesign — 2026-10-11
+
+Owner-approved architecture review is implemented on clean review branch `review/portable-workflow-v2`. The
+portable contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific
+ticket, environment, architecture and migration policy. Compatibility renames are complete in source:
+`session-closeout` -> `work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder
+`current-session/` -> `active-work/`.
+
+**Bounded workstation verification completed 2026-10-12.** The eight first-party skills were synchronized into the
+existing `.agents` and `.claude` roots; 58/58 installed files matched source before the later targeted
+`work-closeout` resync, obsolete installed skill names were removed only after replacement verification, and the
+canonical global instructions were mirrored into the existing OpenCode/Claude/Gemini instruction files. Fresh Gemini
+CLI 0.62.0 and OpenCode v2.0.26 sessions discovered all requested renamed/refined skills and showed bounded native
+loading evidence. Behavioral smokes confirmed the smallest-sufficient simple-bug path, read-only planning boundaries,
+temporary debate record, compact closeout state and genuine bounded closeout behavior. create-lld remained grounded
+but not perfectly concise; several Gemini runs had an exit-0/no-answer runtime anomaly, so no broad host/model
+compliance claim is made.
+
+The first lifecycle smoke showed both hosts unnecessarily selecting `work-closeout` for child-slice completion. The
+frontmatter trigger was tightened to exclude routine child/delivery-slice completion while the parent feature remains
+active. A focused native regression then passed in both OpenCode v2.0.26 (`openai/gpt-6.1-sol`, low) and Gemini CLI
+0.62.0 (`gemini-3.8-flash`): neither activated `work-closeout`; each updated only the compact synthetic scratchpad
+and kept the parent active with the next slice pending. Gemini directly read the bundled scratchpad template without
+native skill activation; treat that as observable resource access, not proof of hidden selection intent.
+
+Still deliberately unverified: Claude/Codex native behavior, separate desktop UI behavior, delegate-wrapper/lane
+fallback end-to-end routing, Gemini-as-plan-debate-chair, and live HDC/deployment/ACP/PROD behavior. Do not infer those
+from the bounded synthetic verification.
+
+
 The living to-do list for this setup. Update it at the end of every session that changes the setup. The full
 history and reasoning (written while building it for the HDC project) is in the sibling HDC workspace at
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-11 — synchronized the three first-party skills and mirrored global instructions; completed bounded Gemini/OpenCode verification below._
+_Last updated: 2026-10-12 — Portable workflow v2 source redesign, workstation synchronization, bounded native verification, and focused child-slice trigger regression completed on clean review branches._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
@@ -27,26 +57,25 @@ Reviewed upstream `mattpocock/skills` from `c55ee460` to `49dd158d` (73 commits)
 `two-axis-review` while preserving the local rename and advanced `grill-me`, `grilling`, and `handoff`.
 After the stable HDC audit, also advanced `grill-with-docs` and `domain-modeling` to `49dd158d`. Their new
 `GLOSSARY.md` / `GLOSSARY-MAP.md` + ADR working-file contract fits HDC only when run from
-`HDC-documents/current-session/`; accepted durable decisions still reconcile into
+`HDC-documents/active-work/`; accepted durable decisions still reconcile into
 `HDC_Architecture_Decisions.md`. Source/install guidance is updated; user-level installed Pocock copies have not
 been re-copied or natively tested after this pin bump.
 
 
-## HDC orchestration alignment — 2026-10-10
+## Historical HDC orchestration alignment — 2026-10-10 (superseded/refined 2026-10-11)
 
-Audited authoritative `Almotasem100/HDC-documents@d6e2164`. The technical hard gates are legitimate and remain:
-exact prior approval for new backend file paths; verbatim-port behavior except named deviations; no move+fix in
-one step; evidence/citation requirements; explicit deployment/publication/cleanup boundaries; and the current
-dev/ACP/prod acceptance policy. The stale parts were orchestration assumptions: explicit per-dispatch delegation,
-manual model/effort naming, “high-effort decides / cheaper executes,” blanket snapshot bias, and orchestrator
-re-authoring of delegate output. Those are aligned on HDC branch `refactor/orchestration-alignment` in
-`README.md`, `HDC_Architecture_Decisions.md` Decision 14, and
-`automation/Automation_Planning_Handoff.md`. No HDC PR or merge was opened.
+The 2026-10-10 audit correctly separated HDC technical gates from stale orchestration ceremony, but two project
+policies were subsequently refined by the owner and now live only in HDC's canonical documents: ordinary backend
+files inside an approved delivery-slice structure no longer require per-path approval, and task-relevant DEV
+application-data/fixture/user/role mutations are standing-authorized inside approved work. HDC still preserves
+verbatim-port behavior except named deviations, no move+fix in one step, evidence/revision discipline, material
+structural/behavior/security/contract gates, separate ACP feature-validation semantics, PROD prohibition, and its
+publication/cleanup boundaries.
 
-Regression expectation after alignment: an authorized CADE-style task may progress through the smallest sufficient
-requirements/design → plan → specialist implementation → review/guards → build/tests → routine fixes/reverification
-without per-stage approval, while exact new backend paths, material port deviations, fixture/data mutations,
-deployment, commit/push/PR, and closeout cleanup still respect their project-specific gates.
+Portable regression expectation: an authorized task may progress through the smallest sufficient design/planning,
+implementation, deterministic verification, independent review, bounded fixes and state updates without per-stage
+approval. Project-specific material gates remain authoritative, but AI-skills must not copy their old wording or
+turn superseded HDC restrictions into generic workflow rules.
 
 ## Task-context workflow — 2026-10-10
 
@@ -124,12 +153,17 @@ and evidence outputs remain retained; no cleanup was performed.
    unpublished and separate from the vendored snapshot. Earlier live Gemini CLI 0.62.0 Auto/auto_edit use in a
    disposable repo succeeded; the rebased overlay still needs a native-Windows focused relay/preflight run before
    any upstream proposal. Do not publish it without owner direction.
-2. **PR and closeout workflow (owner preference recorded 2026-10-01):** use Gemini rather than free models for PR work and session closeout. Before relying on `babysit-pr` or `debate-review`, install and verify `gh`, `jq`, Git Bash, and authenticated repository access. Native `session-closeout` behavior also remains untested.
-3. **HDC closeout (completed; native test pending):** updated the portable `session-closeout` skill to honor project profiles and reuse an existing scratchpad; added the reusable HDC profile under `templates/hdc-session-closeout-profile/`. With approval for these exact files, updated `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md`; the temporary session scratchpad was removed after checks. Citation checker: 7 OK, 0 warnings, 0 stale; `git diff --check` passed in both repos. Native closeout behavior remains untested.
-   **2026-10-02, owner-approved HDC-only amendment:** the profile and canonical HDC README now forbid invoking or offering `handoff` at the end of closeout. Handoff is reserved for an owner-requested pause/transfer of unfinished work and preserves the existing scratchpad/inputs. The portable source skill and both installed user-level copies remain unchanged; no installation or actual closeout/handoff was performed. Native enforcement of the revised HDC rule remains untested. Fixed current-session directory paths and the rest of the folder/testing policy are still being settled in HDC; this narrow amendment does not implement or authorize folder cleanup.
-   **2026-10-02, owner-approved fixed HDC work context:** HDC uses `HDC-documents/current-session/scratchpad.md` and adjacent inputs, not new per-session scratchpad folders. Chat/model handoffs preserve that work context; completed-feature/agreed-bounded-task closeout clears the approved folder contents after approved write-backs and verification. The HDC profile location/cleanup rules and canonical guidance are aligned. Generic/source-installed skills remain unchanged; native enforcement is untested. Historical HDC session records are retained; testing-directory design remains a separate pending discussion.
-   **2026-10-03, owner-approved HDC-only closeout clarification:** the HDC profile, canonical README and workspace instructions prohibit invoking/offering handoff at completed-task closeout. Separate future audit/acceptance/retirement/cleanup work belongs in the Plan with explicit gates, not as an automatic reason to retain an owner-completed task's scratchpad. Clear only approved current-session contents after write-backs and verification; external temp/worktree cleanup stays separately scoped. Git publication needs separate authorization and actual outcomes must be reported, including blocked pushes. The original portable skill and installed copies remain unchanged. Text alignment is verified; this is not a new native-agent enforcement test.
-4. **Scenario test cases (initial implementation complete; installed; validation pending):** built `skills/scenario-test-cases/` with a reusable Given/When/Then browser-scenario template based on the owner's style example. It derives scenarios from approved requirements and LLDs, consults a matching implementation-task handoff when available, and flags conflicts/gaps rather than inventing expected behavior. Browser-followable and automation-friendly, but emits no automation code. On 2026-10-01, copied it into both user-level skill roots and verified source-file hashes. **Next:** review the skill/template and test it on a real or representative approved requirements + LLD + task handoff set while working; native agent testing remains pending. This owner-directed format replaces the earlier open question about locating a team template.
+2. **PR and closeout workflow:** historical 2026-10-01 Gemini preferences are routing evidence, not a durable role assignment. Current routing is role/config/evidence driven. Before relying on `babysit-pr` or `debate-review`, verify their CLI/forge prerequisites. The renamed `work-closeout` source still needs reinstall + bounded native verification.
+3. **HDC closeout mapping:** portable closeout semantics now live only in `work-closeout`; HDC-specific closeout
+   policy is owned by the canonical HDC-documents README/Plan rather than a duplicate profile in this repository.
+   Historical 2026-09-30/10-02 profile experiments remain in Git history. Native behavior of the renamed skill after
+   workstation reinstall is pending.
+
+4. **QA scenarios (renamed/refined; install validation pending):** `qa-scenarios` now specifies feature-level,
+   observable QA behavior from approved requirements/Functional Design, may map scenarios to delivery slices, and
+   does not require an implementation handoff or execute tests. The old installed `scenario-test-cases` copies
+   predate this contract; reinstall/rename and native verification are pending.
+
 5. **Delegation lanes (configured; automatic role routing is now the intended contract):** the current workstation
    map has seven lanes. `implement-code` maps to OpenCode `openai/gpt-6.1-sol`/low and passed one read-only relay
    dispatch (OpenCode 2.0.22, exit 0, reported $0); Gemini `gemini-3.8-flash` was used for bounded skill smokes.
@@ -143,9 +177,9 @@ and evidence outputs remain retained; no cleanup was performed.
    review/debate does not create a new approval gate inside an already authorized parent workflow. Minimum useful
    context is preferred; immutable snapshots/worktrees are conditional containment tools, not a default delegation
    ritual. The 2026-10-01 synthetic smoke evidence still applies only to the versions/hosts actually tested.
-7. **Briefs:**** no separate implementation-brief skill is planned. Plan review/debate uses the scratchpad or an existing handoff directly; a delegate's brief remains the task instructions sent to the coding implementer, not a project artifact.
+7. **Briefs:** no separate implementation-brief skill is planned. Plan review accepts the plan/dedicated planning record directly; plan-debate uses one temporary debate record while the project scratchpad remains compact execution state. A delegate brief is task instructions, not a project-of-record artifact; handoff is reserved for real transfer friction.
 8. **Security audit skill (initial implementation complete; one native smoke test):** added `skills/security-audit/SKILL.md` as a read-only, evidence-citing audit that uses approved project security requirements when supplied, flags missing requirements/uncertainty, protects secret values, and makes no compliance claim. Its scope covers relevant trust boundaries, authentication/authorization, input handling, sensitive data/secrets, dependencies/configuration, abuse controls, and security tests without treating every category as mandatory. On 2026-10-01, Gemini CLI 0.62.0 audited a synthetic endpoint excerpt, identified a conditional authorization risk, and called out missing DAO evidence; OpenCode loaded the skill in this session but did not audit the fixture. The test establishes neither real vulnerability detection nor general host/model support. **Next:** review the skill and run another synthetic smoke test in a distinct agent when available; no target-system audit was performed.
-9. **`create-lld` concise design-artifact workflow (updated 2026-10-10):** one Jira ticket remains the unit of design. Functional Design, LLD and Technical Design stay concise and audience-specific. Installed copies match source and Gemini CLI 0.62.0 now discovers the skill after removing the `SKILL.md` BOM. The bounded native smoke preserved the estimate but failed concision/containment by copying task-context evidence categories and adding speculative questions; the existing contract already disallows those behaviors. No skill-contract redesign was made. The LLD checker behavior itself is unchanged.
+9. **`create-lld` adaptive design-artifact workflow (refined 2026-10-11):** parent Feature is the generic design unit; Functional Design and forward LLD stay concise/audience-specific; Technical Design is optional only when explicitly required. Templates and the structural checker were revised to stop forcing metadata/empty sections/rollout content. The prior Gemini/OpenCode smoke evidence applies to the pre-refinement version only; reinstall and native re-test are pending.
 
 10. **Orchestrator and model-call policy (superseded by role-based orchestration, 2026-10-10):** the selected model
     is the control plane: understand the objective, choose the smallest sufficient workflow, resolve roles to
@@ -181,7 +215,7 @@ when the next design slides arrive; SonarQube is worth evaluating if its finding
 
 The original v1 backlog below is parked unless it appears in the active plan or the owner reopens it. Previously, work resumed when one of these happened:
 1. **Finish repository setup:** AI-skills is initialized with a starter commit. Confirm the remote is private, review and commit the migrated files, then run GUIDE.md §3. This unblocks install.ps1 (needs its agent list), Gemini CLI tests and gh.
-2. **A real ticket:** use the pipeline (`grill-me` → … → `describe-pr` → `session-closeout`), then fix what
+2. **A real ticket:** use the pipeline (`grill-me` → … → `describe-pr` → `work-closeout`), then fix what
    hurt. The first big ticket is the `create-lld` forward-mode test; the first frontend feature is the Spec Kit
    trial (item 4).
 3. **The HDC `AGENTS.md` (item 6):** resume the parked `grill-with-docs` glossary there.
@@ -210,8 +244,8 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | `skills/describe-pr` | Evidence flow smoke-tested on a corrected synthetic fixture; causal-inference rule added (2026-10-11) | What was accurate and Testing remained `[NEEDS INPUT]`; Gemini inferred unsupported causation in Why, including in one retry after the rule was added. The contract rule clarifies the requirement but has not demonstrated changed model behavior. No PR was published. |
 | `skills/create-lld` | BOM discovery fix applied; installed and listed; Gemini native output-quality checks failed; OpenCode LLD smoke passed (2026-10-11) | Source and both installed directories match byte-for-byte. Gemini LLD/Functional Design smokes over-expanded and added unsupported process details; OpenCode v2.0.22 loaded the skill and returned a concise, grounded LLD through the read-only configured lane ($0 reported). Evidence favors Gemini adherence, not missing LLD contract; broader host/model acceptance remains unverified. |
 | `vendor/amElnagdy/*` | Copied, reviewed; Gemini config validation compatibility locally patched (2026-10-11) | Base commits in each `UPSTREAM.md`. Existing documentation changes and the new delegate-setup Gemini registry entry are recorded in `local-changes.patch`; the entry enables config validation only, not a new relay. |
-| Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `current-session/` workspace. |
-| `GUIDE.md` | Written (2026-09-25), updated 2026-10-01 | Install + use for every skill, any agent; §4 names model and effort where supported, with owner-approved Gemini Auto exception; real-use notes for `grill-me`, `two-axis-review`, `grill-with-docs`, `handoff`; quick start and tool instructions. Gemini relay trial is documented separately; the local contribution is not in the normal install list. |
+| Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `active-work/` workspace. |
+| `GUIDE.md` | Updated for portable workflow v2 (2026-10-11) | Install/use guidance now treats model/provider/effort as lane configuration, documents adaptive workflows and the `work-closeout` / `qa-scenarios` renames. Historical real-use notes remain clearly scoped to their dates. |
 | `AGENTS.md` | Revised 2026-09-28 | Clarifies the v1 freeze, repository rules, validation claims, authorization boundaries, and HDC safety gates; no workflow or design decisions changed |
 | `tools/json-compare/`, `tools/url-map/` | Built (2026-09-26) | See item 3. HDC outputs live in `HDC\HDC\documents\` |
 | Graphify | Trialled, **not adopted** (2026-09-25) | Ran code-only on a copy of the HDC backend: Java structure right, no config-driven links. Nothing installed outside the scratchpad. Details in `decisions.md` |
@@ -223,7 +257,7 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | Installed on this laptop | `~/.claude/skills` and `~/.agents/skills` were previously read by Codex; `create-lld`/`describe-pr` were seen in `~/.agents/skills` at 00:18 on 2026-09-26, with copies identical to `skills/`. On 2026-09-30, installed 17 curated skills into both roots; inventories and `SKILL.md` files match. Gemini CLI 0.61.0 listed all 17; current CLI reports 0.62.0. Explicit `clean-code-guard` invocation succeeded read-only with the approved persistent `context.includeDirectories` setting and model `auto`. Explicit `opencode-delegate` invocation from Gemini completed a read-only dispatch through OpenCode v2.0.20 using `openai/gpt-6-luna#medium`. Natural selection remains inconclusive; write-capable delegation and OpenCode discovery remain untested. Includes the available `agy` and OpenCode delegate skills; the installed Pocock copies were historically sourced from `c55ee460`, while the repository pins are now `49dd158d` and need re-copying before installed-version claims are updated. | **Copies**: re-copy after every change. Configured lanes should be verified by real dispatch before depending on them. |
 
 ## Original v1 backlog (parked)
-_Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install.ps1) come before the trials._
+_Reordered by the owner on 2026-09-25: the builds (work-closeout, B9, install.ps1) come before the trials._
 1. ~~**git pre-commit hook** that *warns* about new files.~~ **Done 2026-09-26:** `templates/pre-commit-hook/`
    (tests and install in its `README.md`). Remaining: installing it in the HDC repos needs the owner's approval.
 2. ~~**Linter setup notes**~~ **Done 2026-09-26:** `docs/linters.md` + `templates/linters/checkstyle-essentials.xml`.
@@ -244,17 +278,16 @@ _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install
      as rendered, in a markdown block; re-run → verbatim. Installed copies updated in both skills folders.
      Not tested: the question round (`codex exec` is non-interactive), `gh` PR creation.
 3. **Builds:**
-   - `session-closeout` (scratchpad + queued write-backs + `check-citations.mjs`). **Decided 2026-09-26 (owner
+   - `work-closeout` (scratchpad + queued write-backs + `check-citations.mjs`). **Decided 2026-09-26 (owner
      took the recommendations):** scratchpads in the project's docs folder, named
      `YYYY-MM-DD_<Topic>_Scratchpad.md`; a stale citation **blocks** the closeout; no HDC-specific "§0a diff"
-     (the skill stays generic). **Built 2026-09-26:** `skills/session-closeout/` (`SKILL.md`,
+     (the skill stays generic). **Built 2026-09-26:** `skills/work-closeout/` (`SKILL.md`,
      `templates/scratchpad.md`, `scripts/check-citations.mjs`). Checker tested: 10 crafted cases (OK / ambiguous /
      missing file / line out of range / wrong token / comma list / URL, time and fenced code ignored); on the real
      HDC Plan against both repos: 95 citations → 80 OK, 7 ambiguous, **8 stale, all real** (legacy AngularJS
      files deleted on the branch, the moved-out `HDC-api` module); A3 scratchpad: 8/8 OK. Fixed on the way: a
      root-relative path into a skipped folder (`node_modules/...`) now resolves. `<branch>:path:line` citations
-     are skipped (for code only on another branch). **End-to-end in Codex (project skill in a throwaway folder,
-     asked "close out this session" without naming the skill):** picked the skill; wrote
+     are skipped (for code only on another branch). **Historical end-to-end smoke of the predecessor session-closeout skill in Codex (throwaway folder; prompt used the old "close out this session" wording):** picked the skill; wrote
      `docs/2026-09-26_Utils_Versioning_Scratchpad.md` in the docs folder, not the repo; **caught the planted
      wrong citation** (`math.mjs:40` → `repo/math.mjs:1-3`); also noticed a claim not true on the current branch
      (`clamp` lives on another branch) and filed it as unverified + open question; queued 2 write-backs and did
@@ -262,9 +295,7 @@ _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install
      attempt, when Codex's shell tools failed, reported "closeout is blocked" instead of pretending: correct.
       Gotcha for scripted runs: `codex exec` waits on stdin unless it's closed (`< /dev/null`). **Installed**
       in `~/.claude/skills` and `~/.agents/skills` (owner approved, 2026-09-26). Not tested in Claude natively yet.
-      **Updated 2026-09-30:** the portable skill now honors a project profile that designates an existing
-      scratchpad; HDC's project-specific profile draft is tracked in `templates/hdc-session-closeout-profile/`.
-      HDC canonical guidance changes await approval of the exact files listed in the active plan above.
+      **Historical 2026-09-30 note:** the portable skill experimented with a project profile. Portable workflow v2 removes the duplicate HDC profile from AI-skills; current HDC-specific closeout policy is owned by HDC-documents.
    - the B9 legacy-vs-new comparison tool (HDC-specific: `record` / `compare`). **In progress (2026-09-26,
      Claude):** checked blocker 3: none of the 14 B9 endpoints is ported yet (`api/resource/` has only
      `UserResource`, `HealthResource`), so the window is open. HTTP methods read from `HDCEndpoint.java`: 5 GET,
@@ -312,7 +343,7 @@ _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install
      `grill-me`; `grill-with-docs` only when domain terms change.
      **`handoff` used 2026-09-26:** brief for the B9 side-effect audit at
      `%TEMP%\handoff_2026-09-26_B9-side-effect-audit.md` (not durable; copy to `documents\sessions\` if kept).
-     Verdict: keep, for one specific next task; complements `session-closeout`, doesn't replace it. It pointed
+     Verdict: keep, for one specific next task; complements `work-closeout`, doesn't replace it. It pointed
      out the **audit doesn't need the `legacyref` deploy** (pure code reading); only recording does.
      **Next (agent):** the B9 side-effect audit of the 14 endpoints: read-only code reading, results in a
      scratchpad in `documents\sessions\`, can start before the `legacyref` smoke test (owner to confirm). The
@@ -325,11 +356,10 @@ _Reordered by the owner on 2026-09-25: the builds (session-closeout, B9, install
    - repeat in Gemini CLI
    - Pocock skills: `/grill-me` on a small ticket; `two-axis-review` with the LLD as spec
    - on the workstation: run `GUIDE.md` §3 for real
-6. **Per-project `AGENTS.md`** (rules, glossary, PR scopes, where LLDs go). For HDC it needs the user's approval
-   of the exact files first. **The HDC frontend one must carry the intake rule** (the owner's idea, recorded in
-   the handoff but in no skill or agent file yet): on a new frontend task, wait for the Figma screenshots and
-   copied CSS, ask the missing questions (grill), and only then plan. It is project-specific, so it belongs in
-   that project's `AGENTS.md`, not in a generic skill.
+6. **Per-project instructions:** portable semantics stay in AI-skills; each project owns tracker mappings,
+   physical paths, architecture/environment gates, design-input requirements and publication/deployment policy.
+   For HDC the canonical shared policy is `HDC-documents/README.md`; a workspace `AGENTS.md` should remain a thin
+   navigation/entrypoint layer rather than a second independently evolving constitution.
 7. Later, with the team: `pr-standard.md` (branch naming, title format, CI checks); propose the `babysit-pr`
    "ask before publish" option upstream.
 
@@ -344,7 +374,7 @@ reasoning, not just the list. The owner decides.
   behaviour).
 - **Linter notes (item 2): done.** The HDC `AGENTS.md` files (item 6) should name the exact lint commands from
   `docs/linters.md`.
-- **`session-closeout` (item 3): built.** Use it to end sessions; its checker also proves the URL map's
+- **`work-closeout` (item 3): built.** Use it to end sessions; its checker also proves the URL map's
   references.
 - **HDC URL map: built.** Regenerate after each ported slice. Its `NO_HANDLER` list (e.g. `/logout`,
   `/kpischeduler`, the OAuth routes) belongs in the HDC Plan's C7 discussion: those servlets exist but the EE10
@@ -388,13 +418,13 @@ reasoning, not just the list. The owner decides.
   open files itself.
 - `create-lld`: `.pptx` is read by script; PDFs and images depend on the agent (fallback: `pdftotext`, then
   screenshots).
-- Pocock `grill-with-docs` now writes `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files at its working root. For HDC, run it from `HDC-documents/current-session/`, never a code repo or the HDC docs root; reconcile accepted durable decisions into the canonical HDC decisions document.
+- Pocock `grill-with-docs` now writes `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files at its working root. For HDC, run it from `HDC-documents/active-work/`, never a code repo or the HDC docs root; reconcile accepted durable decisions into the canonical HDC decisions document.
 
 ## Global collaboration profile — owner-directed, 2026-10-02
 
-The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend file permissions, deployment/environment policy and exact closeout rules remain project-specific. File/content verification is not proof of native loading or compliance: confirm in a new host session; no model smoke test, CLI configuration change or arbitrary-app installation is included. Keep all copies aligned from the source; a future installer is not implemented or authorized.
+The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend structural policy, deployment/environment policy and closeout mappings remain project-specific. File/content verification is not proof of native loading or compliance: confirm in a new host session; no model smoke test, CLI configuration change or arbitrary-app installation is included. Keep all copies aligned from the source; a future installer is not implemented or authorized.
 
-Bounded HDC alignment removes obsolete laptop startup paths/blanket ACP wording from this repo's agent instructions, corrects the workspace ACP timing summary and implementation-delegate shared-record restriction, and records future supporting Markdown beside HDC's single scratchpad. The website transfer is complete; detailed owner audit and the historical-retirement/reference transition remain separate project follow-ups. Owner directed clearing the completed task's current-session files on 2026-10-03. On 2026-10-03, the owner requested that future HDC closeout explicitly ask whether to clear the listed current-session contents after all checks pass; the profile now requires an explicit yes and retains contents on a no. On 2026-10-03, the owner approved placing orchestrator- or delegate-created session documents and visual artifacts in HDC `current-session/`, while excluding code, tests, approved deliverables, execution/build artifacts and tool relay metadata. No generic skill or installed delegation relay is changed.
+Historical HDC alignment work removed obsolete laptop startup paths/blanket ACP wording and established a project-specific closeout profile. Portable workflow v2 now supersedes that duplicated profile: HDC closeout policy lives only in canonical HDC documents, while generic `work-closeout` stays portable. The completed 2026-10-03 task used explicit cleanup approval for its then-current working area; current HDC guidance now uses feature-scoped `active-work/`, preserves its tracked README, and clears temporary feature contents only under the current HDC cleanup policy. No installed host behavior should be inferred until the v2 skill/instruction copies are synchronized and re-tested.
 
 ## Gemini relocation incident — closed unless it recurs, 2026-10-03
 

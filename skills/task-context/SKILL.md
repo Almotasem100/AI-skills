@@ -5,7 +5,7 @@ description: Synthesize fragmented task evidence into one rich, temporary workin
 
 # task-context
 
-Create or refresh a **working synthesis**, not a human-facing design document and not a new project-of-record file.
+Create or refresh a **working synthesis**, not a human-facing design document and not a new project-of-record file. When the project has a Feature / Delivery Slice hierarchy, keep one feature-level task context by default; derive slice briefs/views rather than duplicating the whole context for every child slice.
 
 Use this skill when the task understanding is fragmented across several inputs or when multiple downstream roles
 would otherwise need to reread the same raw evidence. Skip it for simple tasks whose objective, expected behavior,
@@ -20,25 +20,25 @@ raw task evidence
   -> concise design artifacts / plan / implementation / tests / review / PR
 ```
 
-This skill does **not** replace requirements, Functional Design, LLD, the implementation plan, the session
+This skill does **not** replace requirements, Functional Design, LLD, the implementation plan, the project
 scratchpad, or canonical project documentation.
 
 - Requirements and approved project documents remain authoritative sources.
-- The session scratchpad remains compact coordination state.
-- Human-facing Functional Design / LLD / Technical Design stay concise and audience-specific.
+- The project scratchpad remains compact execution/resume state.
+- Human-facing Functional Design / LLD stay concise and audience-specific; an as-built Technical Design is optional only when the project explicitly requires one.
 - The task context is a temporary, rich map of the task for AI/workflow consumption.
 
 ## Inputs
 
 Use only inputs available and authorized for this task, for example:
 
-- Jira/ticket title, description and acceptance criteria.
+- Feature/task tracker title, description and acceptance criteria.
 - Approved requirements, PDFs/slides and customer material.
 - Grilling answers and explicit owner decisions.
 - Screenshots, Figma evidence, copied CSS or other UX evidence.
 - Relevant project instructions, architecture decisions and domain glossary.
 - Relevant source-code inspection when needed to understand constraints or current behavior.
-- Existing Functional Design / LLD / Technical Design / plan when refreshing context later.
+- Existing Functional Design / LLD / plan, plus an optional project-required Technical Design, when refreshing context later.
 
 Do not ingest unrelated session history or copy entire repositories merely because they are available.
 
@@ -122,8 +122,9 @@ Refresh the same task context when material understanding changes:
 - a design is approved or materially revised,
 - verification changes what is known.
 
-Keep the artifact aligned with current approved understanding. Do not append an unbounded chronological log; the
-scratchpad/history mechanism owns chronology.
+Keep the artifact aligned with current approved understanding. Do not append an unbounded chronological log; Git,
+project history, or other designated history mechanisms own chronology, while the scratchpad stays compact execution
+state. Completing one delivery slice does not retire feature context while the parent feature remains active.
 
 ## Downstream use
 
@@ -132,7 +133,7 @@ Downstream roles should receive this context plus only the additional artifact/s
 Examples:
 - **create-lld:** task context + authoritative sources as needed -> concise Functional Design / LLD.
 - **planner:** task context + approved design -> implementation plan.
-- **scenario-test-cases:** task context + approved requirements/design -> test scenarios.
+- **qa-scenarios:** task context + approved requirements/Functional Design -> feature-level QA scenarios.
 - **implementer:** task context + approved plan + relevant source access -> bounded code change.
 - **describe-pr:** task context for the Why, git/diff for What changed, verification evidence for Testing.
 

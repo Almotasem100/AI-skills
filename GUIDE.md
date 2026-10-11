@@ -1,5 +1,10 @@
 # Guide: install and use my skills with any AI agent
 
+> **Compatibility rename — 2026-10-11:** `session-closeout` is now `work-closeout`; `scenario-test-cases`
+> is now `qa-scenarios`. Reinstall the renamed directories and remove obsolete installed names only after
+> verifying the new copies. HDC's working folder is now `active-work/` in canonical project guidance.
+
+
 A plain-language guide to every skill in this setup: what it is for, how to install it on a machine, and what
 to say to your agent to use it. For *why* each skill is here, see `docs/decisions.md`; for the exact versions,
 see `manifest.md`.
@@ -15,14 +20,13 @@ what you want; the ones marked **(by name)** only start when you type their comm
 
 **Orchestration rule:** the model you opened is the workflow orchestrator/control plane by default. It understands
 the objective, chooses the smallest sufficient workflow, resolves needed roles (planner, implementer, reviewer,
-tester, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
+QA-scenario designer, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
 describe the outcome and any checkpoint; you do **not** need to name a model, lane or effort for routine delegation.
 Explicit route/checkpoint instructions still override the inferred workflow.
 
 ### 🟢 Starting a ticket
-**`grill-me` (by name): think it through first.** Small ticket, before any code. It asks you questions in
-rounds, each with a suggested answer, until nothing is unclear.
-> `/grill-me ticket 38939409: add the shared header to every page`
+**`grill-me` (by name): clarify when a small ticket actually needs clarification.** It asks focused questions in rounds. Skip it when the bug/task is already clear enough to inspect, fix and verify directly.
+> `/grill-me ticket APP-123: add the shared header to every page`
 
 Answer "agree" or "agree except Q3: …". Save its final summary: that's your spec.
 
@@ -30,21 +34,17 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
 > `/grill-with-docs new approval workflow for checklists`
 
-**`create-lld`: forward LLD and later as-built Technical Design.** After requirements are settled, it drafts a
-concise architect-facing LLD before the plan/implementation. It can also prepare a customer-facing Functional
-Design when the project workflow requires one. After the approved plan is implemented, invoke its Technical
-Design mode to summarize the built solution for Architect review. Source materials and code are inspected
-internally; deliverables omit attachment citations and source-code paths/lines.
-> "Write the LLD for CADE-1234, 'Navbar', from these requirements. Release R4, Sprint 1."
+**`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A separate as-built Technical Design is optional only when the active project/team explicitly requires one. Source materials and code are inspected internally; deliverables omit evidence inventories and source-code paths/lines.
+> "Write the LLD for APP-123, 'Navbar', from these requirements."
 
 ### 🧭 Planning before implementation
-**`plan-review`:** a one-shot, read-only critique of a plan, working session scratchpad, or existing handoff.
+**`plan-review`:** a one-shot, read-only critique of a plan, dedicated planning record, or existing handoff.
 It returns prioritized findings with source evidence, assumptions, missing decisions, risks, and questions; it
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
 **`plan-debate`:** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
-exchange and owns the shared coordination state; the plan-author and reviewer roles own their substantive outputs.
+exchange in a temporary debate record; the project scratchpad stays compact. The plan-author and reviewer roles own their substantive outputs.
 Configured lanes select the actual providers/models unless you override them. Give each role only the context and
 source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
 > "Stress-test this implementation plan before coding and resolve the findings"
@@ -75,7 +75,7 @@ grill summary), as two separate reports. Don't apply findings blindly; some will
 ### 📬 The pull request
 **`describe-pr`: writes the PR for you.** It reads your changes, asks at most 4 questions, and opens the PR
 only after you say yes.
-> "Write the PR description. Ticket 38939409 'Navbar'. Tested: ng build, 108/108 specs."
+> "Write the PR description. Ticket APP-123 'Navbar'. Tested: ng build, 108/108 specs."
 
 **`babysit-pr`: handles review comments.** Copilot or bot comments on your PR: it fixes the real problems
 locally, then asks before pushing or replying.
@@ -85,16 +85,12 @@ locally, then asks before pushing or replying.
 posted.
 > "debate-review PR 123 --dry-run"
 
-### 🌙 Ending a session
-**`session-closeout`: wrap up properly.** It follows the project's closeout instructions: reuse an existing
-scratchpad when required, or write a dated one; check citations; and suggest only relevant doc updates. It changes
-main docs only if you say yes. The tracked HDC-specific profile is reconciled with the approved guidance in
-`HDC-documents/README.md` and its automation handoff; native profile-aware behavior remains untested.
-> "Close out this session"
+### ✅ Completing bounded work
+`work-closeout` reconciles a genuinely completed feature or other bounded work item. It reuses the project's working record, checks relevant citations, and updates/proposes only durable state that actually changed according to project policy. Ending a chat alone does not trigger it.
+> "Close out this feature"
 
-**`handoff` (by name): brief the next session** when it has one clear task. It writes a short brief to your
-temp folder; copy the brief somewhere safe if you want to keep it.
-> `/handoff next session: port the fetchAnswerFilters endpoint`
+**`handoff` (by name): brief an actual transfer or deliberate pause** when normal project state is not enough for the next worker/environment. It is exceptional, not a chat-boundary ritual.
+> `/handoff transfer this unfinished investigation to the next environment`
 
 ### 🧰 Tools (scripts, not skills)
 - **Pre-commit hook:** warns you whenever a commit adds new files. It never blocks the commit.
@@ -104,10 +100,10 @@ temp folder; copy the brief somewhere safe if you want to keep it.
 Commands for all three are in §2 and §4.
 
 ### The whole flow in one line
-- **Tiny/simple task:** clarify only what is needed → implement → targeted verification → describe-pr.
-- **Small/medium ticket with fragmented inputs:** grill-me as needed → task-context → lightweight plan/design as needed → implement → guards/review → describe-pr.
-- **Big ticket:** grill-with-docs → task-context → create-lld → plan/review → implementation → verification → describe-pr.
-- **End of any session:** session-closeout (+ handoff only when unfinished work is being transferred).
+- **Tiny/simple task:** inspect/clarify only what is needed → implement → targeted verification → stop or prepare/publish a PR only when requested/authorized.
+- **Small/medium work with fragmented inputs:** grill-me as needed → task-context if useful → lightweight plan/design as needed → implement → verification/review → PR stage when requested/authorized.
+- **Feature-scale work:** requirements/context → applicable Functional Design/LLD/QA scenarios → feature plan + delivery slices → slice implementation/verification/review/PRs → feature work-closeout.
+- **Completed feature/bounded work:** work-closeout when durable reconciliation or cleanup is useful. Ending a chat alone needs neither closeout nor handoff.
 
 `task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
 
@@ -127,16 +123,15 @@ An agent only sees a skill if the folder sits in **its skills folder**:
 
 | Agent | User-level skills folder (all projects) | Evidence |
 |---|---|---|
-| Claude Code | `C:\Users\<you>\.claude\skills\` | Previously tested with other skills; these two new skills have not been tested in Claude Code |
-| Codex | `C:\Users\<you>\.agents\skills\` | Previously tested (2026-09-26, codex-cli 0.157.0) with other skills; these two have not been tested in Codex |
-| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 lists both new skills as enabled and passed read-only smoke tests using Auto |
-| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode v2.0.20 exposed both skills in this session; other hosts/models are not verified, so check their current skill-loading documentation |
+| Claude Code | `C:\Users\<you>\.claude\skills\` | User-level skill loading has been exercised with earlier skills; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
+| Codex | `C:\Users\<you>\.agents\skills\` | Earlier skills were tested with codex-cli 0.157.0; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
+| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 previously discovered/exercised task-context, create-lld and describe-pr on the pre-v2 source; current renamed/refined skills need reinstall + bounded re-test |
+| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode previously exercised plan/create-lld behavior on predecessor source; current v2 behavior remains to be verified after reinstall |
 
-**Plan-skill smoke tests (2026-10-01):** both skills were exercised on a synthetic plan in read-only mode. Gemini
-CLI 0.62.0 found the client-support contradiction, unsupported rollback estimate, monitoring concern, and missing
-rollback ownership. OpenCode used `plan-review` in this session and coordinated a Gemini evidence challenge for
-`plan-debate`; the exchange and author response stayed in a temporary scratchpad. No project file was changed by
-the tests. Claude Code and Codex are not installed here, and no claim is made for every agent or model.
+**Historical plan-skill smoke (2026-10-01):** the predecessor `plan-review` / `plan-debate` versions were exercised
+on a synthetic plan in read-only mode. The current 2026-10-11 refinements deliberately move full plan/review exchange
+out of the compact project scratchpad into a dedicated planning/debate record, so that old smoke is evidence for the
+earlier behavior only. No broad host/model compliance claim is made.
 
 Both folders start with a dot, so Windows Explorer may hide them: type the path in the address bar.
 
@@ -153,10 +148,10 @@ you change a skill here, copy it again.
 | Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
-| Design | `create-lld` | Writes concise Functional Design / LLD / Technical Design artifacts; can consume task context without making human-facing documents verbose | Mine |
-| Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
-| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
-| Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
+| Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
+| QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
+| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
+| Before implementation | `plan-debate` | Evidence-backed challenge/response in one temporary debate record; compact project scratchpad records only resulting execution state | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
@@ -164,8 +159,8 @@ you change a skill here, copy it again.
 | PR | `describe-pr` | Writes What from git/implementation, Why from task context/approved requirements, and Testing from verified evidence or your report | Mine |
 | After the PR is open | `babysit-pr` | Works through bot and Copilot review comments; **asks before pushing or posting** | Tech lead (copied, changed) |
 | Big tickets, optional | `debate-review` | Two models review a PR and argue before posting | Tech lead (copied) |
-| End of a session | `session-closeout` | Writes a dated scratchpad in the docs folder + proposed doc updates, and checks every `file:line` citation against the real files | Mine |
-| Any time | `handoff` | Writes a brief so another agent or session can continue | Pocock (pinned) |
+| Completed bounded work | `work-closeout` | Reconciles the project's existing working record, relevant durable write-backs and checked citations; not a chat-ending ritual | Mine |
+| Transfer/pause only | `handoff` | Writes a brief when another agent/environment needs extra transfer context; not required for a new chat | Pocock (pinned) |
 
 **Tools and templates (not skills).** Plain Node scripts (18+, no dependencies) and a git hook in this folder.
 Nothing to install into a skills folder; run them from here, or ask your agent to.
@@ -194,8 +189,8 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 ### Copy the skills (PowerShell)
 Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
 into both skills folders, so compatible agents see the same set. **Tested 2026-09-25** on this laptop
-against a throwaway folder: all 18 then-listed skills landed in both targets (re-run 2026-09-26 after adding
-`session-closeout`), and the scripts ran from their new place. The newly added `scenario-test-cases` entry has
+against a throwaway folder: the then-listed skill set landed in both targets (re-run 2026-09-26 after adding
+`work-closeout`), and the scripts ran from their new place. The newly added `qa-scenarios` entry has
 not yet been included in an install test or tested natively. On 2026-10-01, `plan-review` and `plan-debate` were
 copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
 Gemini CLI 0.62.0 lists both as enabled; OpenCode v2.0.20 exposed both in this session. Gemini and OpenCode
@@ -203,8 +198,8 @@ smoke-tested the workflows on synthetic input. These checks establish availabili
 universal support by every model or agent. `security-audit` was copied to both user-level roots with matching
 hashes on 2026-10-01. Gemini CLI 0.62.0 smoke-tested it on a synthetic endpoint excerpt; OpenCode loaded the skill
 in this session, but did not run the same audit fixture. These checks do not validate real vulnerability detection
-or establish support by every model or agent. On 2026-10-01, `scenario-test-cases` was installed in both roots;
-`plan-debate`, `plan-review`, `create-lld`, and `session-closeout` were synchronized from the repository after
+or establish support by every model or agent. On 2026-10-01, `qa-scenarios` was installed in both roots;
+`plan-debate`, `plan-review`, `create-lld`, and `work-closeout` were synchronized from the repository after
 drift checks. The synchronized skill files match their repository copies; no user-only skill edits were found.
 
 ```powershell
@@ -217,11 +212,11 @@ $folders = @(
   "skills\describe-pr",
   "skills\task-context",
   "skills\create-lld",
-  "skills\scenario-test-cases",
+  "skills\qa-scenarios",
   "skills\plan-review",
   "skills\plan-debate",
   "skills\security-audit",
-  "skills\session-closeout",
+  "skills\work-closeout",
   "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
   "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
   "vendor\amElnagdy\delegate-skills\skills\agy-delegate",
@@ -375,7 +370,7 @@ upstream before adding it to the normal install instructions.
 Same tail, with more up front:
 1. **`grill-with-docs`** (by name), **run from an approved working-docs location, never from a code repo**:
    current upstream creates `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files wherever it runs. For HDC,
-   start the agent in `HDC-documents/current-session/`; treat those files as working artifacts and reconcile any
+   start the agent in `HDC-documents/active-work/`; treat those files as working artifacts and reconcile any
    accepted durable decision into `HDC_Architecture_Decisions.md` during closeout. The historical trial started in
    `C:\Users\Mohamed\Downloads\HDC\HDC\documents`, not in `cb379_hdc_pdc`.
    **Trialled 2026-09-26** (HDC domain glossary, in Claude; stopped after round 1 on purpose). What to know:
@@ -405,58 +400,38 @@ Same tail, with more up front:
 ### Any time
 - **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
   same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
-  assumptions and unresolved questions distinct. In HDC, the intended working location is
-  `HDC-documents/current-session/`, not the documentation root.
-- **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
-  CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
-- **`scenario-test-cases`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
-  requirements and the LLD; check for the implementation-task handoff too."* Or call the skill by name. It uses
-  numbered Scenario headings with Given / When / Then / And; each case traces to its sources. It writes no
-  automation code and marks missing or conflicting expectations as questions rather than guessing.
-- **`session-closeout`**, at the end of a session: *"close out this session"*. It follows the project's
-  instructions for scratchpad location and reuse; otherwise it writes `YYYY-MM-DD_<Topic>_Scratchpad.md` in the
-  docs folder. It lists relevant proposed document updates and checks every `file:line` citation. **If a citation
-  is stale, the closeout isn't finished** until it's fixed. It changes the plan or other main documents only after
-  your yes. To cite code that only exists on another branch, write `develop:path:line` (not checked). The HDC
-  profile template is tracked at `templates/hdc-session-closeout-profile/`; HDC's canonical documents are not
-  changed by this template.
-  The checker also works on its own:
-  `node <skills folder>\session-closeout\scripts\check-citations.mjs <file.md> --root <repo> --root <repo2>`.
-- **Pre-commit hook** (warn about new files), once per clone. In PowerShell, inside the repo:
-  ```powershell
-  $hook = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\templates\pre-commit-hook"
-  Copy-Item "$hook\pre-commit", "$hook\warn-new-files.cjs" (git rev-parse --git-path hooks)
-  ```
-  A commit that adds files then prints `WARNING: this commit adds N new file(s)` with the list, and still goes
-  ahead (undo with `git reset --soft HEAD~1`). No file is added to the repo (`.git/hooks/` isn't tracked).
-  Without Node it stays silent. Remove: delete the two files from `.git/hooks/`. For HDC this is your own step
-  (agents don't touch the repos). Details and tests: `templates/pre-commit-hook/README.md`.
-- **`json-compare`** (B9: legacy vs ported endpoint):
-  `node C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\tools\json-compare\compare.mjs <endpoint>__<set>__legacy.json <endpoint>__<set>__new.json --config rules.json`.
-  Exit 0 = identical, 1 = differences, 2 = bad input. `rules.json` (optional) can `ignore` paths, `rename` a
-  field, or treat an array as `unordered`; ignored paths are always listed, never hidden. For HDC, record the
-  responses in your browser first (runbook: `HDC\HDC\documents\b9-recordings\README.md`); the tool never
-  calls an API. Details: `tools/json-compare/README.md`.
+  assumptions and unresolved questions distinct. Use the active project's approved working location; the generic skill does not choose a project-specific path.
+- **`create-lld`**, optional Technical Design mode: invoke only when the active project/team explicitly requires a separate as-built design artifact after implementation.
+
+- **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.
+
+- **`work-closeout`**, when a feature or agreed bounded work item is actually complete: *"close out this feature."* It reuses the project's working record, reconciles relevant durable state, validates source citations where applicable, and follows project cleanup policy. A new chat or a completed delivery slice alone does not trigger it.
+
 - **`handoff`** (by name): *"/handoff — next session continues the navbar tests"*. It writes the brief to your
   temp folder, not the project.
   **Used for real 2026-09-26** (brief for the B9 side-effect audit, in Claude): ~1 page, pointed at the
   runbook/Charter/rules by path instead of copying them, named the next skills, and flagged that the audit
   doesn't actually need the deploy it was waiting on. What to know:
-  - **Different job from `session-closeout`:** closeout records what *happened* and queues doc updates;
-    `handoff` briefs *one next task*. Use both at the end of a session only when the next task is specific.
+  - **Different job from `work-closeout`:** closeout records what *happened* and queues doc updates;
+    `handoff` briefs *one next task*. Use handoff only when an actual transfer needs extra briefing; ending a chat alone needs neither.
   - The temp folder isn't durable or discoverable: copy the file into the project's `sessions\` folder if it
     must survive, and paste its path into the next agent's first message.
 
 ---
 
-## 5. What never happens without your yes
-- Nothing is pushed, posted, merged or created on GitHub (`describe-pr`, `babysit-pr`; `debate-review` posts
-  unless you pass `--dry-run`).
-- No commit by a delegated CLI; you commit after reviewing.
-- No lane config written (`delegate-setup`).
-- No file written in a code repo by `describe-pr` or `create-lld` unless you say where.
+## 5. External effects and authorization
 
-The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/current-session/`, not a code repository or the HDC docs root.
+- Publication, push/PR creation, deployment, configuration changes and destructive cleanup follow the current
+  user/project authorization envelope. Do not ask again for an effect that the user already explicitly included
+  (for example, "take this slice through PR"), but do not infer publication/deployment from "plan", "implement" or
+  "review" alone.
+- Delegated CLIs do not silently commit or broaden their scope.
+- Persistent lane configuration is deliberate setup, not an incidental task side effect.
+- `describe-pr` and `create-lld` keep temporary drafts outside code repos unless a project-approved destination
+  or the current request says otherwise.
+
+
+The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. Run it only from the active project's approved working location, not an arbitrary code-repository root.
 
 ---
 

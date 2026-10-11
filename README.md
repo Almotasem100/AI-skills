@@ -51,7 +51,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `overlays/` | Local contributions/patches kept separate from upstream/vendor snapshots; each overlay documents its base and application procedure |
 | `delegates/` | Delegate lane configs: which CLI and model does which job |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
-| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `hdc-session-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically), and `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
+| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
@@ -63,44 +63,48 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 
 ## The workflow
 
-The active model is the **orchestrator by default**. It coordinates work rather than owning every specialist
-artifact itself: understand the objective, choose the smallest sufficient workflow, resolve required roles to
-configured delegation lanes, track progress and exceptions, and move the authorized work forward.
+The active model is the **orchestrator by default**. It coordinates the requested outcome, chooses the smallest
+sufficient workflow, resolves semantic roles through configured lanes, tracks state and exceptions, and stops only
+at completion, an explicit checkpoint, or a genuine material gate.
 
-Delegation is role-based. Skills and workflow descriptions refer to roles such as planner, implementer,
-reviewer or tester; the lane configuration decides which CLI, provider, model and supported effort currently
-fills that role. Changing the model behind a lane must not require rewriting the workflow or skill.
+The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestration-contract.md). Highlights:
 
-A request authorizes the normal internal progression needed to achieve its stated outcome and scope unless the
-owner gives an explicit checkpoint. Do not stop merely because one routine stage completed. Stop when the
-requested outcome is complete, at an owner-requested checkpoint, or when a genuine exception requires a
-decision or new authorization.
+- workflows are adaptive; simple bugs remain simple;
+- projects may map a parent **Feature** to one or more **Delivery Slices**;
+- stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
+  meanings;
+- models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
+  user syntax;
+- deterministic guards/build/tests/regression are workflow actions rather than separate agents;
+- `task-context` is rich temporary understanding, the scratchpad is compact execution state, handoff is exceptional,
+  and `work-closeout` is about completed work rather than ending a chat;
+- evidence carries provenance/revision where consequential, while reviewers verify claims independently;
+- repeated failures trigger diagnosis changes or escalation rather than infinite retries;
+- fixed context-utilization thresholds do not trigger compaction.
 
-The workflow is composed from reusable stages rather than one mandatory pipeline. Choose the **smallest
-sufficient workflow** for the task and adapt it when investigation changes the apparent complexity.
+A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
+as verification; use independent review and deterministic checks. Give each role the minimum useful context and
+canonical source access required for its responsibility.
 
-Examples:
+Routine workflow progression inside an authorized scope does not need per-stage approval. The owner may always
+override routing, participants, checkpoints or boundaries. Persistent/outward effects remain subject to the active
+project's authorization policy.
 
-- **Small bug:** reproduce/diagnose → implement → focused test → verify.
-- **Bounded enhancement:** clarify intent as needed → lightweight plan → implement → review/test → verify.
-- **Large feature or ticket:** requirements/grilling → task-context synthesis when the evidence is fragmented or
-  several downstream roles need the same understanding → Functional Design/LLD where required → plan →
-  plan review/debate where justified → implementation slices → guards/review → build/tests → routine fixes and
-  re-verification → required documentation/closeout.
+### Generic project hierarchy
 
-Stages that add no value for the current task may be skipped. A task that grows in risk or scope may escalate
-to a stronger workflow; a task that proves simpler may shrink. Completion is defined by the requested outcome
-and appropriate verification, not by traversing every available stage.
+When a project has a parent feature and internal delivery tickets:
 
-A delegated role owns its assigned artifact or bounded change. The orchestrator does not recreate a planner's
-plan or an implementer's code as a verification technique; use independent review, guards and deterministic
-checks for that purpose. Give workers the minimum useful context and canonical source access their role needs.
-Use frozen snapshots or isolated worktrees only when an actual access or concurrency boundary requires them.
+```text
+Feature
+  -> feature context / Functional Design / LLD / implementation plan / QA scenarios
+  -> Delivery Slice 1 -> branch / implementation / verification / review / PR
+  -> Delivery Slice 2 -> branch / implementation / verification / review / PR
+  -> ...
+  -> feature acceptance / work-closeout
+```
 
-Routine lanes are selected automatically from configuration. The owner may always override the inferred route,
-participants, workflow boundary or checkpoint. The URL map (`tools/url-map`) can run underneath as the code map.
-The LLD skill remains available in forward mode before implementation or retro mode for documenting completed
-work.
+The generic repo never hardcodes a tracker. A project may map Feature to Jira, Delivery Slice to CodeBeamer, or use
+different systems entirely.
 
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
@@ -109,13 +113,13 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented Jira/requirements/grilling/UX/project evidence → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
-| `create-lld` | **Updated 2026-10-10; bounded native smoke 2026-10-11:** Gemini CLI 0.62.0 discovered the skill after its UTF-8 BOM was removed. Its LLD copied task-context evidence pointers; both LLD and Functional Design repeated content and added unsupported speculative details. The same LLD smoke passed through OpenCode v2.0.22 with the skill loaded. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. After implementation → concise as-built Technical Design for Architect review. The cross-host difference points to a Gemini adherence limitation in these bounded runs, not a generally weak LLD contract; broader behavior remains unverified. |
-| `scenario-test-cases` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
-| `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
-| `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
+| `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented feature/task requirements, decisions, UX/project evidence and constraints → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
+| `create-lld` | **Refined 2026-10-11; native re-test pending after reinstall.** Earlier bounded smokes proved discovery and showed Gemini/OpenCode adherence differences, but they predate the adaptive template/checker changes on this branch. | Forward: task context/approved requirements → concise feature-level LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. |
+| `qa-scenarios` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
+| `plan-review` | **Refined 2026-10-11; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic smoke; the current version separates planning records from the compact project scratchpad. | One-shot, read-only critique of a plan, dedicated planning record, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
+| `plan-debate` | **Refined 2026-10-11; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic exchange; the current version uses a temporary debate record and keeps project scratchpad state compact. | Structured pre-implementation challenge/response in one temporary debate record; the normal project scratchpad remains compact execution state; does not apply the plan to project documents |
 | `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
-| `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
+| `work-closeout` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** Citation checker retained. | Reconcile a genuinely completed feature/bounded work item using the project's working record. Not triggered by ending a chat or by completing one child delivery slice; durable write-backs/cleanup follow project policy. |
 | `describe-pr` | **Evidence flow smoke-tested on a corrected synthetic fixture 2026-10-11.** A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
 
 ### `task-context`
@@ -154,8 +158,8 @@ or your own templates (example in `references/describe-pr.example.json`).
 
 **What it guarantees:** it never invents reasons, test results or rollback steps; it never derives business
 rationale from the diff alone; it preserves qualifiers such as estimated/expected/target rather than presenting
-them as measured results; it never opens files flagged as sensitive; it never pushes, creates or edits a PR
-without your explicit yes; and it writes nothing inside the repo.
+them as measured results; it never opens files flagged as sensitive; PR publication occurs only when the current
+workflow/user authorization explicitly covers it (otherwise it asks); and temporary draft files stay outside the repo.
 
 **Scripts on their own** (useful with any agent, or none):
 ```
@@ -170,65 +174,42 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 
 **Use:**
 - **Forward**, before the work:
-  > write the LLD for CADE-1234, "Navbar", from the approved requirements. Release R4, Sprint 1. Save it in my docs folder.
-- **Technical Design**, after implementing the approved plan:
-  > write the as-built Technical Design for CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review.
+  > write the LLD for APP-123, "Navbar", from the approved requirements. Save it in the project-approved design location.
+- **Technical Design (optional):** only when the active project/team explicitly requires a separate as-built design artifact. It is not part of the default lifecycle.
 
-The LLD is drafted before the plan/implementation. When a task-context synthesis exists, `create-lld` uses it as
-a navigation map while keeping authoritative requirements available for verification; the design deliverables
-remain deliberately concise. A Functional Design is prepared when the project workflow requires it or you ask; it
-is customer-facing and does not duplicate Purpose/Scope already in the requirements document. After implementation of the approved plan, ask for an as-built Technical Design for Architect review.
-The skill inspects supporting materials and code internally, but deliverables use the Jira ID only and do not
-cite attachment names or source-code files/lines. The LLD checker runs before presentation; drafts remain
-unapproved until you approve them.
+The design artifacts stay feature-level when a project uses parent features plus delivery slices. Functional Design
+describes observable behavior; the LLD describes intended technical boundaries; implementation planning owns slice
+decomposition and concrete verification sequencing.
 
-**What it guarantees:**
-- The LLD contains the essential component/API boundaries, without file paths or line citations.
-- Functional Design describes observable customer behavior, not technical implementation.
-- Technical Design documents the implemented result, and reports only verified checks.
-- Supporting artifacts and source code are used as internal evidence, not cited in the deliverables.
-- No invented requirements, decisions, measurements, deviations or test results; unresolved items remain explicit.
-- No "N/A".
-- Nothing written inside a code repository unless you say so.
+### `qa-scenarios`
+**Needs:** approved feature behavior: requirements/acceptance criteria and, when available, Functional Design.
+Task-context can be used as a navigation map; LLD is consulted only when a technical constraint changes observable
+behavior. It does not require an implementation handoff.
 
-**Paste into Google Docs:** enable markdown in the Docs preferences, then paste; otherwise paste as plain text.
+**Use:** ask naturally, e.g. *"Draft QA scenarios for this feature from the approved requirements and Functional
+Design, and map each scenario to the delivery slice that enables it where useful."* If the agent does not select it,
+invoke explicitly: *"Use `qa-scenarios` for this feature."*
 
-**Scripts on their own:**
-```
-node skills/create-lld/scripts/slides.mjs customer.pptx --media-dir %TEMP%\slides
- node skills/create-lld/scripts/check-lld.mjs LLD_CADE-1234_navbar.md --size normal
-```
+It produces observable Given/When/Then-style behavior for tester preparation, keeps unresolved behavior under
+`Clarifications needed`, and never claims the scenarios were executed. It does not generate browser automation
+unless separately requested.
 
-### `scenario-test-cases`
-**Needs:** approved requirements / acceptance criteria and the approved LLD. If either source is missing, the skill
-asks for it rather than deriving expected behavior from the implementation. A matching implementation-task
-handoff is used when available for scope and execution context; it does not override approved expected behavior.
-No scripts or agent-specific tools.
-
-**Use:** for automatic selection, ask naturally, e.g. *"Draft browser test scenarios from these approved
-requirements and the LLD. Check for the implementation-task handoff too."* If the agent does not select it, invoke
-explicitly: *"Use `scenario-test-cases` for this feature."*
-The skill follows numbered `Scenario N` headings with Given / When / Then / And, and cites source references.
-It returns Markdown in chat unless you request a file. Conflicts and missing expected behavior are called out
-under `Clarifications needed`, not filled with guesses. It creates test cases, not Playwright/Cypress/Selenium
-code; `test-guard` remains the review skill for automated test code.
 
 ### `plan-review` and `plan-debate`
-Both accept a proposed plan directly, including as a working session scratchpad or existing handoff; no separate
-implementation-brief artifact is needed. A scratchpad can hold task notes, necessary source references/excerpts,
-grill answers, findings, the draft, review exchanges, decisions, and unresolved questions. Preserve source
-locators and verify consequential claims against originals when available. Reuse a project's designated
-scratchpad only if its profile permits; otherwise use a separate temporary working file. It is a working draft,
-not a project document of record or a replacement for `handoff` or `session-closeout`.
+Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
+no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to
+planning work and record resulting decisions/blockers/next action, but it should not become the store for full plans,
+evidence excerpts or review transcripts. Preserve source locators and verify consequential claims against originals
+when available.
 
 - **`plan-review`:** one-shot, read-only critique. It returns prioritized findings with evidence, assumptions,
   missing decisions, risks, and questions, distinguishing observed contradictions from concerns and unsupported
-  assertions. It does not edit the plan or scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
+  assertions. It does not edit the plan or project scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
   handoff."*
 - **`plan-debate`:** structured multi-role challenge/response around a proposed plan. The orchestrator coordinates
-  the exchange and is the sole writer of the shared coordination scratchpad; that does **not** make it the plan
-  author. The workflow selects a plan-author role and the required challenge/independent-review roles from
+  the exchange in one temporary debate record; the normal project scratchpad stays compact. Coordination ownership
+  does **not** make the orchestrator the plan author. The workflow selects a plan-author role and the required challenge/independent-review roles from
   configured lanes unless the owner explicitly chooses participants. Reviewers return attributed findings and
   the plan author responds to them; the orchestrator routes the rounds, records state and escalates only material
   unresolved decisions. Give each participant only the context and source access needed for its role. Use an
