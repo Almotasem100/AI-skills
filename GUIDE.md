@@ -123,16 +123,15 @@ An agent only sees a skill if the folder sits in **its skills folder**:
 
 | Agent | User-level skills folder (all projects) | Evidence |
 |---|---|---|
-| Claude Code | `C:\Users\<you>\.claude\skills\` | Previously tested with other skills; these two new skills have not been tested in Claude Code |
-| Codex | `C:\Users\<you>\.agents\skills\` | Previously tested (2026-09-26, codex-cli 0.157.0) with other skills; these two have not been tested in Codex |
-| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 lists both new skills as enabled and passed read-only smoke tests using Auto |
-| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode v2.0.20 exposed both skills in this session; other hosts/models are not verified, so check their current skill-loading documentation |
+| Claude Code | `C:\Users\<you>\.claude\skills\` | User-level skill loading has been exercised with earlier skills; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
+| Codex | `C:\Users\<you>\.agents\skills\` | Earlier skills were tested with codex-cli 0.157.0; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
+| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 previously discovered/exercised task-context, create-lld and describe-pr on the pre-v2 source; current renamed/refined skills need reinstall + bounded re-test |
+| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode previously exercised plan/create-lld behavior on predecessor source; current v2 behavior remains to be verified after reinstall |
 
-**Plan-skill smoke tests (2026-10-01):** both skills were exercised on a synthetic plan in read-only mode. Gemini
-CLI 0.62.0 found the client-support contradiction, unsupported rollback estimate, monitoring concern, and missing
-rollback ownership. OpenCode used `plan-review` in this session and coordinated a Gemini evidence challenge for
-`plan-debate`; the exchange and author response stayed in a temporary scratchpad. No project file was changed by
-the tests. Claude Code and Codex are not installed here, and no claim is made for every agent or model.
+**Historical plan-skill smoke (2026-10-01):** the predecessor `plan-review` / `plan-debate` versions were exercised
+on a synthetic plan in read-only mode. The current 2026-10-11 refinements deliberately move full plan/review exchange
+out of the compact project scratchpad into a dedicated planning/debate record, so that old smoke is evidence for the
+earlier behavior only. No broad host/model compliance claim is made.
 
 Both folders start with a dot, so Windows Explorer may hide them: type the path in the address bar.
 
