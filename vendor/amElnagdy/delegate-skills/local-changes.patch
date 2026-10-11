@@ -23,4 +23,26 @@ index dfdc3da..5d29e7c 100644
 +Open claims: https://github.com/amElnagdy/delegate-skills/issues | Open pull requests: https://github.com/amElnagdy/delegate-skills/pulls
  
  ## What counts as a delegate skill
+
+diff --git a/skills/delegate-setup/scripts/implementers.mjs b/skills/delegate-setup/scripts/implementers.mjs
+--- a/skills/delegate-setup/scripts/implementers.mjs
++++ b/skills/delegate-setup/scripts/implementers.mjs
+@@ -47,4 +47,18 @@
+ export const IMPLEMENTERS = Object.freeze([
++  {
++    key: "gemini",
++    skill: "gemini-delegate",
++    binary: "gemini",
++    versionArgs: ["--version"],
++    // Only the offline version probe is verified. Do not launch a prompt to
++    // infer auth or models, or open settings/session files to guess either.
++    authProbe: null,
++    modelProbe: null,
++    usageProbe: null,
++    // permissionMode carries --approval-mode; plan is not a readOnly promise.
++    supports: ["model", "permissionMode", "timeout"],
++    winShell: true,
++  },
+   {
+     key: "claude",
  

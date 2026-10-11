@@ -6,10 +6,16 @@
 | Base commit | `8ef02103ad99b53801f2b13d04755313fbbfafb2` (upstream master dated 2026-10-07) |
 | Copied | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
-| Local changes | One documentation-only link and repository-root update, described below and saved in local-changes.patch. |
+| Local changes | Documentation-link updates and Gemini lane-validation compatibility, described below and saved in local-changes.patch. |
 
 ## LOCAL CHANGE — repository links (2026-09-28)
 The upstream README and contribution guide used relative issue/PR links. In this vendored copy those resolved into the parent repository, so they now link directly to the upstream GitHub project. The update procedure also names the AI-skills repository root.
+
+## LOCAL CHANGE — Gemini lane validation compatibility (2026-10-11)
+The workstation's configured fleet uses `implementer: "gemini"` lanes with model values. The vendored
+`delegate-setup` registry did not include Gemini, so its config loader rejected those existing lanes. Add the
+Gemini registry entry used by the installed user-level loader; this only enables configuration validation and
+does not add or invoke a Gemini relay.
 
 ## Reviewed before copying (2026-09-25)
 - No network calls of their own, no `eval`, no downloads.

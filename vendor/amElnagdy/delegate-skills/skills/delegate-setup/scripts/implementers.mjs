@@ -46,6 +46,20 @@
  */
 export const IMPLEMENTERS = Object.freeze([
   {
+    key: "gemini",
+    skill: "gemini-delegate",
+    binary: "gemini",
+    versionArgs: ["--version"],
+    // Only the offline version probe is verified. Do not launch a prompt to
+    // infer auth or models, or open settings/session files to guess either.
+    authProbe: null,
+    modelProbe: null,
+    usageProbe: null,
+    // permissionMode carries --approval-mode; plan is not a readOnly promise.
+    supports: ["model", "permissionMode", "timeout"],
+    winShell: true,
+  },
+  {
     key: "claude",
     skill: "claude-delegate",
     binary: "claude",
