@@ -2,7 +2,7 @@
 
 ## Portable workflow v2 redesign — 2026-10-11
 
-Owner-approved architecture review is implemented on clean review branch `review/portable-workflow-v2`. The
+Portable Workflow v2 is merged to `master` after review and bounded native verification. The
 portable contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific
 ticket, environment, architecture and migration policy. Compatibility renames are complete in source:
 `session-closeout` -> `work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder
@@ -35,7 +35,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-12 — Portable workflow v2 source redesign, workstation synchronization, bounded native verification, and focused child-slice trigger regression completed on clean review branches._
+_Last updated: 2026-10-12 — Portable Workflow v2 source redesign, workstation synchronization, bounded native verification, focused child-slice trigger regression, and final merge to master completed._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
