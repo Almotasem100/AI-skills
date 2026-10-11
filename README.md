@@ -51,7 +51,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `overlays/` | Local contributions/patches kept separate from upstream/vendor snapshots; each overlay documents its base and application procedure |
 | `delegates/` | Delegate lane configs: which CLI and model does which job |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
-| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `hdc-work-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically), and `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
+| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
@@ -182,19 +182,18 @@ describes observable behavior; the LLD describes intended technical boundaries; 
 decomposition and concrete verification sequencing.
 
 ### `qa-scenarios`
-### `qa-scenarios`
-**Needs:** approved requirements / acceptance criteria and the approved LLD. If either source is missing, the skill
-asks for it rather than deriving expected behavior from the implementation. A matching implementation-task
-handoff is used when available for scope and execution context; it does not override approved expected behavior.
-No scripts or agent-specific tools.
+**Needs:** approved feature behavior: requirements/acceptance criteria and, when available, Functional Design.
+Task-context can be used as a navigation map; LLD is consulted only when a technical constraint changes observable
+behavior. It does not require an implementation handoff.
 
-**Use:** for automatic selection, ask naturally, e.g. *"Draft browser test scenarios from these approved
-requirements and the LLD. Check for the implementation-task handoff too."* If the agent does not select it, invoke
-explicitly: *"Use `qa-scenarios` for this feature."*
-The skill follows numbered `Scenario N` headings with Given / When / Then / And, and cites source references.
-It returns Markdown in chat unless you request a file. Conflicts and missing expected behavior are called out
-under `Clarifications needed`, not filled with guesses. It creates test cases, not Playwright/Cypress/Selenium
-code; `test-guard` remains the review skill for automated test code.
+**Use:** ask naturally, e.g. *"Draft QA scenarios for this feature from the approved requirements and Functional
+Design, and map each scenario to the delivery slice that enables it where useful."* If the agent does not select it,
+invoke explicitly: *"Use `qa-scenarios` for this feature."*
+
+It produces observable Given/When/Then-style behavior for tester preparation, keeps unresolved behavior under
+`Clarifications needed`, and never claims the scenarios were executed. It does not generate browser automation
+unless separately requested.
+
 
 ### `plan-review` and `plan-debate`
 Both accept a proposed plan directly, including as a working session scratchpad or existing handoff; no separate

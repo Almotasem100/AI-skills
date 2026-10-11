@@ -35,11 +35,7 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
 > `/grill-with-docs new approval workflow for checklists`
 
-**`create-lld`: forward LLD and later as-built Technical Design.** After requirements are settled, it drafts a
-concise architect-facing LLD before the plan/implementation. It can also prepare a customer-facing Functional
-Design when the project workflow requires one. After the approved plan is implemented, invoke its Technical
-Design mode to summarize the built solution for Architect review. Source materials and code are inspected
-internally; deliverables omit attachment citations and source-code paths/lines.
+**`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A separate as-built Technical Design is optional only when the active project/team explicitly requires one. Source materials and code are inspected internally; deliverables omit evidence inventories and source-code paths/lines.
 > "Write the LLD for CADE-1234, 'Navbar', from these requirements. Release R4, Sprint 1."
 
 ### 🧭 Planning before implementation
@@ -90,16 +86,12 @@ locally, then asks before pushing or replying.
 posted.
 > "debate-review PR 123 --dry-run"
 
-### 🌙 Ending a session
-`work-closeout` reconciles completed work. It follows the project's closeout instructions: reuse an existing
-scratchpad when required, or write a dated one; check citations; and suggest only relevant doc updates. It changes
-main docs only if you say yes. The tracked HDC-specific profile is reconciled with the approved guidance in
-`HDC-documents/README.md` and its automation handoff; native profile-aware behavior remains untested.
-> "Close out this session"
+### ✅ Completing bounded work
+`work-closeout` reconciles a genuinely completed feature or other bounded work item. It reuses the project's working record, checks relevant citations, and updates/proposes only durable state that actually changed according to project policy. Ending a chat alone does not trigger it.
+> "Close out this feature"
 
-**`handoff` (by name): brief the next session** when it has one clear task. It writes a short brief to your
-temp folder; copy the brief somewhere safe if you want to keep it.
-> `/handoff next session: port the fetchAnswerFilters endpoint`
+**`handoff` (by name): brief an actual transfer or deliberate pause** when normal project state is not enough for the next worker/environment. It is exceptional, not a chat-boundary ritual.
+> `/handoff transfer this unfinished investigation to the next environment`
 
 ### 🧰 Tools (scripts, not skills)
 - **Pre-commit hook:** warns you whenever a commit adds new files. It never blocks the commit.
@@ -158,7 +150,7 @@ you change a skill here, copy it again.
 | Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
-| Design | `create-lld` | Writes concise Functional Design / LLD / Technical Design artifacts; can consume task context without making human-facing documents verbose | Mine |
+| Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
@@ -412,8 +404,8 @@ Same tail, with more up front:
   same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
   assumptions and unresolved questions distinct. In HDC, the intended working location is
   `HDC-documents/active-work/`, not the documentation root.
-- **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
-  CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
+- **`create-lld`**, optional Technical Design mode: invoke only when the active project/team explicitly requires a separate as-built design artifact after implementation.
+
 - **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.
 
 - **`work-closeout`**, when a feature or agreed bounded work item is actually complete: *"close out this feature."* It reuses the project's working record, reconciles relevant durable state, validates source citations where applicable, and follows project cleanup policy. A new chat or a completed delivery slice alone does not trigger it.
@@ -424,7 +416,7 @@ Same tail, with more up front:
   runbook/Charter/rules by path instead of copying them, named the next skills, and flagged that the audit
   doesn't actually need the deploy it was waiting on. What to know:
   - **Different job from `work-closeout`:** closeout records what *happened* and queues doc updates;
-    `handoff` briefs *one next task*. Use both at the end of a session only when the next task is specific.
+    `handoff` briefs *one next task*. Use handoff only when an actual transfer needs extra briefing; ending a chat alone needs neither.
   - The temp folder isn't durable or discoverable: copy the file into the project's `sessions\` folder if it
     must survive, and paste its path into the next agent's first message.
 

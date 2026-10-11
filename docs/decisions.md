@@ -70,11 +70,9 @@ and its decisions feed the PR's reviewer notes.
   to project documents. This is a working draft, not a new project document or a replacement for the closeout
   record; the existing handoff remains available when another session needs to continue a specific task.
 
-## Concise Jira design artifacts (owner, 2026-10-05)
-- One Jira ticket is the design unit even when internal/CB tracking divides the work into stages or child records.
-- Forward LLD: before plan approval/implementation; concise and architect-facing, with only essential component/API
-  boundaries. Functional Design: customer-facing observable behavior, without duplicate Purpose/Scope, Status, or
-  a link to the LLD. Post-implementation Technical Design: concise as-built summary for Architect review.
+## Concise Jira design artifacts (owner, 2026-10-05; lifecycle refined 2026-10-11)
+- Parent feature is the design unit when a project uses feature + delivery-slice tracking (HDC maps this to Jira + CodeBeamer).
+- Forward LLD: before implementation planning; concise and architect-facing, with essential technical boundaries. Functional Design: customer-facing observable behavior without duplicated content. A post-implementation Technical Design is optional only when the active project/team explicitly requires one.
 - Supplied requirements material and source code may be inspected internally, but deliverables must not cite input
   attachment names/pages or source-code paths/line numbers. Keep trace evidence in working notes. Avoid lengthy
   rationale, alternatives essays and file-level implementation detail.
@@ -157,9 +155,7 @@ still need real verification before being treated as proven.
   when a ticket adds or changes domain terms. When a project already keeps a decision log (HDC:
   `HDC_Architecture_Decisions.md`), decisions go there, not into a second `docs/adr/`. Name the output folder
   in the command.
-- **`handoff` kept, alongside `session-closeout`, not instead of it.** Closeout records what happened and
-  queues doc updates; handoff briefs one specific next task. Its output lands in the OS temp folder, so copy it
-  into the project's sessions folder when it must survive.
+- **Historical 2026-09-26 handoff/closeout model — superseded by Portable workflow v2.** Handoff is now exceptional transfer support; work-closeout is tied to genuinely completed bounded work, not to ending a chat.
 
 ## Setup follow-up after real use (owner, 2026-09-30)
 - Reopen the v1 freeze only for the owner-approved work listed in `docs/roadmap.md`; don't resume unrelated parked
@@ -170,27 +166,19 @@ still need real verification before being treated as proven.
 - Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/tester intent;
   lanes map those roles to provider/model/effort. Changes to persistent lane configuration remain deliberate setup
   changes, but using an already configured lane inside an authorized workflow is routine orchestration.
-- Keep branch creation and naming owner-managed. No branch-naming automation is planned.
+- **Superseded 2026-10-11:** branch mechanics may be automated inside an authorized delivery-slice workflow. Branch from the latest stable integration point containing required predecessors; use stacked branches only for genuine unmerged dependencies.
 - HDC closeout should consume the project's existing scratchpad, reconcile only relevant durable docs, conditionally
   refresh generated maps and functional documentation, validate citations, and remove the scratchpad at wrap-up.
   Do not create a second durable closeout report; offer `handoff` only for one specific next task. Keep these HDC
   destinations and rules in HDC project guidance, not in a generic skill.
-- The `scenario-test-cases` skill uses numbered Given/When/Then browser scenarios, matching the owner's sample
-  style without reusing its feature content. It derives testable behavior from approved requirements and LLDs,
-  and consults a matching implementation-task handoff when available for scope/context. Missing or conflicting
-  expected behavior becomes a clarification, never an invented assertion. It produces browser-followable,
-  automation-friendly test cases, not automation code; it is distinct from `test-guard`, which reviews automated
-  test code.
+- **Refined 2026-10-11:** `qa-scenarios` is feature-level QA behavior specification produced before implementation when useful. It derives observable behavior primarily from approved requirements/Functional Design, may map scenarios to delivery slices, does not require an implementation handoff, and remains distinct from test execution/`test-guard`.
 - A future pre-implementation design review is read-only and distinct from PR-oriented `debate-review`. It has two
   independent reviewers challenge a proposed change before implementation; a human resolves the findings.
 - Reuse the existing delegate skills' brief-writing process first. Add a separate implementation-brief skill only if
   real use shows it is insufficient; any brief should be scoped to an implementation slice, not become another
   project-of-record document.
 - Before relying on PR review tools, install and verify `gh`, `jq`, Git Bash, and authenticated repository access.
-- Keep `session-closeout` portable. For HDC, maintain project-specific closeout rules in HDC guidance and a tracked
-  reusable profile template under `templates/hdc-session-closeout-profile/`; do not fork the generic skill or
-  create a second durable closeout report. The owner approved and the session updated only
-  `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md` on 2026-09-30.
+- **Refined 2026-10-11:** keep `work-closeout` portable. Project-specific closeout mappings belong in that project's canonical instructions. HDC's policy is owned by HDC-documents; do not keep a second HDC-specific profile in AI-skills.
 
 ## Gemini-led workflow and plan debate (owner, 2026-10-01)
 - The owner has used Gemini CLI for months and is comfortable with Gemini Auto and its quota behavior. Treat that
@@ -198,13 +186,12 @@ still need real verification before being treated as proven.
 - Add Gemini CLI as a first-class implementer in Ahmed Nagdy's `delegate-skills`, including lane setup support. Keep
   the upstream work on a local branch for the owner's real-work trial; do not publish it until the owner chooses to
   propose it. Do not modify the vendored archive while implementing the upstream contribution.
-- Normal work allocation: Gemini can handle LLDs, browser test scenarios, comments, routine planning support, and
-  assessment of SonarQube/Copilot review findings when directed. The owner approved these initial global lanes on
+- Historical routing example: Gemini was initially assigned LLDs, browser scenarios, comments and routine planning support. Portable workflow v2 treats this as configuration/benchmark history, not a durable role capability claim. The owner approved these initial global lanes on
   2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini Auto, and
   `challenge-plan` → Gemini Auto. These are configured routes, so an authorized workflow may select them
   automatically when their role is needed. The active model remains the orchestrator/control plane; it does not
   become the default specialist merely because it is active. The owner may override any route. Materially different
-  unconfigured substitutions are not silent fallbacks. The owner prefers Gemini for PR work and session closeout.
+  unconfigured substitutions are not silent fallbacks. Historical preference at that date: Gemini for PR work and closeout; current routing remains role/config/evidence driven.
   Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying on `babysit-pr`; native
   `session-closeout` behavior also remains to be validated.
 - When the owner directs a model to implement routine code changes, Luna may load and apply `clean-code-guard`
@@ -244,7 +231,7 @@ Decision:
   evidence into one rich **temporary working artifact**.
 - Do not make `task-context` a mandatory stage. Use it when evidence is fragmented or several downstream roles
   would otherwise reread the same raw material; skip it for simple work.
-- Keep the task context distinct from the compact session scratchpad and from project-of-record documentation.
+- Keep task context distinct from the compact project scratchpad and from project-of-record documentation.
 - Preserve provenance and evidence class: fact, decision, estimate/target, assumption, open question. Never turn
   projected value into a measured result.
 - Downstream roles consume task context plus the minimum additional canonical source access needed to verify
@@ -253,8 +240,7 @@ Decision:
   and actual verification evidence or the developer report for **Testing**. It must not infer business rationale
   from the diff or ask the developer for rationale already available in authoritative task evidence.
 
-For HDC, `HDC-documents/current-session/` is the natural working location for a task-context artifact; durable
-decisions/state still reconcile into their existing canonical HDC documents at closeout.
+For HDC, the canonical mapping is now `HDC-documents/active-work/`; that project-specific path is owned by HDC-documents. Durable decisions/state still reconcile into their canonical owners at feature closeout.
 
 
 
