@@ -20,7 +20,7 @@ raw task evidence
   -> concise design artifacts / plan / implementation / tests / review / PR
 ```
 
-This skill does **not** replace requirements, Functional Design, LLD, the implementation plan, the session
+This skill does **not** replace requirements, Functional Design, LLD, the implementation plan, the project
 scratchpad, or canonical project documentation.
 
 - Requirements and approved project documents remain authoritative sources.
@@ -38,7 +38,7 @@ Use only inputs available and authorized for this task, for example:
 - Screenshots, Figma evidence, copied CSS or other UX evidence.
 - Relevant project instructions, architecture decisions and domain glossary.
 - Relevant source-code inspection when needed to understand constraints or current behavior.
-- Existing Functional Design / LLD / Technical Design / plan when refreshing context later.
+- Existing Functional Design / LLD / plan, plus an optional project-required Technical Design, when refreshing context later.
 
 Do not ingest unrelated session history or copy entire repositories merely because they are available.
 

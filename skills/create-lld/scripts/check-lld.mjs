@@ -64,9 +64,6 @@ function main() {
     if (s.has(title) && !s.get(title).trim()) errors.push(`Conditional section "${title}" is empty; omit it.`);
   }
 
-  const metadata = md.match(/^\*\*Release \/ Sprint:\*\*|^\*\*Tech designer:\*\*|^\*\*Status:\*\*/gm) || [];
-  if (metadata.length && metadata.length < 1) warnings.push('Optional metadata appears incomplete.');
-
   const repeated = ['Functional requirements', 'User flows', 'Business rules', 'Acceptance criteria']
     .filter(k => md.includes(k));
   if (repeated.length) warnings.push('This looks like Functional Design content; keep the LLD technical and avoid requirement repetition.');

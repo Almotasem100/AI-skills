@@ -7,7 +7,9 @@ contract moves generic semantics into `docs/orchestration-contract.md`, while HD
 environment, architecture and migration policy. Planned compatibility renames: `work-closeout` ->
 `work-closeout`, `qa-scenarios` -> `qa-scenarios`, and the HDC working folder `active-work/` ->
 `active-work/`. Native workstation reinstallation/reload remains a later verification step; branch source changes
-must not be described as installed until that occurs.
+must not be described as installed until that occurs. **Installed-host migration remains pending:** after source review/merge,
+install `work-closeout` and `qa-scenarios`, remove obsolete installed `session-closeout` / `scenario-test-cases` only after
+verifying the renamed copies, synchronize `create-lld`/global instructions, and run bounded native discovery/behavior checks.
 
 
 The living to-do list for this setup. Update it at the end of every session that changes the setup. The full

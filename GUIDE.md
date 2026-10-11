@@ -91,7 +91,7 @@ posted.
 > "debate-review PR 123 --dry-run"
 
 ### 🌙 Ending a session
-**`work-closeout`: wrap up properly.** It follows the project's closeout instructions: reuse an existing
+`work-closeout` reconciles completed work. It follows the project's closeout instructions: reuse an existing
 scratchpad when required, or write a dated one; check citations; and suggest only relevant doc updates. It changes
 main docs only if you say yes. The tracked HDC-specific profile is reconciled with the approved guidance in
 `HDC-documents/README.md` and its automation handoff; native profile-aware behavior remains untested.
@@ -112,7 +112,7 @@ Commands for all three are in §2 and §4.
 - **Tiny/simple task:** clarify only what is needed → implement → targeted verification → describe-pr.
 - **Small/medium ticket with fragmented inputs:** grill-me as needed → task-context → lightweight plan/design as needed → implement → guards/review → describe-pr.
 - **Big ticket:** grill-with-docs → task-context → create-lld → plan/review → implementation → verification → describe-pr.
-- **End of any session:** work-closeout (+ handoff only when unfinished work is being transferred).
+- **Completed feature/bounded work:** work-closeout when durable reconciliation or cleanup is useful. Ending a chat alone needs neither closeout nor handoff.
 
 `task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
 
@@ -159,7 +159,7 @@ you change a skill here, copy it again.
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
 | Design | `create-lld` | Writes concise Functional Design / LLD / Technical Design artifacts; can consume task context without making human-facing documents verbose | Mine |
-| Test design | `qa-scenarios` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
+| QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
@@ -169,7 +169,7 @@ you change a skill here, copy it again.
 | PR | `describe-pr` | Writes What from git/implementation, Why from task context/approved requirements, and Testing from verified evidence or your report | Mine |
 | After the PR is open | `babysit-pr` | Works through bot and Copilot review comments; **asks before pushing or posting** | Tech lead (copied, changed) |
 | Big tickets, optional | `debate-review` | Two models review a PR and argue before posting | Tech lead (copied) |
-| End of a session | `work-closeout` | Writes a dated scratchpad in the docs folder + proposed doc updates, and checks every `file:line` citation against the real files | Mine |
+| Completed bounded work | `work-closeout` | Reconciles the project's existing working record, relevant durable write-backs and checked citations; not a chat-ending ritual | Mine |
 | Any time | `handoff` | Writes a brief so another agent or session can continue | Pocock (pinned) |
 
 **Tools and templates (not skills).** Plain Node scripts (18+, no dependencies) and a git hook in this folder.
@@ -414,34 +414,10 @@ Same tail, with more up front:
   `HDC-documents/active-work/`, not the documentation root.
 - **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
   CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
-- **`qa-scenarios`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
-  requirements and the LLD; check for the implementation-task handoff too."* Or call the skill by name. It uses
-  numbered Scenario headings with Given / When / Then / And; each case traces to its sources. It writes no
-  automation code and marks missing or conflicting expectations as questions rather than guessing.
-- **`work-closeout`**, at the end of a session: *"close out this session"*. It follows the project's
-  instructions for scratchpad location and reuse; otherwise it writes `YYYY-MM-DD_<Topic>_Scratchpad.md` in the
-  docs folder. It lists relevant proposed document updates and checks every `file:line` citation. **If a citation
-  is stale, the closeout isn't finished** until it's fixed. It changes the plan or other main documents only after
-  your yes. To cite code that only exists on another branch, write `develop:path:line` (not checked). The HDC
-  profile template is tracked at `templates/hdc-work-closeout-profile/`; HDC's canonical documents are not
-  changed by this template.
-  The checker also works on its own:
-  `node <skills folder>\work-closeout\scripts\check-citations.mjs <file.md> --root <repo> --root <repo2>`.
-- **Pre-commit hook** (warn about new files), once per clone. In PowerShell, inside the repo:
-  ```powershell
-  $hook = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\templates\pre-commit-hook"
-  Copy-Item "$hook\pre-commit", "$hook\warn-new-files.cjs" (git rev-parse --git-path hooks)
-  ```
-  A commit that adds files then prints `WARNING: this commit adds N new file(s)` with the list, and still goes
-  ahead (undo with `git reset --soft HEAD~1`). No file is added to the repo (`.git/hooks/` isn't tracked).
-  Without Node it stays silent. Remove: delete the two files from `.git/hooks/`. For HDC this is your own step
-  (agents don't touch the repos). Details and tests: `templates/pre-commit-hook/README.md`.
-- **`json-compare`** (B9: legacy vs ported endpoint):
-  `node C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\tools\json-compare\compare.mjs <endpoint>__<set>__legacy.json <endpoint>__<set>__new.json --config rules.json`.
-  Exit 0 = identical, 1 = differences, 2 = bad input. `rules.json` (optional) can `ignore` paths, `rename` a
-  field, or treat an array as `unordered`; ignored paths are always listed, never hidden. For HDC, record the
-  responses in your browser first (runbook: `HDC\HDC\documents\b9-recordings\README.md`); the tool never
-  calls an API. Details: `tools/json-compare/README.md`.
+- **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.
+
+- **`work-closeout`**, when a feature or agreed bounded work item is actually complete: *"close out this feature."* It reuses the project's working record, reconciles relevant durable state, validates source citations where applicable, and follows project cleanup policy. A new chat or a completed delivery slice alone does not trigger it.
+
 - **`handoff`** (by name): *"/handoff — next session continues the navbar tests"*. It writes the brief to your
   temp folder, not the project.
   **Used for real 2026-09-26** (brief for the B9 side-effect audit, in Claude): ~1 page, pointed at the

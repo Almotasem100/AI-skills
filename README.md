@@ -115,11 +115,11 @@ example call.
 |---|---|---|
 | `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented Jira/requirements/grilling/UX/project evidence → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
 | `create-lld` | **Updated 2026-10-10; bounded native smoke 2026-10-11:** Gemini CLI 0.62.0 discovered the skill after its UTF-8 BOM was removed. Its LLD copied task-context evidence pointers; both LLD and Functional Design repeated content and added unsupported speculative details. The same LLD smoke passed through OpenCode v2.0.22 with the skill loaded. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. The cross-host difference points to a Gemini adherence limitation in these bounded runs, not a generally weak LLD contract; broader behavior remains unverified. |
-| `qa-scenarios` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
+| `qa-scenarios` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
 | `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
 | `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
-| `work-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
+| `work-closeout` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** Citation checker retained. | Reconcile a genuinely completed feature/bounded work item using the project's working record. Not triggered by ending a chat or by completing one child delivery slice; durable write-backs/cleanup follow project policy. |
 | `describe-pr` | **Evidence flow smoke-tested on a corrected synthetic fixture 2026-10-11.** A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
 
 ### `task-context`
@@ -175,34 +175,13 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 **Use:**
 - **Forward**, before the work:
   > write the LLD for CADE-1234, "Navbar", from the approved requirements. Release R4, Sprint 1. Save it in my docs folder.
-- **Technical Design**, after implementing the approved plan:
-  > write the as-built Technical Design for CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review.
+- **Technical Design (optional):** only when the active project/team explicitly requires a separate as-built design artifact. It is not part of the default lifecycle.
 
-The LLD is drafted before the plan/implementation. When a task-context synthesis exists, `create-lld` uses it as
-a navigation map while keeping authoritative requirements available for verification; the design deliverables
-remain deliberately concise. A Functional Design is prepared when the project workflow requires it or you ask; it
-is customer-facing and does not duplicate Purpose/Scope already in the requirements document. After implementation of the approved plan, ask for an as-built Technical Design for Architect review.
-The skill inspects supporting materials and code internally, but deliverables use the Jira ID only and do not
-cite attachment names or source-code files/lines. The LLD checker runs before presentation; drafts remain
-unapproved until you approve them.
+The design artifacts stay feature-level when a project uses parent features plus delivery slices. Functional Design
+describes observable behavior; the LLD describes intended technical boundaries; implementation planning owns slice
+decomposition and concrete verification sequencing.
 
-**What it guarantees:**
-- The LLD contains the essential component/API boundaries, without file paths or line citations.
-- Functional Design describes observable customer behavior, not technical implementation.
-- Technical Design documents the implemented result, and reports only verified checks.
-- Supporting artifacts and source code are used as internal evidence, not cited in the deliverables.
-- No invented requirements, decisions, measurements, deviations or test results; unresolved items remain explicit.
-- No "N/A".
-- Nothing written inside a code repository unless you say so.
-
-**Paste into Google Docs:** enable markdown in the Docs preferences, then paste; otherwise paste as plain text.
-
-**Scripts on their own:**
-```
-node skills/create-lld/scripts/slides.mjs customer.pptx --media-dir %TEMP%\slides
- node skills/create-lld/scripts/check-lld.mjs LLD_CADE-1234_navbar.md --size normal
-```
-
+### `qa-scenarios`
 ### `qa-scenarios`
 **Needs:** approved requirements / acceptance criteria and the approved LLD. If either source is missing, the skill
 asks for it rather than deriving expected behavior from the implementation. A matching implementation-task
