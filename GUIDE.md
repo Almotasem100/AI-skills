@@ -25,8 +25,7 @@ describe the outcome and any checkpoint; you do **not** need to name a model, la
 Explicit route/checkpoint instructions still override the inferred workflow.
 
 ### 🟢 Starting a ticket
-**`grill-me` (by name): think it through first.** Small ticket, before any code. It asks you questions in
-rounds, each with a suggested answer, until nothing is unclear.
+**`grill-me` (by name): clarify when a small ticket actually needs clarification.** It asks focused questions in rounds. Skip it when the bug/task is already clear enough to inspect, fix and verify directly.
 > `/grill-me ticket 38939409: add the shared header to every page`
 
 Answer "agree" or "agree except Q3: …". Save its final summary: that's your spec.
@@ -101,9 +100,9 @@ posted.
 Commands for all three are in §2 and §4.
 
 ### The whole flow in one line
-- **Tiny/simple task:** clarify only what is needed → implement → targeted verification → describe-pr.
-- **Small/medium ticket with fragmented inputs:** grill-me as needed → task-context → lightweight plan/design as needed → implement → guards/review → describe-pr.
-- **Big ticket:** grill-with-docs → task-context → create-lld → plan/review → implementation → verification → describe-pr.
+- **Tiny/simple task:** inspect/clarify only what is needed → implement → targeted verification → stop or prepare/publish a PR only when requested/authorized.
+- **Small/medium work with fragmented inputs:** grill-me as needed → task-context if useful → lightweight plan/design as needed → implement → verification/review → PR stage when requested/authorized.
+- **Feature-scale work:** requirements/context → applicable Functional Design/LLD/QA scenarios → feature plan + delivery slices → slice implementation/verification/review/PRs → feature work-closeout.
 - **Completed feature/bounded work:** work-closeout when durable reconciliation or cleanup is useful. Ending a chat alone needs neither closeout nor handoff.
 
 `task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
@@ -422,12 +421,17 @@ Same tail, with more up front:
 
 ---
 
-## 5. What never happens without your yes
-- Nothing is pushed, posted, merged or created on GitHub (`describe-pr`, `babysit-pr`; `debate-review` posts
-  unless you pass `--dry-run`).
-- No commit by a delegated CLI; you commit after reviewing.
-- No lane config written (`delegate-setup`).
-- No file written in a code repo by `describe-pr` or `create-lld` unless you say where.
+## 5. External effects and authorization
+
+- Publication, push/PR creation, deployment, configuration changes and destructive cleanup follow the current
+  user/project authorization envelope. Do not ask again for an effect that the user already explicitly included
+  (for example, "take this slice through PR"), but do not infer publication/deployment from "plan", "implement" or
+  "review" alone.
+- Delegated CLIs do not silently commit or broaden their scope.
+- Persistent lane configuration is deliberate setup, not an incidental task side effect.
+- `describe-pr` and `create-lld` keep temporary drafts outside code repos unless a project-approved destination
+  or the current request says otherwise.
+
 
 The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/active-work/`, not a code repository or the HDC docs root.
 

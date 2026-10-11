@@ -158,8 +158,8 @@ or your own templates (example in `references/describe-pr.example.json`).
 
 **What it guarantees:** it never invents reasons, test results or rollback steps; it never derives business
 rationale from the diff alone; it preserves qualifiers such as estimated/expected/target rather than presenting
-them as measured results; it never opens files flagged as sensitive; it never pushes, creates or edits a PR
-without your explicit yes; and it writes nothing inside the repo.
+them as measured results; it never opens files flagged as sensitive; PR publication occurs only when the current
+workflow/user authorization explicitly covers it (otherwise it asks); and temporary draft files stay outside the repo.
 
 **Scripts on their own** (useful with any agent, or none):
 ```

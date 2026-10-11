@@ -13,6 +13,7 @@
 <!-- Use only applicable subheadings: Backend / Frontend / API & data / Security. Essential boundaries only. -->
 
 ## Material decisions
+<!-- OPTIONAL. Omit when there is no decision important enough for architect review. -->
 | Decision | Chosen approach | Important boundary / rationale |
 |---|---|---|
 | <!-- meaningful decisions only --> | | |

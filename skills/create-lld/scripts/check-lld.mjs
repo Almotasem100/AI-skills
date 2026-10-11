@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 
 const HEADER = /^# LLD — [A-Z][A-Z0-9._-]*: .+\s*$/;
-const CORE = ['Context', 'Objectives & constraints', 'Design', 'Material decisions'];
+const CORE = ['Context', 'Objectives & constraints', 'Design'];
 const CONDITIONAL = ['Impact & risks', 'Verification intent', 'Rollout & rollback', 'Open questions'];
 const VAGUE = /\b(seamless(ly)?|robust|absolute|cleanly|leverag(e|es|ing)|best[- ]in[- ]class|state[- ]of[- ]the[- ]art|etc\.?)(?![\w-])/gi;
 

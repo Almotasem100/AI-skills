@@ -68,14 +68,14 @@ All optional. Use whatever the user gives; ask only for what's missing after che
 6. **Apply the answers.** Update the draft, render again and show the new result. Repeat only for the parts
    the user changes.
 
-7. **Publish only after the user explicitly approves.**
+7. **Publish only when the current authorization explicitly covers PR publication.** If the user already asked to take the work through PR/open the PR, do not ask again merely because this stage was reached. Otherwise ask before the outward action.
    - If `needsInput` is above 0, say which parts are still missing and get explicit confirmation first.
-   - The branch must be on the remote. If it isn't, ask before pushing — never push on your own.
+   - The branch must be on the remote. Push it only when the current authorization covers the push needed for the requested PR; otherwise ask before pushing.
    - With `gh` installed and authenticated (for GitHub Enterprise, `GH_HOST` set):
      - new PR: `gh pr create --base <base> --head <branch> --title "<title>" --body-file <temp>/describe-pr-body.md`
      - existing PR: `gh pr edit <number> --title "<title>" --body-file <temp>/describe-pr-body.md`
    - Without `gh`: give the user the title and body to paste.
-   - Never merge, enable auto-merge, or add reviewers or labels unless the user asks.
+   - Never merge, enable auto-merge, or add reviewers/labels unless the current request/project authorization explicitly covers those separate effects.
 
 ## Updating an existing PR
 Run the same steps. First read the PR's current body (`gh pr view --json title,body`) and keep what the
