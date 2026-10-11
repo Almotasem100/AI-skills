@@ -1,33 +1,29 @@
-﻿# Example — concise LLD
+# Example — concise LLD
 
-This is a synthetic example of the deliverable style. The endpoint and behaviors below are illustrative only.
+Synthetic style example only.
 
 # LLD — APP-104: Notification Preferences
 
-**Release / Sprint:** R4 / Sprint 2 · **Tech designer:** Example Owner · **Status:** Draft
-
-## 1. Context
+## Context
 Users need to control which account notifications they receive.
 
-## 2. Objectives & constraints
+## Objectives & constraints
 - Let users view and update notification preferences.
-- Preserve current defaults for preference categories not changed by the user.
+- Preserve current defaults for categories the user does not change.
 
-**Out of scope:** changing delivery providers or notification content.
+## Design
 
-## 3. Key decisions
-| Area | Planned design | Alternative or deferred option | Key boundary |
-|---|---|---|---|
-| Preference storage | Read and update preferences through the account settings API. | Keep preferences fixed at account creation. | The API owns persistence; the page owns input state. |
+### API & data
+Read and update preferences through the account settings API; the API owns persistence.
 
-## 4. Backend design
-Expose an account-scoped read/update contract for notification preferences.
+### Frontend
+Show current preferences, keep edits locally until save succeeds, and surface save failure without discarding edits.
 
-## 5. Frontend design
-Show the current preferences and save changes with a clear success or error outcome.
+## Material decisions
+| Decision | Chosen approach | Important boundary / rationale |
+|---|---|---|
+| Preference persistence | Use the existing account settings API | UI owns input state; API owns persistence |
 
-## 6. Impact & risks
-A failed save must not be shown as successful; retain the user's edits so they can retry.
-
-## 7. Verification plan
-Verify that saved preferences are shown on the next visit and that a failed save is reported without discarding edits.
+## Verification intent
+- Verify saved preferences are shown on the next visit.
+- Verify a failed save is reported without discarding edits.

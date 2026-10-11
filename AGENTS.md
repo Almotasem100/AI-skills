@@ -9,8 +9,9 @@ templates, and installation guidance.
 Before planning or changing this repository, read:
 
 1. `docs/roadmap.md` for the current status, checkpoint, next steps, and open decisions.
-2. `README.md` for the skill authoring rules and repository layout.
-3. `docs/decisions.md` for the reasoning behind the setup.
+2. `docs/orchestration-contract.md` for the current portable workflow semantics.
+3. `README.md` for the skill authoring rules and repository layout.
+4. `docs/decisions.md` for the reasoning/history behind the setup.
 
 The roadmap currently marks v1 as frozen until it is installed and used on real work. Respect that checkpoint:
 do not resume parked builds or trials on your own. A change the owner explicitly requests, or a fix grounded in
@@ -36,8 +37,9 @@ real use, can proceed; record setup changes in the roadmap at the end of the ses
 - **Keep the owner in control of external effects.** Ask before an action that was not already authorized and
   would change user-level installations or agent configuration, push or post content, deploy software, or
   change a project repository. A direct request authorizes the action it clearly names; ask only about
-  additional actions outside that scope. For HDC backend work, also follow the exact-file approval rule below.
-- **Close out setup changes.** When a session changes this setup, update `docs/roadmap.md` with the relevant
+  additional actions outside that scope. Project-specific structural and environment gates live in that project's
+  canonical instructions; do not duplicate superseded project rules here.
+- **Close out setup changes.** When work changes this setup, update `docs/roadmap.md` with the relevant
   status, next step, or open decision. Do not change the roadmap just to record a read-only review.
 
 ## Working with the owner
@@ -49,14 +51,12 @@ sample repo does not establish that the skill was tested natively in Gemini CLI.
 
 ## HDC/PDC/TDC project work
 
-Most of this repository is generic. When a task concerns HDC/PDC/TDC modernization, first read the
-canonical sibling workspace's `../HDC/HDC-documents/README.md`, then
-`../HDC/HDC-documents/HDC_Modernization_Development_Plan.md` §0a. Locate the equivalent canonical
-checkout on another machine; do not use the old laptop's legacy documents mirror or assume its paths exist.
+Most of this repository is generic. For HDC/PDC/TDC, read the canonical sibling
+`../HDC/HDC-documents/README.md` and then `HDC_Modernization_Development_Plan.md` §0a. Those project documents map
+this repo's portable abstractions onto Jira/CodeBeamer, HDC architecture, DEV/ACP/PROD permissions and migration
+gates. Do not duplicate project-specific policy here: if HDC guidance changes, update the canonical HDC documents
+and keep this repository's generic contract portable.
 
-Apply these project rules:
-
-- Do not add a file to the `cb379_hdc_pdc` backend repository until the owner approves the exact file list.
-- Port legacy logic verbatim except for the canonical project's explicitly approved exceptions; raise other design choices before implementation.
-- Keep code movement and behavior fixes in separate changes.
-- Do not deploy; the owner executes releases. Follow the canonical runbook's separate dev/ACP targets and current ACP timing. Prod remains out of scope until migration completion and its specific readiness checks.
+When editing this repository for HDC-driven lessons, first ask whether the lesson would still make sense on another
+software project. If yes, put the portable semantic here. If it depends on HDC ticket systems, Jersey/Angular,
+Objectify/GAE, ABRT, project paths, environment permissions or HDC migration behavior, keep it in HDC.

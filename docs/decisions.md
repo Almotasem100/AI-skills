@@ -9,24 +9,33 @@ keeps only what applies everywhere.
 - **Portable.** One personal repo, installed once per machine. Company and project specifics (LLD template,
   Sonar URL, hard rules) live in each project's config, not in skill text.
 - **Portable building blocks only:** `SKILL.md`, `AGENTS.md`, MCP, plain scripts, git hooks.
-- **Git is the failsafe.** A pre-commit hook warns about new files; the diff review is where they get approved.
+- **Git is the failsafe.** A pre-commit hook warns about new files; the diff/review makes structural expansion visible.
+  Whether a new file needs separate approval is project policy, not a portable rule.
 - **Standards through linters** plus a short conventions file, not framework MCP servers.
-- **Humans stay at the gates:** LLD approval, design decisions, push, merge. The implementer never commits.
+- **Humans stay at material gates, not routine stage boundaries.** Explicit checkpoints and project-specific material
+  decisions remain human-controlled; routine planning, implementation, deterministic verification, review/fix loops
+  and state updates may continue inside an already authorized scope. Publication/merge/deploy follow the active
+  project's authorization policy.
 
-## Two tracks
-- **Small ticket:** grill-me → implement → guards → review → PR. No LLD by default.
-- **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
-- **The LLD skill can be called on any ticket:** forward (description + customer slides + code → LLD) or retro
-  (finished diff + ticket → LLD).
-- **Ticket input:** a short tracker description plus a customer PPTX/PDF. Slides are converted to text (e.g.
-  `markitdown`); slide screenshots are accepted too.
-- **Designs:** screenshots plus CSS copied from the design tool. No design-tool connector assumed.
+## Adaptive workflow scale
+- **Simple/local work:** inspect/clarify only what is needed → implement → targeted deterministic verification and
+  review when warranted. Do not require formal feature artifacts merely because skills exist.
+- **Feature-scale work:** requirements/intake → optional task-context when evidence is fragmented → applicable
+  Functional Design/forward LLD/QA scenarios → feature plan with delivery slices → bounded slice implementation,
+  verification/review and PRs → work-closeout at the meaningful completed-work boundary.
+- **Design artifacts are adaptive and feature-oriented when a feature hierarchy exists:** `create-lld` produces a
+  concise forward LLD before implementation planning and an optional customer-facing Functional Design when required.
+  A separate as-built Technical Design is optional only when the active project/team explicitly requires one.
+- **Inputs are task-dependent.** A short tracker description may be enough; PDFs/slides/screenshots/CSS or other
+  supporting evidence are consumed only when they actually exist and matter. No design-tool connector is assumed.
 
-## describe-pr (design source: `PR-Description-Automation-Design.md`, 2026-09-25)
-Adopted: D2 (AI writes the *what*, the developer the *why*), D3 (context rebuilt from git every run), D4
-(templates own the format), D9 (`[NEEDS INPUT]`, never invented), D10 (nothing created without approval), D11
-(Node); the story/bugfix/hotfix templates, sizing rule, file-path signals, JSON contract and the two verbatim
-exemplars. Amended:
+## describe-pr (design source: `PR-Description-Automation-Design.md`, 2026-09-25; evidence/publication refined 2026-10-10/11)
+The deterministic/context/template foundation remains. Two initial assumptions were superseded by real use: Why is
+now recovered from authoritative user/task-context/requirements evidence before asking the developer, and drafting
+itself does not require a new gate. PR publication/push follows the current workflow authorization; missing required
+input still blocks truthful publication. Retained decisions include git context rebuilt each run, templates owning
+format, `[NEEDS INPUT]` rather than invention, Node scripts, sizing/signals/JSON contract and house-style exemplars.
+Amended:
 - **Skill first, CLI later.** The design's D6 (per-field loop in a CLI, headless model call) is deferred: in a
   skill the agent drafts everything once and asks at most 4 confirmation questions in one message. The CLI
   needs headless, per-vendor model access, which is the lock-in this setup avoids. Revisit only if the skill
@@ -43,38 +52,31 @@ exemplars. Amended:
 - **The design-doc input is the local LLD section** produced by `create-lld`, which removes the design's
   Google-Docs problem (its §8.4 v2 is not needed).
 
-## create-lld (2026-09-25)
-The team's existing LLDs follow four different styles, with no rationale, alternatives, risks, verification or
-rollback. The approved template (`skills/create-lld/templates/lld-section.md`) keeps the team header and the DC
-"objectives & constraints" style, uses the layered backend/frontend order, and adds context with evidence, a
-key-decisions table (alternatives + why), impact & risks, a verification plan, rollout & rollback, and open
-questions. Header: `[<JIRA-ID>][<Type>] <Title> · Internal ticket: #<id>`. Every statement names the class,
-endpoint or table it touches. It scales with the ticket. Its verification plan feeds the PR's testing section,
-and its decisions feed the PR's reviewer notes.
+## create-lld (initial design 2026-09-25; lifecycle/template superseded 2026-10-11)
+The original template deliberately added decision/risk/verification/rollback structure while the workflow was being
+prototyped. Real use showed that forcing those sections encouraged repetition and speculative filler. The current
+contract is the 2026-10-11 concise-design decision below: feature-level forward LLD, optional Functional Design,
+conditional sections only when materially relevant, and no mandatory post-implementation Technical Design.
 
-## Functional Design alongside create-lld (owner, 2026-10-01)
-- When customer slides are supplied, `create-lld` produces a separate Functional Design alongside the LLD. The
-  Functional Design captures traceable requirements and observable behavior; the LLD remains focused on
-  technical structure and implementation choices. This is documentation, not code implementation.
+## Functional Design alongside create-lld (owner, 2026-10-01; refined 2026-10-11)
+- Create a separate Functional Design when the active project/customer workflow requires it or the owner asks for it;
+  supplying slides alone does not make the artifact mandatory. The Functional Design captures observable behavior,
+  business rules, meaningful flows/states and acceptance outcomes; the LLD remains focused on technical boundaries.
+  This is documentation, not code implementation.
 - Use the shared release-design PDF only for broadly reusable sections (requirements, flows, business rules,
   acceptance criteria and UI-visible behavior). Exclude its application-specific architecture examples and
   draft placeholders. Do not invent requirements; keep unresolved items as `[NEEDS INPUT]`.
-- No separate implementation-brief skill is planned: a plan-review can review a plan document or handoff
-  directly. Plan review/debate uses one working session scratchpad containing task notes, relevant findings, grill
-  answers, the draft plan, review comments, and unresolved questions. The orchestrator alone writes it; owner-
-  authorized delegates may read it when the host can enforce read-only access, otherwise they receive immutable
-  snapshots. They return separate Markdown findings or an authorized `minipad.md`; the orchestrator records,
-  attributes, and merges their output. Delegates never edit the shared scratchpad. Cite source documents and include
-  only the excerpts needed to check a claim,
-  rather than forwarding every source document to every reviewer. Review the scratchpad before proposing any write
-  to project documents. This is a working draft, not a new project document or a replacement for the closeout
-  record; the existing handoff remains available when another session needs to continue a specific task.
+- No separate implementation-brief skill is planned: a plan-review can review a plan document, dedicated temporary
+  planning record, or handoff directly. Plan-debate keeps its full draft/review exchange in one temporary debate
+  record; the project's normal scratchpad remains compact execution/resume state and records only resulting
+  decisions, blockers, stage and next action. Delegated roles return attributed findings; the orchestrator coordinates
+  without recreating specialist reasoning. Use only the evidence/source access each role needs, and use immutable
+  snapshots only when a real read-only/containment boundary requires them. Handoff remains exceptional transfer
+  support, not a normal chat/session boundary.
 
-## Concise Jira design artifacts (owner, 2026-10-05)
-- One Jira ticket is the design unit even when internal/CB tracking divides the work into stages or child records.
-- Forward LLD: before plan approval/implementation; concise and architect-facing, with only essential component/API
-  boundaries. Functional Design: customer-facing observable behavior, without duplicate Purpose/Scope, Status, or
-  a link to the LLD. Post-implementation Technical Design: concise as-built summary for Architect review.
+## Concise Jira design artifacts (owner, 2026-10-05; lifecycle refined 2026-10-11)
+- Parent feature is the design unit when a project uses feature + delivery-slice tracking (HDC maps this to Jira + CodeBeamer).
+- Forward LLD: before implementation planning; concise and architect-facing, with essential technical boundaries. Functional Design: customer-facing observable behavior without duplicated content. A post-implementation Technical Design is optional only when the active project/team explicitly requires one.
 - Supplied requirements material and source code may be inspected internally, but deliverables must not cite input
   attachment names/pages or source-code paths/line numbers. Keep trace evidence in working notes. Avoid lengthy
   rationale, alternatives essays and file-level implementation detail.
@@ -89,8 +91,8 @@ GitHub token; the owner should revoke it. Never copy that file.
 ## Kept / dropped
 | Skill | Verdict | Why |
 |---|---|---|
-| create-lld (mine) | Keep — core | Forward + retro |
-| describe-pr (mine) | Keep — core | End of every ticket |
+| create-lld (mine) | Keep — core | Feature-level forward LLD + optional Functional Design; optional as-built Technical Design only when project-required |
+| describe-pr (mine) | Keep — core | PR drafting for the current branch/delivery slice, using parent-feature rationale when relevant |
 | delegate-skills | Keep — core (copied into `vendor/`, base commit recorded) | Model-agnostic implement layer; relay never commits |
 | grill-with-docs | Keep | Big-ticket intake; forces decisions into the open, records ADRs + glossary |
 | grill-me | Keep | Small-ticket intake |
@@ -100,7 +102,7 @@ GitHub token; the owner should revoke it. Never copy that file.
 | Graphify | Trialled 2026-09-25 — not adopted | Correct Java structure, but none of the config-driven links (see below) |
 | debate-review | Optional | Big tickets only |
 | security-audit (mine) | Optional | Scoped, read-only security review; findings cite evidence and uncertainty, not compliance claims |
-| handoff | Worth a look | Brief for another agent |
+| handoff | Keep — exceptional transfer aid | Brief only when an actual pause/transfer needs extra context |
 | Spec Kit | Postponed | Competes with grill + LLD + plan; decide by one trial. Borrow its task breakdown, converge step, constitution |
 | Superpowers | Drop | Makes its workflows mandatory via a session-start hook; would take over the pipeline |
 | mattpocock implement | Drop | Auto-commits, TDD-driven; delegate covers implementing |
@@ -112,7 +114,7 @@ GitHub token; the owner should revoke it. Never copy that file.
 in config rather than code (servlet URLs, cron jobs, task queues, dispatch routes)?
 
 **How it was run:** Graphify `4000de15` (v0.9.68) installed from the reviewed source into a throwaway venv in the
-session scratchpad; `graphify extract <copy> --code-only --out <scratchpad>` on a **copy** of the HDC backend's
+working scratchpad; `graphify extract <copy> --code-only --out <scratchpad>` on a **copy** of the HDC backend's
 `HDC/src` + `dispatch.yaml` (255 `.java` files). Offline, no LLM. Nothing written to the repo or any agent config.
 Review before running was targeted (install path, extract path, network, subprocess, output location), not the
 whole ~99k lines.
@@ -157,9 +159,7 @@ still need real verification before being treated as proven.
   when a ticket adds or changes domain terms. When a project already keeps a decision log (HDC:
   `HDC_Architecture_Decisions.md`), decisions go there, not into a second `docs/adr/`. Name the output folder
   in the command.
-- **`handoff` kept, alongside `session-closeout`, not instead of it.** Closeout records what happened and
-  queues doc updates; handoff briefs one specific next task. Its output lands in the OS temp folder, so copy it
-  into the project's sessions folder when it must survive.
+- **Historical 2026-09-26 handoff/closeout model — superseded by Portable workflow v2.** Handoff is now exceptional transfer support; work-closeout is tied to genuinely completed bounded work, not to ending a chat.
 
 ## Setup follow-up after real use (owner, 2026-09-30)
 - Reopen the v1 freeze only for the owner-approved work listed in `docs/roadmap.md`; don't resume unrelated parked
@@ -167,30 +167,23 @@ still need real verification before being treated as proven.
 - Validate skill discovery separately from actual invocation and delegation. A CLI listing a skill proves it can
   see it, not that it follows the instructions or runs its scripts correctly. Test in a disposable repository and
   report the tested CLI/version and exact scope.
-- Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/tester intent;
+- Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/QA-scenario/challenger intent;
   lanes map those roles to provider/model/effort. Changes to persistent lane configuration remain deliberate setup
   changes, but using an already configured lane inside an authorized workflow is routine orchestration.
-- Keep branch creation and naming owner-managed. No branch-naming automation is planned.
-- HDC closeout should consume the project's existing scratchpad, reconcile only relevant durable docs, conditionally
-  refresh generated maps and functional documentation, validate citations, and remove the scratchpad at wrap-up.
-  Do not create a second durable closeout report; offer `handoff` only for one specific next task. Keep these HDC
-  destinations and rules in HDC project guidance, not in a generic skill.
-- The `scenario-test-cases` skill uses numbered Given/When/Then browser scenarios, matching the owner's sample
-  style without reusing its feature content. It derives testable behavior from approved requirements and LLDs,
-  and consults a matching implementation-task handoff when available for scope/context. Missing or conflicting
-  expected behavior becomes a clarification, never an invented assertion. It produces browser-followable,
-  automation-friendly test cases, not automation code; it is distinct from `test-guard`, which reviews automated
-  test code.
+- **Superseded 2026-10-11:** branch mechanics may be automated inside an authorized delivery-slice workflow. Branch from the latest stable integration point containing required predecessors; use stacked branches only for genuine unmerged dependencies.
+- HDC closeout should consume the project's existing compact scratchpad, reconcile only relevant durable docs,
+  conditionally refresh generated maps and functional documentation, validate consequential citations, and clear
+  only the authorized temporary feature contents at completed-feature closeout. Do not create a second durable
+  closeout report and do not offer `handoff` merely because closeout finished. Keep these HDC destinations and
+  lifecycle rules in HDC project guidance, not in a generic skill.
+- **Refined 2026-10-11:** `qa-scenarios` is feature-level QA behavior specification produced before implementation when useful. It derives observable behavior primarily from approved requirements/Functional Design, may map scenarios to delivery slices, does not require an implementation handoff, and remains distinct from test execution/`test-guard`.
 - A future pre-implementation design review is read-only and distinct from PR-oriented `debate-review`. It has two
   independent reviewers challenge a proposed change before implementation; a human resolves the findings.
 - Reuse the existing delegate skills' brief-writing process first. Add a separate implementation-brief skill only if
   real use shows it is insufficient; any brief should be scoped to an implementation slice, not become another
   project-of-record document.
 - Before relying on PR review tools, install and verify `gh`, `jq`, Git Bash, and authenticated repository access.
-- Keep `session-closeout` portable. For HDC, maintain project-specific closeout rules in HDC guidance and a tracked
-  reusable profile template under `templates/hdc-session-closeout-profile/`; do not fork the generic skill or
-  create a second durable closeout report. The owner approved and the session updated only
-  `HDC-documents/README.md` and `HDC-documents/automation/Automation_Planning_Handoff.md` on 2026-09-30.
+- **Refined 2026-10-11:** keep `work-closeout` portable. Project-specific closeout mappings belong in that project's canonical instructions. HDC's policy is owned by HDC-documents; do not keep a second HDC-specific profile in AI-skills.
 
 ## Gemini-led workflow and plan debate (owner, 2026-10-01)
 - The owner has used Gemini CLI for months and is comfortable with Gemini Auto and its quota behavior. Treat that
@@ -198,15 +191,14 @@ still need real verification before being treated as proven.
 - Add Gemini CLI as a first-class implementer in Ahmed Nagdy's `delegate-skills`, including lane setup support. Keep
   the upstream work on a local branch for the owner's real-work trial; do not publish it until the owner chooses to
   propose it. Do not modify the vendored archive while implementing the upstream contribution.
-- Normal work allocation: Gemini can handle LLDs, browser test scenarios, comments, routine planning support, and
-  assessment of SonarQube/Copilot review findings when directed. The owner approved these initial global lanes on
+- Historical routing example: Gemini was initially assigned LLDs, browser scenarios, comments and routine planning support. Portable workflow v2 treats this as configuration/benchmark history, not a durable role capability claim. The owner approved these initial global lanes on
   2026-10-01: `implement-code` → OpenCode `openai/gpt-6-luna`, `write-test-cases` → Gemini Auto, and
   `challenge-plan` → Gemini Auto. These are configured routes, so an authorized workflow may select them
   automatically when their role is needed. The active model remains the orchestrator/control plane; it does not
   become the default specialist merely because it is active. The owner may override any route. Materially different
-  unconfigured substitutions are not silent fallbacks. The owner prefers Gemini for PR work and session closeout.
+  unconfigured substitutions are not silent fallbacks. Historical preference at that date: Gemini for PR work and closeout; current routing remains role/config/evidence driven.
   Verify `gh`, `jq`, Git Bash, and authenticated forge access before relying on `babysit-pr`; native
-  `session-closeout` behavior also remains to be validated.
+  `work-closeout` behavior after the 2026-10-11 rename/refinement remains to be validated.
 - When the owner directs a model to implement routine code changes, Luna may load and apply `clean-code-guard`
   in that implementation session; Gemini may apply `test-guard` when it writes tests. Always run the project's deterministic gates. Do not
   spend a separate Sol call on every guard; reserve an independent guard review for higher-risk changes or
@@ -244,7 +236,7 @@ Decision:
   evidence into one rich **temporary working artifact**.
 - Do not make `task-context` a mandatory stage. Use it when evidence is fragmented or several downstream roles
   would otherwise reread the same raw material; skip it for simple work.
-- Keep the task context distinct from the compact session scratchpad and from project-of-record documentation.
+- Keep task context distinct from the compact project scratchpad and from project-of-record documentation.
 - Preserve provenance and evidence class: fact, decision, estimate/target, assumption, open question. Never turn
   projected value into a measured result.
 - Downstream roles consume task context plus the minimum additional canonical source access needed to verify
@@ -253,6 +245,26 @@ Decision:
   and actual verification evidence or the developer report for **Testing**. It must not infer business rationale
   from the diff or ask the developer for rationale already available in authoritative task evidence.
 
-For HDC, `HDC-documents/current-session/` is the natural working location for a task-context artifact; durable
-decisions/state still reconcile into their existing canonical HDC documents at closeout.
+For HDC, the canonical mapping is now `HDC-documents/active-work/`; that project-specific path is owned by HDC-documents. Durable decisions/state still reconcile into their canonical owners at feature closeout.
 
+
+
+## Portable workflow v2 — 2026-10-11
+
+**Decision:** separate portable workflow semantics from project mappings and make the workflow adaptive at every
+scale. The durable contract is `docs/orchestration-contract.md`.
+
+Key outcomes:
+- generic Feature / Delivery Slice abstractions; projects map their own ticket systems;
+- predictable stage commands (`plan`, `implement`, `review`, `continue`, `finish`) plus explicit checkpoints;
+- semantic roles above lanes/models; deterministic checks are workflow actions, not agents;
+- task-context = rich understanding, scratchpad = compact state, handoff = exceptional transfer aid,
+  work-closeout = actual bounded-work reconciliation rather than chat termination;
+- no fixed compaction percentage; continuity lives in project artifacts;
+- evidence classes, revision-aware consequential findings, independent review and bounded failure escalation;
+- one mutation owner per bounded change and dependency-aware stacked branching;
+- generic skills stay portable while project profiles supply environment, architecture, tracker and closeout mappings.
+
+**Why:** real HDC use showed that discovery-era rules had become too ceremonial: per-stage approvals, session-named
+artifacts, exact-file gates, model-specific routing and fixed pipeline assumptions made routine work harder. The new
+contract preserves the safety intent while making simple tasks simple and complex feature work structured.
