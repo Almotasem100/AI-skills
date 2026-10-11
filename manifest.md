@@ -26,7 +26,7 @@ Each copy has an `UPSTREAM.md` (base commit, review notes, local changes, how to
 | mattpocock/skills: `grilling` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Required by both grills | The actual interview: rounds of numbered questions, each with a recommended answer. Model-invoked |
 | mattpocock/skills: `domain-modeling` | same repo | `49dd158d` (2026-10-09; reviewed against HDC 2026-10-10) | Required by `grill-with-docs` | Glossary (`GLOSSARY.md` / `GLOSSARY-MAP.md`) + ADR working files, created lazily. Model-invoked |
 | mattpocock/skills: `code-review` | same repo | same | **Moved to `vendor/mattpocock/skills/` as `two-axis-review`** (2026-09-25) | Renamed because it clashed with Claude Code's built-in `code-review`. See the "Copied into `vendor/`" table above |
-| mattpocock/skills: `handoff` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Worth a look | Session → brief for another agent, saved to the OS temp folder. User-invoked only |
+| mattpocock/skills: `handoff` | same repo | `49dd158d` (2026-10-09; reviewed 2026-10-10) | Keep — exceptional transfer aid | Briefs an actual pause/transfer for another agent or environment, saved to the OS temp folder. Ending a chat alone does not require it. User-invoked only |
 
 All currently used Pocock skills have now been reviewed against `49dd158d`. The HDC audit confirmed the
 new `GLOSSARY.md` / `GLOSSARY-MAP.md` contract can be used safely when `grill-with-docs` runs inside
