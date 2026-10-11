@@ -1,42 +1,27 @@
-# <Topic> — work scratchpad (<YYYY-MM-DD>)
+# <Work item> — active work scratchpad
 
-<!-- Used by work-closeout. Facts cite `path:line`; code that exists only on another branch is cited as
-`<branch>:path:line` (not checked). Nothing here has been applied to the documents of record. -->
+<!-- Compact execution/resume state only. Rich requirements belong in task-context/design artifacts; full plans,
+review transcripts, evidence dumps and closeout reports belong elsewhere. Keep this file useful to the next worker. -->
 
-**Work item:** <feature/task> · **Agent/host:** <agent + model if known> · **Repos:** <repo (branch @ short sha)> · **Docs folder:** <path>
+**Objective:** <bounded outcome>
+**Active item:** <feature / delivery slice / task>
+**Stage:** <current workflow stage>
+**Repos/state:** <repo branch @ short sha, when relevant>
 
-## Done and verified
-<!-- Each item: what was done, and HOW it was verified (command + result, or what was checked where). -->
-- <verified item>
+## Completed / current state
+- <material completed step and verification state>
 
-## Done but not verified
-<!-- Built or changed, but not yet run, deployed, tested or checked. Say what verification is missing. -->
-- <unverified item>
+## Material decisions
+- <decision that affects continuing work; include owner/source when useful>
 
-## Decisions
-<!-- Each: the decision, who decided (user / agent-recommended, user-accepted / agent), and why. -->
-| Decision | Who | Why |
-|---|---|---|
-| <decision> | <owner/source> | <reason> |
+## Blockers / open questions
+- <only consequential unresolved items>
 
-## Deferred
-<!-- Consciously left for later, with the reason. -->
-- <deferred item>
+## Verification state
+- <what passed, failed, was skipped or remains pending; do not infer>
 
-## Open questions
-<!-- Consequential unresolved questions/decisions only. -->
-- <open question>
+## Next action
+- <single next useful action or checkpoint>
 
-## Changes in the repos
-<!-- From git: per repo, branch, uncommitted files (git status --short) and diff stat. New files listed separately. -->
-
-## Queued write-backs (not applied)
-<!-- One block per edit to a document of record. Apply only when the current authorization/project policy covers the write-back; otherwise present it for approval. -->
-
-### 1. <Document> → <section>
-**Why:** <what changed that the document doesn't know yet>
-**Proposed text:**
-> <exact text to add or replace>
-
-## Citation check
-<!-- Paste the checker's summary line. A closeout that relies on STALE citations is blocked. -->
+<!-- Update at meaningful transitions: material decision, stage completion, blocker, scope change, slice transition,
+before deliberate context reduction, or before stopping work. Do not append a chronological transcript. -->
