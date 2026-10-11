@@ -32,7 +32,7 @@ scratchpad, or canonical project documentation.
 
 Use only inputs available and authorized for this task, for example:
 
-- Jira/ticket title, description and acceptance criteria.
+- Feature/task tracker title, description and acceptance criteria.
 - Approved requirements, PDFs/slides and customer material.
 - Grilling answers and explicit owner decisions.
 - Screenshots, Figma evidence, copied CSS or other UX evidence.
@@ -122,8 +122,9 @@ Refresh the same task context when material understanding changes:
 - a design is approved or materially revised,
 - verification changes what is known.
 
-Keep the artifact aligned with current approved understanding. Do not append an unbounded chronological log; the
-scratchpad/history mechanism owns chronology. Completing one delivery slice does not retire feature context while the parent feature remains active.
+Keep the artifact aligned with current approved understanding. Do not append an unbounded chronological log; Git,
+project history, or other designated history mechanisms own chronology, while the scratchpad stays compact execution
+state. Completing one delivery slice does not retire feature context while the parent feature remains active.
 
 ## Downstream use
 
