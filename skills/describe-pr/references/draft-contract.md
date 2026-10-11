@@ -53,6 +53,8 @@ The context's `requiredSections` says which keys must appear. A required key lef
   `[NEEDS INPUT]` and ask.
 - `why` / `problem` use this evidence order: explicit user rationale -> task context -> approved
   ticket/requirements -> relevant approved design artifact -> ask. Never derive business rationale from the diff.
+- Do not infer causal links between separately stated objectives, rationale, estimates, benefits, or outcomes unless
+  authoritative evidence explicitly connects them.
 - Preserve qualifiers on value/measurement claims. `estimated 20%` cannot become `improved by 20%`.
 - `testing` / `regressionAndTesting` come from verified execution evidence or the user; never infer them from
   requirements or implementation alone.

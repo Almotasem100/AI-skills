@@ -101,10 +101,10 @@ after which it still returned the draft. No PR was created or published.
 
 A separate causation smoke used the same source distinction: the task objective is to synthesize fragmented evidence;
 the requirements separately estimate a 20% time reduction without saying synthesis causes that benefit. Gemini
-reproduced the unsupported “by synthesizing” link. An **uncommitted experiment** added one narrow hard rule to
+reproduced the unsupported “by synthesizing” link. Added one narrow hard rule to
 `skills/describe-pr/references/draft-contract.md` and synchronized that file into both installed roots. The single
 post-change native retry still generated the same causal wording, so this host did not follow the new rule; no further
-contract edits were made. The experimental contract change is intentionally excluded from the commits below.
+contract edits were made. The rule clarifies the contract but is not demonstrated to change Gemini's behavior.
 
 The vendored delegate-setup registry lacked `key: "gemini"`, while the installed registry supports Gemini with
 `model`, `permissionMode`, and `timeout` dials. The minimal registry entry was added to the vendor copy and
@@ -209,7 +209,7 @@ described its inputs correctly. Not tested: a full LLD written that way, the que
 | Item | State | Evidence / notes |
 |---|---|---|
 | `skills/task-context` | Installed in both user-level roots; native smoke passed (2026-10-11) | Complete directory SHA-256 matches source in `.agents` and `.claude`; Gemini CLI 0.62.0 listed and natively exercised the skill, preserving the estimate and temporary-context boundary. Bounded only. |
-| `skills/describe-pr` | Evidence flow smoke-tested on a corrected synthetic fixture (2026-10-11) | What was accurate and Testing remained `[NEEDS INPUT]`; Gemini inferred unsupported causation in Why. One experimental causal-inference rule remains uncommitted and did not change the retry output. No PR was published. |
+| `skills/describe-pr` | Evidence flow smoke-tested on a corrected synthetic fixture; causal-inference rule added (2026-10-11) | What was accurate and Testing remained `[NEEDS INPUT]`; Gemini inferred unsupported causation in Why, including in one retry after the rule was added. The contract rule clarifies the requirement but has not demonstrated changed model behavior. No PR was published. |
 | `skills/create-lld` | BOM discovery fix applied; installed and listed; Gemini native output-quality checks failed; OpenCode LLD smoke passed (2026-10-11) | Source and both installed directories match byte-for-byte. Gemini LLD/Functional Design smokes over-expanded and added unsupported process details; OpenCode v2.0.22 loaded the skill and returned a concise, grounded LLD through the read-only configured lane ($0 reported). Evidence favors Gemini adherence, not missing LLD contract; broader host/model acceptance remains unverified. |
 | `vendor/amElnagdy/*` | Copied, reviewed; Gemini config validation compatibility locally patched (2026-10-11) | Base commits in each `UPSTREAM.md`. Existing documentation changes and the new delegate-setup Gemini registry entry are recorded in `local-changes.patch`; the entry enables config validation only, not a new relay. |
 | Pocock skills | Source pins advanced to `49dd158d` on 2026-10-10 after HDC audit; `two-axis-review` remains vendored/renamed. Historical real-use evidence is from the older installed copies (`grill-me`/`two-axis-review` URL-map run, partial `grill-with-docs`, `handoff`). | Re-copy the five source-installed skills before claiming the installed hosts use `49dd158d`; then smoke-test the new `GLOSSARY.md` behavior in an HDC `current-session/` workspace. |
