@@ -196,21 +196,20 @@ unless separately requested.
 
 
 ### `plan-review` and `plan-debate`
-Both accept a proposed plan directly, including as a working scratchpad or existing handoff; no separate
-implementation-brief artifact is needed. A scratchpad can hold task notes, necessary source references/excerpts,
-grill answers, findings, the draft, review exchanges, decisions, and unresolved questions. Preserve source
-locators and verify consequential claims against originals when available. Reuse a project's designated
-scratchpad only if its profile permits; otherwise use a separate temporary working file. It is a working draft,
-not a project document of record or a replacement for `handoff` or `work-closeout`.
+Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
+no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to
+planning work and record resulting decisions/blockers/next action, but it should not become the store for full plans,
+evidence excerpts or review transcripts. Preserve source locators and verify consequential claims against originals
+when available.
 
 - **`plan-review`:** one-shot, read-only critique. It returns prioritized findings with evidence, assumptions,
   missing decisions, risks, and questions, distinguishing observed contradictions from concerns and unsupported
-  assertions. It does not edit the plan or scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
+  assertions. It does not edit the plan or project scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
   handoff."*
 - **`plan-debate`:** structured multi-role challenge/response around a proposed plan. The orchestrator coordinates
-  the exchange and is the sole writer of the shared coordination scratchpad; that does **not** make it the plan
-  author. The workflow selects a plan-author role and the required challenge/independent-review roles from
+  the exchange in one temporary debate record; the normal project scratchpad stays compact. Coordination ownership
+  does **not** make the orchestrator the plan author. The workflow selects a plan-author role and the required challenge/independent-review roles from
   configured lanes unless the owner explicitly chooses participants. Reviewers return attributed findings and
   the plan author responds to them; the orchestrator routes the rounds, records state and escalates only material
   unresolved decisions. Give each participant only the context and source access needed for its role. Use an
