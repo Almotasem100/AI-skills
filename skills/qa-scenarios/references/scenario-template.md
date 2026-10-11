@@ -5,7 +5,8 @@ the supporting requirement and design source without changing their meaning.
 
 ```markdown
 Scenario 1: <specific, observable behavior>
-Source: <requirement / acceptance criterion / Functional Design rule; LLD only when relevant>\nEnabled by: <delivery slice(s), if the project uses them>
+Source: <requirement / acceptance criterion / Functional Design rule; LLD only when relevant>
+Enabled by: <delivery slice(s), if the project uses them>
 Given <observable starting state and necessary setup>
 When <concrete browser action, in order>
 Then <observable result that the source requires>
