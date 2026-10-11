@@ -1,68 +1,67 @@
 ---
 name: create-lld
-description: Create concise design artifacts for one Jira ticket: a forward LLD before the plan/implementation, an optional customer-facing Functional Design, or an as-built Technical Design after implementation. Uses requirements and source code internally for accuracy but keeps attachment citations and source-file paths/lines out of deliverables.
+description: Create concise feature-level design artifacts: a forward architect-facing LLD before planning/implementation and, when required, a customer-facing Functional Design. Support an as-built Technical Design only when the active project explicitly requires one. Use task context and source evidence internally without leaking evidence inventories into the deliverable.
 ---
 
 # create-lld
 
-Use this skill for one Jira ticket. A ticket may contain multiple stages or implementation slices; cover the approved ticket scope in one LLD rather than splitting it by internal/CB tracking IDs.
+Use this skill for one **feature / parent work item**. A project may map that to Jira or another tracker. If the
+feature is delivered through several internal delivery slices, keep one feature-level LLD rather than splitting the
+design by child ticket IDs unless the project explicitly requires otherwise.
 
-## Artifact roles and timing
-
-- **Functional Design (customer-facing):** what users and business processes will observe. Create it when the project workflow requires it or the owner asks. It may be included with the customer requirements document. Do not repeat Purpose/Scope already present there; do not add Status or a link to the LLD.
-- **LLD (architect-facing, forward):** before plan approval and implementation. State the intended scope and essential component/API boundaries. This is a concise proposed design, not an as-built account.
-- **Plan:** a separate artifact/workflow after the LLD is approved. It sequences work, dependencies, verification and gates; this skill does not write or approve it.
-- **Technical Design (architect-facing, as-built):** after implementing the approved plan. Describe the delivered solution and material differences from the approved LLD/plan, then submit it for Architect review. Do not generate it during forward LLD work.
+## Artifact roles
+- **Functional Design:** customer/business-facing observable behavior; create only when required/requested.
+- **LLD:** architect-facing forward design before the implementation plan.
+- **Implementation plan:** separate artifact; may decompose the feature into delivery slices.
+- **Technical Design:** optional as-built artifact only when the active project/team explicitly requires one.
 
 ## Deliverable rules
+1. Use the project-approved parent feature identifier and terminology. Do not expose internal delivery-slice IDs in
+   customer/architect deliverables unless the project requires them.
+2. Use task-context as a navigation map when available, then verify consequential claims against authoritative
+   sources. Do not dump task-context evidence classes, source maps, attachment names/pages or code-location
+   inventories into the deliverable.
+3. Inspect relevant source internally as needed; keep file/line evidence in working notes.
+4. Be concise. Do not repeat the same requirement across sections merely to fill the template. Omit conditional
+   sections that add no value.
+5. Never invent requirements, components, endpoints, release/sprint metadata, decisions, measurements, rollout
+   mechanics, test results or questions merely because a template has a heading.
+6. Ask only about unresolved consequential behavior/design decisions. Omit nonessential metadata when absent.
 
-1. Use the Jira ticket ID as the only ticket identifier in deliverables. Do not include internal/CB ticket IDs or describe internal ticket breakdowns.
-2. Read supplied requirements, screenshots, PDFs, slides, CSS, code and project instructions as needed. If a
-   `task-context` working synthesis exists, use it as the navigation map for the task, then verify consequential
-   claims against authoritative sources as needed. Treat all of these as working inputs only; do not mention or
-   cite input artifact names/pages in the deliverables.
-3. Inspect relevant source code and verify consequential claims internally. Do not include source-code filenames, paths, line numbers, or code-location inventories in the deliverables. Keep evidence in the project's working notes when its workflow provides them.
-4. Keep each artifact concise and focused on what is required or planned. Avoid repeating scope already in the customer requirements, long rationale, rejected-option essays, and speculative implementation detail. Include only enough component/API-boundary information for an Architect to assess the LLD or Technical Design.
-5. Never invent requirements, decisions, names, endpoints, measurements, implementation details, or test results. Ask the owner about consequential gaps, one at a time, and keep artifacts in Draft until approved.
+## Forward LLD
+Read feature requirements, project instructions and existing feature task-context when available. Inspect current
+architecture/source only as needed. Resolve only consequential ambiguity.
 
-## Forward mode: LLD before implementation
+Draft one concise feature-level LLD. Core content is Context, Objectives & constraints, applicable design boundaries,
+and Material decisions. Impact/risks, verification intent, rollout/rollback and open questions are conditional and
+appear only when materially relevant. Verification stays at design-intent level; concrete commands belong in the
+implementation plan/workflow.
 
-1. Read the Jira ticket, applicable project instructions, supplied requirements, and an existing task-context
-   synthesis when available. The task context helps avoid rereading every raw input, but it does not replace
-   authoritative requirements. Use supporting artifacts as evidence internally; do not cite them in the LLD or
-   Functional Design.
-2. Inspect relevant code and architecture as needed. Record source locators in working notes, not in customer/architect deliverables.
-3. Grill only unresolved decisions that affect scope, user behavior, data/API contracts, permissions, or acceptance. Respect project approval gates.
-4. Draft one concise LLD for the Jira ticket, covering all approved stages in that ticket. Name logical components and API boundaries where useful; do not give code file paths or line citations.
-5. Draft the Functional Design separately when required/requested. Describe visible behavior, business rules, flows, and acceptance outcomes. Do not include implementation details, source citations, a Status field, a Related LLD field, or a duplicate Purpose/Scope section.
-6. Keep both as Draft. Do not write the plan, implement, or mark approval without the owner's direction.
+## Functional Design
+Create only when required/requested.
+- Functional requirements state **what** behavior exists.
+- User flows explain meaningful interaction sequence, not a paraphrase of every requirement.
+- Business rules capture conditions/permissions that affect behavior.
+- States/actions include meaningful loading/empty/error/disabled/permission states only.
+- Acceptance criteria are externally testable completion conditions, not duplicates of requirements.
+- Omit empty sections and absent optional release/sprint metadata.
 
-## Technical Design mode: after implementation
-
-1. Read the approved LLD and plan, then inspect the completed change and verification evidence.
-2. Write one concise, as-built Technical Design for the same Jira ticket. Summarize delivered components, API/data boundaries, user-visible outcomes, important differences from the approved design, and verified checks.
-3. Do not cite attachments or source-code files/lines. Do not present unrun checks as passed or invent reasons for deviations.
-4. Keep it in review until the Architect has reviewed it; do not claim approval on the Architect's behalf.
+## Optional as-built Technical Design
+Only when project instructions/team practice explicitly require it. Inspect approved design/plan, delivered change
+and real verification evidence; describe verified logical boundaries and material approved deviations; report only
+checks that actually ran. Do not create it merely because implementation finished.
 
 ## Check and present
-
-- Run `node <skill-dir>/scripts/check-lld.mjs <lld.md> --size <small|normal>` and fix errors. Report any remaining warnings and validation limits.
-- Manually check the Functional Design against the approved Jira behavior; the checker validates only the LLD.
-- Present the requested artifact(s) for owner approval. Ask only the next necessary question and wait at approval gates.
-
-## Inputs
-
-- Jira ID and pasted ticket title/description/acceptance criteria (ticket systems may not be reachable).
-- Project instructions and approved requirements; an optional task-context working synthesis; optional supporting
-  artifacts and source code for internal inspection.
-- Release/sprint, tech designer names, and approved save location when applicable.
-- For Technical Design mode: approved LLD/plan, implemented change, and verification evidence.
+- Run `node <skill-dir>/scripts/check-lld.mjs <lld.md> --size <small|normal>` for an LLD. A structural pass is not
+  a content-quality or architect-approval result.
+- Manually check Functional Design against approved feature behavior.
+- Present requested artifacts for the applicable project review/approval boundary.
 
 ## Files
-
-- `templates/lld-section.md`: concise forward LLD format.
-- `templates/functional-design.md`: customer-facing behavior format.
-- `templates/technical-design.md`: concise as-built design format.
-- `scripts/check-lld.mjs`: checks the LLD structure and metadata.
-- `scripts/slides.mjs`: optional internal extraction helper for `.pptx` requirements; its outputs are not deliverable citations.
-- `references/writing-guide.md` and `references/example-lld.md`: writing rules and synthetic example.
+- `templates/lld-section.md`
+- `templates/functional-design.md`
+- `templates/technical-design.md` — optional/project-required only
+- `scripts/check-lld.mjs`
+- `scripts/slides.mjs`
+- `references/writing-guide.md`
+- `references/example-lld.md`
