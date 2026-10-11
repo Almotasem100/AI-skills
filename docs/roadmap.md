@@ -5,7 +5,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-11 — merged the approved orchestration branches to both masters; synchronized the three first-party skills and mirrored global instructions; completed bounded Gemini/OpenCode verification below._
+_Last updated: 2026-10-11 — synchronized the three first-party skills and mirrored global instructions; completed bounded Gemini/OpenCode verification below._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
@@ -60,8 +60,8 @@ orchestration scratchpad.
 map and verifies consequential claims against authoritative sources as needed. `describe-pr` now separates
 evidence by purpose: task context/approved requirements for Why, git/implementation for What changed, and actual
 verification/user report for Testing. It preserves estimate/target qualifiers and must not infer business rationale
-from the diff. This directly addresses the CADE-1812 PR-description failure where business rationale already
-existed in the requirements but was initially guessed from code.
+from the diff. This addresses a prior PR-description failure where available requirements were not used as the
+source for business rationale.
 
 The task-context, create-lld and describe-pr source directories are installed in both user-level skill roots and
 match their sources byte-for-byte. Gemini CLI 0.62.0 now lists all three. The create-lld discovery defect was
@@ -113,10 +113,8 @@ existing seven-lane map; no lane assignments changed and no paid lane was dispat
 `implement-code` dispatch remains the actual dispatch evidence: OpenCode 2.0.22, exit 0, reported $0, no edits;
 it was not repeated. Other lanes/fallback remain untested.
 
-The stale per-dispatch model/effort requirement was removed from `docs/next-session-prompt.md`; the HDC workspace
-`AGENTS.md` was separately updated at the specifically authorized path. That AGENTS file is at the HDC workspace
-root, outside its three child Git repositories. The synthetic fixture and evidence outputs remain in the approved
-OpenCode temp directory and were not cleaned up.
+The stale per-dispatch model/effort requirement was removed from `docs/next-session-prompt.md`. Synthetic fixtures
+and evidence outputs remain retained; no cleanup was performed.
 
 ## Active owner-approved plan
 1. **Gemini CLI implementer (local upstream contribution; rebased 2026-10-10):** the contribution is preserved as
@@ -394,7 +392,7 @@ reasoning, not just the list. The owner decides.
 
 ## Global collaboration profile — owner-directed, 2026-10-02
 
-The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend file permissions, deployment/environment policy and exact closeout rules remain project-specific. On 2026-10-11 all three workstation copies SHA-256 matched the canonical source; file/content verification does not prove every host loaded or complies with them. Keep all copies aligned from the source; a future installer is not implemented or authorized.
+The owner requested standing, model-independent reasoned pushback and recommendations drawn from real HDC work. The canonical profile is `templates/global-user-instructions/AGENTS.md`, with identical workstation copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`. It covers evidence/verification limits, minimal solutions, workflow-scoped authorization with role-based delegation, external-action boundaries, sensitive-data protection, prompt-versus-enforcement distinctions, compact shared-state continuity and evidence-led diagnostics. HDC paths, backend file permissions, deployment/environment policy and exact closeout rules remain project-specific. File/content verification is not proof of native loading or compliance: confirm in a new host session; no model smoke test, CLI configuration change or arbitrary-app installation is included. Keep all copies aligned from the source; a future installer is not implemented or authorized.
 
 Bounded HDC alignment removes obsolete laptop startup paths/blanket ACP wording from this repo's agent instructions, corrects the workspace ACP timing summary and implementation-delegate shared-record restriction, and records future supporting Markdown beside HDC's single scratchpad. The website transfer is complete; detailed owner audit and the historical-retirement/reference transition remain separate project follow-ups. Owner directed clearing the completed task's current-session files on 2026-10-03. On 2026-10-03, the owner requested that future HDC closeout explicitly ask whether to clear the listed current-session contents after all checks pass; the profile now requires an explicit yes and retains contents on a no. On 2026-10-03, the owner approved placing orchestrator- or delegate-created session documents and visual artifacts in HDC `current-session/`, while excluding code, tests, approved deliverables, execution/build artifacts and tool relay metadata. No generic skill or installed delegation relay is changed.
 
