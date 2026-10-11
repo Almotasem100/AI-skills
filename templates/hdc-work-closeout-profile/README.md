@@ -1,7 +1,7 @@
-# HDC session-closeout profile
+# HDC work-closeout profile
 
 This is a tracked, project-specific configuration template for using the portable
-[`session-closeout`](../../skills/session-closeout/SKILL.md) skill with HDC. It is not a second session report,
+[`work-closeout`](../../skills/work-closeout/SKILL.md) skill with HDC. It is not a second session report,
 and it is not installed automatically. HDC's canonical project guidance remains in `HDC-documents/README.md` and
 `HDC_Modernization_Development_Plan.md` §0a.
 

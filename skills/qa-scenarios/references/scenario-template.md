@@ -1,11 +1,11 @@
-# Browser test scenarios
+# QA scenarios
 
 Use one block per independently verifiable behavior. Keep the heading and Given / When / Then / And style; cite
 the supporting requirement and design source without changing their meaning.
 
 ```markdown
 Scenario 1: <specific, observable behavior>
-Source: <requirement / acceptance criterion; LLD section or decision; task handoff item if relevant>
+Source: <requirement / acceptance criterion / Functional Design rule; LLD only when relevant>\nEnabled by: <delivery slice(s), if the project uses them>
 Given <observable starting state and necessary setup>
 When <concrete browser action, in order>
 Then <observable result that the source requires>

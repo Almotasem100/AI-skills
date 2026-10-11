@@ -5,7 +5,7 @@ description: Write a pull request title and description for the current branch f
 
 # describe-pr
 
-Writes the PR title and body. The *what* comes primarily from git/implementation evidence. The *why* comes from authoritative task context or requirements before asking the developer. Testing comes only from verified test evidence or the developer; never infer it from code or requirements.
+Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* may come from the parent feature's authoritative task context or requirements. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
 Context is rebuilt from git on every run, so it works whether or not an AI wrote the code.
 
 `<skill-dir>` below means the folder that contains this file. Write every temporary file to the system temp
@@ -17,7 +17,7 @@ All optional. Use whatever the user gives; ask only for what's missing after che
 - The internal ticket: ID, title, description / acceptance criteria.
 - Approved requirements or other authoritative task inputs already available to the session.
 - A one-line note: why the change was made and how it was tested.
-- Functional Design / LLD / Technical Design for this ticket when relevant.
+- Parent-feature Functional Design / LLD and, only when the project has one, an optional Technical Design.
 - "Update": refresh the description of the branch's existing PR after more commits.
 
 ## Steps

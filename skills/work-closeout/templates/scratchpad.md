@@ -1,9 +1,9 @@
-# <Topic> — session scratchpad (<YYYY-MM-DD>)
+# <Topic> — work scratchpad (<YYYY-MM-DD>)
 
-<!-- Written by session-closeout. Facts cite `path:line`; code that exists only on another branch is cited as
+<!-- Used by work-closeout. Facts cite `path:line`; code that exists only on another branch is cited as
 `<branch>:path:line` (not checked). Nothing here has been applied to the documents of record. -->
 
-**Session:** <agent + model if known> · **Repos:** <repo (branch @ short sha)> · **Docs folder:** <path>
+**Work item:** <feature/task> · **Agent/host:** <agent + model if known> · **Repos:** <repo (branch @ short sha)> · **Docs folder:** <path>
 
 ## Done and verified
 <!-- Each item: what was done, and HOW it was verified (command + result, or what was checked where). -->
@@ -39,4 +39,4 @@
 > <exact text to add or replace>
 
 ## Citation check
-<!-- Paste the checker's summary line. A closeout with STALE citations is not finished. -->
+<!-- Paste the checker's summary line. A closeout that relies on STALE citations is blocked. -->
