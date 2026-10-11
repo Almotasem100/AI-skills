@@ -7,7 +7,9 @@ abstractions onto their own ticket systems, environments, architecture, commands
 
 - The selected model is the **orchestrator/control plane** by default, not automatically the implementer.
 - Resolve work as `intent -> role -> configured lane -> host/provider/model/effort`. Skills name semantic roles;
-  lane configuration chooses the current implementation.
+  lane configuration chooses the current implementation. Among configured routes/fallbacks, consider required
+  quality, task risk, cost, latency, context capacity and availability; resource awareness must not silently change
+  the semantic role or bypass project/provider constraints.
 - Choose the **smallest sufficient workflow**. A five-line bug must not be forced through feature ceremony merely
   because richer workflows exist.
 - Authorization is an envelope around the requested outcome and scope. Routine planning, implementation,
