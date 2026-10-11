@@ -49,14 +49,12 @@ sample repo does not establish that the skill was tested natively in Gemini CLI.
 
 ## HDC/PDC/TDC project work
 
-Most of this repository is generic. When a task concerns HDC/PDC/TDC modernization, first read the
-canonical sibling workspace's `../HDC/HDC-documents/README.md`, then
-`../HDC/HDC-documents/HDC_Modernization_Development_Plan.md` §0a. Locate the equivalent canonical
-checkout on another machine; do not use the old laptop's legacy documents mirror or assume its paths exist.
+Most of this repository is generic. For HDC/PDC/TDC, read the canonical sibling
+`../HDC/HDC-documents/README.md` and then `HDC_Modernization_Development_Plan.md` §0a. Those project documents map
+this repo's portable abstractions onto Jira/CodeBeamer, HDC architecture, DEV/ACP/PROD permissions and migration
+gates. Do not duplicate project-specific policy here: if HDC guidance changes, update the canonical HDC documents
+and keep this repository's generic contract portable.
 
-Apply these project rules:
-
-- Do not add a file to the `cb379_hdc_pdc` backend repository until the owner approves the exact file list.
-- Port legacy logic verbatim except for the canonical project's explicitly approved exceptions; raise other design choices before implementation.
-- Keep code movement and behavior fixes in separate changes.
-- Do not deploy; the owner executes releases. Follow the canonical runbook's separate dev/ACP targets and current ACP timing. Prod remains out of scope until migration completion and its specific readiness checks.
+When editing this repository for HDC-driven lessons, first ask whether the lesson would still make sense on another
+software project. If yes, put the portable semantic here. If it depends on HDC ticket systems, Jersey/Angular,
+Objectify/GAE, ABRT, project paths, environment permissions or HDC migration behavior, keep it in HDC.

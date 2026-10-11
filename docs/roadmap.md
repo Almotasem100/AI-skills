@@ -1,5 +1,15 @@
 # Roadmap — status, next steps, open decisions
 
+## Portable workflow v2 redesign — 2026-10-11
+
+Owner-approved architecture review is being implemented on branch `refactor/portable-workflow-v2`. The portable
+contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific ticket,
+environment, architecture and migration policy. Planned compatibility renames: `session-closeout` ->
+`work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder `current-session/` ->
+`active-work/`. Native workstation reinstallation/reload remains a later verification step; branch source changes
+must not be described as installed until that occurs.
+
+
 The living to-do list for this setup. Update it at the end of every session that changes the setup. The full
 history and reasoning (written while building it for the HDC project) is in the sibling HDC workspace at
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in

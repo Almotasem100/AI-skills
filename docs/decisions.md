@@ -256,3 +256,24 @@ Decision:
 For HDC, `HDC-documents/current-session/` is the natural working location for a task-context artifact; durable
 decisions/state still reconcile into their existing canonical HDC documents at closeout.
 
+
+
+## Portable workflow v2 — 2026-10-11
+
+**Decision:** separate portable workflow semantics from project mappings and make the workflow adaptive at every
+scale. The durable contract is `docs/orchestration-contract.md`.
+
+Key outcomes:
+- generic Feature / Delivery Slice abstractions; projects map their own ticket systems;
+- predictable stage commands (`plan`, `implement`, `review`, `continue`, `finish`) plus explicit checkpoints;
+- semantic roles above lanes/models; deterministic checks are workflow actions, not agents;
+- task-context = rich understanding, scratchpad = compact state, handoff = exceptional transfer aid,
+  work-closeout = actual bounded-work reconciliation rather than chat termination;
+- no fixed compaction percentage; continuity lives in project artifacts;
+- evidence classes, revision-aware consequential findings, independent review and bounded failure escalation;
+- one mutation owner per bounded change and dependency-aware stacked branching;
+- generic skills stay portable while project profiles supply environment, architecture, tracker and closeout mappings.
+
+**Why:** real HDC use showed that discovery-era rules had become too ceremonial: per-stage approvals, session-named
+artifacts, exact-file gates, model-specific routing and fixed pipeline assumptions made routine work harder. The new
+contract preserves the safety intent while making simple tasks simple and complex feature work structured.

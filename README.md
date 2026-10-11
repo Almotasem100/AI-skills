@@ -63,44 +63,48 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 
 ## The workflow
 
-The active model is the **orchestrator by default**. It coordinates work rather than owning every specialist
-artifact itself: understand the objective, choose the smallest sufficient workflow, resolve required roles to
-configured delegation lanes, track progress and exceptions, and move the authorized work forward.
+The active model is the **orchestrator by default**. It coordinates the requested outcome, chooses the smallest
+sufficient workflow, resolves semantic roles through configured lanes, tracks state and exceptions, and stops only
+at completion, an explicit checkpoint, or a genuine material gate.
 
-Delegation is role-based. Skills and workflow descriptions refer to roles such as planner, implementer,
-reviewer or tester; the lane configuration decides which CLI, provider, model and supported effort currently
-fills that role. Changing the model behind a lane must not require rewriting the workflow or skill.
+The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestration-contract.md). Highlights:
 
-A request authorizes the normal internal progression needed to achieve its stated outcome and scope unless the
-owner gives an explicit checkpoint. Do not stop merely because one routine stage completed. Stop when the
-requested outcome is complete, at an owner-requested checkpoint, or when a genuine exception requires a
-decision or new authorization.
+- workflows are adaptive; simple bugs remain simple;
+- projects may map a parent **Feature** to one or more **Delivery Slices**;
+- stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
+  meanings;
+- models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
+  user syntax;
+- deterministic guards/build/tests/regression are workflow actions rather than separate agents;
+- `task-context` is rich temporary understanding, the scratchpad is compact execution state, handoff is exceptional,
+  and `work-closeout` is about completed work rather than ending a chat;
+- evidence carries provenance/revision where consequential, while reviewers verify claims independently;
+- repeated failures trigger diagnosis changes or escalation rather than infinite retries;
+- fixed context-utilization thresholds do not trigger compaction.
 
-The workflow is composed from reusable stages rather than one mandatory pipeline. Choose the **smallest
-sufficient workflow** for the task and adapt it when investigation changes the apparent complexity.
+A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
+as verification; use independent review and deterministic checks. Give each role the minimum useful context and
+canonical source access required for its responsibility.
 
-Examples:
+Routine workflow progression inside an authorized scope does not need per-stage approval. The owner may always
+override routing, participants, checkpoints or boundaries. Persistent/outward effects remain subject to the active
+project's authorization policy.
 
-- **Small bug:** reproduce/diagnose → implement → focused test → verify.
-- **Bounded enhancement:** clarify intent as needed → lightweight plan → implement → review/test → verify.
-- **Large feature or ticket:** requirements/grilling → task-context synthesis when the evidence is fragmented or
-  several downstream roles need the same understanding → Functional Design/LLD where required → plan →
-  plan review/debate where justified → implementation slices → guards/review → build/tests → routine fixes and
-  re-verification → required documentation/closeout.
+### Generic project hierarchy
 
-Stages that add no value for the current task may be skipped. A task that grows in risk or scope may escalate
-to a stronger workflow; a task that proves simpler may shrink. Completion is defined by the requested outcome
-and appropriate verification, not by traversing every available stage.
+When a project has a parent feature and internal delivery tickets:
 
-A delegated role owns its assigned artifact or bounded change. The orchestrator does not recreate a planner's
-plan or an implementer's code as a verification technique; use independent review, guards and deterministic
-checks for that purpose. Give workers the minimum useful context and canonical source access their role needs.
-Use frozen snapshots or isolated worktrees only when an actual access or concurrency boundary requires them.
+```text
+Feature
+  -> feature context / Functional Design / LLD / implementation plan / QA scenarios
+  -> Delivery Slice 1 -> branch / implementation / verification / review / PR
+  -> Delivery Slice 2 -> branch / implementation / verification / review / PR
+  -> ...
+  -> feature acceptance / work-closeout
+```
 
-Routine lanes are selected automatically from configuration. The owner may always override the inferred route,
-participants, workflow boundary or checkpoint. The URL map (`tools/url-map`) can run underneath as the code map.
-The LLD skill remains available in forward mode before implementation or retro mode for documenting completed
-work.
+The generic repo never hardcodes a tracker. A project may map Feature to Jira, Delivery Slice to CodeBeamer, or use
+different systems entirely.
 
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
