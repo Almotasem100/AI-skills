@@ -1,5 +1,10 @@
 # Guide: install and use my skills with any AI agent
 
+> **Compatibility rename — 2026-10-11:** `session-closeout` is now `work-closeout`; `scenario-test-cases`
+> is now `qa-scenarios`. Reinstall the renamed directories and remove obsolete installed names only after
+> verifying the new copies. HDC's working folder is now `active-work/` in canonical project guidance.
+
+
 A plain-language guide to every skill in this setup: what it is for, how to install it on a machine, and what
 to say to your agent to use it. For *why* each skill is here, see `docs/decisions.md`; for the exact versions,
 see `manifest.md`.
@@ -86,7 +91,7 @@ posted.
 > "debate-review PR 123 --dry-run"
 
 ### 🌙 Ending a session
-**`session-closeout`: wrap up properly.** It follows the project's closeout instructions: reuse an existing
+**`work-closeout`: wrap up properly.** It follows the project's closeout instructions: reuse an existing
 scratchpad when required, or write a dated one; check citations; and suggest only relevant doc updates. It changes
 main docs only if you say yes. The tracked HDC-specific profile is reconciled with the approved guidance in
 `HDC-documents/README.md` and its automation handoff; native profile-aware behavior remains untested.
@@ -107,7 +112,7 @@ Commands for all three are in §2 and §4.
 - **Tiny/simple task:** clarify only what is needed → implement → targeted verification → describe-pr.
 - **Small/medium ticket with fragmented inputs:** grill-me as needed → task-context → lightweight plan/design as needed → implement → guards/review → describe-pr.
 - **Big ticket:** grill-with-docs → task-context → create-lld → plan/review → implementation → verification → describe-pr.
-- **End of any session:** session-closeout (+ handoff only when unfinished work is being transferred).
+- **End of any session:** work-closeout (+ handoff only when unfinished work is being transferred).
 
 `task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
 
@@ -154,7 +159,7 @@ you change a skill here, copy it again.
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
 | Design | `create-lld` | Writes concise Functional Design / LLD / Technical Design artifacts; can consume task context without making human-facing documents verbose | Mine |
-| Test design | `scenario-test-cases` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
+| Test design | `qa-scenarios` | Turns approved requirements and an LLD into traceable browser scenarios; uses a matching implementation-task handoff when available, and flags gaps instead of guessing | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
@@ -164,7 +169,7 @@ you change a skill here, copy it again.
 | PR | `describe-pr` | Writes What from git/implementation, Why from task context/approved requirements, and Testing from verified evidence or your report | Mine |
 | After the PR is open | `babysit-pr` | Works through bot and Copilot review comments; **asks before pushing or posting** | Tech lead (copied, changed) |
 | Big tickets, optional | `debate-review` | Two models review a PR and argue before posting | Tech lead (copied) |
-| End of a session | `session-closeout` | Writes a dated scratchpad in the docs folder + proposed doc updates, and checks every `file:line` citation against the real files | Mine |
+| End of a session | `work-closeout` | Writes a dated scratchpad in the docs folder + proposed doc updates, and checks every `file:line` citation against the real files | Mine |
 | Any time | `handoff` | Writes a brief so another agent or session can continue | Pocock (pinned) |
 
 **Tools and templates (not skills).** Plain Node scripts (18+, no dependencies) and a git hook in this folder.
@@ -195,7 +200,7 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
 into both skills folders, so compatible agents see the same set. **Tested 2026-09-25** on this laptop
 against a throwaway folder: all 18 then-listed skills landed in both targets (re-run 2026-09-26 after adding
-`session-closeout`), and the scripts ran from their new place. The newly added `scenario-test-cases` entry has
+`work-closeout`), and the scripts ran from their new place. The newly added `qa-scenarios` entry has
 not yet been included in an install test or tested natively. On 2026-10-01, `plan-review` and `plan-debate` were
 copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
 Gemini CLI 0.62.0 lists both as enabled; OpenCode v2.0.20 exposed both in this session. Gemini and OpenCode
@@ -203,8 +208,8 @@ smoke-tested the workflows on synthetic input. These checks establish availabili
 universal support by every model or agent. `security-audit` was copied to both user-level roots with matching
 hashes on 2026-10-01. Gemini CLI 0.62.0 smoke-tested it on a synthetic endpoint excerpt; OpenCode loaded the skill
 in this session, but did not run the same audit fixture. These checks do not validate real vulnerability detection
-or establish support by every model or agent. On 2026-10-01, `scenario-test-cases` was installed in both roots;
-`plan-debate`, `plan-review`, `create-lld`, and `session-closeout` were synchronized from the repository after
+or establish support by every model or agent. On 2026-10-01, `qa-scenarios` was installed in both roots;
+`plan-debate`, `plan-review`, `create-lld`, and `work-closeout` were synchronized from the repository after
 drift checks. The synchronized skill files match their repository copies; no user-only skill edits were found.
 
 ```powershell
@@ -217,11 +222,11 @@ $folders = @(
   "skills\describe-pr",
   "skills\task-context",
   "skills\create-lld",
-  "skills\scenario-test-cases",
+  "skills\qa-scenarios",
   "skills\plan-review",
   "skills\plan-debate",
   "skills\security-audit",
-  "skills\session-closeout",
+  "skills\work-closeout",
   "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
   "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
   "vendor\amElnagdy\delegate-skills\skills\agy-delegate",
@@ -375,7 +380,7 @@ upstream before adding it to the normal install instructions.
 Same tail, with more up front:
 1. **`grill-with-docs`** (by name), **run from an approved working-docs location, never from a code repo**:
    current upstream creates `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files wherever it runs. For HDC,
-   start the agent in `HDC-documents/current-session/`; treat those files as working artifacts and reconcile any
+   start the agent in `HDC-documents/active-work/`; treat those files as working artifacts and reconcile any
    accepted durable decision into `HDC_Architecture_Decisions.md` during closeout. The historical trial started in
    `C:\Users\Mohamed\Downloads\HDC\HDC\documents`, not in `cb379_hdc_pdc`.
    **Trialled 2026-09-26** (HDC domain glossary, in Claude; stopped after round 1 on purpose). What to know:
@@ -406,22 +411,22 @@ Same tail, with more up front:
 - **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
   same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
   assumptions and unresolved questions distinct. In HDC, the intended working location is
-  `HDC-documents/current-session/`, not the documentation root.
+  `HDC-documents/active-work/`, not the documentation root.
 - **`create-lld`**, Technical Design mode after implementation: *"write the as-built Technical Design for
   CADE-1234 from the approved LLD/plan and implemented change; prepare it for Architect review."*
-- **`scenario-test-cases`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
+- **`qa-scenarios`**, when test scenarios are needed: *"Draft browser test scenarios from these approved
   requirements and the LLD; check for the implementation-task handoff too."* Or call the skill by name. It uses
   numbered Scenario headings with Given / When / Then / And; each case traces to its sources. It writes no
   automation code and marks missing or conflicting expectations as questions rather than guessing.
-- **`session-closeout`**, at the end of a session: *"close out this session"*. It follows the project's
+- **`work-closeout`**, at the end of a session: *"close out this session"*. It follows the project's
   instructions for scratchpad location and reuse; otherwise it writes `YYYY-MM-DD_<Topic>_Scratchpad.md` in the
   docs folder. It lists relevant proposed document updates and checks every `file:line` citation. **If a citation
   is stale, the closeout isn't finished** until it's fixed. It changes the plan or other main documents only after
   your yes. To cite code that only exists on another branch, write `develop:path:line` (not checked). The HDC
-  profile template is tracked at `templates/hdc-session-closeout-profile/`; HDC's canonical documents are not
+  profile template is tracked at `templates/hdc-work-closeout-profile/`; HDC's canonical documents are not
   changed by this template.
   The checker also works on its own:
-  `node <skills folder>\session-closeout\scripts\check-citations.mjs <file.md> --root <repo> --root <repo2>`.
+  `node <skills folder>\work-closeout\scripts\check-citations.mjs <file.md> --root <repo> --root <repo2>`.
 - **Pre-commit hook** (warn about new files), once per clone. In PowerShell, inside the repo:
   ```powershell
   $hook = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\templates\pre-commit-hook"
@@ -442,7 +447,7 @@ Same tail, with more up front:
   **Used for real 2026-09-26** (brief for the B9 side-effect audit, in Claude): ~1 page, pointed at the
   runbook/Charter/rules by path instead of copying them, named the next skills, and flagged that the audit
   doesn't actually need the deploy it was waiting on. What to know:
-  - **Different job from `session-closeout`:** closeout records what *happened* and queues doc updates;
+  - **Different job from `work-closeout`:** closeout records what *happened* and queues doc updates;
     `handoff` briefs *one next task*. Use both at the end of a session only when the next task is specific.
   - The temp folder isn't durable or discoverable: copy the file into the project's `sessions\` folder if it
     must survive, and paste its path into the next agent's first message.
@@ -456,7 +461,7 @@ Same tail, with more up front:
 - No lane config written (`delegate-setup`).
 - No file written in a code repo by `describe-pr` or `create-lld` unless you say where.
 
-The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/current-session/`, not a code repository or the HDC docs root.
+The exception to watch: `grill-with-docs` writes its glossary and ADR working files where it runs. On HDC, run it from `HDC-documents/active-work/`, not a code repository or the HDC docs root.
 
 ---
 

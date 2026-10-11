@@ -51,7 +51,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `overlays/` | Local contributions/patches kept separate from upstream/vendor snapshots; each overlay documents its base and application procedure |
 | `delegates/` | Delegate lane configs: which CLI and model does which job |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
-| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `hdc-session-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically), and `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
+| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `hdc-work-closeout-profile/` (tracked HDC-specific closeout profile; not installed automatically), and `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
@@ -114,12 +114,12 @@ example call.
 | Skill | Status | Use |
 |---|---|---|
 | `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented Jira/requirements/grilling/UX/project evidence → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
-| `create-lld` | **Updated 2026-10-10; bounded native smoke 2026-10-11:** Gemini CLI 0.62.0 discovered the skill after its UTF-8 BOM was removed. Its LLD copied task-context evidence pointers; both LLD and Functional Design repeated content and added unsupported speculative details. The same LLD smoke passed through OpenCode v2.0.22 with the skill loaded. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. After implementation → concise as-built Technical Design for Architect review. The cross-host difference points to a Gemini adherence limitation in these bounded runs, not a generally weak LLD contract; broader behavior remains unverified. |
-| `scenario-test-cases` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
+| `create-lld` | **Updated 2026-10-10; bounded native smoke 2026-10-11:** Gemini CLI 0.62.0 discovered the skill after its UTF-8 BOM was removed. Its LLD copied task-context evidence pointers; both LLD and Functional Design repeated content and added unsupported speculative details. The same LLD smoke passed through OpenCode v2.0.22 with the skill loaded. | Forward: task context/approved requirements → concise LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. The cross-host difference points to a Gemini adherence limitation in these bounded runs, not a generally weak LLD contract; broader behavior remains unverified. |
+| `qa-scenarios` | **Installed in both user-level skill roots 2026-10-01; native agent testing pending.** | Approved requirements + approved LLD, with a matching implementation-task handoff when available → traceable browser test scenarios in numbered Given/When/Then style. Gaps and conflicts are questions, never invented expected behavior. Produces scenarios, not automation code |
 | `plan-review` | **Smoke-tested 2026-10-01** in the OpenCode session and Gemini CLI 0.62.0 (Auto), using a synthetic plan | One-shot, read-only critique of a plan, working session scratchpad, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
 | `plan-debate` | **Smoke-tested 2026-10-01** in the OpenCode session with a Gemini CLI 0.62.0 (Auto) evidence challenge, using a synthetic plan | Structured pre-implementation challenge/response → review exchanges, author responses, owner decisions, and unresolved items retained in one working scratchpad; does not apply the plan to project documents |
 | `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
-| `session-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
+| `work-closeout` | **Updated 2026-09-30; profile-aware behavior not yet tested natively.** Citation checker tested on crafted cases and HDC docs | End of a session → reuse a designated scratchpad or create one, capture verified/unverified work and decisions, queue relevant write-backs, and re-check citations; **stale ones block**. Applies nothing without a yes. The tracked HDC profile is reconciled with the approved closeout guidance in `HDC-documents/README.md` and the setup note in its automation handoff |
 | `describe-pr` | **Evidence flow smoke-tested on a corrected synthetic fixture 2026-10-11.** A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
 
 ### `task-context`
@@ -203,7 +203,7 @@ node skills/create-lld/scripts/slides.mjs customer.pptx --media-dir %TEMP%\slide
  node skills/create-lld/scripts/check-lld.mjs LLD_CADE-1234_navbar.md --size normal
 ```
 
-### `scenario-test-cases`
+### `qa-scenarios`
 **Needs:** approved requirements / acceptance criteria and the approved LLD. If either source is missing, the skill
 asks for it rather than deriving expected behavior from the implementation. A matching implementation-task
 handoff is used when available for scope and execution context; it does not override approved expected behavior.
@@ -211,7 +211,7 @@ No scripts or agent-specific tools.
 
 **Use:** for automatic selection, ask naturally, e.g. *"Draft browser test scenarios from these approved
 requirements and the LLD. Check for the implementation-task handoff too."* If the agent does not select it, invoke
-explicitly: *"Use `scenario-test-cases` for this feature."*
+explicitly: *"Use `qa-scenarios` for this feature."*
 The skill follows numbered `Scenario N` headings with Given / When / Then / And, and cites source references.
 It returns Markdown in chat unless you request a file. Conflicts and missing expected behavior are called out
 under `Clarifications needed`, not filled with guesses. It creates test cases, not Playwright/Cypress/Selenium
@@ -223,7 +223,7 @@ implementation-brief artifact is needed. A scratchpad can hold task notes, neces
 grill answers, findings, the draft, review exchanges, decisions, and unresolved questions. Preserve source
 locators and verify consequential claims against originals when available. Reuse a project's designated
 scratchpad only if its profile permits; otherwise use a separate temporary working file. It is a working draft,
-not a project document of record or a replacement for `handoff` or `session-closeout`.
+not a project document of record or a replacement for `handoff` or `work-closeout`.
 
 - **`plan-review`:** one-shot, read-only critique. It returns prioritized findings with evidence, assumptions,
   missing decisions, risks, and questions, distinguishing observed contradictions from concerns and unsupported

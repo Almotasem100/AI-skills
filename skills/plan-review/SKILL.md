@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Read-only, one-model critique of a proposed plan before implementation. Use when the user asks to review, challenge, or sanity-check a plan, working session scratchpad, or existing handoff for contradictions, unsupported claims, missing decisions, and risks; do not use for code or PR review or a multi-reviewer debate.
+description: Read-only, one-model critique of a proposed plan before implementation. Use when the user asks to review, challenge, or sanity-check a plan, working scratchpad, or existing handoff for contradictions, unsupported claims, missing decisions, and risks; do not use for code or PR review or a multi-reviewer debate.
 ---
 
 # Plan review
@@ -10,20 +10,20 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 
 ## Inputs and boundaries
 
-- Accept the plan directly, whether supplied as text, a working session scratchpad, or an existing handoff. Do
+- Accept the plan directly, whether supplied as text, a working scratchpad, or an existing handoff. Do
   not require a separate implementation brief or copy the input into a new artifact.
 - Read applicable project instructions and the relevant source files, slides, tickets, and decisions that are
   supplied or clearly referenced and accessible. Keep the search within the proposed work's scope. If a source
   is unavailable, identify the gap rather than guessing what it says or claiming to have verified it.
-- A working session scratchpad may combine task notes, source references and necessary excerpts, grill answers,
+- A working scratchpad may combine task notes, source references and necessary excerpts, grill answers,
   findings, draft plan, reviewer comments and responses, decisions, and unresolved questions. Use these to
   follow the reasoning, but distinguish working notes and summaries from the underlying sources. Preserve the
   links to source files, slide numbers, ticket sections, or other locators; verify against the source when a
   claim needs that evidence. Do not treat a draft or reviewer response as an approved decision.
 - The scratchpad is a working draft, not a project document of record or a substitute for a task handoff or
-  session closeout. This skill never edits the scratchpad, plan, handoff, code, or project documents, and never
+  work closeout. This skill never edits the scratchpad, plan, handoff, code, or project documents, and never
   proposes applying document changes without owner approval.
-- When reviewing a shared session record, do not edit it. Use enforced read-only access when available; when a real
+- When reviewing a shared working record, do not edit it. Use enforced read-only access when available; when a real
   containment boundary requires read-only access but the host cannot enforce it, use an immutable snapshot of the
   relevant material instead. This skill itself does not dispatch reviewers; any delegated multi-reviewer exchange
   follows the separate `plan-debate` workflow.
