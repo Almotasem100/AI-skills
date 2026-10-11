@@ -44,21 +44,20 @@ After the stable HDC audit, also advanced `grill-with-docs` and `domain-modeling
 been re-copied or natively tested after this pin bump.
 
 
-## HDC orchestration alignment — 2026-10-10
+## Historical HDC orchestration alignment — 2026-10-10 (superseded/refined 2026-10-11)
 
-Audited authoritative `Almotasem100/HDC-documents@d6e2164`. The technical hard gates are legitimate and remain:
-exact prior approval for new backend file paths; verbatim-port behavior except named deviations; no move+fix in
-one step; evidence/citation requirements; explicit deployment/publication/cleanup boundaries; and the current
-dev/ACP/prod acceptance policy. The stale parts were orchestration assumptions: explicit per-dispatch delegation,
-manual model/effort naming, “high-effort decides / cheaper executes,” blanket snapshot bias, and orchestrator
-re-authoring of delegate output. Those are aligned on HDC branch `refactor/orchestration-alignment` in
-`README.md`, `HDC_Architecture_Decisions.md` Decision 14, and
-`automation/Automation_Planning_Handoff.md`. No HDC PR or merge was opened.
+The 2026-10-10 audit correctly separated HDC technical gates from stale orchestration ceremony, but two project
+policies were subsequently refined by the owner and now live only in HDC's canonical documents: ordinary backend
+files inside an approved delivery-slice structure no longer require per-path approval, and task-relevant DEV
+application-data/fixture/user/role mutations are standing-authorized inside approved work. HDC still preserves
+verbatim-port behavior except named deviations, no move+fix in one step, evidence/revision discipline, material
+structural/behavior/security/contract gates, separate ACP feature-validation semantics, PROD prohibition, and its
+publication/cleanup boundaries.
 
-Regression expectation after alignment: an authorized CADE-style task may progress through the smallest sufficient
-requirements/design → plan → specialist implementation → review/guards → build/tests → routine fixes/reverification
-without per-stage approval, while exact new backend paths, material port deviations, fixture/data mutations,
-deployment, commit/push/PR, and closeout cleanup still respect their project-specific gates.
+Portable regression expectation: an authorized task may progress through the smallest sufficient design/planning,
+implementation, deterministic verification, independent review, bounded fixes and state updates without per-stage
+approval. Project-specific material gates remain authoritative, but AI-skills must not copy their old wording or
+turn superseded HDC restrictions into generic workflow rules.
 
 ## Task-context workflow — 2026-10-10
 
