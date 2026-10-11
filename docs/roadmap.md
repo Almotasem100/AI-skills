@@ -4,8 +4,8 @@
 
 Owner-approved architecture review is being implemented on branch `refactor/portable-workflow-v2`. The portable
 contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific ticket,
-environment, architecture and migration policy. Planned compatibility renames: `work-closeout` ->
-`work-closeout`, `qa-scenarios` -> `qa-scenarios`, and the HDC working folder `active-work/` ->
+environment, architecture and migration policy. Planned compatibility renames: `session-closeout` ->
+`work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder `current-session/` ->
 `active-work/`. Native workstation reinstallation/reload remains a later verification step; branch source changes
 must not be described as installed until that occurs. **Installed-host migration remains pending:** after source review/merge,
 install `work-closeout` and `qa-scenarios`, remove obsolete installed `session-closeout` / `scenario-test-cases` only after
@@ -160,7 +160,7 @@ and evidence outputs remain retained; no cleanup was performed.
    review/debate does not create a new approval gate inside an already authorized parent workflow. Minimum useful
    context is preferred; immutable snapshots/worktrees are conditional containment tools, not a default delegation
    ritual. The 2026-10-01 synthetic smoke evidence still applies only to the versions/hosts actually tested.
-7. **Briefs:**** no separate implementation-brief skill is planned. Plan review/debate uses the scratchpad or an existing handoff directly; a delegate's brief remains the task instructions sent to the coding implementer, not a project artifact.
+7. **Briefs:** no separate implementation-brief skill is planned. Plan review/debate uses the scratchpad or an existing handoff directly; a delegate's brief remains the task instructions sent to the coding implementer, not a project artifact.
 8. **Security audit skill (initial implementation complete; one native smoke test):** added `skills/security-audit/SKILL.md` as a read-only, evidence-citing audit that uses approved project security requirements when supplied, flags missing requirements/uncertainty, protects secret values, and makes no compliance claim. Its scope covers relevant trust boundaries, authentication/authorization, input handling, sensitive data/secrets, dependencies/configuration, abuse controls, and security tests without treating every category as mandatory. On 2026-10-01, Gemini CLI 0.62.0 audited a synthetic endpoint excerpt, identified a conditional authorization risk, and called out missing DAO evidence; OpenCode loaded the skill in this session but did not audit the fixture. The test establishes neither real vulnerability detection nor general host/model support. **Next:** review the skill and run another synthetic smoke test in a distinct agent when available; no target-system audit was performed.
 9. **`create-lld` adaptive design-artifact workflow (refined 2026-10-11):** parent Feature is the generic design unit; Functional Design and forward LLD stay concise/audience-specific; Technical Design is optional only when explicitly required. Templates and the structural checker were revised to stop forcing metadata/empty sections/rollout content. The prior Gemini/OpenCode smoke evidence applies to the pre-refinement version only; reinstall and native re-test are pending.
 
