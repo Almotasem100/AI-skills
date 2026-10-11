@@ -1,4 +1,4 @@
-﻿---
+---
 name: create-lld
 description: Create concise design artifacts for one Jira ticket: a forward LLD before the plan/implementation, an optional customer-facing Functional Design, or an as-built Technical Design after implementation. Uses requirements and source code internally for accuracy but keeps attachment citations and source-file paths/lines out of deliverables.
 ---
