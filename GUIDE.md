@@ -20,7 +20,7 @@ what you want; the ones marked **(by name)** only start when you type their comm
 
 **Orchestration rule:** the model you opened is the workflow orchestrator/control plane by default. It understands
 the objective, chooses the smallest sufficient workflow, resolves needed roles (planner, implementer, reviewer,
-tester, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
+QA-scenario designer, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
 describe the outcome and any checkpoint; you do **not** need to name a model, lane or effort for routine delegation.
 Explicit route/checkpoint instructions still override the inferred workflow.
 
@@ -152,7 +152,7 @@ you change a skill here, copy it again.
 | Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
-| Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
+| Before implementation | `plan-debate` | Evidence-backed challenge/response in one temporary debate record; compact project scratchpad records only resulting execution state | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
 | After implementing | `clean-code-guard`, `test-guard`, `docs-guard` | Second-pass checks on code, tests and docs | Tech lead (copied) |
