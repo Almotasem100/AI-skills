@@ -2,14 +2,32 @@
 
 ## Portable workflow v2 redesign — 2026-10-11
 
-Owner-approved architecture review is implemented in source on branch `refactor/portable-workflow-v2`. The portable
-contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific ticket,
-environment, architecture and migration policy. Compatibility renames on this branch: `session-closeout` ->
-`work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder `current-session/` ->
-`active-work/`. Native workstation reinstallation/reload remains a later verification step; branch source changes
-must not be described as installed until that occurs. **Installed-host migration remains pending:** after source review/merge,
-install `work-closeout` and `qa-scenarios`, remove obsolete installed `session-closeout` / `scenario-test-cases` only after
-verifying the renamed copies, synchronize `create-lld`/global instructions, and run bounded native discovery/behavior checks.
+Portable Workflow v2 is merged to `master` after review and bounded native verification. The
+portable contract moves generic semantics into `docs/orchestration-contract.md`, while HDC keeps project-specific
+ticket, environment, architecture and migration policy. Compatibility renames are complete in source:
+`session-closeout` -> `work-closeout`, `scenario-test-cases` -> `qa-scenarios`, and the HDC working folder
+`current-session/` -> `active-work/`.
+
+**Bounded workstation verification completed 2026-10-12.** The eight first-party skills were synchronized into the
+existing `.agents` and `.claude` roots; 58/58 installed files matched source before the later targeted
+`work-closeout` resync, obsolete installed skill names were removed only after replacement verification, and the
+canonical global instructions were mirrored into the existing OpenCode/Claude/Gemini instruction files. Fresh Gemini
+CLI 0.62.0 and OpenCode v2.0.26 sessions discovered all requested renamed/refined skills and showed bounded native
+loading evidence. Behavioral smokes confirmed the smallest-sufficient simple-bug path, read-only planning boundaries,
+temporary debate record, compact closeout state and genuine bounded closeout behavior. create-lld remained grounded
+but not perfectly concise; several Gemini runs had an exit-0/no-answer runtime anomaly, so no broad host/model
+compliance claim is made.
+
+The first lifecycle smoke showed both hosts unnecessarily selecting `work-closeout` for child-slice completion. The
+frontmatter trigger was tightened to exclude routine child/delivery-slice completion while the parent feature remains
+active. A focused native regression then passed in both OpenCode v2.0.26 (`openai/gpt-6.1-sol`, low) and Gemini CLI
+0.62.0 (`gemini-3.8-flash`): neither activated `work-closeout`; each updated only the compact synthetic scratchpad
+and kept the parent active with the next slice pending. Gemini directly read the bundled scratchpad template without
+native skill activation; treat that as observable resource access, not proof of hidden selection intent.
+
+Still deliberately unverified: Claude/Codex native behavior, separate desktop UI behavior, delegate-wrapper/lane
+fallback end-to-end routing, Gemini-as-plan-debate-chair, and live HDC/deployment/ACP/PROD behavior. Do not infer those
+from the bounded synthetic verification.
 
 
 The living to-do list for this setup. Update it at the end of every session that changes the setup. The full
@@ -17,7 +35,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-11 — Portable workflow v2 source redesign and cross-repo consistency pass completed on review branches; workstation reinstall/native re-verification remains pending._
+_Last updated: 2026-10-12 — Portable Workflow v2 source redesign, workstation synchronization, bounded native verification, focused child-slice trigger regression, and final merge to master completed._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
