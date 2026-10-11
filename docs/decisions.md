@@ -11,13 +11,17 @@ keeps only what applies everywhere.
 - **Portable building blocks only:** `SKILL.md`, `AGENTS.md`, MCP, plain scripts, git hooks.
 - **Git is the failsafe.** A pre-commit hook warns about new files; the diff review is where they get approved.
 - **Standards through linters** plus a short conventions file, not framework MCP servers.
-- **Humans stay at the gates:** LLD approval, design decisions, push, merge. The implementer never commits.
+- **Humans stay at material gates, not routine stage boundaries.** Explicit checkpoints and project-specific material
+  decisions remain human-controlled; routine planning, implementation, deterministic verification, review/fix loops
+  and state updates may continue inside an already authorized scope. Publication/merge/deploy follow the active
+  project's authorization policy.
 
 ## Two tracks
 - **Small ticket:** grill-me → implement → guards → review → PR. No LLD by default.
 - **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
-- **The LLD skill can be called on any ticket:** forward (description + customer slides + code → LLD) or retro
-  (finished diff + ticket → LLD).
+- **Design artifacts are adaptive and feature-oriented when a feature hierarchy exists:** `create-lld` produces a
+  concise forward LLD before implementation planning and an optional customer-facing Functional Design when required.
+  A separate as-built Technical Design is optional only when the active project/team explicitly requires one.
 - **Ticket input:** a short tracker description plus a customer PPTX/PDF. Slides are converted to text (e.g.
   `markitdown`); slide screenshots are accepted too.
 - **Designs:** screenshots plus CSS copied from the design tool. No design-tool connector assumed.
@@ -43,19 +47,17 @@ exemplars. Amended:
 - **The design-doc input is the local LLD section** produced by `create-lld`, which removes the design's
   Google-Docs problem (its §8.4 v2 is not needed).
 
-## create-lld (2026-09-25)
-The team's existing LLDs follow four different styles, with no rationale, alternatives, risks, verification or
-rollback. The approved template (`skills/create-lld/templates/lld-section.md`) keeps the team header and the DC
-"objectives & constraints" style, uses the layered backend/frontend order, and adds context with evidence, a
-key-decisions table (alternatives + why), impact & risks, a verification plan, rollout & rollback, and open
-questions. Header: `[<JIRA-ID>][<Type>] <Title> · Internal ticket: #<id>`. Every statement names the class,
-endpoint or table it touches. It scales with the ticket. Its verification plan feeds the PR's testing section,
-and its decisions feed the PR's reviewer notes.
+## create-lld (initial design 2026-09-25; lifecycle/template superseded 2026-10-11)
+The original template deliberately added decision/risk/verification/rollback structure while the workflow was being
+prototyped. Real use showed that forcing those sections encouraged repetition and speculative filler. The current
+contract is the 2026-10-11 concise-design decision below: feature-level forward LLD, optional Functional Design,
+conditional sections only when materially relevant, and no mandatory post-implementation Technical Design.
 
-## Functional Design alongside create-lld (owner, 2026-10-01)
-- When customer slides are supplied, `create-lld` produces a separate Functional Design alongside the LLD. The
-  Functional Design captures traceable requirements and observable behavior; the LLD remains focused on
-  technical structure and implementation choices. This is documentation, not code implementation.
+## Functional Design alongside create-lld (owner, 2026-10-01; refined 2026-10-11)
+- Create a separate Functional Design when the active project/customer workflow requires it or the owner asks for it;
+  supplying slides alone does not make the artifact mandatory. The Functional Design captures observable behavior,
+  business rules, meaningful flows/states and acceptance outcomes; the LLD remains focused on technical boundaries.
+  This is documentation, not code implementation.
 - Use the shared release-design PDF only for broadly reusable sections (requirements, flows, business rules,
   acceptance criteria and UI-visible behavior). Exclude its application-specific architecture examples and
   draft placeholders. Do not invent requirements; keep unresolved items as `[NEEDS INPUT]`.
@@ -87,8 +89,8 @@ GitHub token; the owner should revoke it. Never copy that file.
 ## Kept / dropped
 | Skill | Verdict | Why |
 |---|---|---|
-| create-lld (mine) | Keep — core | Forward + retro |
-| describe-pr (mine) | Keep — core | End of every ticket |
+| create-lld (mine) | Keep — core | Feature-level forward LLD + optional Functional Design; optional as-built Technical Design only when project-required |
+| describe-pr (mine) | Keep — core | PR drafting for the current branch/delivery slice, using parent-feature rationale when relevant |
 | delegate-skills | Keep — core (copied into `vendor/`, base commit recorded) | Model-agnostic implement layer; relay never commits |
 | grill-with-docs | Keep | Big-ticket intake; forces decisions into the open, records ADRs + glossary |
 | grill-me | Keep | Small-ticket intake |
@@ -98,7 +100,7 @@ GitHub token; the owner should revoke it. Never copy that file.
 | Graphify | Trialled 2026-09-25 — not adopted | Correct Java structure, but none of the config-driven links (see below) |
 | debate-review | Optional | Big tickets only |
 | security-audit (mine) | Optional | Scoped, read-only security review; findings cite evidence and uncertainty, not compliance claims |
-| handoff | Worth a look | Brief for another agent |
+| handoff | Keep — exceptional transfer aid | Brief only when an actual pause/transfer needs extra context |
 | Spec Kit | Postponed | Competes with grill + LLD + plan; decide by one trial. Borrow its task breakdown, converge step, constitution |
 | Superpowers | Drop | Makes its workflows mandatory via a session-start hook; would take over the pipeline |
 | mattpocock implement | Drop | Auto-commits, TDD-driven; delegate covers implementing |
@@ -163,14 +165,15 @@ still need real verification before being treated as proven.
 - Validate skill discovery separately from actual invocation and delegation. A CLI listing a skill proves it can
   see it, not that it follows the instructions or runs its scripts correctly. Test in a disposable repository and
   report the tested CLI/version and exact scope.
-- Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/tester intent;
+- Keep role semantics separate from lane configuration. Roles express planner/implementer/reviewer/QA-scenario/challenger intent;
   lanes map those roles to provider/model/effort. Changes to persistent lane configuration remain deliberate setup
   changes, but using an already configured lane inside an authorized workflow is routine orchestration.
 - **Superseded 2026-10-11:** branch mechanics may be automated inside an authorized delivery-slice workflow. Branch from the latest stable integration point containing required predecessors; use stacked branches only for genuine unmerged dependencies.
-- HDC closeout should consume the project's existing scratchpad, reconcile only relevant durable docs, conditionally
-  refresh generated maps and functional documentation, validate citations, and remove the scratchpad at wrap-up.
-  Do not create a second durable closeout report; offer `handoff` only for one specific next task. Keep these HDC
-  destinations and rules in HDC project guidance, not in a generic skill.
+- HDC closeout should consume the project's existing compact scratchpad, reconcile only relevant durable docs,
+  conditionally refresh generated maps and functional documentation, validate consequential citations, and clear
+  only the authorized temporary feature contents at completed-feature closeout. Do not create a second durable
+  closeout report and do not offer `handoff` merely because closeout finished. Keep these HDC destinations and
+  lifecycle rules in HDC project guidance, not in a generic skill.
 - **Refined 2026-10-11:** `qa-scenarios` is feature-level QA behavior specification produced before implementation when useful. It derives observable behavior primarily from approved requirements/Functional Design, may map scenarios to delivery slices, does not require an implementation handoff, and remains distinct from test execution/`test-guard`.
 - A future pre-implementation design review is read-only and distinct from PR-oriented `debate-review`. It has two
   independent reviewers challenge a proposed change before implementation; a human resolves the findings.
