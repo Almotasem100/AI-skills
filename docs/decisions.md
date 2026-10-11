@@ -9,28 +9,33 @@ keeps only what applies everywhere.
 - **Portable.** One personal repo, installed once per machine. Company and project specifics (LLD template,
   Sonar URL, hard rules) live in each project's config, not in skill text.
 - **Portable building blocks only:** `SKILL.md`, `AGENTS.md`, MCP, plain scripts, git hooks.
-- **Git is the failsafe.** A pre-commit hook warns about new files; the diff review is where they get approved.
+- **Git is the failsafe.** A pre-commit hook warns about new files; the diff/review makes structural expansion visible.
+  Whether a new file needs separate approval is project policy, not a portable rule.
 - **Standards through linters** plus a short conventions file, not framework MCP servers.
 - **Humans stay at material gates, not routine stage boundaries.** Explicit checkpoints and project-specific material
   decisions remain human-controlled; routine planning, implementation, deterministic verification, review/fix loops
   and state updates may continue inside an already authorized scope. Publication/merge/deploy follow the active
   project's authorization policy.
 
-## Two tracks
-- **Small ticket:** grill-me → implement → guards → review → PR. No LLD by default.
-- **Big ticket:** grill-with-docs → LLD → plan → slices → the same tail.
+## Adaptive workflow scale
+- **Simple/local work:** inspect/clarify only what is needed → implement → targeted deterministic verification and
+  review when warranted. Do not require formal feature artifacts merely because skills exist.
+- **Feature-scale work:** requirements/intake → optional task-context when evidence is fragmented → applicable
+  Functional Design/forward LLD/QA scenarios → feature plan with delivery slices → bounded slice implementation,
+  verification/review and PRs → work-closeout at the meaningful completed-work boundary.
 - **Design artifacts are adaptive and feature-oriented when a feature hierarchy exists:** `create-lld` produces a
   concise forward LLD before implementation planning and an optional customer-facing Functional Design when required.
   A separate as-built Technical Design is optional only when the active project/team explicitly requires one.
-- **Ticket input:** a short tracker description plus a customer PPTX/PDF. Slides are converted to text (e.g.
-  `markitdown`); slide screenshots are accepted too.
-- **Designs:** screenshots plus CSS copied from the design tool. No design-tool connector assumed.
+- **Inputs are task-dependent.** A short tracker description may be enough; PDFs/slides/screenshots/CSS or other
+  supporting evidence are consumed only when they actually exist and matter. No design-tool connector is assumed.
 
-## describe-pr (design source: `PR-Description-Automation-Design.md`, 2026-09-25)
-Adopted: D2 (AI writes the *what*, the developer the *why*), D3 (context rebuilt from git every run), D4
-(templates own the format), D9 (`[NEEDS INPUT]`, never invented), D10 (nothing created without approval), D11
-(Node); the story/bugfix/hotfix templates, sizing rule, file-path signals, JSON contract and the two verbatim
-exemplars. Amended:
+## describe-pr (design source: `PR-Description-Automation-Design.md`, 2026-09-25; evidence/publication refined 2026-10-10/11)
+The deterministic/context/template foundation remains. Two initial assumptions were superseded by real use: Why is
+now recovered from authoritative user/task-context/requirements evidence before asking the developer, and drafting
+itself does not require a new gate. PR publication/push follows the current workflow authorization; missing required
+input still blocks truthful publication. Retained decisions include git context rebuilt each run, templates owning
+format, `[NEEDS INPUT]` rather than invention, Node scripts, sizing/signals/JSON contract and house-style exemplars.
+Amended:
 - **Skill first, CLI later.** The design's D6 (per-field loop in a CLI, headless model call) is deferred: in a
   skill the agent drafts everything once and asks at most 4 confirmation questions in one message. The CLI
   needs headless, per-vendor model access, which is the lock-in this setup avoids. Revisit only if the skill
