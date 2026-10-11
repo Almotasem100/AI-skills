@@ -38,13 +38,13 @@ it also builds a glossary as you answer. Run it from the docs folder, never a co
 > "Write the LLD for APP-123, 'Navbar', from these requirements."
 
 ### 🧭 Planning before implementation
-**`plan-review`:** a one-shot, read-only critique of a plan, working session scratchpad, or existing handoff.
+**`plan-review`:** a one-shot, read-only critique of a plan, dedicated planning record, or existing handoff.
 It returns prioritized findings with source evidence, assumptions, missing decisions, risks, and questions; it
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
 **`plan-debate`:** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
-exchange and owns the shared coordination state; the plan-author and reviewer roles own their substantive outputs.
+exchange in a temporary debate record; the project scratchpad stays compact. The plan-author and reviewer roles own their substantive outputs.
 Configured lanes select the actual providers/models unless you override them. Give each role only the context and
 source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
 > "Stress-test this implementation plan before coding and resolve the findings"
@@ -151,7 +151,7 @@ you change a skill here, copy it again.
 | Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
 | Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
-| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, scratchpad, or handoff | Mine |
+| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one working scratchpad, with owner arbitration | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
@@ -161,7 +161,7 @@ you change a skill here, copy it again.
 | After the PR is open | `babysit-pr` | Works through bot and Copilot review comments; **asks before pushing or posting** | Tech lead (copied, changed) |
 | Big tickets, optional | `debate-review` | Two models review a PR and argue before posting | Tech lead (copied) |
 | Completed bounded work | `work-closeout` | Reconciles the project's existing working record, relevant durable write-backs and checked citations; not a chat-ending ritual | Mine |
-| Any time | `handoff` | Writes a brief so another agent or session can continue | Pocock (pinned) |
+| Transfer/pause only | `handoff` | Writes a brief when another agent/environment needs extra transfer context; not required for a new chat | Pocock (pinned) |
 
 **Tools and templates (not skills).** Plain Node scripts (18+, no dependencies) and a git hook in this folder.
 Nothing to install into a skills folder; run them from here, or ask your agent to.
