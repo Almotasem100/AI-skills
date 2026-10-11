@@ -30,9 +30,11 @@ check passed.
 
 ## Reconcile the working record
 
-Preserve the project's format. Keep completed/verified work, unverified work, decisions and owners, deferred items,
-open questions, repository state, verification evidence and relevant queued write-backs. For consequential real-source
-claims, follow the project's evidence/revision rules.
+Preserve the project's format and keep the normal scratchpad compact. Confirm that its objective/work item, final
+stage, material decisions, blockers/deferred items, verification state and next/closed state are accurate. Do not turn
+it into a duplicate closeout report, evidence dump, full plan/review transcript or proposed-text queue. Gather detailed
+repository state and candidate durable write-backs separately for the closeout response/workflow. For consequential
+real-source claims, follow the project's evidence/revision rules.
 
 ## Reconcile only relevant durable documents
 
