@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Read-only, one-model critique of a proposed plan before implementation. Use when the user asks to review, challenge, or sanity-check a plan, working scratchpad, or existing handoff for contradictions, unsupported claims, missing decisions, and risks; do not use for code or PR review or a multi-reviewer debate.
+description: Read-only, one-model critique of a proposed plan before implementation. Use when the user asks to review, challenge, or sanity-check a plan or dedicated planning record for contradictions, unsupported claims, missing decisions, dependencies, verification gaps, and risks; do not use for code/PR review or a multi-reviewer debate.
 ---
 
 # Plan review
@@ -10,57 +10,44 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 
 ## Inputs and boundaries
 
-- Accept the plan directly, whether supplied as text, a working scratchpad, or an existing handoff. Do
-  not require a separate implementation brief or copy the input into a new artifact.
-- Read applicable project instructions and the relevant source files, slides, tickets, and decisions that are
-  supplied or clearly referenced and accessible. Keep the search within the proposed work's scope. If a source
-  is unavailable, identify the gap rather than guessing what it says or claiming to have verified it.
-- A working scratchpad may combine task notes, source references and necessary excerpts, grill answers,
-  findings, draft plan, reviewer comments and responses, decisions, and unresolved questions. Use these to
-  follow the reasoning, but distinguish working notes and summaries from the underlying sources. Preserve the
-  links to source files, slide numbers, ticket sections, or other locators; verify against the source when a
-  claim needs that evidence. Do not treat a draft or reviewer response as an approved decision.
-- The scratchpad is a working draft, not a project document of record or a substitute for a task handoff or
-  work closeout. This skill never edits the scratchpad, plan, handoff, code, or project documents, and never
-  proposes applying document changes without owner approval.
-- When reviewing a shared working record, do not edit it. Use enforced read-only access when available; when a real
-  containment boundary requires read-only access but the host cannot enforce it, use an immutable snapshot of the
-  relevant material instead. This skill itself does not dispatch reviewers; any delegated multi-reviewer exchange
-  follows the separate `plan-debate` workflow.
+- Accept the plan directly, whether supplied as text, a plan file, a dedicated temporary planning record, or an
+  existing handoff. Do not require a separate implementation brief.
+- A project's normal scratchpad is compact execution/resume state. It may identify the active work item, stage,
+  decisions, blockers and next action, but do not expect or encourage it to contain the full plan, evidence excerpts
+  or review exchange.
+- Read applicable project instructions and the relevant authoritative sources clearly referenced by the plan.
+  Keep the search within scope. If a source is unavailable, identify the gap rather than guessing.
+- Distinguish working notes/summaries from authority. Preserve source locators and revision/state for consequential
+  claims when useful; a locator is navigation to evidence, not proof of the interpretation.
+- This skill is read-only. It does not edit the plan, project scratchpad, handoff, code or durable project documents.
+  Use enforced read-only access or an immutable snapshot only when a real containment boundary requires it.
 
 ## Review
 
-1. Identify the proposed outcome, scope, constraints, sequence, dependencies, verification/rollback approach
-   where relevant, and who must make each unresolved decision. Separate explicit decisions from assumptions.
-2. Compare consequential claims with the available primary sources. Cite both sides of a conflict. For a
-   cited excerpt or summary, check the original when accessible; otherwise mark source verification pending.
-   Do not invent citations, requirements, or acceptance criteria.
-3. Challenge feasibility, ordering, omitted dependencies, failure/rollback paths, and verification gaps only
-   where they matter to the plan. Do not perform a general implementation-code review or PR review.
-4. Classify each finding accurately:
-   - **Observed contradiction:** two inspected sources, or the plan and an inspected source, disagree; identify
-     both locations and the precise disagreement.
-   - **Concern:** a plausible risk or gap, with the observed basis and the condition under which it matters;
-     do not present a prediction as a fact.
-   - **Unsupported assertion:** a consequential statement lacks adequate accessible evidence; say what source
-     would establish it, without asserting it is false.
-5. Prioritize findings by impact on the proposed work: blockers first, then material risks, then minor issues.
-   Offer a concrete recommendation or smallest next check for each; leave design and approval choices to the
-   owner. Do not manufacture findings to fill a category.
+1. Identify the proposed outcome, scope/exclusions, sequence, delivery slices if any, dependencies, verification
+   strategy, material rollback/recovery needs, assumptions and unresolved decisions.
+2. Compare consequential premises with available primary sources. Re-check important references rather than accepting
+   prior findings as authority; note stale/unverified evidence explicitly.
+3. Challenge feasibility, ordering, omitted dependencies, unsupported scope, unsafe sequencing and verification gaps
+   only where they matter. Do not manufacture findings.
+4. Classify findings accurately:
+   - **Observed contradiction:** inspected sources or the plan and an inspected source disagree.
+   - **Concern:** plausible risk/gap with observed basis and the condition under which it matters.
+   - **Unsupported assertion:** a consequential statement lacks adequate accessible evidence.
+5. Prioritize blockers first, then material risks, then minor issues. Give the smallest concrete recommendation or
+   next check for each.
+6. A reviewer may challenge an existing approved choice when new evidence materially undermines its premise, but does
+   not execute a material deviation on its own.
 
 ## Response
 
-Return a concise review in the conversation, not edits to files:
+Return a concise review in the conversation:
 
-- **Findings (highest priority first):** severity, classification, the specific claim or step, evidence with
-  source locator(s) (or an explicit verification gap), impact, and recommended next action. Cite plan/scratchpad
-  locations as well as primary sources where available; do not use a summary as proof of its own claim.
-- **Assumptions and missing decisions:** what the plan assumes, what remains undecided, and who should resolve
-  it if known. Keep these distinct from observed contradictions.
-- **Risks and questions:** residual risks after proposed fixes and a short, prioritized set of questions for
-  the owner. Do not silently answer open questions or turn a suggested choice into an approved one.
+- **Findings:** severity, classification, affected step/claim, evidence locator or explicit evidence gap, impact and
+  recommended next action.
+- **Assumptions / unresolved decisions:** keep these separate from observed contradictions.
+- **Verification limits:** relevant sources or runtime checks that were unavailable.
 
-If no blocker is found, say that none was found in the inspected material and name significant unverified
-sources or limits. Return control to the calling workflow. A clean review is not proof of safety and does not
-itself authorize unrelated work, but it also does not cancel an existing workflow authorization or create a new
-approval gate. This skill does not dispatch other reviewers or implement anything itself.
+If no blocker is found, say that none was found in the inspected material and name significant limits. Return control
+to the calling workflow. A clean review neither proves safety nor creates a new approval gate inside an already
+authorized parent workflow. This skill does not implement anything or dispatch additional reviewers.
