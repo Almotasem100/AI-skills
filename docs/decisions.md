@@ -61,16 +61,13 @@ conditional sections only when materially relevant, and no mandatory post-implem
 - Use the shared release-design PDF only for broadly reusable sections (requirements, flows, business rules,
   acceptance criteria and UI-visible behavior). Exclude its application-specific architecture examples and
   draft placeholders. Do not invent requirements; keep unresolved items as `[NEEDS INPUT]`.
-- No separate implementation-brief skill is planned: a plan-review can review a plan document or handoff
-  directly. Plan review/debate uses one working scratchpad containing task notes, relevant findings, grill
-  answers, the draft plan, review comments, and unresolved questions. The orchestrator alone writes it; owner-
-  authorized delegates may read it when the host can enforce read-only access, otherwise they receive immutable
-  snapshots. They return separate Markdown findings or an authorized `minipad.md`; the orchestrator records,
-  attributes, and merges their output. Delegates never edit the shared scratchpad. Cite source documents and include
-  only the excerpts needed to check a claim,
-  rather than forwarding every source document to every reviewer. Review the scratchpad before proposing any write
-  to project documents. This is a working draft, not a new project document or a replacement for the closeout
-  record; the existing handoff remains available when another session needs to continue a specific task.
+- No separate implementation-brief skill is planned: a plan-review can review a plan document, dedicated temporary
+  planning record, or handoff directly. Plan-debate keeps its full draft/review exchange in one temporary debate
+  record; the project's normal scratchpad remains compact execution/resume state and records only resulting
+  decisions, blockers, stage and next action. Delegated roles return attributed findings; the orchestrator coordinates
+  without recreating specialist reasoning. Use only the evidence/source access each role needs, and use immutable
+  snapshots only when a real read-only/containment boundary requires them. Handoff remains exceptional transfer
+  support, not a normal chat/session boundary.
 
 ## Concise Jira design artifacts (owner, 2026-10-05; lifecycle refined 2026-10-11)
 - Parent feature is the design unit when a project uses feature + delivery-slice tracking (HDC maps this to Jira + CodeBeamer).
