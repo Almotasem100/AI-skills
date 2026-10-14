@@ -195,4 +195,50 @@ if (!h.WIN) {
     h.result(outDir).status === "cursor_agent_unavailable" &&
     !existsSync(join(outDir, "final.txt")));
 }
+{
+  // --stall-timeout: a live-but-silent cursor-agent is killed early and reported "stalled";
+  // a long in-flight tool call and a steadily streaming turn must not trip it.
+  const stallRun = (name, mode, extra = ["--stall-timeout", "1s"], timeout = "60s") => {
+    const outDir = join(h.scratch, `out-${name}-cursor`);
+    const started = Date.now();
+    const run = spawnSync(process.execPath, [
+      h.relayPath("cursor"),
+      "--brief", h.briefPath,
+      "--cd", h.freshRepo(`work-${name}-cursor`),
+      "--out-dir", outDir,
+      "--timeout", timeout,
+      ...extra,
+    ], { env: { ...h.baseEnv, SMOKE_MODE: mode }, encoding: "utf8", timeout: 30_000 });
+    return { run, elapsed: Date.now() - started, value: existsSync(join(outDir, "result.json")) ? h.result(outDir) : {} };
+  };
+  const stall = stallRun("stall", "cursor-stall");
+  h.check("cursor stall: silent live run is killed well before --timeout and reported stalled",
+    stall.value.status === "stalled" &&
+    stall.run.status !== 0 &&
+    stall.elapsed < 20_000 &&
+    stall.value.stallTimeout === "1s" &&
+    stall.value.error?.includes("--stall-timeout 1s") &&
+    stall.value.sessionId === "cursor-stall-session");
+  const tool = stallRun("slow-tool", "cursor-slow-tool");
+  h.check("cursor stall: an in-flight tool call longer than --stall-timeout completes",
+    tool.run.status === 0 && tool.value.status === "completed" && tool.value.finalMessage === "fake cursor finished");
+  const steady = stallRun("steady", "cursor-steady");
+  h.check("cursor stall: a steadily streaming run longer than --stall-timeout completes",
+    steady.run.status === 0 && steady.value.status === "completed");
+  if (!h.WIN) {
+    const wallClock = stallRun("wall-clock-first", "cursor-delayed-shutdown", ["--stall-timeout", "2s"], "1s");
+    h.check("cursor stall: a wall-clock timeout keeps its cause during delayed shutdown",
+      wallClock.run.status === 1 && wallClock.value.status === "timeout" &&
+      wallClock.value.exitCode === 1 && wallClock.value.signal === null &&
+      wallClock.value.error?.includes("--timeout 1s") &&
+      !wallClock.value.error?.includes("--stall-timeout") && wallClock.elapsed >= 3000);
+  }
+  const off = stallRun("stall-off", "cursor-steady", []);
+  h.check("cursor stall: --stall-timeout is opt-in (stallTimeout null by default)",
+    off.value.status === "completed" && off.value.stallTimeout === null);
+  const bad = spawnSync(process.execPath, [
+    h.relayPath("cursor"), "--brief", h.briefPath, "--stall-timeout", "soon",
+  ], { env: h.baseEnv, encoding: "utf8" });
+  h.check("cursor stall: invalid --stall-timeout is a usage error (exit 2)", bad.status === 2);
+}
 }

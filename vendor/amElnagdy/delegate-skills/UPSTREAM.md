@@ -3,63 +3,27 @@
 | | |
 |---|---|
 | Source | https://github.com/amElnagdy/delegate-skills |
-| Full vendored baseline | `8ef02103ad99b53801f2b13d04755313fbbfafb2` |
-| delegate-setup revision | `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` (reviewed 2026-10-14) |
-| Copied | 2026-09-25, whole repository via `git archive` (no `.git`) |
+| Full vendored baseline | `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` (upstream master checked 2026-10-14) |
+| Original copy | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
-| Local patch | Repository-link corrections only; recorded in `local-changes.patch`. Gemini support is kept separately in `overlays/gemini-delegate/`. |
+| Local changes | Only repository-link corrections; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
 
-## Scope of this refresh
+## Full upstream snapshot — 2026-10-14
 
-Reviewed upstream `8ef02103..3aa72d68`. This narrowed refresh imports only the changed
-`delegate-setup` source files. Other vendored relays and skills remain at the full-snapshot
-baseline above; this is intentionally not a complete upstream sync.
+Synced the complete upstream tree from `8ef02103ad99b53801f2b13d04755313fbbfafb2` to `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. The full snapshot includes Muse delegation, Codex background support, Codex network/web-search/subagent controls, Antigravity and Cursor stall handling, other relay updates, documentation and tests. The previously refreshed `delegate-setup` matches upstream; OpenCode model tokens including `@` and `~` remain accepted.
 
-Accepted in `delegate-setup`:
-- Upstream's Muse registry/schema and discovery support. This does not copy/install a Muse relay or
-  attempt a live Muse dispatch.
-- OpenCode model-token support for `@` and `~` catalog identifiers, including the existing
-  `provider/model` form.
-- The updated source retains the Windows shell-probe implementation already present at the full-vendor
-  baseline: it passes a quoted command string to `execSync` for shell probes rather than supplying an
-  argument array to `execFile(..., {shell:true})`. The Windows `.cmd` fake probe passed under Node
-  22.19.0; Node 24 runtime behavior remains unverified here.
+The vendored source does **not** contain the Gemini relay or Gemini-specific lane validation/normalization. Those stay in the separate, already rebased overlay pinned to the same upstream commit. Preserve the overlay's `permissionMode` to `approvalMode` mapping when preparing installed Gemini-enabled `delegate-setup`; copying only the vendor folder is insufficient.
 
-Gemini registry/config/lane behavior is deliberately **not** duplicated in the vendor patch. The
-separate overlay is rebased to `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` and retains approval-mode
-validation, `permissionMode` → `approvalMode` normalization, documentation, and fake-CLI tests.
+The complete file transfer was checked against upstream blob SHAs (except the two intentionally patched documentation-link files), but full relay runtime/regression tests **have not been rerun against this new snapshot**. Prior focused Windows 11 / Node 22.19 fake-CLI tests of the earlier narrow reconciliation passed for delegate-setup, Gemini and OpenCode, with event scanner 26/26. A separate broad relay test run had seven Windows orphan-near-timeout failures whose causes remain unresolved. Node 24 compatibility is unverified. These statements are not claims that the new full snapshot passes all tests.
 
-Not integrated in this narrowed refresh: Muse's relay and skill, Codex background infrastructure,
-Codex relay controls, and Agy/Cursor stall handling. No host Codex settings, lane configurations,
-installed skills, or global instructions were changed.
+## Local patch
 
-## Verification
+The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records only these changes. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the two expected link edits. Do not add Gemini changes to this patch.
 
-On Windows 11 with Node 22.19.0, against the rebased upstream tree and fake CLIs only:
-- `node test/relay-smoke.mjs --only delegate-setup` — passed, including OpenCode `@`/`~`
-  config validation and Windows `.cmd` discovery probe coverage.
-- `node test/relay-smoke.mjs --only gemini` — passed, including approval-mode validation and
-  lane normalization.
-- `node test/relay-smoke.mjs --only opencode` — passed, including forwarding catalog model IDs.
-- `node test/event-scanner.mjs` — 26 passed.
+## Updating again
 
-These tests did not start a real implementer session. A separate broad relay-smoke run completed with
-seven Windows orphan-near-timeout failures in unrelated relay cases. Those failures remain unresolved and
-are outside this narrowed refresh; they are not treated as evidence against the focused changes.
-
-## LOCAL CHANGE — repository links
-
-The upstream README and contribution guide used relative issue/PR links. In this vendored copy those
-resolved into the parent repository, so they link directly to the upstream GitHub project. This
-change is reproducible from the full vendored baseline using `git apply --unidiff-zero local-changes.patch`.
-
-## Updating
-
-1. Fetch upstream and review the range from the full-vendor baseline; do not infer that every newer
-   upstream file has been imported by this partial refresh.
-2. For another full update, reconcile the complete repository snapshot while preserving local work,
-   then update the full vendored baseline in this file and `manifest.md`. To reproduce the current docs-only patch, use `git apply --check --unidiff-zero local-changes.patch` before applying it.
-3. Keep the Gemini contribution in `overlays/gemini-delegate/`; update its patch and base metadata
-   together. Do not copy its Gemini validation or lane conversion into `local-changes.patch`.
-4. Keep repository-link corrections in `local-changes.patch` only while the vendored README and
-   contribution guide need those changes.\n
+1. Review commits and executable-script changes after the pinned upstream base before copying new files.
+2. Preserve the two repository-link corrections and regenerate `local-changes.patch` when necessary.
+3. Rebase `overlays/gemini-delegate/changes.patch` separately onto the new upstream base, update its base metadata, and validate config/lane behavior plus relay tests.
+4. Update the baseline in this file and `manifest.md` only after confirming the copied snapshot and intentional differences.
+5. Installing skills, changing lane configurations, and applying Gemini overlay are separate, explicitly reviewed actions.

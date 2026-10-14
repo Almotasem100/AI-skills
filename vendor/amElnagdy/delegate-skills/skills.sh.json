@@ -12,6 +12,7 @@
         "agy-delegate",
         "grok-delegate",
         "kimi-delegate",
+        "muse-delegate",
         "qoder-delegate",
         "vibe-delegate",
         "cursor-delegate",
@@ -29,6 +30,13 @@
       "description": "Configure fleet lanes: which implementer handles which kind of work.",
       "skills": [
         "delegate-setup"
+      ]
+    },
+    {
+      "title": "Codex orchestration",
+      "description": "Keep Codex delegation pending until a registered implementer relay completes.",
+      "skills": [
+        "codex-background"
       ]
     }
   ]

@@ -24,6 +24,8 @@ class FakeCli {
       Console.WriteLine("fake-cli 0.0.0-smoke");
       return 0;
     }
+    var forwardedArgsFile = Environment.GetEnvironmentVariable("SMOKE_FORWARD_ARGS_FILE");
+    if (!String.IsNullOrEmpty(forwardedArgsFile)) File.WriteAllLines(forwardedArgsFile, args);
     if (Environment.GetEnvironmentVariable("SMOKE_MODE") == "capture") {
       File.WriteAllLines(Environment.GetEnvironmentVariable("SMOKE_ARGS_FILE"), args);
       return 0;
@@ -49,6 +51,16 @@ class FakeCli {
       Console.Error.WriteLine("jetski: no output produced — a tool required the \"write_file\" permission that headless\nmode cannot prompt for, so it was auto-denied. Add an allow-rule under permissions.allow\nin settings.json (e.g. write_file(<target>)). Alternatively, re-run with\n--dangerously-skip-permissions to auto-approve all tools.");
       return 0;
     }
+    if (mode.StartsWith("agy-abandoned-background")) {
+      if (mode == "agy-abandoned-background-edit") {
+        File.AppendAllText(Environment.GetEnvironmentVariable("SMOKE_EDIT_FILE"), "dispatch edit\n");
+      }
+      Console.WriteLine("Waiting for the test run to finish.");
+      Console.Error.WriteLine(mode == "agy-abandoned-background-uppercase"
+        ? "Terminating 2 Background Task(s) on Exit"
+        : "terminating 1 background task(s) on exit");
+      return 0;
+    }
     if (mode == "agy-analysis") {
       var argsFile = Environment.GetEnvironmentVariable("SMOKE_ARGS_FILE");
       if (!String.IsNullOrEmpty(argsFile)) File.WriteAllLines(argsFile, args);
@@ -62,6 +74,23 @@ class FakeCli {
       return 0;
     }
     if (mode == "agy-silent-noop") return 0;
+    if (mode == "agy-stall" || mode == "agy-streaming") {
+      var logAt = Array.IndexOf(args, "--log-file");
+      var logPath = logAt >= 0 ? args[logAt + 1] : null;
+      Action<string> log = (text) => { if (logPath != null) File.AppendAllText(logPath, text); };
+      log("I0816 streamGenerateContent\n");
+      var editFile = Environment.GetEnvironmentVariable("SMOKE_EDIT_FILE");
+      if (!String.IsNullOrEmpty(editFile)) File.AppendAllText(editFile, "dispatch edit\n");
+      if (mode == "agy-stall") {
+        while (true) { Thread.Sleep(100); log("I0816 fetchAvailableModels\n"); }
+      }
+      for (int tick = 1; tick <= 24; tick++) {
+        Thread.Sleep(125);
+        log(tick % 2 == 1 ? "I0816 streamGenerate" : "Content\n");
+      }
+      Console.WriteLine("fake agy streamed to completion");
+      return 0;
+    }
     if (Environment.GetEnvironmentVariable("SMOKE_MODE") == "qoder-success") {
       File.WriteAllLines(Environment.GetEnvironmentVariable("SMOKE_ARGS_FILE"), args);
       Console.WriteLine("{\"type\":\"system\",\"subtype\":\"init\",\"session_id\":\"qoder-session-1\",\"model\":\"performance\",\"permissionMode\":\"auto\"}");
@@ -99,6 +128,20 @@ class FakeCli {
       }
       Console.WriteLine("{\"type\":\"agent_end\",\"messages\":[]}");
       return 0;
+    }
+    if (mode == "muse-success" || mode == "muse-unfinished") {
+      var argsFile = Environment.GetEnvironmentVariable("SMOKE_ARGS_FILE");
+      if (!String.IsNullOrEmpty(argsFile)) File.WriteAllLines(argsFile, args);
+      Console.WriteLine("{\"payload_type\":\"session.run.linked\",\"stream\":{\"kind\":\"session\",\"id\":\"01a06628-aaaa-bbbb-cccc-ddddeeeeffff\"},\"payload\":{}}");
+      if (mode == "muse-success") {
+        Console.WriteLine("{\"payload_type\":\"run.terminal.completed\",\"payload\":{\"kind\":\"run_terminal\",\"terminal\":\"completed\",\"text\":\"fake muse completed\"}}");
+      }
+      return 0;
+    }
+    if (mode == "muse-stderr-flood") {
+      for (int i = 1; i <= 20000; i++) Console.Error.Write("diagnostic " + i + "\n");
+      Console.Error.Write("fatal: last diagnostic\n");
+      return 7;
     }
     if (mode == "orphan-holds-stdio") {
       var logAt = Array.IndexOf(args, "--log-file");

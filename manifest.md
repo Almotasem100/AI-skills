@@ -10,7 +10,7 @@ merge the changes in keeping my additions, then record the new base.
 
 | Skill(s) | Source | Base commit | Status | Role |
 |---|---|---|---|---|
-| delegate-skills (relays + `delegate-setup`) | https://github.com/amElnagdy/delegate-skills | `8ef02103` full-vendor baseline; `delegate-setup` refreshed to `3aa72d68` (2026-10-14) | Keep — core | Partial upstream refresh: delegate-setup registry/schema/config/discovery source only. Other vendored relays remain at the baseline. Gemini validation/lane conversion stays in the separately rebased overlay; no Gemini relay was added to the vendor snapshot.
+| delegate-skills (relays + `delegate-setup`) | https://github.com/amElnagdy/delegate-skills | `3aa72d68` full-vendor baseline (2026-10-14) | Keep — core | Full upstream source snapshot, including Muse, Codex background and relay/test changes. Installed skills remain selective; Gemini implementation and lane conversion are retained separately in the overlay, not the vendor snapshot.
 | review-skills: `babysit-pr` | https://github.com/amElnagdy/review-skills | `3cfce396` (updated 2026-10-09) | Keep — core | Copilot/review-thread loop. **Local change: asks before pushing or posting** (upstream pushed on its own) |
 | review-skills: `debate-review` | same repo | same | Optional | Big tickets only. Needs delegate lanes `review-main` and `review-debate` |
 | mattpocock/skills: `code-review` → **`two-axis-review`** | https://github.com/mattpocock/skills (MIT) | `49dd158d` (updated 2026-10-10) | Keep — local pre-push review | Standards axis (repo docs + Fowler smell baseline) + Spec axis (spec = the LLD: pass its path). **Local change: renamed** (clash with Claude Code's built-in `code-review`). Ignore its prompt to run `setup-matt-pocock-skills` |
