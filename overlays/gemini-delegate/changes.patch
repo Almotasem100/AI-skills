@@ -1,52 +1,53 @@
 diff --git a/AGENTS.md b/AGENTS.md
-index c18f60cfd8046ba5eb9f52b5cd9e6f0db76d4fdd..df6cc8083bf0c7626260032e5f63b5dfe5761e84 100644
+index 393b002..67f7bd1 100644
 --- a/AGENTS.md
 +++ b/AGENTS.md
-@@ -2,14 +2,13 @@
+@@ -2,15 +2,13 @@
  
  This repo is a [Skills CLI](https://github.com/vercel-labs/skills) package of **delegation skills** —
  skills that let an orchestrating agent drive a separate CLI coding agent as an implementer, then review
--and land the result. Seventeen implementer skills ship today: `claude-delegate` (Claude Code),
-+and land the result. Eighteen implementer skills ship today: `claude-delegate` (Claude Code),
+-and land the result. Eighteen implementer skills ship today: `claude-delegate` (Claude Code),
++and land the result. Nineteen implementer skills ship today: `claude-delegate` (Claude Code),
  `cline-delegate` (Cline CLI), `codex-delegate` (OpenAI Codex), `opencode-delegate` (OpenCode),
  `agy-delegate` (Google Antigravity), `grok-delegate` (Grok Build), `kimi-delegate` (Kimi Code),
+ `muse-delegate` (Muse Code),
  `qoder-delegate` (Qoder CLI), `vibe-delegate` (Mistral Vibe), `cursor-delegate` (Cursor Agent CLI),
  `pi-delegate` (Pi CLI), `omp-delegate` (Oh My Pi), `aider-delegate` (Aider), `copilot-delegate` (GitHub Copilot CLI),
 -`warp-delegate` (Warp Agent CLI), `zcode-delegate` (Z.AI ZCode), and `commandcode-delegate` (Command Code); siblings like
 -`gemini-delegate` can be added
--later without renaming the repo. One **utility** skill
-+`warp-delegate` (Warp Agent CLI), `zcode-delegate` (Z.AI ZCode), `commandcode-delegate` (Command Code),
-+and `gemini-delegate` (Gemini CLI). One **utility** skill
- ships alongside them: `delegate-setup` (configure fleet lanes — setup only, never dispatches).
+-later without renaming the repo. Two **utility** skills ship alongside them: `delegate-setup` (configure fleet lanes — setup only,
++`warp-delegate` (Warp Agent CLI), `zcode-delegate` (Z.AI ZCode), `commandcode-delegate` (Command Code), and `gemini-delegate` (Gemini CLI). Two **utility** skills ship alongside them: `delegate-setup` (configure fleet lanes — setup only,
+ never dispatches) and `codex-background` (Codex waiting boundary around registered existing relays).
  
  ## Vocabulary
-@@ -21,7 +20,7 @@ jargon. Use these terms; don't invent synonyms.
+@@ -22,7 +20,7 @@ jargon. Use these terms; don't invent synonyms.
  | --- | --- | --- |
  | **delegate** / **delegation** | the activity, and this skill family | "relay" (as the activity), "hand-off", "offload" |
  | **orchestrator** | the driving agent (Claude Code, …) | "controller", "driver" |
--| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code) | "worker", "sub-agent", "executor" |
-+| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code, Gemini) | "worker", "sub-agent", "executor" |
+-| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Muse, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code) | "worker", "sub-agent", "executor" |
++| **implementer** | the separate agent (Claude, Cline, Codex, OpenCode, Antigravity, Grok, Kimi, Muse, Qoder, Vibe, Cursor, Pi, Oh My Pi, Aider, Copilot, Warp, ZCode, Command Code, Gemini) | "worker", "sub-agent", "executor" |
  | **brief** | the self-contained task spec sent to the implementer | "task file", "the prompt", "the spec" |
  | **gates** | the project's test/lint/build commands | "checks", "CI" |
  | **dispatch** | sending the brief to the implementer | "fire off", "kick off" |
-@@ -31,6 +30,7 @@ jargon. Use these terms; don't invent synonyms.
+@@ -32,6 +30,8 @@ jargon. Use these terms; don't invent synonyms.
  | **fleet** | the user's set of lanes (which CLI handles which kind of work) | — |
  | **setup skill** / `delegate-setup` | utility that discovers CLIs and writes the lane map after approval | a `*-delegate` skill |
- | `exec`, `sandbox`, `resume`, `session` | Codex's own terms — use verbatim | don't paraphrase them |
-+| `--prompt`, `--model`, `--approval-mode` (`default`/`auto_edit`/`yolo`/`plan`), `--output-format stream-json`, `--resume`, `--list-sessions`, `session` | Gemini CLI's own terms — use verbatim | don't call approval modes a sandbox; don't imply `plan` is an enforced read-only boundary (settings can downgrade it); no required model pin |
+ | `exec`, `sandbox`, `resume`, `session`, `subagents` | Codex's own terms — use verbatim | don't paraphrase them; never use `subagents` as a generic synonym for implementer |
++| `--prompt`, `--model`, `--approval-mode` (`default`/`auto_edit`/`yolo`/`plan`), `--output-format stream-json`, `--resume`, `--list-sessions`, `session` | Gemini CLI terms | do not call approval modes a sandbox or imply `plan` is enforced read-only |
++| `--prompt`, `--model`, `--approval-mode` (`default`/`auto_edit`/`yolo`/`plan`), `--output-format stream-json`, `--resume`, `--list-sessions`, `session` | Gemini CLI terms | do not call approval modes a sandbox or imply `plan` is enforced read-only |
  | `-p` / `--print`, `--yolo` (`--dangerously-skip-permissions`), `--permission-mode` (`standard`/`plan`/`auto-accept`), `--tools-all`, `--resume`, `--continue`, `--effort`, `--max-turns` | Command Code's own terms — use verbatim when discussing `cmd` | never say Command Code has a sandbox, or a write-capable mode between withheld-tools and `--yolo`: `--permission-mode auto-accept` and `--tools-all` do not enable edits headlessly. Never call the binary "the cmd shell" |
  | `run`, `agent` (`build`/`plan`), `session` | OpenCode's own terms — use verbatim | "sandbox" (OpenCode has no sandbox enum; autonomy is the agent) |
- | `project`, `conversation`, `model`, `permissions`, `sandbox`, `TUI`, `tasks`, `subagents` | Antigravity's own terms — use verbatim when discussing `agy` | don't use `subagents` as a generic synonym for implementer |
-@@ -55,7 +55,7 @@ version a run was made against is what makes the claim checkable; and claims tha
+ | `exec`, `sandbox`, `--json`, `--prompt-file`, `--session-id`, `--disable-approval`, `--disable-write`, `--disable-shell`, `--trust-workspace`, `--user-input-auto-resolve`, `--reasoning-effort`, `--provider` (`echo`/`meta`) | Muse's own terms — use verbatim when discussing `muse` | never call `--yolo` the default or a permission mode; `muse resume` is TUI-only and is never invoked; `--provider` is relay-only, not a fleet dial |
+@@ -57,7 +57,7 @@ version a run was made against is what makes the claim checkable; and claims tha
  ("verified" without a run → hedge or cut). Every
  CLI flag, field, and command in the docs must match the installed implementer CLI (`claude` /
- `cline` / `codex` / `opencode` / `agy` / `grok` / `kimi` / `qodercli` / `vibe` / `cursor-agent` / `pi` /
+ `cline` / `codex` / `opencode` / `agy` / `grok` / `kimi` / `muse` / `qodercli` / `vibe` / `cursor-agent` / `pi` /
 -`aider` / `copilot` / `oz` / `omp` / `zcode` / `cmd`) and the skill's `relay.mjs`.
 +`aider` / `copilot` / `oz` / `omp` / `zcode` / `cmd` / `gemini`) and the skill's `relay.mjs`.
  
  ## Conventions
  
-@@ -90,9 +90,9 @@ CLI flag, field, and command in the docs must match the installed implementer CL
+@@ -101,9 +101,9 @@ CLI flag, field, and command in the docs must match the installed implementer CL
  - Smoke-test any changed script directly (e.g. `node skills/<skill>/scripts/relay.mjs --help`, and a
    no-write or read-only run against a throwaway repo) before relying on it.
  - If you touch how a `relay.mjs` launches its implementer CLI, smoke-test on Windows too (native
@@ -59,17 +60,18 @@ index c18f60cfd8046ba5eb9f52b5cd9e6f0db76d4fdd..df6cc8083bf0c7626260032e5f63b5df
    The `claude` and `cursor-agent` launches serialize a pre-joined
    command string through the shell on win32 for the same shim reason; `agy`, `kimi`, current
 diff --git a/README.md b/README.md
+index 18eedeb..9a14037 100644
 --- a/README.md
 +++ b/README.md
-@@ -71,6 +71,7 @@
+@@ -71,6 +71,7 @@ Skip setup when you want one implementer or one-off dials. Pick the skill for a
  | [`codex-delegate`](skills/codex-delegate/SKILL.md) | [OpenAI Codex](https://github.com/openai/codex) (`codex`) | `--sandbox workspace-write` | `--read-only` | `--resume-last`, `--session <id>` |
  | [`commandcode-delegate`](skills/commandcode-delegate/SKILL.md) | [Command Code](https://commandcode.ai/docs/headless) (`cmd`; `cmdc` on Windows) | `--yolo` — the only headless write state; no sandbox [^commandcode] | `--read-only` (withheld tools + `plan`) | `--continue-last`, `--session <id>` |
  | [`cursor-delegate`](skills/cursor-delegate/SKILL.md) | [Cursor Agent](https://cursor.com/cli) (`cursor-agent`) | `--force`; `--no-force` withholds command approval | `--read-only` (plan mode) | `--resume-last`, `--session <id>` |
 +| [`gemini-delegate`](skills/gemini-delegate/SKILL.md) | [Gemini CLI](https://geminicli.com) (`gemini`) | `--approval-mode auto_edit` (edit tools, not all shell actions); `yolo` opt-in | No enforced read-only promise; `--approval-mode plan` can be downgraded by CLI settings | `--resume <index>`, `--resume-last` |
  | [`grok-delegate`](skills/grok-delegate/SKILL.md) | Grok Build (`grok`) | workspace-scoped; `--full-access` opt-in | `--read-only` — best-effort [^grok] | `--resume-last`, `--session <id>` |
  | [`kimi-delegate`](skills/kimi-delegate/SKILL.md) | [Kimi Code](https://moonshotai.github.io/kimi-code/en/) (`kimi`) | `auto permission mode`, always | — [^none] | `--resume-last`, `--session <id>` |
- | [`opencode-delegate`](skills/opencode-delegate/SKILL.md) | [OpenCode](https://opencode.ai) (`opencode`) | agent `build` (`--model` required) | `--read-only` (agent `plan`) | `--resume-last`, `--session <id>` |
-@@ -386,6 +387,15 @@
+ | [`muse-delegate`](skills/muse-delegate/SKILL.md) | Muse Code (`muse`) | `--disable-approval` (sandbox on); not `--yolo` [^muse] | `--read-only` (`--disable-write` + `--disable-shell`) | `--session <id>` (no headless `--resume-last`) |
+@@ -427,6 +428,15 @@ Per skill — platform, CLI version, and what the run exercised:
    flag-override against relays. The smoke suite runs live discovery against installed CLIs
    (versions vary by machine). Native Windows discover smoke not yet claimed.
  
@@ -83,13 +85,13 @@ diff --git a/README.md b/README.md
 +  Gemini discovery only probes version.
 +
  Not yet verified: native Windows launches for a directly spawned `claude.exe` (the npm `claude.cmd`
- shim path has a run above), exact-head `cline`, `grok`, `kimi`,
+ shim path has a run above), exact-head `cline`, `grok`, `kimi`, `muse`,
  `pi`, `qoder`, `vibe`, and `omp` (`codex`/`opencode`/`grok`/`commandcode` have contract-tested `.cmd` shim handling;
 diff --git a/skills.sh.json b/skills.sh.json
-index a5e737a0e87256128d732e7766414ae36b5973ee..f663121ba34623282a16534ba107ebeea40e6fad 100644
+index f8eebb3..beea2ad 100644
 --- a/skills.sh.json
 +++ b/skills.sh.json
-@@ -15,6 +15,7 @@
+@@ -16,6 +16,7 @@
          "qoder-delegate",
          "vibe-delegate",
          "cursor-delegate",
@@ -98,7 +100,7 @@ index a5e737a0e87256128d732e7766414ae36b5973ee..f663121ba34623282a16534ba107ebee
          "omp-delegate",
          "aider-delegate",
 diff --git a/skills/delegate-setup/references/schema.md b/skills/delegate-setup/references/schema.md
-index caf66c5d2a0a43cc55f22b62f1603800195621c3..5a05437929faf3f21e89e2952c96e7a748265af3 100644
+index 7676ef3..79664bd 100644
 --- a/skills/delegate-setup/references/schema.md
 +++ b/skills/delegate-setup/references/schema.md
 @@ -52,6 +52,7 @@ later-edited project config fails closed until it is reviewed and written again
@@ -108,8 +110,8 @@ index caf66c5d2a0a43cc55f22b62f1603800195621c3..5a05437929faf3f21e89e2952c96e7a7
 +| `gemini` | gemini-delegate | `gemini` | model, permissionMode (`--approval-mode`), timeout |
  | `grok` | grok-delegate | `grok` | model, effort, sandbox, timeout, readOnly |
  | `kimi` | kimi-delegate | `kimi` | model, timeout |
- | `qoder` | qoder-delegate | `qodercli` | model, permissionMode, timeout, readOnly |
-@@ -70,6 +71,13 @@ write tool and exit 0 having changed nothing. ZCode has no `--model` flag — th
+ | `muse` | muse-delegate | `muse` | model, effort, timeout, readOnly |
+@@ -71,6 +72,13 @@ write tool and exit 0 having changed nothing. ZCode has no `--model` flag — th
  the CLI's own config file — so `model` is not a dial for `zcode` lanes. ZCode also ships its CLI
  inside the desktop app rather than on PATH, so discovery falls back to the installed app bundle.
  
@@ -121,21 +123,13 @@ index caf66c5d2a0a43cc55f22b62f1603800195621c3..5a05437929faf3f21e89e2952c96e7a7
 +Discovery only probes `gemini --version`; auth, models, and usage remain unknown.
 +
  OpenCode uses `variant` for reasoning intensity, not `effort`. Do not write `effort` on an `opencode` lane.
+ Muse `effort` is `--reasoning-effort` (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`, `ultra`). Muse `--provider echo|meta` is relay-only — do not write `provider` on a `muse` lane.
  Oh My Pi (`omp`) uses the lane `effort` dial for omp's `--thinking` (`off`, `auto`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`). Do not write `thinking` as a lane field.
- OpenCode lanes **require** `model` in `provider/model` form, with a non-empty provider before the first
-@@ -80,7 +88,7 @@ Boolean dials: `readOnly`, `force`. All other dials are non-empty strings. Durat
- `timeout` use `h`/`m`/`s` (e.g. `30m`) and must fit the relay watchdog ceiling (~24.8 days).
- Do not combine `readOnly: true` with a write-capable `sandbox` / `permissionMode` / `force`.
- `model` / `provider` / OpenCode `variant` must match the bound relay’s token rules (e.g. Claude
--rejects spaces; Grok/Pi/Oh My Pi/OpenCode/Codex/Command Code use a shell-safe token set — Windows `shell:true`
-+rejects spaces; Gemini/Grok/Pi/Oh My Pi/OpenCode/Codex/Command Code use a shell-safe token set — Windows `shell:true`
- launches, and Oh My Pi's flag-injection defense even without a shell).
- 
- ## Helpers
 diff --git a/skills/delegate-setup/scripts/config.mjs b/skills/delegate-setup/scripts/config.mjs
+index b1b566a..c5cf44e 100644
 --- a/skills/delegate-setup/scripts/config.mjs
 +++ b/skills/delegate-setup/scripts/config.mjs
-@@ -35,6 +35,7 @@
+@@ -36,6 +36,7 @@ import {
    CODEX_SANDBOX,
    CONFIG_VERSION,
    GROK_SANDBOX,
@@ -143,7 +137,7 @@ diff --git a/skills/delegate-setup/scripts/config.mjs b/skills/delegate-setup/sc
    IMPLEMENTER_BY_KEY,
    LANE_NAME,
    MODEL_TOKEN,
-@@ -251,6 +252,9 @@
+@@ -255,6 +256,9 @@ function validateDialValue(implementer, field, value, laneName, label) {
    if (field === "permissionMode" && implementer === "qoder" && !QODER_PERMISSION.includes(value)) {
      return `${label}: lane ${laneName}.permissionMode must be one of: ${QODER_PERMISSION.join(", ")}`;
    }
@@ -154,12 +148,14 @@ diff --git a/skills/delegate-setup/scripts/config.mjs b/skills/delegate-setup/sc
    // have no permission client, so they change nothing and still exit 0.
    if (field === "permissionMode" && implementer === "zcode" && !ZCODE_MODE.includes(value)) {
 diff --git a/skills/delegate-setup/scripts/implementers.mjs b/skills/delegate-setup/scripts/implementers.mjs
+index ea3b398..42f9b80 100644
 --- a/skills/delegate-setup/scripts/implementers.mjs
 +++ b/skills/delegate-setup/scripts/implementers.mjs
 @@ -46,6 +46,20 @@
+  * }[]}
   */
  export const IMPLEMENTERS = Object.freeze([
-   {
++  {
 +    key: "gemini",
 +    skill: "gemini-delegate",
 +    binary: "gemini",
@@ -173,29 +169,28 @@ diff --git a/skills/delegate-setup/scripts/implementers.mjs b/skills/delegate-se
 +    supports: ["model", "permissionMode", "timeout"],
 +    winShell: true,
 +  },
-+  {
+   {
      key: "claude",
      skill: "claude-delegate",
-     binary: "claude",
-@@ -396,6 +410,7 @@
- export const OMP_THINKING = Object.freeze(["off", "auto", "minimal", "low", "medium", "high", "xhigh", "max"]);
+@@ -422,6 +436,7 @@ export const OMP_THINKING = Object.freeze(["off", "auto", "minimal", "low", "med
+ export const MUSE_EFFORT = Object.freeze(["none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"]);
  export const CODEX_SANDBOX = Object.freeze(["read-only", "workspace-write", "danger-full-access"]);
  export const GROK_SANDBOX = Object.freeze(["workspace", "read-only", "off"]);
 +export const GEMINI_APPROVAL = Object.freeze(["default", "auto_edit", "yolo", "plan"]);
  export const QODER_PERMISSION = Object.freeze([
    "default",
    "accept_edits",
-@@ -423,7 +438,7 @@
+@@ -449,7 +464,7 @@ export const MODEL_TOKEN = Object.freeze({
    claude: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]-]*$/,
    /** Keep in lockstep with cursor-delegate SAFE_MODEL. */
    cursor: /^[A-Za-z0-9][A-Za-z0-9._:@\/\[\]\,=-]*$/,
-+  /** Keep in lockstep with gemini/grok/pi/codex/commandcode shell-safe tokens. */
 -  /** Keep in lockstep with grok/pi/codex/commandcode shell-safe tokens. */
++  /** Keep in lockstep with gemini/grok/pi/codex/commandcode shell-safe tokens. */
    shellSafe: /^[A-Za-z0-9][A-Za-z0-9._:\/-]*$/,
    /** Keep in lockstep with opencode-delegate MODEL_TOKEN: adds # for provider/model#variant (opencode 2.x), plus @ and ~ for catalog ids (@cf/..., model@default, ~vendor/model-latest). */
    opencode: /^[A-Za-z0-9][A-Za-z0-9._:@~\/#-]*$/,
 diff --git a/skills/delegate-setup/scripts/lane.mjs b/skills/delegate-setup/scripts/lane.mjs
-index c44c890c0872d988d24a12a4a342bd2c50b03eae..34364485c149694a5c8995de766b6cdba4d71cc5 100644
+index c44c890..3436448 100644
 --- a/skills/delegate-setup/scripts/lane.mjs
 +++ b/skills/delegate-setup/scripts/lane.mjs
 @@ -77,6 +77,10 @@ export function resolveLaneForRelay(cwd, laneName, implementerKey) {
@@ -211,7 +206,7 @@ index c44c890c0872d988d24a12a4a342bd2c50b03eae..34364485c149694a5c8995de766b6cdb
        const map = {
 diff --git a/skills/gemini-delegate/SKILL.md b/skills/gemini-delegate/SKILL.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..f2e86e4586112f42bebfe1c02f2d7c5ca72751ea
+index 0000000..f2e86e4
 --- /dev/null
 +++ b/skills/gemini-delegate/SKILL.md
 @@ -0,0 +1,90 @@
@@ -307,7 +302,7 @@ index 0000000000000000000000000000000000000000..f2e86e4586112f42bebfe1c02f2d7c5c
 +Neither headless write approval nor plan-mode containment has been live-tested.
 diff --git a/skills/gemini-delegate/references/dispatch-and-poll.md b/skills/gemini-delegate/references/dispatch-and-poll.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..701fc7d30aa6611b2332825924044df7ae3027d9
+index 0000000..701fc7d
 --- /dev/null
 +++ b/skills/gemini-delegate/references/dispatch-and-poll.md
 @@ -0,0 +1,95 @@
@@ -408,7 +403,7 @@ index 0000000000000000000000000000000000000000..701fc7d30aa6611b2332825924044df7
 +contract, not model correctness, trust/approval policy, or enforced read-only behavior.
 diff --git a/skills/gemini-delegate/references/multi-task-queues.md b/skills/gemini-delegate/references/multi-task-queues.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..7c4807faf451cf3e046db537f8395ec263780737
+index 0000000..7c4807f
 --- /dev/null
 +++ b/skills/gemini-delegate/references/multi-task-queues.md
 @@ -0,0 +1,30 @@
@@ -444,7 +439,7 @@ index 0000000000000000000000000000000000000000..7c4807faf451cf3e046db537f8395ec2
 +gates. Report what was verified, what remains unverified, and any uncommitted work.
 diff --git a/skills/gemini-delegate/references/review-and-land.md b/skills/gemini-delegate/references/review-and-land.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..8089ac114416b6b94d3b8afa728260c6c48e3ed0
+index 0000000..8089ac1
 --- /dev/null
 +++ b/skills/gemini-delegate/references/review-and-land.md
 @@ -0,0 +1,28 @@
@@ -478,7 +473,7 @@ index 0000000000000000000000000000000000000000..8089ac114416b6b94d3b8afa728260c6
 +edits blindly from tool events.
 diff --git a/skills/gemini-delegate/references/writing-the-brief.md b/skills/gemini-delegate/references/writing-the-brief.md
 new file mode 100644
-index 0000000000000000000000000000000000000000..36db7cac41023c74a0d44e672348baece091af26
+index 0000000..36db7ca
 --- /dev/null
 +++ b/skills/gemini-delegate/references/writing-the-brief.md
 @@ -0,0 +1,37 @@
@@ -521,6 +516,7 @@ index 0000000000000000000000000000000000000000..36db7cac41023c74a0d44e672348baec
 +project-scoped. Re-pass approval and model choices deliberately on each dispatch.
 diff --git a/skills/gemini-delegate/scripts/relay.mjs b/skills/gemini-delegate/scripts/relay.mjs
 new file mode 100644
+index 0000000..e9881f3
 --- /dev/null
 +++ b/skills/gemini-delegate/scripts/relay.mjs
 @@ -0,0 +1,571 @@
@@ -1173,12 +1169,12 @@ index e535c94..3baee09 100644
    const { events, scan } = collectScanner(makeLineScanner);
    scan('{"a":1}\n{"b":2}\n');
 diff --git a/test/fixtures/fake-cli.cjs b/test/fixtures/fake-cli.cjs
-index 638eb6c08d09d0491b439b6fdcfee36165b12ab2..27dec16d19e3517d82e65df0fbcde7b3f7d15eeb 100644
+index 3714aba..f7fb9c2 100644
 --- a/test/fixtures/fake-cli.cjs
 +++ b/test/fixtures/fake-cli.cjs
-@@ -48,6 +48,32 @@ if (versionProbe && process.env.SMOKE_MODE === "grok-spawn-error" && process.pla
-   console.log(fakeVersion);
-   process.exit(0);
+@@ -82,6 +82,32 @@ if (["cursor-stall", "cursor-delayed-shutdown", "cursor-slow-tool", "cursor-stea
+   });
+   return;
  }
 +if (/^gemini-(?!version)/.test(process.env.SMOKE_MODE || "")) {
 +  const mode = process.env.SMOKE_MODE;
@@ -1210,18 +1206,18 @@ index 638eb6c08d09d0491b439b6fdcfee36165b12ab2..27dec16d19e3517d82e65df0fbcde7b3
    fs.writeFileSync(process.env.SMOKE_ARGS_FILE, JSON.stringify(args));
    if (process.env.SMOKE_ENV_FILE) fs.writeFileSync(process.env.SMOKE_ENV_FILE, JSON.stringify(capturedEnv()));
 diff --git a/test/harness/constants.mjs b/test/harness/constants.mjs
-index a0dbe866e5076f47ff20f2daacb372fee11f90dd..f97e484f95ca17825bc475df22f60a7e3ff8f925 100644
+index e502f0b..4c415d0 100644
 --- a/test/harness/constants.mjs
 +++ b/test/harness/constants.mjs
 @@ -1,6 +1,6 @@
  import { join } from "node:path";
  
--export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
-+export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+-export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++export const SKILLS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
  
  export const EXTRA_ARGS = {
    claude: [],
-@@ -20,6 +20,7 @@ export const EXTRA_ARGS = {
+@@ -21,6 +21,7 @@ export const EXTRA_ARGS = {
    warp: [],
    zcode: [],
    commandcode: [],
@@ -1230,7 +1226,7 @@ index a0dbe866e5076f47ff20f2daacb372fee11f90dd..f97e484f95ca17825bc475df22f60a7e
  
  export const WIN = process.platform === "win32";
 diff --git a/test/harness/install-shim.mjs b/test/harness/install-shim.mjs
-index 52437841761b86f21e068d2dff95885d4ce3ebea..3eaa6b67efbaf8393e7edbfdc4ab0aa7eaa3b915 100644
+index b1ad96e..431ca87 100644
 --- a/test/harness/install-shim.mjs
 +++ b/test/harness/install-shim.mjs
 @@ -14,7 +14,7 @@ export function installShim(h) {
@@ -1243,28 +1239,32 @@ index 52437841761b86f21e068d2dff95885d4ce3ebea..3eaa6b67efbaf8393e7edbfdc4ab0aa7
      }
      const windir = process.env.WINDIR || "C:\\Windows";
 diff --git a/test/relay-isolated.mjs b/test/relay-isolated.mjs
-index 47cbbcbb000da62eb734b6477a40c9d2508be595..dc4dcdae5f416f78665e9f80a24d5918029b48ef 100644
+index e16495f..7cb2b1d 100644
 --- a/test/relay-isolated.mjs
 +++ b/test/relay-isolated.mjs
 @@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
  import { fileURLToPath } from "node:url";
  
  const here = dirname(fileURLToPath(import.meta.url));
--const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
-+const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+-const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
  let failed = 0;
  const check = (name, condition) => {
    console.log(`${condition ? "  ok " : "  FAIL"}  ${name}`);
 diff --git a/test/relay-parity.mjs b/test/relay-parity.mjs
-index ca3cfa8..299aa42 100644
+index 913f453..515d925 100644
 --- a/test/relay-parity.mjs
 +++ b/test/relay-parity.mjs
-@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
+@@ -1,10 +1,10 @@
+-#!/usr/bin/env node
++﻿#!/usr/bin/env node
+ import { readFileSync } from "node:fs";
+ import { dirname, join } from "node:path";
  import { fileURLToPath } from "node:url";
  
  const here = dirname(fileURLToPath(import.meta.url));
--const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
-+const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
+-const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode"];
++const RELAYS = ["claude", "cline", "codex", "opencode", "agy", "grok", "kimi", "muse", "qoder", "vibe", "cursor", "pi", "omp", "aider", "copilot", "warp", "zcode", "commandcode", "gemini"];
  const READ_ONLY_TRIPWIRE_RELAYS = ["claude", "grok", "zcode", "commandcode"];
  const SYMBOLS = [
    ["MAX_TIMER_MS", "const", RELAYS],
@@ -1272,9 +1272,9 @@ index ca3cfa8..299aa42 100644
    ["fingerprintDirtyPaths", "function", READ_ONLY_TRIPWIRE_RELAYS],
    ["changedDirtyPaths", "function", READ_ONLY_TRIPWIRE_RELAYS],
    ["readOnlyVerdict", "function", READ_ONLY_TRIPWIRE_RELAYS],
--  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode"]],
-+  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode", "gemini"]],
-   ["makeLineScanner", "function", ["vibe", "copilot"]],
+-  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "muse", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode"]],
++  ["MAX_BUFFERED_CHARS", "const", ["claude", "cline", "copilot", "cursor", "grok", "kimi", "muse", "opencode", "pi", "omp", "qoder", "vibe", "warp", "zcode", "commandcode", "gemini"]],
+   ["makeLineScanner", "function", ["vibe", "copilot", "muse"]],
    ["makeEventScanner", "function", ["claude", "cline", "cursor", "grok", "kimi", "opencode", "pi", "omp", "qoder", "warp"]],
  ];
 @@ -37,6 +37,9 @@ const SYMBOLS = [
@@ -1287,8 +1287,15 @@ index ca3cfa8..299aa42 100644
    // agy takes one sha256 over the whole worktree (gitWorktreeFingerprint:
    // status, both raw diffs, then hash-object per dirty path) rather than the
    // per-path fingerprints the other four share, so its readOnlyVerdict has a
+@@ -108,4 +111,4 @@ if (failed) {
+   console.error(`relay parity: ${failed} failure(s)`);
+   process.exit(1);
+ }
+-console.log("relay parity: all checks passed");
++console.log("relay parity: all checks passed");\n
+\ No newline at end of file
 diff --git a/test/relay-smoke.mjs b/test/relay-smoke.mjs
-index 17aee32880777303c69a827efbc320ec1c8cc21d..5f21880b2371368904252a764729dedd062bf1c2 100644
+index 4be665b..0b9547c 100644
 --- a/test/relay-smoke.mjs
 +++ b/test/relay-smoke.mjs
 @@ -10,7 +10,7 @@
@@ -1297,15 +1304,15 @@ index 17aee32880777303c69a827efbc320ec1c8cc21d..5f21880b2371368904252a764729dedd
   *                 launch a .cmd shim through a serialized cmd.exe invocation,
 - *                 while codex/opencode/grok/pi/cline/zcode/commandcode use shell:true. These are exactly the
 + *                 while codex/opencode/grok/pi/cline/zcode/commandcode/gemini use shell:true. These are exactly the
-  *                 cases a plain child.kill would miss; agy, aider, kimi, qoder, vibe, oz, and omp spawn a
+  *                 cases a plain child.kill would miss; agy, aider, kimi, muse, qoder, vibe, oz, and omp spawn a
   *                 native binary directly — a .cmd stand-in cannot represent them,
   *                 so the smoke compiles a real fake .exe with the C# compiler
 @@ -23,7 +23,7 @@
   *   2. aborted  — killing the relay itself still produces result.json with
   *                 status "aborted", and files the implementer flushes during
   *                 the shutdown grace window appear in the refreshed
-- *                 touchedFiles. Driven for all sixteen relays on POSIX; Windows
-+ *                 touchedFiles. Driven for all registered relays on POSIX; Windows
+- *                 touchedFiles. Driven for all eighteen relays on POSIX; Windows
++ *                 touchedFiles. Driven for every registered relay on POSIX; Windows
   *                 delivers no catchable SIGTERM, so the scenario cannot be
   *                 driven there (the skill docs carry the same caveat).
   *
@@ -1313,8 +1320,8 @@ index 17aee32880777303c69a827efbc320ec1c8cc21d..5f21880b2371368904252a764729dedd
   * `changelog`), and can be told to hang or fail that probe by mode name, so a
   * relay whose preflight is unbounded — wedging before any result.json exists —
   * or which reports a broken CLI as a missing one is caught here.
-- * A shared matrix also drives all sixteen through the --timeout values no
-+ * A shared matrix also drives all registered relays through the --timeout values no
+- * A shared matrix also drives all eighteen through the --timeout values no
++ * A shared matrix also drives every registered relay through the --timeout values no
   * watchdog can honour — malformed, zero, and past Node's timer ceiling — each of
   * which would otherwise fire on the next tick as a silent instant "timeout".
 - * Quick Claude, Cline, Cursor, OpenCode, Qoder, Vibe, Pi, Oh My Pi, and ZCode success cases verify
@@ -1324,7 +1331,7 @@ index 17aee32880777303c69a827efbc320ec1c8cc21d..5f21880b2371368904252a764729dedd
   * their own; both assert that this grandchild dies with the implementer.
 diff --git a/test/relay/gemini.mjs b/test/relay/gemini.mjs
 new file mode 100644
-index 0000000000000000000000000000000000000000..61acf7571b13c144b352ba728c08c0da61688289
+index 0000000..61acf75
 --- /dev/null
 +++ b/test/relay/gemini.mjs
 @@ -0,0 +1,226 @@
@@ -1555,13 +1562,13 @@ index 0000000000000000000000000000000000000000..61acf7571b13c144b352ba728c08c0da
 +    JSON.stringify(entry.supports) === JSON.stringify(["model", "permissionMode", "timeout"]));
 +}
 diff --git a/test/relay/index.mjs b/test/relay/index.mjs
-index ad2dbe6f27f8f72200c40deb0cae1fb3737040c7..4425e40f8bbe4b09281c0a5f83b6d88410dfdb2c 100644
+index 55be644..c7ddd32 100644
 --- a/test/relay/index.mjs
 +++ b/test/relay/index.mjs
-@@ -23,10 +23,12 @@ import { runCopilot } from "./copilot.mjs";
- import { runCommandcode } from "./commandcode.mjs";
+@@ -24,10 +24,12 @@ import { runCommandcode } from "./commandcode.mjs";
  import { runZcode } from "./zcode.mjs";
  import { runGrokGitTrust } from "./grok-git-trust.mjs";
+ import { runMuse } from "./muse.mjs";
 +import { runGemini } from "./gemini.mjs";
  
  export const runners = [
@@ -1572,7 +1579,7 @@ index ad2dbe6f27f8f72200c40deb0cae1fb3737040c7..4425e40f8bbe4b09281c0a5f83b6d884
    ["cline", runCline],
    ["agy", runAgy],
 diff --git a/test/relay/orphan-stdio.mjs b/test/relay/orphan-stdio.mjs
-index 6d33d27fab3284917e21634d9aec4a5414881a98..4cc31a32f017783dae048573112933fb46ea9887 100644
+index 9928ffa..c28c1a1 100644
 --- a/test/relay/orphan-stdio.mjs
 +++ b/test/relay/orphan-stdio.mjs
 @@ -45,14 +45,17 @@ for (const skill of h.SKILLS) {
@@ -1590,13 +1597,35 @@ index 6d33d27fab3284917e21634d9aec4a5414881a98..4cc31a32f017783dae048573112933fb
      });
    const result = existsSync(join(outDir, "result.json")) ? h.result(outDir) : null;
    h.check(`${skill} orphan-near-timeout: the relay exits`, run.signal === null);
--  if (skill === "claude" || skill === "cline") {
-+  if (skill === "claude" || skill === "cline" || skill === "gemini") {
+-  if (skill === "claude" || skill === "cline" || skill === "muse") {
++  if (skill === "claude" || skill === "cline" || skill === "muse" || skill === "gemini") {
      // These relays treat a missing result event as failed even on a 0 child exit.
      h.check(`${skill} orphan-near-timeout: the watchdog does not relabel the run as timeout (got ${result?.status})`,
        result != null && result.status !== "timeout");
+diff --git a/test/relay/preflight.mjs b/test/relay/preflight.mjs
+index 5459f23..cb7ea5e 100644
+--- a/test/relay/preflight.mjs
++++ b/test/relay/preflight.mjs
+@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from
+ import { join } from "node:path";
+ 
+ export async function runPreflight(h) {
+-for (const skill of ["codex", "opencode", "grok", "kimi", "muse", "warp"]) {
++  for (const skill of ["gemini", "codex", "opencode", "grok", "kimi", "muse", "warp"]) {
+   const workDir = h.freshRepo(`work-preflight-${skill}`);
+   for (const [suffix, expectedStatus, expectedExit] of [
+     ["version-hang", "timeout", 124],
+@@ -62,7 +62,7 @@ if (!h.WIN) {
+ // Node 24 warns for shell:true plus an args array. Exercise both each .cmd
+ // version probe and its dispatch through the native Windows shim harness.
+ if (h.WIN && Number(process.versions.node.split(".")[0]) >= 24) {
+-  for (const skill of ["cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
++  for (const skill of ["gemini", "cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
+     const workDir = h.freshRepo(`work-dep0190-${skill}`);
+     const outDir = join(h.scratch, `out-dep0190-${skill}`);
+     const argsPath = join(h.scratch, `args-dep0190-${skill}.json`);
 diff --git a/test/relay/timeout-tree.mjs b/test/relay/timeout-tree.mjs
-index 40e704fcfbe87b936e6b01fb0b2880b29a11b784..88a42fd61e03c9c17254552f59b016bafe43aee1 100644
+index e60e615..a0ece12 100644
 --- a/test/relay/timeout-tree.mjs
 +++ b/test/relay/timeout-tree.mjs
 @@ -6,6 +6,7 @@ export async function runTimeoutTree(h) {
@@ -1607,24 +1636,3 @@ index 40e704fcfbe87b936e6b01fb0b2880b29a11b784..88a42fd61e03c9c17254552f59b016ba
    { skill: "codex", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
    { skill: "opencode", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
    { skill: "grok", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
-diff --git a/test/relay/preflight.mjs b/test/relay/preflight.mjs
---- a/test/relay/preflight.mjs
-+++ b/test/relay/preflight.mjs
-@@ -3,7 +3,7 @@
- import { join } from "node:path";
- 
- export async function runPreflight(h) {
-+for (const skill of ["gemini", "codex", "opencode", "grok", "kimi", "warp"]) {
--for (const skill of ["codex", "opencode", "grok", "kimi", "warp"]) {
-   const workDir = h.freshRepo(`work-preflight-${skill}`);
-   for (const [suffix, expectedStatus, expectedExit] of [
-     ["version-hang", "timeout", 124],
-@@ -62,7 +62,7 @@
- // Node 24 warns for shell:true plus an args array. Exercise both each .cmd
- // version probe and its dispatch through the native Windows shim harness.
- if (h.WIN && Number(process.versions.node.split(".")[0]) >= 24) {
-+  for (const skill of ["gemini", "cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
--  for (const skill of ["cline", "codex", "commandcode", "copilot", "grok", "opencode", "pi", "zcode"]) {
-     const workDir = h.freshRepo(`work-dep0190-${skill}`);
-     const outDir = join(h.scratch, `out-dep0190-${skill}`);
-     const argsPath = join(h.scratch, `args-dep0190-${skill}.json`);
