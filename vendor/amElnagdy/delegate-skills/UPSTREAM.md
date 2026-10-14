@@ -16,7 +16,7 @@ The vendored source does **not** contain the Gemini relay or Gemini-specific lan
 
 The complete file transfer was checked against upstream blob SHAs (except the two intentionally patched documentation-link files), but full relay runtime/regression tests **have not been rerun against this new snapshot**. Prior focused Windows 11 / Node 22.19 fake-CLI tests of the earlier narrow reconciliation passed for delegate-setup, Gemini and OpenCode, with event scanner 26/26. A separate broad relay test run had seven Windows orphan-near-timeout failures whose causes remain unresolved. Node 24 compatibility is unverified. These statements are not claims that the new full snapshot passes all tests.
 
-## Local patch
+## LOCAL CHANGE — repository-link corrections
 
 The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records only these changes. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the two expected link edits. Do not add Gemini changes to this patch.
 
