@@ -23,6 +23,7 @@ import { runCopilot } from "./copilot.mjs";
 import { runCommandcode } from "./commandcode.mjs";
 import { runZcode } from "./zcode.mjs";
 import { runGrokGitTrust } from "./grok-git-trust.mjs";
+import { runMuse } from "./muse.mjs";
 
 export const runners = [
   ["package-shape", runPackageShape],
@@ -49,5 +50,6 @@ export const runners = [
   ["abort", runAbort],
   ["orphan-stdio", runOrphanStdio],
   ["zcode", runZcode],
+  ["muse", runMuse],
   ["delegate-setup", runDelegateSetup],
 ];

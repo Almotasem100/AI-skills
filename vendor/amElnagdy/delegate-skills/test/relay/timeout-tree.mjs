@@ -10,6 +10,7 @@ const TIMEOUT_CASES = [
   { skill: "opencode", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
   { skill: "grok", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
   { skill: "kimi", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
+  { skill: "muse", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
   { skill: "qoder", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
   { skill: "pi", flags: ["--timeout", "6s"], exitDeadline: 45_000 },
   { skill: "omp", flags: ["--timeout", "6s"], exitDeadline: 45_000 },

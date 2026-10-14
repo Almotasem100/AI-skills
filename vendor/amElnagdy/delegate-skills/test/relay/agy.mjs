@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
+import { delimiter, dirname, join } from "node:path";
 
 export async function runAgy(h) {
   const readArgs = (path) => !existsSync(path)
@@ -62,6 +62,58 @@ export async function runAgy(h) {
     silent.value.status === "failed" &&
     silent.value.exitCode === 1 &&
     silent.value.error?.includes("without a final message"));
+
+  for (const [name, mode, preexistingFile] of [
+    ["clean", "agy-abandoned-background", null],
+    ["pre-dirty", "agy-abandoned-background", "pre-existing.txt"],
+    ["uppercase", "agy-abandoned-background-uppercase", null],
+  ]) {
+    const abandoned = run(`abandoned-${name}`, mode, preexistingFile);
+    h.check(`agy abandoned background ${name}: a waiting report without edits is failed`,
+      abandoned.result.status === 1 &&
+      abandoned.value.schema === "delegate-relay.result.v1" &&
+      abandoned.value.status === "failed" &&
+      abandoned.value.exitCode === 1 &&
+      abandoned.value.signal === null &&
+      abandoned.value.finalMessage === "Waiting for the test run to finish." &&
+      abandoned.value.error?.includes("background task(s) still pending") &&
+      abandoned.value.stderrTail?.some((line) => /terminating \d+ background task\(s\) on exit/i.test(line)) &&
+      JSON.stringify(abandoned.value.touchedFiles) === JSON.stringify(preexistingFile ? ["?? pre-existing.txt"] : []));
+  }
+
+  const abandonedEdited = run("abandoned-edit", "agy-abandoned-background-edit", "pre-existing.txt");
+  h.check("agy abandoned background: editing pre-existing dirt remains completed",
+    abandonedEdited.result.status === 0 &&
+    abandonedEdited.value.status === "completed" &&
+    abandonedEdited.value.exitCode === 0 &&
+    abandonedEdited.value.signal === null &&
+    abandonedEdited.value.finalMessage === "Waiting for the test run to finish." &&
+    abandonedEdited.value.error === undefined &&
+    JSON.stringify(abandonedEdited.value.touchedFiles) === JSON.stringify(["?? pre-existing.txt"]));
+
+  const nonGitDir = join(h.scratch, "work-abandoned-non-git-agy");
+  mkdirSync(nonGitDir);
+  const abandonedNonGit = run("abandoned-non-git", "agy-abandoned-background-edit", "edited.txt", nonGitDir);
+  h.check("agy abandoned background: unavailable git fingerprint does not fail edited work",
+    abandonedNonGit.result.status === 0 &&
+    abandonedNonGit.value.status === "completed" &&
+    abandonedNonGit.value.exitCode === 0 &&
+    abandonedNonGit.value.finalMessage === "Waiting for the test run to finish." &&
+    abandonedNonGit.value.error === undefined &&
+    abandonedNonGit.value.touchedFiles === null &&
+    readFileSync(join(nonGitDir, "edited.txt"), "utf8").includes("dispatch edit"));
+
+  const abandonedReadOnly = run("abandoned-read-only", "agy-abandoned-background", null, undefined, ["--read-only"]);
+  h.check("agy abandoned background: read-only report without edits remains completed",
+    abandonedReadOnly.result.status === 0 &&
+    abandonedReadOnly.value.status === "completed" &&
+    abandonedReadOnly.value.exitCode === 0 &&
+    abandonedReadOnly.value.signal === null &&
+    abandonedReadOnly.value.finalMessage === "Waiting for the test run to finish." &&
+    abandonedReadOnly.value.readOnly === true &&
+    abandonedReadOnly.value.readOnlyViolation === false &&
+    abandonedReadOnly.value.error === undefined &&
+    JSON.stringify(abandonedReadOnly.value.touchedFiles) === "[]");
 
   const silentReadOnly = run("silent-read-only-noop", "agy-silent-noop", null, undefined, ["--read-only"]);
   h.check("agy read-only silent no-op: no final message cannot report completed",
@@ -169,5 +221,93 @@ export async function runAgy(h) {
     analysis.result.status === 0 &&
     analysis.value.status === "completed" &&
     analysis.value.exitCode === 0 &&
-    analysis.value.finalMessage === "fake agy analysis completed");
+    analysis.value.finalMessage === "fake agy analysis completed" &&
+    analysis.value.stallTimeout === null);
+
+  // #89: a run whose log keeps growing with reconnect handshakes but no generation call
+  // is stalled, not slow - the stall watchdog must end it long before the wall clock.
+  // The relay kills the stalled fake with SIGTERM on POSIX and taskkill /f on Windows.
+  const stallExit = h.WIN ? { exitCode: 1, signal: null } : { exitCode: 143, signal: "SIGTERM" };
+  const stallRun = (name, { workDir = h.freshRepo(`work-${name}-agy`), dirt = null, edit = null, extraArgs = [], env = {} } = {}) => {
+    const outDir = join(h.scratch, `out-${name}-agy`);
+    if (dirt) writeFileSync(join(workDir, dirt), "pre-existing change\n");
+    const result = spawnSync(process.execPath, [
+      h.relayPath("agy"),
+      "--brief", h.briefPath,
+      "--cd", workDir,
+      "--out-dir", outDir,
+      "--stall-timeout", "1s",
+      ...extraArgs,
+    ], {
+      env: { ...h.baseEnv, SMOKE_MODE: "agy-stall", ...(edit ? { SMOKE_EDIT_FILE: join(workDir, edit) } : {}), ...env },
+      encoding: "utf8",
+      timeout: 15_000,
+    });
+    return { result, value: existsSync(join(outDir, "result.json")) ? h.result(outDir) : {} };
+  };
+  const sameList = (actual, expected) => Array.isArray(actual) && actual.length === expected.length &&
+    actual.every((line, i) => line.replaceAll("\\", "/") === expected[i]);
+  const stalledAs = (label, { result, value }, touchedFiles, readOnlyViolation = null) => {
+    const touchedOk = touchedFiles === null ? value.touchedFiles === null
+      : typeof touchedFiles === "function" ? touchedFiles(value.touchedFiles)
+        : sameList(value.touchedFiles, touchedFiles);
+    h.check(`agy stall ${label}: exact stalled result fields`,
+      result.status === stallExit.exitCode &&
+      value.schema === "delegate-relay.result.v1" &&
+      value.status === "stalled" &&
+      value.exitCode === stallExit.exitCode &&
+      value.signal === stallExit.signal &&
+      value.stallTimeout === "1s" &&
+      value.finalMessage === "" &&
+      value.error === "agy logged no streamGenerateContent call for --stall-timeout 1s; killed by the relay stall watchdog — the working tree may hold nearly finished work, inspect it before re-dispatching" &&
+      Array.isArray(value.stderrTail) &&
+      touchedOk &&
+      value.readOnlyViolation === readOnlyViolation);
+    if (!touchedOk) console.error(value.touchedFiles);
+  };
+
+  stalledAs("clean", stallRun("stall-clean"), []);
+  stalledAs("clean with edits", stallRun("stall-edit", { edit: "work.txt" }), ["?? work.txt"]);
+  stalledAs("pre-dirty", stallRun("stall-pre-dirty", { dirt: "pre-existing.txt" }), ["?? pre-existing.txt"]);
+  stalledAs("same dirty path", stallRun("stall-same-dirty", { dirt: "pre-existing.txt", edit: "pre-existing.txt" }), ["?? pre-existing.txt"]);
+  stalledAs("dirty submodule", stallRun("stall-dirty-submodule", { workDir: dirtySubmoduleRepo("stall-dirty-submodule") }),
+    (lines) => Array.isArray(lines) && lines.some((line) => line.endsWith("nested")));
+  // POSIX: the fake's shell shim needs `node` and `dirname`, and node's own directory may
+  // hold git (/usr/bin), so expose just those two through a private bin directory.
+  const noGitBin = join(h.scratch, "no-git-bin");
+  mkdirSync(noGitBin);
+  if (!h.WIN) {
+    symlinkSync(process.execPath, join(noGitBin, "node"));
+    const dirnameTool = spawnSync("sh", ["-c", "command -v dirname"], { encoding: "utf8" }).stdout.trim();
+    symlinkSync(dirnameTool, join(noGitBin, "dirname"));
+  }
+  const noGitPath = [join(h.scratch, "shim"), noGitBin,
+    ...(h.WIN ? [dirname(process.execPath), join(process.env.SystemRoot, "System32")] : [])].join(delimiter);
+  stalledAs("git unavailable", stallRun("stall-no-git", { env: { PATH: noGitPath } }), null);
+  stalledAs("read-only clean", stallRun("stall-read-only-clean", { extraArgs: ["--read-only"] }), [], false);
+  stalledAs("read-only with edits", stallRun("stall-read-only-edit", { edit: "work.txt", extraArgs: ["--read-only"] }), ["?? work.txt"], true);
+
+  const streaming = run("streaming", "agy-streaming", null, undefined, ["--stall-timeout", "1s"]);
+  h.check("agy stall: steady generation calls (markers split across writes) keep a 3s run alive under a 1s --stall-timeout",
+    streaming.result.status === 0 &&
+    streaming.value.status === "completed" &&
+    streaming.value.finalMessage === "fake agy streamed to completion");
+
+  const stallOff = run("stall-off", "agy-stall", null, undefined, ["--timeout", "2s"]);
+  h.check("agy stall: the stall watchdog is opt-in; without it the wall-clock watchdog reports timeout",
+    stallOff.result.status !== 0 &&
+    stallOff.value.status === "timeout" &&
+    stallOff.value.stallTimeout === null);
+
+  for (const bad of ["0s", "soon", "999999h"]) {
+    const badOut = join(h.scratch, `out-bad-stall-${bad}-agy`);
+    const badRun = spawnSync(process.execPath, [
+      h.relayPath("agy"),
+      "--brief", h.briefPath,
+      "--out-dir", badOut,
+      "--stall-timeout", bad,
+    ], { env: h.baseEnv, encoding: "utf8" });
+    h.check(`agy stall: --stall-timeout ${bad} is a usage error with no result file`,
+      badRun.status === 2 && badRun.stderr.includes("--stall-timeout") && !existsSync(join(badOut, "result.json")));
+  }
 }

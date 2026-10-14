@@ -1,5 +1,10 @@
 # Roadmap — status, next steps, open decisions
 
+## Complete upstream snapshot staged for review — 2026-10-14
+
+The review branch `review/delegate-skills-full-upstream-3aa72d6` stages the remaining upstream changes from Ahmed's pinned `3aa72d68` revision: new Muse and Codex-background skills, relay enhancements, tests and docs. Existing local link edits and the separately pinned Gemini overlay are preserved. This is a **source snapshot only**: no additional skills or host integrations have been installed, no lane settings changed, and the expanded relay suite has not been rerun. Keep review separate from the earlier targeted Windows/Gemini/OpenCode validation; seven previously observed Windows timeout failures and Node 24 uncertainty remain open. Do not merge or install the full snapshot without proportionate runtime checks.
+
+
 ## Delegate setup upstream refresh — 2026-10-14
 
 Refreshed the upstream remote and reviewed `amElnagdy/delegate-skills` at `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. Per the narrowed scope, only its changed `delegate-setup` source files were imported into the vendor copy; the remaining vendored skills stay at full-snapshot base `8ef02103ad99b53801f2b13d04755313fbbfafb2`. The setup registry/schema now includes upstream Muse discovery/config support, without copying/installing the Muse relay or attempting a live Muse session. Existing OpenCode model-token acceptance for `@` and `~` remains intact.
