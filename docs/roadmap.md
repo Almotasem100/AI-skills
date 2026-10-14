@@ -1,21 +1,17 @@
 # Roadmap — status, next steps, open decisions
 
-## Complete upstream snapshot staged for review — 2026-10-14
+## Upstream reconciliation and workstation synchronization — 2026-10-14
 
-The review branch `review/delegate-skills-full-upstream-3aa72d6` stages the remaining upstream changes from Ahmed's pinned `3aa72d68` revision: new Muse and Codex-background skills, relay enhancements, tests and docs. Existing local link edits and the separately pinned Gemini overlay are preserved. This is a **source snapshot only**: no additional skills or host integrations have been installed, no lane settings changed, and the expanded relay suite has not been rerun. Keep review separate from the earlier targeted Windows/Gemini/OpenCode validation; seven previously observed Windows timeout failures and Node 24 uncertainty remain open. Do not merge or install the full snapshot without proportionate runtime checks.
+Merged the reviewed full upstream reconciliation into local `master` at `02b08a631a1f7bed74cda137c23f33e457daceca`, matching `origin/master`. The prior uncommitted roadmap content was preserved and reapplied; this file remains modified with the preserved local notes and this status record. The vendor snapshot is based on `amElnagdy/delegate-skills` revision `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. Its setup registry includes Muse discovery/config support, but optional Muse and Codex-background implementations, as well as other unused delegates, were not installed. OpenCode model identifiers containing `@` and `~` remain supported.
 
+The separate Gemini overlay was rebased onto that declared upstream base. Its approval-mode whitelist and `permissionMode` → `approvalMode` lane normalization remain overlay-owned. Both `~/.agents/skills` and `~/.claude/skills` now match their intended sources for all eight first-party skills, including `plan-review` and `plan-debate`, the Gemini-enhanced `delegate-setup`, `gemini-delegate`, `opencode-delegate`, review skills, and applicable guards. `babysit-pr` retains its local requirement for approval before pushing or posting. No authentication, lane configuration, global instructions, or unrelated skills were changed. No `review-main`/`review-debate` lanes exist; none were added, and no real delegated session or `debate-review --check` was run.
 
-## Delegate setup upstream refresh — 2026-10-14
-
-Refreshed the upstream remote and reviewed `amElnagdy/delegate-skills` at `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. Per the narrowed scope, only its changed `delegate-setup` source files were imported into the vendor copy; the remaining vendored skills stay at full-snapshot base `8ef02103ad99b53801f2b13d04755313fbbfafb2`. The setup registry/schema now includes upstream Muse discovery/config support, without copying/installing the Muse relay or attempting a live Muse session. Existing OpenCode model-token acceptance for `@` and `~` remains intact.
-
-The separate Gemini overlay was rebased to `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. Its approval-mode whitelist, `permissionMode` → `approvalMode` lane normalization, docs and fake-CLI tests remain overlay-owned, not duplicated in the vendor patch. Focused Windows fake-CLI checks passed for `delegate-setup`, Gemini and OpenCode; event-scanner tests passed 26/26. No real delegated model session, install, host-setting change, lane-config change or user-level synchronization was performed. Node 22.19.0 was used; Node 24 runtime behavior remains unverified. A separate broad relay-smoke run had seven Windows orphan-near-timeout failures outside this scope; they remain unresolved. The changes remain isolated on the review branch; no merge has been made.
+Focused Windows fake-CLI checks passed for `delegate-setup`, Gemini and OpenCode during the upstream review; the rebased Gemini overlay's approval-mode and lane-mapping regression also passed. Event-scanner tests passed 26/26. Installed setup/relay help and `node --check` passed in both skill roots, and Gemini CLI 0.64.0 listed installed skills. A later selected delegate-setup/OpenCode smoke invocation was interrupted by server restarts; the preceding focused source smoke had passed. An OpenCode model-backed skill-loading probe was blocked by endpoint access denial, without changing authentication or provider settings. A separate broad relay smoke had seven Windows orphan-near-timeout failures, which remain unresolved; Node 24 behavior also remains unverified (review used Node 22.19.0). No broader host/model compliance claim is made.
 
 
 ## Documentation audience/evidence boundary — 2026-10-14
 
 Clarified existing create-lld output guidance so Functional Design, forward LLD and optional as-built Technical Design use identifiers only where their audience needs them; code file/line citations remain in internal evidence rather than automatically appearing in official prose. Clarified QA scenario traceability: use stable requirements/decision references, not investigative code locators, unless the testing contract demands them. Audited task-context, plan-review/debate, security-audit and work-closeout: their evidence-bearing working/review outputs appropriately retain locators, so no change. The later company PR-checklist audit found one worthwhile `describe-pr` refinement: report relevant review-readiness facts only when evidenced, without adding mandatory checklist sections. Other company template conventions were not adopted. Documentation-only edits; no native behavioral regression run.
-
 
 ## Portable workflow v2 redesign — 2026-10-11
 
@@ -52,7 +48,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-12 — Portable Workflow v2 source redesign, workstation synchronization, bounded native verification, focused child-slice trigger regression, and final merge to master completed._
+_Last updated: 2026-10-14 — Upstream reconciliation merged to master and reviewed skills synchronized; focused checks passed, with broad Windows relay timeouts, Node 24 behavior, and OpenCode model-backed loading still unverified._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
