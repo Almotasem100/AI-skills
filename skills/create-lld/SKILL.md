@@ -21,7 +21,7 @@ design by child ticket IDs unless the project explicitly requires otherwise.
 2. Use task-context as a navigation map when available, then verify consequential claims against authoritative
    sources. Do not dump task-context evidence classes, source maps, attachment names/pages or code-location
    inventories into the deliverable.
-3. Inspect relevant source internally as needed; keep file/line evidence in working notes.
+3. Inspect relevant source internally as needed; keep code file/line citations, source maps and investigation trails in working notes, not as routine citations in official deliverables. Apply audience-aware exceptions: Functional Design describes business-visible behavior without code identifiers; a forward LLD may name proposed components, services, APIs or logical paths when essential to communicate architecture, but must not become a file/line inventory; an as-built Technical Design may identify actual interfaces/files when necessary to explain the delivered design. Never invent identifiers or silently strip references explicitly required by the project's document standard.
 4. Be concise. Do not repeat the same requirement across sections merely to fill the template. Omit conditional
    sections that add no value.
 5. Never invent requirements, components, endpoints, release/sprint metadata, decisions, measurements, rollout
