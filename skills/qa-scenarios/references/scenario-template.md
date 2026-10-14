@@ -1,7 +1,7 @@
 # QA scenarios
 
 Use one block per independently verifiable behavior. Keep the heading and Given / When / Then / And style; cite
-the supporting requirement and design source without changing their meaning.
+the supporting approved requirement or design decision by stable ID/title/section where available, without changing its meaning. Do not expose investigative code paths or file:line citations in tester-facing scenarios unless the testing contract explicitly calls for them; keep detailed source pointers in temporary task-context or internal review evidence.
 
 ```markdown
 Scenario 1: <specific, observable behavior>
