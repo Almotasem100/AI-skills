@@ -2,7 +2,7 @@
 
 ## Documentation audience/evidence boundary — 2026-10-14
 
-Clarified existing create-lld output guidance so Functional Design, forward LLD and optional as-built Technical Design use identifiers only where their audience needs them; code file/line citations remain in internal evidence rather than automatically appearing in official prose. Clarified QA scenario traceability: use stable requirements/decision references, not investigative code locators, unless the testing contract demands them. Audited task-context, plan-review/debate, security-audit and work-closeout: their evidence-bearing working/review outputs appropriately retain locators, so no change. **describe-pr intentionally excluded** pending the company's new PR template. Documentation-only edits; no native behavioral regression run.
+Clarified existing create-lld output guidance so Functional Design, forward LLD and optional as-built Technical Design use identifiers only where their audience needs them; code file/line citations remain in internal evidence rather than automatically appearing in official prose. Clarified QA scenario traceability: use stable requirements/decision references, not investigative code locators, unless the testing contract demands them. Audited task-context, plan-review/debate, security-audit and work-closeout: their evidence-bearing working/review outputs appropriately retain locators, so no change. The later company PR-checklist audit found one worthwhile `describe-pr` refinement: report relevant review-readiness facts only when evidenced, without adding mandatory checklist sections. Other company template conventions were not adopted. Documentation-only edits; no native behavioral regression run.
 
 
 ## Portable workflow v2 redesign — 2026-10-11
