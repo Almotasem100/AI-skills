@@ -1,4 +1,4 @@
-﻿# Upstream: delegate-skills
+# Upstream: delegate-skills
 
 | | |
 |---|---|
@@ -27,7 +27,7 @@ Accepted in `delegate-setup`:
 
 Gemini registry/config/lane behavior is deliberately **not** duplicated in the vendor patch. The
 separate overlay is rebased to `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` and retains approval-mode
-validation, `permissionMode` â†’ `approvalMode` normalization, documentation, and fake-CLI tests.
+validation, `permissionMode` → `approvalMode` normalization, documentation, and fake-CLI tests.
 
 Not integrated in this narrowed refresh: Muse's relay and skill, Codex background infrastructure,
 Codex relay controls, and Agy/Cursor stall handling. No host Codex settings, lane configurations,
@@ -36,18 +36,18 @@ installed skills, or global instructions were changed.
 ## Verification
 
 On Windows 11 with Node 22.19.0, against the rebased upstream tree and fake CLIs only:
-- `node test/relay-smoke.mjs --only delegate-setup` â€” passed, including OpenCode `@`/`~`
+- `node test/relay-smoke.mjs --only delegate-setup` — passed, including OpenCode `@`/`~`
   config validation and Windows `.cmd` discovery probe coverage.
-- `node test/relay-smoke.mjs --only gemini` â€” passed, including approval-mode validation and
+- `node test/relay-smoke.mjs --only gemini` — passed, including approval-mode validation and
   lane normalization.
-- `node test/relay-smoke.mjs --only opencode` â€” passed, including forwarding catalog model IDs.
-- `node test/event-scanner.mjs` â€” 26 passed.
+- `node test/relay-smoke.mjs --only opencode` — passed, including forwarding catalog model IDs.
+- `node test/event-scanner.mjs` — 26 passed.
 
 These tests did not start a real implementer session. A separate broad relay-smoke run completed with
 seven Windows orphan-near-timeout failures in unrelated relay cases. Those failures remain unresolved and
 are outside this narrowed refresh; they are not treated as evidence against the focused changes.
 
-## LOCAL CHANGE â€” repository links
+## LOCAL CHANGE — repository links
 
 The upstream README and contribution guide used relative issue/PR links. In this vendored copy those
 resolved into the parent repository, so they link directly to the upstream GitHub project. This
