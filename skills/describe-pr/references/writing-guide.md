@@ -34,6 +34,7 @@ A short accurate description beats a long polished one.
 - **Testing is one observable outcome per line**: "Verified X does Y." See `exemplars/example-b-testing.md`.
 - **Renames and deletions:** say what was moved or removed and why, not its contents.
 - **Divergence from the LLD** (when an LLD section is provided) goes in reviewer notes, stated neutrally.
+- **Review readiness, only when relevant:** briefly surface documentation/API-doc changes, available CI/check status, unresolved conflicts or unrelated changes in reviewer notes. Distinguish observed results from checks not run or not accessible; never claim CI is green, a self-review is complete, or documentation is updated solely because a checklist asks for it. Do not create a mandatory checkbox section for trivial changes.
 
 ## Examples
 - `exemplars/example-a.md` — the team's best structure: problem-then-fix per concern, the mechanism explained,
