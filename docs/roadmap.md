@@ -1,5 +1,7 @@
 # Roadmap — status, next steps, open decisions
 
+> Pending portability deliverable: publish an approved secret-free exportable delegation lane profile and install/validate procedure so a fresh clone can reproduce lane mappings without credentials. Role semantics live in `docs/delegation-lanes.md`; transient provider/model/variant choices remain workstation-local until explicitly promoted. This task is not completed by role documentation alone.
+
 ## Upstream reconciliation and workstation synchronization — 2026-10-14
 
 Merged the reviewed full upstream reconciliation into local `master` at `02b08a631a1f7bed74cda137c23f33e457daceca`, matching `origin/master`. The prior uncommitted roadmap content was preserved and reapplied; this file remains modified with the preserved local notes and this status record. The vendor snapshot is based on `amElnagdy/delegate-skills` revision `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7`. Its setup registry includes Muse discovery/config support, but optional Muse and Codex-background implementations, as well as other unused delegates, were not installed. OpenCode model identifiers containing `@` and `~` remain supported.
