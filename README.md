@@ -106,6 +106,10 @@ Feature
 The generic repo never hardcodes a tracker. A project may map Feature to Jira, Delivery Slice to CodeBeamer, or use
 different systems entirely.
 
+### Delegation lane catalog
+
+[Delegation lane roles and workflow routing](docs/delegation-lanes.md) records the stable semantic meaning of the current seven lanes and the proposed feature-design addition, without pinning providers, models or effort variants. These descriptions do **not** install or modify workstation lane configuration; local routing must be synchronized and smoke-tested separately. The eventual goal remains a secret-free, reproducible lane profile and bootstrap path for a fresh clone.
+
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
 example call.
