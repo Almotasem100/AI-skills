@@ -22,6 +22,14 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 - This skill is read-only. It does not edit the plan, project scratchpad, handoff, code or durable project documents.
   Use enforced read-only access or an immutable snapshot only when a real containment boundary requires it.
 
+## Optional review artifact
+
+- **Default:** return concise findings to the calling workflow; do not create a file merely because a review ran.
+- When the caller requests a reusable review artifact (e.g., a substantive review, comparison between independent reviewers, or an author revision), produce the same structured findings as Markdown at **one explicitly designated temporary output path** in the approved working area. Record the reviewed plan path and revision/hash when available. Do not create a second project-of-record document or overwrite another reviewer's output.
+- **Read-only review still applies:** never edit the reviewed plan, source, requirements, normal scratchpad, or durable project documents. A designated temporary output file is the sole permitted write for this mode, and only when the execution boundary can enforce or safely scope it.
+- If the reviewer is restricted to strict read-only access or output-only write permission cannot be assured, return the structured findings to the calling orchestrator, which may save them to the designated path. Do not relax general filesystem permissions just to generate the artifact.
+- When a file is produced, return its path, status, material blockers and verification limits. The downstream plan author should read that file directly rather than receive a rewritten copy of the entire critique. When no file is produced, the normal direct findings remain authoritative for that review.
+
 ## Review
 
 1. Identify the proposed outcome, scope/exclusions, sequence, delivery slices if any, dependencies, verification
@@ -41,7 +49,7 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 
 ## Response
 
-Return a concise review in the conversation:
+Return a concise review to the calling workflow (directly by default, or through the optional designated Markdown artifact):
 
 - **Findings:** severity, classification, affected step/claim, evidence locator or explicit evidence gap, impact and
   recommended next action.
