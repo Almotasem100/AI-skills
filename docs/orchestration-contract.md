@@ -58,6 +58,12 @@ Typical semantic roles:
 Formatter/linter/build/test commands, guards, citation checks, diff checks, API regression execution and branch
 mechanics are workflow actions, not separate AI roles. A model diagnoses failures only when judgment is needed.
 
+## Delegation handoffs and configured lane roles
+
+When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
+
+Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual lanes remain local configuration until a secret-free export/bootstrap profile is implemented and approved. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
+
 ## Context and continuity
 
 - `task-context` is optional rich temporary understanding, normally owned by the feature when a feature exists.
