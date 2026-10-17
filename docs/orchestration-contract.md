@@ -164,6 +164,17 @@ Unit tests, builds, guards, API regression and environment checks are implementa
 API regression suite is extended by relevant slices and rerun when applicable. Report local, deployed-environment and
 manual/QA verification separately; one does not imply another.
 
+## Delegated outcome completion
+
+A delegated task is complete only after the orchestrator verifies the requested outcome against its applicable
+acceptance criteria. Keep three outcomes distinct: **process/relay success** means the invocation ended successfully;
+**response success** means a final model response was captured; **task acceptance** means the requested outcome was
+verified against its applicable criteria. Process or response success alone does not establish task acceptance.
+For artifact tasks, inspect expected outputs and verify their required content and applicable checks before advancing.
+An acknowledgment, partial artifact, or structural check alone is insufficient. For response-only tasks, assess the
+returned response against the request; do not require an artifact. If the outcome is missing or incomplete, preserve
+the run evidence, classify the failure, and use bounded recovery before advancing.
+
 ## Generic versus project-specific policy
 
 The portable repo owns **how the workflow works**. A project owns **what the workflow means there**:

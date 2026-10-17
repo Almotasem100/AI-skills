@@ -1,5 +1,15 @@
 # Roadmap — status, next steps, open decisions
 
+## Approved PR #4 workstation synchronization — 2026-10-16–17
+
+Local `master` and `origin/master` match approved merge `6e970db9962ff520d18f33d7edb55d91fbf0c0ea`. The eight first-party skill trees and canonical global instructions were synchronized; OpenCode v2.0.29 successfully loaded the installed `plan-review` skill.
+
+The authorized global setup renamed `write-test-cases` to `write-qa-scenarios` and added `draft-feature-design`, both assigned Gemini `gemini-3.8-flash`; configuration validation and lane resolution passed. The Gemini CLI 0.64.0 QA dispatch completed, though some examples exceeded the supplied requirement. Design dispatches with Gemini and GLM previously hit the 120-second watchdog after partial LLD writes. A later controlled Gemini 3.8 Flash adapter run and one direct CLI diagnostic each captured a `result: success` event without an assistant final answer or requested LLD. The adapter run exited 0; the direct capture did not retain child exit/termination metadata, so its process outcome is unknown. The adapter archives raw stdout before parsing it, and the captured stream contains no assistant answer; no adapter extraction defect is established, while the reason Gemini ended without an answer remains unknown. The bounded evidence is in `%LOCALAPPDATA%\Temp\opencode\pr4-workflow-fixture-20261016\design-completion-run` and `design-direct-cli-run`. The portable completion contract now requires caller verification of requested outcomes; no runtime adapter or shared relay was changed.
+
+The earlier `write-plan` failure came from a synthetic brief that incorrectly named a `write-plan` skill. A corrected lane-only Sol 6.1 Medium dispatch completed in 26.3 seconds and produced the plan. Synthetic plan reviews found DeepSeek and GLM both identified the planted defect classes; DeepSeek was faster, but no equivalent Gemini read-only baseline was established. Two synthetic API-regression suites passed 6/6 each with mixed quality, so Gemini remains on that lane.
+
+With owner approval, `challenge-plan` is now a **reversible local trial** on OpenCode `opencode/deepseek-v4.1-flash-free`; the previous Gemini assignment is preserved in the restricted rollback record at `%LOCALAPPDATA%\Temp\opencode\pr4-workflow-fixture-20261016\challenge-plan-deepseek-trial\global-config-before.json`. One actual configured-lane invocation used enforced OpenCode plan/read-only mode, loaded `plan-review`, and returned source-grounded findings in 30.1 seconds. This is not a general model-superiority claim. Other lane assignments were unchanged. Synthetic outputs and relay logs remain in the approved temp fixture; no protected backup, credentials, authentication or provider configuration was accessed or changed.
+
 > Pending portability deliverable: publish an approved secret-free exportable delegation lane profile and install/validate procedure so a fresh clone can reproduce lane mappings without credentials. Role semantics live in `docs/delegation-lanes.md`; transient provider/model/variant choices remain workstation-local until explicitly promoted. This task is not completed by role documentation alone.
 
 ## Upstream reconciliation and workstation synchronization — 2026-10-14
@@ -50,7 +60,7 @@ history and reasoning (written while building it for the HDC project) is in the 
 `HDC-documents/automation/Automation_Planning_Handoff.md`; the portable decisions are in
 `decisions.md`.
 
-_Last updated: 2026-10-15 — Upstream reconciliation merged to master, reviewed skills synchronized, and bounded Gemini Auto/OpenAI GPT-6 Luna skill-loading probes passed; broad Windows relay timeouts and Node 24 behavior remain unverified._
+_Last updated: 2026-10-17 — Approved PR #4 synchronized and installed; QA/design lanes configured, bounded dispatches and read-only review/artifact checks recorded. DeepSeek/Gemini API comparison was mixed; GLM short probe succeeded but design dispatch timed out. DeepSeek is temporarily assigned to `challenge-plan`; rollback and design-relay diagnostics are recorded above._
 
 ## Checkpoint — v1 freeze narrowly reopened (owner, 2026-09-30)
 The setup was installed and used in an HDC workflow. The owner has now approved a narrow follow-up plan based on that use. **Do not resume unrelated parked builds or trials.**
