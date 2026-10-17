@@ -1,17 +1,17 @@
 # Delegation lane roles (portable semantics)
 
-This catalog documents the **intended semantic responsibilities**, not live workstation configuration. A lane is a configurable execution route for a specialist responsibility; the skill defines the process. Do not lock model, provider, effort, promotional availability or fallback to a stable role name. The selected conversational model (Luna in the current user's preferred setup) coordinates the workflow; it need not perform every specialist task.
+This catalog documents the **intended semantic responsibilities**, not live workstation configuration. A lane is a configurable execution route for a specialist responsibility; the skill defines the process. Do not lock model, provider, effort, promotional availability or fallback to a stable role name. The orchestrator coordinates the workflow; it need not perform every specialist task.
 
-Seven lane names below were reported from the current workstation; `draft-feature-design` is a **proposed eighth lane** pending local configuration and verification. No repo edit here installs, renames or validates a local lane. Not every task uses every lane.
+The lane names below describe semantic responsibilities, not a claim about any workstation's live configuration. Local lane additions and renames must be configured and verified separately. Not every task uses every lane.
 
 | Lane | Responsibility | Workflow use / boundary |
 | --- | --- | --- |
-| `draft-feature-design` *(proposed)* | Draft feature-level LLD and, when required, Functional Design using `create-lld` | After optional `task-context` and before implementation planning; design specialist verifies consequential facts against authorized sources. Does not write the implementation plan. |
+| `draft-feature-design` | Draft feature-level LLD and, when required, Functional Design using `create-lld` | After optional `task-context` and before implementation planning; design specialist verifies consequential facts against authorized sources. Does not write the implementation plan. |
 | `draft-functional-docs` | Draft or update business-facing functional documentation | Use for standalone or maintenance functional-document work; **do not automatically run alongside** `draft-feature-design` to produce a duplicate Functional Design. The design lane owns combined feature design when selected. |
 | `write-plan` | Author feature implementation plan | Uses task context plus approved design when present; defines delivery slices, dependencies, sequencing and verification. Separate planning stage; not a mandatory new context synthesis. |
 | `challenge-plan` | Independent adversarial challenge of a draft plan | Reviewer for single-pass `plan-review` **or** challenger in `plan-debate`. Same lane may serve either skill. No automatic double review or self-review by plan author. |
 | `challenge-complex-plan` | Conditional additional high-stakes/complex-plan challenge | An alternative or supplementary independent reviewer only when justified by risk, material uncertainty or explicit request; not mandatory with `challenge-plan`. |
-| `write-qa-scenarios` *(proposed rename of `write-test-cases`)* | Specify tester-facing feature behavior through `qa-scenarios` | Uses approved requirements and Functional Design where available; does **not** implement or execute automated tests. Rename only after checking all local consumers. |
+| `write-qa-scenarios` | Specify tester-facing feature behavior through `qa-scenarios` | Uses approved requirements and Functional Design where available; does **not** implement or execute automated tests. It is distinct from executable unit and API regression tests. |
 | `write-api-regression-tests` | Author executable API regression tests | During relevant implementation/verification slices; tests must be checked/run through deterministic actions when authorized. Distinct from QA scenarios. |
 | `implement-code` | Bounded code implementation | Uses approved plan and scoped source; one mutation owner per change, with deterministic checks and independent review when warranted. |
 
