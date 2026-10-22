@@ -270,8 +270,9 @@ repo; see `docs/roadmap.md` before treating it as a generally available relay.
    your yes. **Choose "global" scope:** "project" scope creates `<repo>/.delegate/config.json`, a new file in
    the repository.
 2. **Delegate a task:** *"delegate this to codex: <task>"* (or agy, opencode…). Your agent writes a
-   self-contained brief, the relay runs the CLI, and the orchestrator verifies the delivered outcome and applicable deterministic checks; independent technical review remains a separate role when warranted. **The
-   relay never commits; you do.** Add "read-only" for reviews or diagnosis without edits.
+   self-contained brief and the relay runs the CLI. The orchestrator verifies the delivered outcome and applicable
+   deterministic checks; independent technical review remains a separate role when warranted. **The relay never
+   commits; you do.** Add "read-only" for reviews or diagnosis without edits.
 3. **Guards after implementing:** *"run clean-code-guard on this change"* (also `test-guard` for tests,
    `docs-guard` for docs).
 4. **Review loop on a PR:** *"babysit PR 123"*. It verifies each bot or Copilot finding, fixes blockers
