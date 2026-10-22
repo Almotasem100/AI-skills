@@ -95,6 +95,7 @@ When two sources conflict, record the conflict and source pointers. Do not silen
 
 - Summarize conclusions; do not duplicate full PDFs, slide decks, code listings or screenshots.
 - Preserve the terminology used by approved requirements and project documents.
+- Attach usable source locators near consequential technical findings (path/symbol/line and revision when useful), not merely a general bibliography. Do not create an exhaustive code inventory.
 - Keep enough provenance that a downstream role can verify a consequential claim against the original source.
 - Prefer the most authoritative/current source when several repeat the same fact, but note meaningful conflicts.
 - Do not invent business rationale from implementation details.
@@ -109,7 +110,7 @@ This is a synthesis skill, not another interview workflow.
 If a consequential gap remains:
 - record it under **Unresolved questions / blockers**;
 - surface it to the orchestrator;
-- let the normal grilling/decision workflow resolve it when required.
+- let the normal grilling/decision workflow resolve it when required. When found during planning, reconcile affected context/design/plan and resume without restarting unrelated work.
 
 Do not start a long new interview merely to make every section complete.
 
