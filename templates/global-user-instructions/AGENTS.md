@@ -11,6 +11,7 @@
   scope may proceed; material changes to scope, user-visible behavior, architecture, security, persistent data,
   public contracts, environment boundaries or another project gate require the applicable decision before execution.
 - Keep replies concise and conversational. Ask only for the next genuinely consequential missing decision.
+- Substantive plans may specify new components or architecture when justified and approved; they enable implementation without requiring the implementer to invent unapproved material behavior or architecture decisions. Genuine planning blockers return to targeted clarification and affected-artifact reconciliation; routine technical details remain with the implementer.
 
 ## Orchestration and routing
 
@@ -23,9 +24,10 @@
 - Use model roles for judgment/synthesis/review; use deterministic actions for formatters, linters, builds, tests,
   guards, citation checks, API regression execution and branch mechanics.
 - A delegated role owns its assigned artifact or bounded mutation. The orchestrator verifies scope/provenance/results
-  without reproducing the specialist's work. Use independent review where it adds value.
+  without reproducing the specialist's work. Use independent review where it adds value; implementer self-checks and orchestrator acceptance are not independent code review.
 - Keep one mutation owner per bounded change. Parallelize independent analysis, not competing writers on the same
   unstable surface unless competing proposals are intentional.
+- Before dispatch, verify the current configured lane, host and relay rather than relying on a remembered model assignment. If mapping is unavailable or inconsistent, diagnose it; do not guess a substitute.
 - Persistent lane configuration is not rewritten because one run fails. Use configured fallbacks only when allowed,
   record fallback use, and distinguish runtime recovery from configuration governance. Within configured choices,
   route proportionately to quality need, risk, cost, latency, context capacity and availability rather than always
@@ -58,10 +60,7 @@
 - A new chat/model is a runtime transition, not completion and not automatically a handoff. Use handoff only when a
   genuine transfer/pause needs an extra briefing. Use work-closeout only when bounded work is actually complete and
   durable reconciliation/cleanup is useful.
-- Do not compact proactively at a fixed context-utilization percentage. Project artifacts are the primary continuity
-  mechanism. Compact when the host requires it, an upcoming workload genuinely needs room, or obsolete discussion
-  materially harms reasoning; checkpoint uncaptured material state first.
-- A compact/resume summary never turns uncertainty into a decision or drops an unresolved gate.
+- Project artifacts are the primary continuity mechanism across host-managed context changes; preserve material decisions, uncertainty, unresolved gates and execution state there rather than relying on conversation history.
 - Update working state at meaningful transitions, not after every sentence/tool call.
 
 ## Safety and external effects

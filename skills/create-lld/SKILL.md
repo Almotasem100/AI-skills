@@ -30,7 +30,7 @@ design by child ticket IDs unless the project explicitly requires otherwise.
 
 ## Forward LLD
 Read feature requirements, project instructions and existing feature task-context when available. Inspect current
-architecture/source only as needed. Resolve only consequential ambiguity.
+architecture/source only as needed. Resolve only consequential ambiguity. Surface unresolved material owner-level behavior or design choices for targeted clarification before dependent design is treated as settled; routine implementation decisions do not create owner gates.
 
 Draft one concise feature-level LLD. Core content is Context, Objectives & constraints, applicable design boundaries,
 and Material decisions. Impact/risks, verification intent, rollout/rollback and open questions are conditional and

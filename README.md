@@ -80,7 +80,9 @@ The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestrat
   and `work-closeout` is about completed work rather than ending a chat;
 - evidence carries provenance/revision where consequential, while reviewers verify claims independently;
 - repeated failures trigger diagnosis changes or escalation rather than infinite retries;
-- fixed context-utilization thresholds do not trigger compaction.
+- preserve material execution state and unresolved decisions across context transitions.
+
+Substantive plans should settle material implementation decisions without freezing routine technical judgment. A technically complete plan can still await material approval. Genuine gaps return to targeted clarification; plan-review findings go to the author for reasoned disposition. Resolve the current lane and host when delegating, not for permitted direct work.
 
 A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
 as verification; use independent review and deterministic checks. Give each role the minimum useful context and
@@ -268,8 +270,9 @@ repo; see `docs/roadmap.md` before treating it as a generally available relay.
    your yes. **Choose "global" scope:** "project" scope creates `<repo>/.delegate/config.json`, a new file in
    the repository.
 2. **Delegate a task:** *"delegate this to codex: <task>"* (or agy, opencode…). Your agent writes a
-   self-contained brief, the relay runs the CLI, and your agent reviews the diff and re-runs the gates. **The
-   relay never commits; you do.** Add "read-only" for reviews or diagnosis without edits.
+   self-contained brief and the relay runs the CLI. This relay does not create Git commits; publication and
+   commit authorization follow the active project's rules. Add "read-only" for reviews or diagnosis without edits.
+   For generic outcome verification and independent review responsibilities, see the orchestration contract.
 3. **Guards after implementing:** *"run clean-code-guard on this change"* (also `test-guard` for tests,
    `docs-guard` for docs).
 4. **Review loop on a PR:** *"babysit PR 123"*. It verifies each bot or Copilot finding, fixes blockers

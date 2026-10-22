@@ -56,6 +56,8 @@ Return a concise review to the calling workflow (directly by default, or through
 - **Assumptions / unresolved decisions:** keep these separate from observed contradictions.
 - **Verification limits:** relevant sources or runtime checks that were unavailable.
 
+When this review feeds an active planning workflow, the orchestrator returns material findings to the **plan author** for an evidence-based accept/revise, reject, or open-with-needed-check disposition before determining whether the resulting plan is ready, decision-pending or blocked. Rejection with evidence need not produce a revised plan. The reviewer does not apply its own recommendations or force a debate/extra document. This does not require author revisions for a standalone read-only review request.
+
 If no blocker is found, say that none was found in the inspected material and name significant limits. Return control
 to the calling workflow. A clean review neither proves safety nor creates a new approval gate inside an already
 authorized parent workflow. This skill does not implement anything or dispatch additional reviewers.
