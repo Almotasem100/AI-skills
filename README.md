@@ -271,8 +271,10 @@ repo; see `docs/roadmap.md` before treating it as a generally available relay.
    the repository.
 2. **Delegate a task:** *"delegate this to codex: <task>"* (or agy, opencode…). Your agent writes a
    self-contained brief and the relay runs the CLI. The orchestrator verifies the delivered outcome and applicable
-   deterministic checks; independent technical review remains a separate role when warranted. **The relay never
-   commits; you do.** Add "read-only" for reviews or diagnosis without edits.
+   deterministic checks; independent technical review remains a separate role when warranted. In this relay
+   workflow the relay does not create Git commits; committing is a separate authorized workflow action, not
+   necessarily a manual user action or a personal orchestrator task. Add "read-only" for reviews or diagnosis
+   without edits.
 3. **Guards after implementing:** *"run clean-code-guard on this change"* (also `test-guard` for tests,
    `docs-guard` for docs).
 4. **Review loop on a PR:** *"babysit PR 123"*. It verifies each bot or Copilot finding, fixes blockers
