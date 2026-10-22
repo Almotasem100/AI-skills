@@ -63,16 +63,18 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 
 ## The workflow
 
-The active model is the **orchestrator by default**. It coordinates the requested outcome, chooses the smallest
+The active model works in **Standard Mode by default**, owning authorized work end-to-end. On explicit **Delegation Mode** activation, it becomes the orchestrator: coordinates the requested outcome, chooses the smallest
 sufficient workflow, resolves semantic roles through configured lanes, tracks state and exceptions, and stops only
 at completion, an explicit checkpoint, or a genuine material gate.
 
 The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestration-contract.md). Highlights:
 
-- workflows are adaptive; simple bugs remain simple;
+- work enters either a **Full Feature** path for explicit feature-process delivery or a **Change/Bug** path for ordinary bounded requests; both remain adaptive, and explicitly authorized artifact omissions are respected without substitute paperwork;
 - projects may map a parent **Feature** to one or more **Delivery Slices**;
 - stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
   meanings;
+- in Delegation Mode, specialist deliverables belong to routed owners through review/fix and acceptance; assigned child sessions may be reused when supported, not kept running indefinitely;
+- interactive routing gaps return to the user after diagnosis; only explicit unattended-continuation authorization enables a suitable configured default-lane fallback within existing gates;
 - models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
   user syntax;
 - deterministic guards/build/tests/regression are workflow actions rather than separate agents;
