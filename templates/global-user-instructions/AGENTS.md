@@ -11,7 +11,7 @@
   scope may proceed; material changes to scope, user-visible behavior, architecture, security, persistent data,
   public contracts, environment boundaries or another project gate require the applicable decision before execution.
 - Keep replies concise and conversational. Ask only for the next genuinely consequential missing decision.
-- Substantive plans enable implementation without inventing material behavior or architecture. Genuine planning blockers return to targeted clarification and affected-artifact reconciliation; routine technical details remain with the implementer.
+- Substantive plans may specify new components or architecture when justified and approved; they enable implementation without requiring the implementer to invent unapproved material behavior or architecture decisions. Genuine planning blockers return to targeted clarification and affected-artifact reconciliation; routine technical details remain with the implementer.
 
 ## Orchestration and routing
 
