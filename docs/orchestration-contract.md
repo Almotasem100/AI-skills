@@ -79,9 +79,7 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
 - `work-closeout` is for a genuinely completed bounded work item that needs durable reconciliation/cleanup. It is
   not triggered merely because a conversation ends.
 - Project artifacts, not conversation history, are the primary continuity mechanism.
-- Do not compact at a fixed context percentage. Compact only when the host requires it, an upcoming workload needs
-  room, or obsolete discussion materially harms reasoning. Checkpoint material state first when necessary.
-- Compaction/resume summaries must preserve uncertainty and gates; they never turn assumptions into decisions.
+- Host-managed context transitions do not replace project execution records. Preserve material decisions, uncertainty, unresolved gates and next action in normal project state.
 
 ## Planning convergence
 
