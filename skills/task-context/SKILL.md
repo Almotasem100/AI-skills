@@ -110,7 +110,7 @@ This is a synthesis skill, not another interview workflow.
 If a consequential gap remains:
 - record it under **Unresolved questions / blockers**;
 - surface it to the orchestrator;
-- let the normal grilling/decision workflow resolve it when required. When found during planning, reconcile affected context/design/plan and resume without restarting unrelated work.
+- return it to the orchestrator for targeted grilling/decision work when required. If discovered during planning, the orchestrator coordinates the relevant artifact owners' updates and resumes the affected work, without restarting unrelated stages.
 
 Do not start a long new interview merely to make every section complete.
 
