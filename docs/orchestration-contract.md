@@ -83,9 +83,9 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
 
 ## Planning convergence
 
-For substantive work, grilling/clarification should settle consequential owner-level behavior and scope choices before dependent design and planning are called complete. The plan should be an actionable implementation blueprint: approved behavior, affected boundaries, execution sequence/dependencies, and appropriate verification, with routine engineering decisions left to the implementer. Do not require an exhaustive script for every code edit.
+For substantive work, grilling/clarification should settle consequential owner-level behavior and scope choices before dependent design and planning are called complete. The plan should be an actionable implementation blueprint: approved behavior, intended new or changed components and architectural boundaries when relevant, execution sequence/dependencies, and appropriate verification, with routine engineering decisions left to the implementer. Do not require an exhaustive script for every code edit.
 
-A planning outcome is **ready** when a specialist can implement within the approved scope without inventing material requirements or architecture; it is **blocked** when a specific consequential decision or evidence gap prevents that. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
+A planning outcome is **ready** when a specialist can implement within the approved scope without having to make unapproved material requirements or architecture decisions; it is **blocked** when a specific consequential decision or evidence gap prevents that. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
 
 ## Evidence and authority
 
@@ -117,6 +117,7 @@ workflow explicitly grants them authority.
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
 - Reviewers verify consequential claims rather than checking only that citations exist.
 - For plan reviews, route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
+- The orchestrator checks delegated outputs, scope, verification evidence and the required review disposition; it does not personally redo independent technical code review. Git commit/push ownership follows the project's authorization and workflow, not an assumption that the orchestrator or user must personally commit.
 - The implementer owns its code, local tests/build checks and fixes. When independent code review is warranted or required, use a separate reviewer; implementer self-checks and orchestrator outcome verification do not substitute for independent review. The orchestrator coordinates these roles rather than repeating specialist judgment.
 - Routine review findings return to the implementer for fix/reverify without a new user gate. Material findings that
   change scope, behavior, architecture, security, data or contract boundaries escalate.
