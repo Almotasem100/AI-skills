@@ -21,6 +21,8 @@ The lane names below describe semantic responsibilities, not a claim about any w
 2. `draft-feature-design` invokes `create-lld` from task context and primary evidence; produces feature LLD and Functional Design when required. Existing `draft-functional-docs` handles separate functional-document updates rather than duplicate feature deliverables.
 3. `write-plan` creates the implementation plan from task context plus design. A separate stage does not require a new lane or a replay of all source evidence.
 4. `challenge-plan` invokes `plan-review` for one-shot independent findings **or** participates as challenger in `plan-debate` with the plan author. `challenge-complex-plan` is optional escalation. Simple tasks may skip debate, and both reviews are not mandatory in sequence.
+If planning reveals a consequential unresolved owner decision or invalid approved premise, pause only the affected planning work, route the issue to targeted clarification, reconcile relevant context/design, and resume. A plan is ready when implementation can proceed without inventing material requirements or architecture; ordinary technical discretion remains with the implementer. Route review findings to the plan author for reasoned disposition rather than mechanically applying them.
+
 5. `write-qa-scenarios` prepares feature QA behavior when useful; `implement-code` owns bounded code changes; `write-api-regression-tests` authors executable regression checks as relevant. Deterministic verification is an action, not a separate agent role.
 
 ## File-first handoff, review output and local lifecycle
