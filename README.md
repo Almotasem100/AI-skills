@@ -80,7 +80,7 @@ The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestrat
   and `work-closeout` is about completed work rather than ending a chat;
 - evidence carries provenance/revision where consequential, while reviewers verify claims independently;
 - repeated failures trigger diagnosis changes or escalation rather than infinite retries;
-- fixed context-utilization thresholds do not trigger compaction.
+- preserve material execution state and unresolved decisions across context transitions.
 
 Plans should be implementation-ready without freezing routine technical judgment. Material planning gaps return to targeted clarification; reviewers' findings go to the plan author for reasoned disposition. Resolve the active configured lane and host before dispatch rather than guessing.
 
