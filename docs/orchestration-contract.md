@@ -5,13 +5,13 @@ abstractions onto their own ticket systems, environments, architecture, commands
 
 ## Core model
 
-- The selected model is the **orchestrator/control plane** by default, not automatically the implementer.
-- Resolve work as `intent -> role -> configured lane -> host/provider/model/effort`. Skills name semantic roles;
+- **Standard Mode is the default:** the selected agent may own and execute the authorized task end-to-end. **Delegation Mode** starts only on explicit user instruction: the selected agent owns orchestration and delegates specialist deliverables. Mode persists for the session; a clearly scoped user-authorized exception to who performs one task does not switch the session mode or waive project gates.
+- In Delegation Mode, resolve specialist work as `intent -> role -> configured lane -> host/provider/model/effort`. Skills name semantic roles;
   lane configuration chooses the current implementation. Among configured routes/fallbacks, consider required
   quality, task risk, cost, latency, context capacity and availability; resource awareness must not silently change
   the semantic role or bypass project/provider constraints.
-- Choose the **smallest sufficient workflow**. A five-line bug must not be forced through feature ceremony merely
-  because richer workflows exist.
+- Choose between two adaptive entry paths: **Full Feature** for clear intent to deliver through the project's feature process (potentially several delivery slices), and **Change/Bug** by default for direct bounded fixes or changes. A ticket ID or existing input folder alone does not prove Full Feature intent; ask only when the distinction is materially unclear. Neither path is a rigid sequence.
+- Apply project-required activities unless a task-specific exception is explicitly authorized. Honor selected omissions without generating substitute paperwork; skipping a document does not waive consequential design reasoning, applicable verification or a separate approval gate. An agent can revise the approach when material evidence changes, without silently overriding the user's selected scope.
 - Authorization is an envelope around the requested outcome and scope. Routine planning, implementation,
   deterministic verification, review, bounded fixes and state updates may continue inside that envelope.
 - Explicit user checkpoints and project-specific material gates always win.
@@ -64,7 +64,9 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 
 When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
 
-When delegating to a configured specialist, resolve the active lane mapping and check that the selected host/relay matches the configured provider/model and permitted fallback. Permitted direct work under the smallest sufficient workflow does not require a delegation lane. If the configuration is unavailable or inconsistent, diagnose that uncertainty rather than guessing, silently substituting a host, or changing persistent routing.
+In Delegation Mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured lane inventory and verify host/relay/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Standard Mode and explicitly authorized one-task direct work need not resolve a delegation lane.
+
+When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
 
 Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual lanes remain local configuration until a secret-free export/bootstrap profile is implemented and approved. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
 
@@ -78,6 +80,8 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
   that cannot efficiently reconstruct the work from the normal artifacts.
 - `work-closeout` is for a genuinely completed bounded work item that needs durable reconciliation/cleanup. It is
   not triggered merely because a conversation ends.
+- Keep each bounded delegated assignment logically open through applicable review, author disposition, fixes and acceptance. Prefer resuming the same child session when supported and current; otherwise resume the semantic assignment with a fresh session and sufficient durable evidence, without claiming context continuity. A logical assignment need not keep a child process running. Close it on verified acceptance, not merely on first response or stage transition.
+- Pass attributed reviewer findings to the original artifact owner without rewriting the substance. Debate is optional for consequential disagreement; it need not generate multiple permanent records. Reconcile and clean temporary coordination artifacts when no longer needed, retaining required review evidence under project policy.
 - Project artifacts, not conversation history, are the primary continuity mechanism.
 - Host-managed context transitions do not replace project execution records. Preserve material decisions, uncertainty, unresolved gates and next action in normal project state.
 
