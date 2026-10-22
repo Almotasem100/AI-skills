@@ -82,6 +82,8 @@ The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestrat
 - repeated failures trigger diagnosis changes or escalation rather than infinite retries;
 - fixed context-utilization thresholds do not trigger compaction.
 
+Plans should be implementation-ready without freezing routine technical judgment. Material planning gaps return to targeted clarification; reviewers' findings go to the plan author for reasoned disposition. Resolve the active configured lane and host before dispatch rather than guessing.
+
 A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
 as verification; use independent review and deterministic checks. Give each role the minimum useful context and
 canonical source access required for its responsibility.
@@ -268,7 +270,7 @@ repo; see `docs/roadmap.md` before treating it as a generally available relay.
    your yes. **Choose "global" scope:** "project" scope creates `<repo>/.delegate/config.json`, a new file in
    the repository.
 2. **Delegate a task:** *"delegate this to codex: <task>"* (or agy, opencode…). Your agent writes a
-   self-contained brief, the relay runs the CLI, and your agent reviews the diff and re-runs the gates. **The
+   self-contained brief, the relay runs the CLI, and the orchestrator verifies the delivered outcome and applicable deterministic checks; independent technical review remains a separate role when warranted. **The
    relay never commits; you do.** Add "read-only" for reviews or diagnosis without edits.
 3. **Guards after implementing:** *"run clean-code-guard on this change"* (also `test-guard` for tests,
    `docs-guard` for docs).
