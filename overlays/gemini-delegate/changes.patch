@@ -261,7 +261,7 @@ index 0000000..f2e86e4
 +   # optional model:      add --model <id>
 +   # planning request:    add --approval-mode plan (not a read-only guarantee)
 +   # all-tool approval:   add --approval-mode yolo (explicit full trust)
-+   # resume:              add --resume <index> or --resume-last, with a delta brief
++   # resume:              list project sessions, use --resume <index>; --resume-last if safe
 +   # longer watchdog:     add --timeout 2h (default: 30m)
 +   ```
 +
@@ -273,8 +273,8 @@ index 0000000..f2e86e4
 +4. **Review** the diff against the brief and independently re-run the gates. A
 +   success event is not proof of a correct implementation. See
 +   [review-and-land.md](references/review-and-land.md).
-+5. **Land** only verified work, when authorized. Otherwise resume with a narrow
-+   correction brief and review again. For queues, read
++5. **Land** only verified work, when authorized. For rework, identify the
++   target session before sending a delta brief. For queues, read
 +   [multi-task-queues.md](references/multi-task-queues.md).
 +
 +## Approval modes and limits
@@ -342,10 +342,10 @@ index 0000000..701fc7d
 +workspace containment. Plan can be downgraded by settings and is not enforced as
 +read-only by this relay. Approval mode in the result is the **requested** mode.
 +
-+Resume selectors are intentionally limited to the help-documented latest/index
-+forms. `sessionId` is captured for diagnostics, not accepted as a relay resume flag.
-+Gemini may start a new session when `latest` finds none; `resumed` records the
-+request, not proof that earlier context was loaded.
++Resume selectors use the help-documented latest/index forms. Re-list sessions in
++the target project before picking an index; recorded `sessionId` is diagnostic,
++not an accepted resume flag. `latest` can start fresh when no session exists;
++`resumed` records the request, not proof prior context was loaded.
 +
 +## Result contract and artifacts
 +
@@ -422,7 +422,7 @@ index 0000000..7c4807f
 +   exclusions, real gates, no-commit/no-push instructions, and report contract.
 +2. Dispatch in the correct `--cd`, wait, read the result, and inspect the diff.
 +3. Re-run gates and resolve failures before starting the next task. Send a delta
-+   brief to the same project/session index if further work is required.
++   brief to the intended session after rechecking the project session index.
 +4. Land authorized, verified work yourself; otherwise leave it uncommitted and
 +   record the boundary for the next task. Never overwrite pre-existing changes.
 +
@@ -459,9 +459,9 @@ index 0000000..8089ac1
 +4. Re-run the exact project gates yourself, not just commands mentioned in the
 +   report. Review production code, tests, and docs with relevant guard skills if
 +   installed. Inspect `events.jsonl` for denied actions or recovered tool errors.
-+5. If incomplete, send a narrow delta brief with `--resume <index>` or
-+   `--resume-last` in the same project. Preserve all scope and safety constraints;
-+   re-review the whole resulting diff. Use a fresh brief if session context is uncertain.
++5. If incomplete, re-list the target project's sessions and identify the intended
++   index before `--resume <index>`; use `--resume-last` only when unambiguous.
++   Preserve scope, re-review the diff; if continuity is uncertain, use a fresh brief.
 +
 +Only **land** when the result is verified and the user authorized it. The relay
 +never runs commit or push; an implementer could attempt them through its tools,

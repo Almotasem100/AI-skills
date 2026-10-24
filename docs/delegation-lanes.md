@@ -1,8 +1,8 @@
 # Delegation lane roles (portable semantics)
 
-This catalog documents the **intended semantic responsibilities**, not live workstation configuration. A lane is a configurable execution route for a specialist responsibility; the skill defines the process. Do not lock model, provider, effort, promotional availability or fallback to a stable role name. The orchestrator coordinates the workflow; it need not perform every specialist task.
+This catalog documents the **intended semantic responsibilities**, not live workstation configuration. In explicitly activated Delegation Mode, a lane is a configurable execution route for a specialist responsibility; the skill defines the process. Standard Mode requires no delegation routing. Do not lock model, provider, effort, promotional availability or fallback to a stable role name. The orchestrator coordinates and verifies; specialists own their deliverables.
 
-The lane names below describe semantic responsibilities, not a claim about any workstation's live configuration. Local lane additions and renames must be configured and verified separately. Not every task uses every lane.
+The lane names below describe semantic responsibilities, not a claim about any workstation's live configuration. Local lane additions and renames must be configured and verified separately. Not every task uses every lane. Verify the actual lane inventory before declaring a role missing. An explicit owner selection of a different available route is a task-scoped override, not a rename or redefinition of the lane's semantic role.
 
 | Lane | Responsibility | Workflow use / boundary |
 | --- | --- | --- |
@@ -15,15 +15,26 @@ The lane names below describe semantic responsibilities, not a claim about any w
 | `write-api-regression-tests` | Author executable API regression tests | During relevant implementation/verification slices; tests must be checked/run through deterministic actions when authorized. Distinct from QA scenarios. |
 | `implement-code` | Bounded code implementation | Uses approved plan and scoped source; one mutation owner per change, with deterministic checks and independent review when warranted. |
 
+## Role-to-capability mapping
+
+A semantic lane identifies **who owns an outcome**, not an immutable skill name. At dispatch, discover the currently available appropriate skill(s) or equivalent approved capability for the role, communicate the expected output, applicable canonical project policy paths and evidence checks, and verify activation/execution rather than assuming installation. A replaced or renamed skill should not require a change to the Full Feature contract. Do not pretend a missing skill or guard ran; follow the approved routing/recovery boundaries.
+
 ## Typical adaptive feature path
 
 1. Orchestrator collects/clarifies evidence; optionally creates one feature `task-context` working synthesis (not a project-of-record specification).
 2. `draft-feature-design` invokes `create-lld` from task context and primary evidence; produces feature LLD and Functional Design when required. Existing `draft-functional-docs` handles separate functional-document updates rather than duplicate feature deliverables.
-3. `write-plan` creates the implementation plan from task context plus design. A separate stage does not require a new lane or a replay of all source evidence.
-4. `challenge-plan` invokes `plan-review` for one-shot independent findings **or** participates as challenger in `plan-debate` with the plan author. `challenge-complex-plan` is optional escalation. Simple tasks may skip debate, and both reviews are not mandatory in sequence.
+3. `write-qa-scenarios` prepares feature-level QA scenarios once behavior is sufficiently settled, before implementation planning by default. Report unresolved behavior rather than invent it.
+4. In Delegation Mode the configured planner (`write-plan` in the current catalog) owns the implementation plan, using task context, scenarios, applicable approved design and engineering conventions. An explicit task-scoped user exception can assign plan authorship to the orchestrator without changing the session mode.
+5. By default the orchestrator applies available `plan-review` guidance to critically review the planner's output and routes findings to the same plan author for disposition. `plan-debate` structures a requested or materially warranted author/challenger exchange; a separate `challenge-plan` reviewer is optional unless required by the project or owner, and `challenge-complex-plan` is additional escalation. Do not treat the orchestrator's requirements-derived perspective as fully independent or stack redundant reviews.
 If planning reveals a consequential unresolved owner decision or invalid approved premise, pause only the affected planning work, route the issue to targeted clarification, reconcile relevant context/design, and resume. A plan is ready for implementation when material requirements and design decisions are resolved and the work is authorized; a technically complete plan may still have an identified approval pending. New components or architecture may be planned when justified, while routine technical discretion remains with the implementer. Route review findings to the plan author for reasoned disposition rather than mechanically applying them.
 
-5. `write-qa-scenarios` prepares feature QA behavior when useful; `implement-code` owns bounded code changes; `write-api-regression-tests` authors executable regression checks as relevant. Deterministic verification is an action, not a separate agent role.
+6. `implement-code` owns bounded code changes; `write-api-regression-tests` authors executable regression checks as relevant. Production/test-code guards and relevant project conventions apply to the change and to review, independently of whether they were named in the plan. Deterministic verification is an action, not a separate agent role. Track required feature outcomes (including applicable design, QA and review) to verified acceptance or explicit omission, not merely relay completion.
+
+## Routing fallback and assignment lifecycle
+
+Resolve the configured specialist route first. A missing/failed route warrants diagnosis; in interactive work, request owner direction before unapproved substitution. Only explicit unattended-continuation authorization permits a suitable configured default route as fallback, preserving task scope, independent-review requirements and project gates. Do not automatically equate a default model with a qualified reviewer or silently reconfigure lanes.
+
+Keep a specialist's bounded assignment open through its required review, findings disposition, corrections and acceptance. Reuse a valid child session when the relay supports continuation, otherwise restart the same semantic role from authoritative artifacts. Do not require idle child processes to remain alive or generate a permanent session ledger.
 
 ## File-first handoff, review output and local lifecycle
 

@@ -1,5 +1,9 @@
 # Roadmap — status, next steps, open decisions
 
+## Workflow V3 candidate — feature delivery contract (branch only, 2026-10-24)
+
+On `feature/workflow-v3-adaptive-modes` (not merged), established Standard/Delegation Mode separation and added the proposed Full Feature default outcomes: clarification; context synthesis when justified; applicable Functional Design/LLD; QA scenarios before planning; implementation plan; review; implementation/verification; code review; authorized PR/closeout. Explicit task omissions and project gates remain controlling; delivery is adaptive and skills are discoverable/replacable capabilities rather than fixed phase names. Canonical project conventions and approvals must be accessible to planning, implementation and review delegates; acceptance tracks actual deliverables/checks, not relay success. **Decision 2026-10-24:** Option C selected: configured delegated planner authors the implementation plan; orchestrator applies plan-review guidance and coordinates reasoned author revisions. Additional independent plan review is optional unless required; owner may authorize a bounded self-planning exception without switching Delegation Mode. Caller diff inspection and authorized commits complement, not replace, independent code review and publication gates. No native host/relay behavior validation or merge has been performed for V3. Independent HDC-compatibility and Gemini/skill-refinement branches remain separate.
+
 ## Approved PR #4 workstation synchronization — 2026-10-16–17
 
 Local `master` and `origin/master` match approved merge `6e970db9962ff520d18f33d7edb55d91fbf0c0ea`. The eight first-party skill trees and canonical global instructions were synchronized; OpenCode v2.0.29 successfully loaded the installed `plan-review` skill.

@@ -24,7 +24,7 @@
 <!-- What must be verified; do not claim tests have passed here unless supported by evidence. -->
 
 ## Decisions
-<!-- Settled choices. Include decision owner/source when useful. -->
+<!-- Settled choices. Include decision owner/source when useful. Preserve the original clarification question and answer when losing their pairing would distort a material decision; don't reproduce an entire interview transcript. -->
 
 ## Non-goals / excluded scope
 <!-- Explicit exclusions so downstream roles do not widen the task. -->
@@ -37,6 +37,9 @@
 
 ## Unresolved questions / blockers
 <!-- Consequential gaps that still need resolution. -->
+
+## Author observations / recommendations (optional; not approved decisions)
+<!-- Useful interpretations, proposed approaches and tradeoffs from the context author. Mark as non-authoritative, with evidence references where consequential. Omit if unnecessary. -->
 
 ## Source map
 <!-- Short pointers to authoritative sources used: ticket, requirement artifact, decision doc, screenshot set, etc. -->

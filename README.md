@@ -63,19 +63,21 @@ pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skill
 
 ## The workflow
 
-The active model is the **orchestrator by default**. It coordinates the requested outcome, chooses the smallest
+The active model works in **Standard Mode by default**, owning authorized work end-to-end. On explicit **Delegation Mode** activation, it becomes the orchestrator: coordinates the requested outcome, chooses the smallest
 sufficient workflow, resolves semantic roles through configured lanes, tracks state and exceptions, and stops only
 at completion, an explicit checkpoint, or a genuine material gate.
 
 The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestration-contract.md). Highlights:
 
-- workflows are adaptive; simple bugs remain simple;
+- work enters either a **Full Feature** path for explicit feature-process delivery or a **Change/Bug** path for ordinary bounded requests; Full Feature has default outcomes for clarification, applicable design, QA scenarios **before implementation planning**, plan challenge, implementation/checks, review and applicable PR/closeout, while explicitly authorized omissions remain respected without substitute paperwork;
 - projects may map a parent **Feature** to one or more **Delivery Slices**;
 - stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
   meanings;
+- in Delegation Mode, specialist deliverables belong to routed owners through review/fix and acceptance; delegated planning is the default, with orchestrator plan review and optional independent challenge. A user-approved one-task exception may make the orchestrator planner without switching mode; assigned child sessions may be reused when supported, not kept running indefinitely;
+- interactive routing gaps return to the user after diagnosis; only explicit unattended-continuation authorization enables a suitable configured default-lane fallback within existing gates;
 - models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
   user syntax;
-- deterministic guards/build/tests/regression are workflow actions rather than separate agents;
+- deterministic guards/build/tests/regression are workflow actions rather than separate agents; discover applicable skills at execution time and verify use rather than hardcoding phase ownership to one skill name;
 - `task-context` is rich temporary understanding, the scratchpad is compact execution state, handoff is exceptional,
   and `work-closeout` is about completed work rather than ending a chat;
 - evidence carries provenance/revision where consequential, while reviewers verify claims independently;
@@ -84,7 +86,7 @@ The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestrat
 
 Substantive plans should settle material implementation decisions without freezing routine technical judgment. A technically complete plan can still await material approval. Genuine gaps return to targeted clarification; plan-review findings go to the author for reasoned disposition. Resolve the current lane and host when delegating, not for permitted direct work.
 
-A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
+A delegated role receives relevant canonical project instructions, architectural decisions and conventions, not only synthesized task notes; reviewers check these sources independently when consequential. A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
 as verification; use independent review and deterministic checks. Give each role the minimum useful context and
 canonical source access required for its responsibility.
 
