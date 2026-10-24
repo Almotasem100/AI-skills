@@ -82,6 +82,11 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 
 When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Identify applicable project instruction sources, architecture decisions, engineering conventions, and verification expectations for that role; provide paths/source access rather than copying their full contents. The specialist must inspect relevant canonical rules itself and not treat task-context, a plan or a prior agent's interpretation as the sole authority. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
 
+For implementation-plan assignments, explicitly point the planner to this contract's **Planning convergence**
+section and the applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions.
+The planner must read those sources directly before drafting; the orchestrator checks source access and the
+resulting blueprint, not merely that paths were mentioned in the dispatch.
+
 In Delegation Mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured lane inventory and verify host/relay/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Standard Mode and explicitly authorized one-task direct work need not resolve a delegation lane.
 
 When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
@@ -105,6 +110,12 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
 ## Planning convergence
 
 For substantive work, grilling/clarification should settle consequential owner-level behavior and scope choices before dependent design and planning are called complete. The plan should be an actionable implementation blueprint: approved behavior, intended new or changed components and architectural boundaries when relevant, execution sequence/dependencies, and appropriate verification, with routine engineering decisions left to the implementer. Do not require an exhaustive script for every code edit.
+
+Ground the blueprint in relevant current source and approved design: identify actual or proposed modification
+surfaces, interfaces and reuse decisions as precisely as evidence permits, without inventing paths or signatures.
+Order independently reviewable slices by real prerequisites, with an actionable next slice, completion criteria and
+verification linked to applicable requirements and QA scenarios. Surface material assumptions and owner decisions;
+do not turn routine reversible coding choices into approval gates or duplicate whole upstream artifacts.
 
 Distinguish **ready to implement** (a sufficient blueprint with required decisions settled and execution authorized), **decision pending** (a sufficient blueprint exists, but a material approval is still required), and **blocked** (missing consequential requirements, evidence or design decisions prevent a dependable blueprint). A plan may explicitly introduce justified new components or architecture; the implementer must not invent unapproved material decisions. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
 
