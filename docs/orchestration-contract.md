@@ -11,12 +11,30 @@ abstractions onto their own ticket systems, environments, architecture, commands
   quality, task risk, cost, latency, context capacity and availability; resource awareness must not silently change
   the semantic role or bypass project/provider constraints.
 - Choose between two adaptive entry paths: **Full Feature** for clear intent to deliver through the project's feature process (potentially several delivery slices), and **Change/Bug** by default for direct bounded fixes or changes. A ticket ID or existing input folder alone does not prove Full Feature intent; ask only when the distinction is materially unclear. Neither path is a rigid sequence.
-- Apply project-required activities unless a task-specific exception is explicitly authorized. Honor selected omissions without generating substitute paperwork; skipping a document does not waive consequential design reasoning, applicable verification or a separate approval gate. An agent can revise the approach when material evidence changes, without silently overriding the user's selected scope.
+- In Full Feature, account for the default feature deliverables in **Full Feature delivery contract** below; do not drop one merely because no one named its skill. Apply project-required activities unless a task-specific exception is explicitly authorized. Honor selected omissions without generating substitute paperwork; skipping a document does not waive consequential design reasoning, applicable verification or a separate approval gate. An agent can revise the approach when material evidence changes, without silently overriding the user's selected scope.
 - Authorization is an envelope around the requested outcome and scope. Routine planning, implementation,
   deterministic verification, review, bounded fixes and state updates may continue inside that envelope.
 - Explicit user checkpoints and project-specific material gates always win.
 - Think independently: challenge weak premises and choose routine technical means within the agreed outcome.
   Plans reduce unresolved choices, but do not replace implementation judgment when new evidence appears.
+
+## Full Feature delivery contract
+
+For clear Full Feature delivery intent, cover these **default outcomes** unless the owner explicitly omits an applicable deliverable or the project explicitly makes it inapplicable:
+
+1. **Intake and clarification:** inspect the current project state and available requirements/visual/code evidence; resolve consequential owner-level ambiguities through focused grilling.
+2. **Working context:** synthesize one feature-level evidence map when fragmented inputs or downstream consumers justify it; do not create a task-context file just to satisfy a checklist.
+3. **Feature design:** produce the project's applicable Functional Design and forward LLD before dependent implementation planning. A project may define which design artifacts are required.
+4. **QA scenarios:** prepare feature-level, tester-facing behavioral scenarios from sufficiently settled requirements and design **before implementation planning**; do not conflate scenarios with executable tests.
+5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification. The ownership of this stage remains governed by the session mode/current role policy; this contract does not decide whether the orchestrator or a delegated specialist authors it.
+6. **Plan challenge/acceptance:** apply the agreed plan-review responsibility and resolve material findings before relying on the plan; do not automatically duplicate one-shot review and debate.
+7. **Implementation and checks:** implement authorized delivery slices, run appropriate tests/builds/regressions and applicable quality guards.
+8. **Code review and corrections:** perform independent review when required by project policy or risk, return attributable findings to the author, and verify corrections.
+9. **Publication and closeout:** create the appropriate PR description and reconcile completed feature state when applicable, without treating preparation as permission to push, merge, deploy or destroy working files.
+
+These are **outcome obligations, not a rigid execution order or named-skill dependencies**. Respect genuine prerequisites; independent preparation may overlap. If QA behavior cannot yet be settled, record the blocker and resume it before dependent planning is declared ready. Standard Mode may perform work directly; Delegation Mode resolves applicable specialist ownership. For a Change/Bug, use only the proportionate activities and project gates.
+
+At the outset record expected deliverables, explicit omissions and material gates in the existing compact working state when one exists. At meaningful transitions record what is complete, pending, blocked or explicitly omitted, with relevant evidence and the next action. The orchestrator checks completion; it does not manufacture artifacts for omitted stages. Do not declare the Full Feature complete while a required outcome is silently missing.
 
 ## Work hierarchy
 
@@ -62,7 +80,7 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 
 ## Delegation handoffs and configured lane roles
 
-When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
+When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Identify applicable project instruction sources, architecture decisions, engineering conventions, and verification expectations for that role; provide paths/source access rather than copying their full contents. The specialist must inspect relevant canonical rules itself and not treat task-context, a plan or a prior agent's interpretation as the sole authority. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
 
 In Delegation Mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured lane inventory and verify host/relay/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Standard Mode and explicitly authorized one-task direct work need not resolve a delegation lane.
 
@@ -175,6 +193,8 @@ The feature plan should record slice dependencies so branch selection is mechani
 `qa-scenarios` specifies user-visible behavior for QA preparation; it does not execute tests. It is normally
 feature-level and should be created once behavior is sufficiently stable, before implementation when useful. Scenarios
 may map to delivery slices so the team knows when each becomes testable.
+
+Use the applicable installed skills and quality guards for each responsibility, confirming actual availability and invocation rather than assuming a catalog entry ran. The mapping from phase to skill is replaceable configuration/discovery, not a permanent dependency on a specific skill name. For changed production code apply relevant code-quality checks; for changed tests apply relevant test-quality checks; for review evaluate project conventions and the actual diff, not merely whether the plan was followed. An unavailable required check is reported as unverified, not claimed complete. Do not redundantly rerun an already evidenced check solely because an orchestrator receives the artifact.
 
 Unit tests, builds, guards, API regression and environment checks are implementation verification layers. A cumulative
 API regression suite is extended by relevant slices and rerun when applicable. Report local, deployed-environment and
