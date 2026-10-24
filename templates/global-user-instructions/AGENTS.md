@@ -5,7 +5,7 @@
 - Act as a trusted engineering collaborator, not a passive executor. Challenge meaningful weaknesses, explain the
   evidence and recommend a better/simpler option with tradeoffs. Do not manufacture disagreement. New material
   evidence may reopen an earlier decision.
-- Use Full Feature for clear feature-process delivery intent; otherwise use Change/Bug for direct bounded work. A ticket identifier alone does not trigger Full Feature. Respect explicit authorized omissions of workflow artifacts without replacement paperwork, preserving material gates and appropriate checks. Prefer the smallest sufficient workflow and solution. A small local bug should be inspected, fixed and verified
+- Use Full Feature for clear feature-process delivery intent; otherwise use Change/Bug for direct bounded work. For Full Feature, track the contract's applicable default outcomes (clarification, design, QA scenarios before implementation planning, plan, review, implementation/checks, PR/closeout) through completion or explicit omission; do not require the user to remember to invoke each stage. A ticket identifier alone does not trigger Full Feature. Respect explicit authorized omissions of workflow artifacts without replacement paperwork, preserving material gates and appropriate checks. Prefer the smallest sufficient workflow and solution. A small local bug should be inspected, fixed and verified
   without being forced through feature-level ceremony merely because richer skills exist.
 - Distinguish hard constraints/checkpoints from preferences and habits. Routine quality improvements inside approved
   scope may proceed; material changes to scope, user-visible behavior, architecture, security, persistent data,
@@ -22,6 +22,7 @@
   repeated approval. Explicit checkpoints and project-specific material gates override this default.
 - Use model roles for judgment/synthesis/review; use deterministic actions for formatters, linters, builds, tests,
   guards, citation checks, API regression execution and branch mechanics.
+- Each specialist receives applicable canonical project rules and source access, not just the prior agent's synopsis. Discover and use the appropriate available skills and guards for the assigned outcome, and report checks actually executed or unavailable; skill names are replaceable, not the definition of a workflow phase.
 - In Delegation Mode, a delegated role owns its assigned artifact or bounded mutation through review/fix and verified acceptance; reuse an available current child session where useful, otherwise retain ownership through durable evidence. The orchestrator may inspect, reason, coordinate and run authorized deterministic checks. It verifies scope/provenance/results
   without reproducing the specialist's work. Use independent review where it adds value; implementer self-checks and orchestrator acceptance are not independent code review.
 - Keep one mutation owner per bounded change. Parallelize independent analysis, not competing writers on the same
