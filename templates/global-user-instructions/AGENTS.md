@@ -58,7 +58,7 @@
   require a scratchpad, task-context, PDF, formal plan or delegation ceremony for a simple task that does not need it.
 - When a project uses a feature hierarchy, `task-context` is rich temporary feature understanding and the scratchpad
   is compact execution state. Keep only objective, active item/stage, completed work, material decisions, blockers,
-  verification state and next action in the scratchpad.
+  verification state and next action in the scratchpad. When the user explicitly chooses a session mode, record and preserve it in an existing active scratchpad across compaction/model changes; a one-task exception does not switch modes. Do not inherit mode authorization from an older session or create a scratchpad just for this field.
 - A new chat/model is a runtime transition, not completion and not automatically a handoff. Use handoff only when a
   genuine transfer/pause needs an extra briefing. Use work-closeout only when bounded work is actually complete and
   durable reconciliation/cleanup is useful.
