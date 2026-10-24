@@ -1,5 +1,9 @@
 # Roadmap — status, next steps, open decisions
 
+## Approved security-audit workflow synchronization — 2026-10-25
+
+Fast-forwarded local `master` to merged PR #8 at `32b31102f58e91264f29a44da86201e45c443147`. Synchronized only `skills/security-audit/SKILL.md` into the existing `~/.agents/skills/security-audit/` and `~/.claude/skills/security-audit/` installations; source/install content parity verified. The orchestration-contract additions were verified in the canonical document. Global-instruction template and mirrors were already aligned and required no change. No native audit trial was run, per request.
+
 ## Session-mode continuity refinement — 2026-10-24
 
 On merged V3 `master`, clarified that an already-used project scratchpad records the user's explicitly selected active session mode and preserves it across compaction/model changes in the same session. A task-scoped exception does not change mode; an older session's scratchpad does not authorize Delegation Mode for a new session. No new scratchpad is required solely for this field. Documentation-only change; no native host retest or workstation instruction re-sync performed in this update.
