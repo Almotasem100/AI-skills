@@ -34,7 +34,7 @@ factual premises carry source locators where useful. Unknowns stay unknown.
 
 ### 2. Challenge
 Give the reviewer the plan, requirements/scope, relevant design constraints and source access needed to verify
-material premises. Avoid persuasive author framing. Ask for numbered findings with:
+material premises. Avoid persuasive author framing and collect the reviewer's initial evidence-grounded findings before sharing an author's defense or starting response rounds; this is a critique of the plan, not a request to redesign the feature independently. Ask for numbered findings with:
 - classification: **Observed contradiction**, **Concern**, or **Unsupported assertion**;
 - evidence locator/revision or explicit evidence gap;
 - impact;
