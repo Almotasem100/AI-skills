@@ -51,10 +51,12 @@ without exposing such data, stop that inspection and report the limitation.
    user-provided summary or excerpt whose original was not inspected. Never invent a locator. When no precise
    locator is available, say so and request it for verification instead of presenting the claim as confirmed.
    Avoid quoting sensitive lines even when citing their location.
-5. Classify each finding by both severity (critical, high, medium, low, or informational, based on conditional
-   impact and likelihood supported by evidence) and evidence status:
-   - **Confirmed vulnerability:** the inspected material establishes the flawed path and necessary conditions;
-     no claim of a live exploit unless independently established.
+5. Classify each finding by evidence status; assign vulnerability severity (critical, high, medium, low, or
+   informational) only to confirmed vulnerabilities, based on supported impact and likelihood. For other statuses,
+   describe potential impact and validation priority without implying a confirmed vulnerability:
+   - **Confirmed vulnerability:** inspected evidence establishes the lower-trust actor or input, the control or
+     trust boundary it crosses, the affected resource or principal, the flawed enforcement path, and the concrete
+     security consequence under the necessary conditions. Do not claim a live exploit unless independently established.
    - **Likely risk:** a plausible harmful path is supported, but a key condition or control remains unverified.
    - **Defense-in-depth concern:** a weaker safeguard or hardening opportunity without evidence of a currently
      exploitable path.
@@ -71,8 +73,9 @@ without exposing such data, stop that inspection and report the limitation.
 - **Scope and evidence:** change reviewed, approved requirements available or missing, inspected sources with
   locators, and supplied summaries/excerpts not independently verified. Keep source descriptions free of values
   that could expose secrets or customer data.
-- **Findings (highest severity first):** severity + evidence status, concise issue, precise evidence locator(s)
-  or explicit locator gap, impact, necessary conditions and uncertainty, and smallest validation/fix. For a
+- **Findings (confirmed severity first, then validation priority):** evidence status, severity only for confirmed
+  vulnerabilities, concise issue, precise evidence locator(s) or explicit locator gap, impact, necessary conditions
+  and uncertainty, and smallest validation/fix. For a
   conflict with an approved requirement, cite the requirement and observed source separately. Make no compliance
   verdict.
 - **Coverage and limits:** applicable areas examined, not-applicable areas with reasons when relevant, unreviewed
