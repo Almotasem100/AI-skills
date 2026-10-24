@@ -73,7 +73,7 @@ The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestrat
 - projects may map a parent **Feature** to one or more **Delivery Slices**;
 - stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
   meanings;
-- in Delegation Mode, specialist deliverables belong to routed owners through review/fix and acceptance; assigned child sessions may be reused when supported, not kept running indefinitely;
+- in Delegation Mode, specialist deliverables belong to routed owners through review/fix and acceptance; delegated planning is the default, with orchestrator plan review and optional independent challenge. A user-approved one-task exception may make the orchestrator planner without switching mode; assigned child sessions may be reused when supported, not kept running indefinitely;
 - interactive routing gaps return to the user after diagnosis; only explicit unattended-continuation authorization enables a suitable configured default-lane fallback within existing gates;
 - models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
   user syntax;
