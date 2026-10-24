@@ -62,12 +62,13 @@ The synthesis should cover, when applicable:
 5. **UX / visual conclusions** — only the relevant conclusions from screenshots, Figma, CSS, etc.
 6. **Technical constraints / boundaries** — architecture, API, data, security, compatibility or platform facts.
 7. **Acceptance criteria / verification expectations**.
-8. **Decisions already made** — including the decision owner where relevant.
+8. **Decisions already made** — including the decision owner where relevant; preserve consequential owner answers to clarification questions and what question they resolved.
 9. **Non-goals / explicitly excluded scope**.
 10. **Estimates / targets / measurements** — preserve their status exactly.
 11. **Assumptions**.
 12. **Unresolved questions / blockers**.
-13. **Source map** — concise pointers to the authoritative evidence used.
+13. **Author observations / recommendations (optional, non-authoritative)** — useful proposed approaches and interpretations, clearly separate from approved decisions and observed constraints.
+14. **Source map** — concise pointers to the authoritative evidence used.
 
 Omit empty sections rather than filling them with noise.
 
@@ -100,7 +101,7 @@ When two sources conflict, record the conflict and source pointers. Do not silen
 - Prefer the most authoritative/current source when several repeat the same fact, but note meaningful conflicts.
 - Do not invent business rationale from implementation details.
 - Do not invent expected behavior from the current code when requirements are missing.
-- Do not turn implementation observations into approved requirements.
+- Do not turn implementation observations, the synthesis author's recommendations, or inferences from grilling into approved requirements. Where a consequential clarification answer could be misunderstood without its question, preserve the question-answer pair or an unambiguous decision summary with its source.
 - Sensitive inputs remain subject to project data-sharing rules; never copy secrets or credentials.
 
 ## Questions and grilling
@@ -138,4 +139,4 @@ Examples:
 - **implementer:** task context + approved plan + relevant source access -> bounded code change.
 - **describe-pr:** task context for the Why, git/diff for What changed, verification evidence for Testing.
 
-A downstream role must still verify consequential claims against canonical sources when precision matters.
+A downstream role must still verify consequential claims against canonical sources when precision matters. Treat context-author recommendations as proposals to assess, not as binding requirements; do not discard useful prior analysis merely because it is non-authoritative.
