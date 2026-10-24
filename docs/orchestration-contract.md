@@ -91,8 +91,7 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
 ## Context and continuity
 
 - `task-context` is optional rich temporary understanding, normally owned by the feature when a feature exists.
-- The project scratchpad is compact execution/resume state: current objective, active work item, stage, completed
-  work, material decisions, blockers, verification state and next action.
+- The project scratchpad is compact execution/resume state: current objective, active work item, **explicitly selected session mode** (when known), stage, completed work, material decisions, blockers, verification state and next action. Preserve that mode across compaction and model changes within the same session. A task-scoped exception does not switch it; only a new explicit user selection does. On a new session, do not infer mode authorization from an older scratchpad. Do not create a scratchpad solely to record the mode.
 - A new chat/model is only a runtime transition. It requires neither handoff nor closeout when normal state is current.
 - `handoff` is exceptional: use it for genuine transfer friction, a deliberate pause, or another environment/owner
   that cannot efficiently reconstruct the work from the normal artifacts.
