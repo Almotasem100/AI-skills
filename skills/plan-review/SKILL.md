@@ -17,7 +17,7 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
   or review exchange.
 - Read applicable project instructions and the relevant authoritative sources clearly referenced by the plan.
   Keep the search within scope. If a source is unavailable, identify the gap rather than guessing.
-- Distinguish working notes/summaries from authority. Preserve source locators and revision/state for consequential
+- Distinguish working notes/summaries and their author's recommendations from approved requirements or decisions. Preserve source locators and revision/state for consequential
   claims when useful; a locator is navigation to evidence, not proof of the interpretation.
 - This skill is read-only. It does not edit the plan, project scratchpad, handoff, code or durable project documents.
   Use enforced read-only access or an immutable snapshot only when a real containment boundary requires it.
