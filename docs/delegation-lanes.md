@@ -15,15 +15,20 @@ The lane names below describe semantic responsibilities, not a claim about any w
 | `write-api-regression-tests` | Author executable API regression tests | During relevant implementation/verification slices; tests must be checked/run through deterministic actions when authorized. Distinct from QA scenarios. |
 | `implement-code` | Bounded code implementation | Uses approved plan and scoped source; one mutation owner per change, with deterministic checks and independent review when warranted. |
 
+## Role-to-capability mapping
+
+A semantic lane identifies **who owns an outcome**, not an immutable skill name. At dispatch, discover the currently available appropriate skill(s) or equivalent approved capability for the role, communicate the expected output, applicable canonical project policy paths and evidence checks, and verify activation/execution rather than assuming installation. A replaced or renamed skill should not require a change to the Full Feature contract. Do not pretend a missing skill or guard ran; follow the approved routing/recovery boundaries.
+
 ## Typical adaptive feature path
 
 1. Orchestrator collects/clarifies evidence; optionally creates one feature `task-context` working synthesis (not a project-of-record specification).
 2. `draft-feature-design` invokes `create-lld` from task context and primary evidence; produces feature LLD and Functional Design when required. Existing `draft-functional-docs` handles separate functional-document updates rather than duplicate feature deliverables.
-3. `write-plan` creates the implementation plan from task context plus design. A separate stage does not require a new lane or a replay of all source evidence.
-4. `challenge-plan` invokes `plan-review` for one-shot independent findings **or** participates as challenger in `plan-debate` with the plan author. `challenge-complex-plan` is optional escalation. Simple tasks may skip debate, and both reviews are not mandatory in sequence.
+3. `write-qa-scenarios` prepares feature-level QA scenarios once behavior is sufficiently settled, before implementation planning by default. Report unresolved behavior rather than invent it.
+4. The planning owner creates the implementation plan from task context, scenarios and applicable approved design and project engineering conventions. The current V3 routing uses `write-plan` for delegated planning; final planning ownership remains an open design choice, not silently changed by this catalog.
+5. `challenge-plan` invokes `plan-review` for one-shot independent findings **or** participates as challenger in `plan-debate` with the plan author. `challenge-complex-plan` is optional escalation. Simple tasks may skip debate, and both reviews are not mandatory in sequence.
 If planning reveals a consequential unresolved owner decision or invalid approved premise, pause only the affected planning work, route the issue to targeted clarification, reconcile relevant context/design, and resume. A plan is ready for implementation when material requirements and design decisions are resolved and the work is authorized; a technically complete plan may still have an identified approval pending. New components or architecture may be planned when justified, while routine technical discretion remains with the implementer. Route review findings to the plan author for reasoned disposition rather than mechanically applying them.
 
-5. `write-qa-scenarios` prepares feature QA behavior when useful; `implement-code` owns bounded code changes; `write-api-regression-tests` authors executable regression checks as relevant. Deterministic verification is an action, not a separate agent role.
+6. `implement-code` owns bounded code changes; `write-api-regression-tests` authors executable regression checks as relevant. Production/test-code guards and relevant project conventions apply to the change and to review, independently of whether they were named in the plan. Deterministic verification is an action, not a separate agent role. Track required feature outcomes (including applicable design, QA and review) to verified acceptance or explicit omission, not merely relay completion.
 
 ## Routing fallback and assignment lifecycle
 
