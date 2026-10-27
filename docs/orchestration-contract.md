@@ -155,6 +155,16 @@ workflow explicitly grants them authority.
 - Routine review findings return to the implementer for fix/reverify without a new user gate. Material findings that
   change scope, behavior, architecture, security, data or contract boundaries escalate.
 
+### Risk-based design and behavioral review
+
+For consequential changed behavior, reviewers inspect the *reachable* entry point and its path through the relevant owners, rather than inferring acceptance from a correctly behaving helper or a test that calls an unbound method. Select representative normal, failure, retry and navigation/identity-transition paths according to actual risk; trace UI control → handler → state/operation → transport/response where applicable, or HTTP/task entry → domain effect → persistence/side effects. Verify that tests exercise the claimed boundary; tests of an internal method alone do not establish that a visible control or registered endpoint reaches it.
+
+Challenge responsibility boundaries using evidence of current change cost, implicit coupling or duplicated decisions: state what each boundary protects, compare a plausible smaller design and the costs of merging or splitting it. Separate useful complexity (e.g. integrity, authorization, lifetime) from avoidable indirection. A repeated implementation is a candidate for local simplification, not automatic proof that a generic framework is needed.
+
+When approved design supersedes an earlier approach, explicitly inventory previous callers, routes, workers, execution branches, tests and documentation against the new contract. Classify each as active, required historical/compatibility evidence, deliberately deferred, or confirmed obsolete. Do not remove persistence records, incident safeguards or operational reads merely because a browser flow was retired. Mark unresolved disposition as open; no automatic cleanup or new approval ceremony for every routine edit.
+
+Treat these as **risk-proportionate review questions**, not mandatory standalone documents, universal integration-test requirements, or reasons to reopen owner-deferred work. For review-only access, record exactly which claims were source-checked and which need runtime verification.
+
 ## Failure and recovery
 
 Classify failures before changing the wrong layer:
