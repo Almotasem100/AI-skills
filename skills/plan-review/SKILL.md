@@ -47,6 +47,16 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 6. A reviewer may challenge an existing approved choice when new evidence materially undermines its premise, but does
    not execute a material deviation on its own.
 
+## Architecture and transition checks (when applicable)
+
+For a plan that changes architectural responsibilities or replaces an existing workflow:
+
+- Identify the actual owners and relevant current callers from source; challenge unsupported new services, facades, shared primitives or mandatory splitting. Ask what present coupling/change cost the abstraction removes, whether a smaller local design works, and what necessary guarantee could be lost by simplification.
+- If a prior design is superseded, look for an explicit disposition of old execution paths, related tests, readers and documentation: active, compatibility/historical, deferred or obsolete. Do not recommend blind deletion from a filename or apparent non-use.
+- Check that verification reaches the real consumer entry point and meaningful failure/retry/uncertain paths. A tested helper not wired to a visible control, HTTP route or worker is not end-to-end evidence.
+
+Apply only when relevant to the proposed change. Record specific concerns with evidence; do not create additional checklists or a blanket refactoring requirement.
+
 ## Response
 
 Return a concise review to the calling workflow (directly by default, or through the optional designated Markdown artifact):
