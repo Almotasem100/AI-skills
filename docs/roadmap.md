@@ -1,5 +1,25 @@
 # Roadmap — status, next steps, open decisions
 
+## Native feedback fixes and hypothetical walkthrough — 2026-10-30 (branch work)
+
+The owner's Luna report for `e8258fa` records three native relay passes, three skill-output acceptances and the
+bounded implementation check. Its separate overlay parity check exposed a syntax defect. Corrected the overlay's
+parity-test patch by removing an accidental BOM before its shebang and a literal backslash-n at EOF; relay runtime
+source and the pinned base are unchanged. Added a regression that applies the overlay and runs the parity script.
+
+GUIDE now points to a concrete disposable overlay preparation/verification procedure and installs matching enhanced
+`delegate-setup` + `gemini-delegate` together. It refuses to replace an existing Gemini-enabled setup with the plain
+vendor copy accidentally. No host installation was changed here.
+
+The native pack now generates an explanation-only Full Feature walkthrough using installed instructions and actual
+routes, with a separate review rubric and `needs-review` output status. It dispatches no models and executes no
+feature work. `plan-debate` remains unchanged/parked; the workflow policy was not redesigned.
+
+Validation: 17/17 combined offline checks passed; corrected overlay applicability, JavaScript syntax and full parity
+passed in a disposable vendor copy. Focused Gemini/package-shape/syntax fake-CLI smoke was all green. These are
+cloud/Linux source and fake-CLI checks, not a rerun of the owner's native provider tests or the new walkthrough.
+The updated PowerShell setup block and hypothetical model answer still need owner-environment execution.
+
 ## Reusable native setup smoke pack — 2026-10-30 (branch work)
 
 Added `test/native-smoke/` with a separate test-only lane map, a dependency-free Node driver, explicit session-run

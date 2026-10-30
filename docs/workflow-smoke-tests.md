@@ -21,6 +21,11 @@ Do not change persistent lane configuration, publish or deploy as part of these 
 | 4. Same-session resume | After case 3, compact context using the host's normal mechanism, then say “Continue the previous task; report current execution state and next action.” | Retains the explicitly selected profile and task evidence in the same session. Do not confuse this with a new window. |
 | 5. New-session boundary | New window, shared setup and an old working record mentioning the profile. “Read this old record for task context. Use plan-review on the plan in case 2; report findings here.” | Old records alone do not activate our profile. This does not restrict any independently selected execution arrangement. |
 
+The reusable pack also generates `WALKTHROUGH.md`: a hypothetical Full Feature ticket requiring the model to
+explain stages, ownership, actual routes, reviews, gates and completion. It reads configuration but performs no
+feature work or delegate calls. Review its answer using `test/native-smoke/README.md`; this tests understanding,
+not end-to-end execution.
+
 `plan-debate` is excluded from this change's behavioral trials while its existing participant/lane contract is
 parked for separate discussion. Its skill source is unchanged. Other multi-participant review skills retain their
 own requirements; `debate-review` needs the optional relays and its two configured review lanes.

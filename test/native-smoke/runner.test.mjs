@@ -58,6 +58,11 @@ test('workflow verifier catches original bug and test tampering, then runs the a
     assert.equal(preparation.status, 2);
     const runDir = preparation.stdout.match(/Run directory: (.+)/)[1].trim();
     try {
+      const walkthrough = readFileSync(join(runDir, 'WALKTHROUGH.md'), 'utf8');
+      assert.doesNotMatch(walkthrough, /\{\{[A-Z_]+\}\}/);
+      assert.match(walkthrough, /use AI Skills delegation mode/);
+      assert.match(walkthrough, /Do not\s+run any delegate\/model calls/);
+      assert.match(readFileSync(join(runDir, 'TASKS.md'), 'utf8'), /Hypothetical full-feature walkthrough/);
       const verify = () => spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });
       assert.equal(verify().status, 1); // Original helper incorrectly includes pending rows.
       writeFileSync(join(runDir, 'workflow/total.mjs'), 'export const totalApproved = items => items.filter(item => item.approved === true).reduce((n,item) => n+item.amount,0);\n');
@@ -65,6 +70,10 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       const summary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
       assert.equal(summary.sessionCases.find(item => item.case === 'workflow-tests').status, 'passed');
       assert.ok(summary.sessionCases.filter(item => item.case !== 'workflow-tests').every(item => item.status === 'skipped'));
+      writeFileSync(join(runDir, 'responses/workflow-walkthrough.md'), 'A walkthrough still requires semantic review.');
+      verify();
+      const reviewedSummary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
+      assert.equal(reviewedSummary.sessionCases.find(item => item.case === 'workflow-walkthrough').status, 'needs-review');
       writeFileSync(join(runDir, 'workflow/total.test.mjs'), '// disabled\n');
       assert.equal(verify().status, 1);
     } finally { rmSync(runDir, { recursive: true, force: true }); }

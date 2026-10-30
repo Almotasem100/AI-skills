@@ -188,11 +188,27 @@ Earlier copy commands were exercised on Windows, but this revised choice/compani
 run on the owner's hosts. Verify installed content and host loading after setup; source checks alone do not prove it.
 The documented block is setup guidance, not a new standalone installer.
 
+**For Gemini CLI delegation:** first follow
+[`overlays/gemini-delegate/README.md`](overlays/gemini-delegate/README.md#prepare-gemini-enabled-installation-from-this-repository)
+to prepare and verify `$geminiSource`, then run the copy block with delegation selected. That source supplies the
+matching enhanced setup and Gemini relay. Keep the variable in this PowerShell session; do not reset it before copying.
+
 ```powershell
 $setup   = "C:\path\to\AI-skills"
 $targets = "$HOME\.claude\skills", "$HOME\.agents\skills"
 $withDelegation = (Read-Host "Install delegation components too? [y/N]") -match '^(?i:y|yes)$'
+if (-not (Get-Variable geminiSource -ErrorAction SilentlyContinue)) { $geminiSource = $null }
 $withPlanDebate = (Read-Host "Also install plan-debate with its existing participant/lane requirements? [y/N]") -match '^(?i:y|yes)$'
+
+# If Gemini delegation is wanted, prepare $geminiSource via the overlay README first.
+# Otherwise leave it unset/null. Validate the prepared source before any copies.
+if ($withDelegation -and $geminiSource) {
+  foreach ($name in 'delegate-setup', 'gemini-delegate') {
+    if (-not (Test-Path (Join-Path $geminiSource "skills/$name/SKILL.md"))) {
+      throw "Prepared Gemini source is missing $name."
+    }
+  }
+}
 
 # Shared skills and independently usable review/guard tools.
 $folders = @(
@@ -221,7 +237,20 @@ if ($withDelegation) { $folders += $delegationFolders }
 if ($withPlanDebate) { $folders += "skills\plan-debate" }
 foreach ($t in $targets) {
   New-Item -ItemType Directory -Force $t | Out-Null
-  foreach ($f in $folders) { Copy-Item -Recurse -Force "$setup\$f" $t }
+  foreach ($f in $folders) {
+    $from = "$setup\$f"
+    if ($f -eq "vendor\amElnagdy\delegate-skills\skills\delegate-setup") {
+      if ($geminiSource) {
+        $from = Join-Path $geminiSource 'skills/delegate-setup'
+      } elseif (Test-Path (Join-Path $t 'gemini-delegate')) {
+        throw 'Preserve Gemini support: prepare the verified overlay source before replacing delegate-setup.'
+      }
+    }
+    Copy-Item -Recurse -Force $from $t
+  }
+  if ($withDelegation -and $geminiSource) {
+    Copy-Item -Recurse -Force (Join-Path $geminiSource 'skills/gemini-delegate') $t
+  }
 }
 
 # Companion instructions have a stable path independent of the source checkout or host.

@@ -50,12 +50,39 @@ proof that the whole setup is dependable.
 | `task-context` | The driving session applies the installed skill to settled and undecided rename behavior, then checks the output against explicit acceptance criteria. |
 | `plan-review` | The driving session applies the installed skill to a planted owner-authorization contradiction. |
 | `qa-scenarios` | The driving session checks grounded scenarios and separation of undecided behavior. |
+| Hypothetical full-feature walkthrough | Explain the complete workflow from actual installed rules/routes without dispatching or implementing. Review the answer against the rubric below. |
 | Bounded workflow | Inspect a tiny broken helper, fix it, run its original tests, inspect the diff and stop. The verifier reruns the original tests and rejects test-source changes/additional workflow-directory files. The session reviews process evidence and scope. |
 
-Read each generated skill output: the verifier labels existing output `needs-review`, not passed. The skill trials
+Read each generated skill output and walkthrough: the verifier labels existing output `needs-review`, not passed. The skill trials
 are explicit-use tests; record observed file access/native activation and do not claim automatic discovery from them.
 `plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
+
+## Walkthrough review rubric
+
+The scenario prompt is `workflow-walkthrough.md`; preparation writes its installed-path version as `WALKTHROUGH.md`.
+Evaluate the explanation against the **actual** installed contract/profile, scenario policy and loaded route inventory:
+
+- Covers the applicable Full Feature outcomes through the authorized endpoint. Clarifies consequential unresolved
+  behavior before treating dependent design/QA/planning as settled; includes required FD/LLD approval and QA before
+  implementation planning. Keeps optional context synthesis conditional and the feature/slice distinction meaningful.
+- Preserves this profile's delegated planner authorship, orchestrator critique and author findings disposition.
+  Extra independent plan review/debate is conditional, not automatically stacked. Mentioning the parked debate
+  capability is not permission to execute or modify `plan-debate`.
+- Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,
+  confuse a lane with a skill, or require the orchestrator to reproduce specialist work. Deterministic checks are
+  distinguished from participant responsibilities.
+- Accounts for the requested security review, QA scenarios versus executable tests, relevant implementation/tests/
+  API regressions, independent substantive code review, author corrections and verification of accepted results.
+- Preserves authorization: routine progression does not need repeated permission; material decisions and the explicit
+  design approval do. Preparing PR text is allowed; push/open/merge/deploy are not. Missing-route recovery does not
+  assume unattended fallback authorization or silently rewrite lanes.
+- States completion/evidence limits and relevant working-state/closeout handling without claiming execution. Missing
+  installed inputs produce an explicit limitation. An explanation that dispatches work violates this case's scope.
+
+Record observed contradictions separately from unanswered details. The session checks meaning; the verifier only
+marks a present walkthrough `needs-review`. Passing demonstrates instruction/role understanding on one scenario,
+not dependable execution of an entire feature. Existing source/mode continuity cases remain separate.
 
 ## Test routes and isolation
 
@@ -90,9 +117,10 @@ Raw captures remain local in the run directory; summarize errors without copying
 
 > Use this checkout's native smoke pack. Verify its branch/revision and the selected installed skill/instruction
 > paths; preserve existing work and configuration. Run `node test/native-smoke/run.mjs --live` with the appropriate
-> path options. Read its generated TASKS.md and execute the three installed-skill cases and bounded workflow task
+> path options. Read its generated TASKS.md and execute the three installed-skill cases, bounded workflow task and hypothetical walkthrough
 > only in the printed disposable paths. If our delegation profile is already active, this request authorizes direct
-> execution of those four session cases as a task-scoped exception; it does not change the selected profile. Inspect
+> execution of the three skill cases and bounded implementation case as a task-scoped exception; it does not change the selected profile. For the final explanation-only walkthrough I explicitly select
+> AI Skills delegation mode; follow WALKTHROUGH.md without making delegate calls or feature changes. Inspect
 > actual outputs against the acceptance criteria, run --verify, and save a concise results.md in the run directory.
 > Report passed, failed, unavailable and skipped separately. Do not call source checks native acceptance, change
 > global lanes, install software, publish or deploy. Do not retry failing provider calls automatically.
@@ -103,7 +131,7 @@ and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.m
 ## Checks for the runner itself
 
 ```sh
-node --test test/native-smoke/runner.test.mjs test/workflow-separation.test.mjs
+node --test test/native-smoke/runner.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
 ```
 
 These are offline unit/integration checks, including a **synthetic** relay. They test the driver and rejection paths;
