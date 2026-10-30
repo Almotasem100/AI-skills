@@ -1,5 +1,9 @@
 # Small workflow smoke tests
 
+For the reusable general installed-setup/relay/skill pack, start with
+[`test/native-smoke/README.md`](../test/native-smoke/README.md). The cases below remain focused selection/continuity
+trials; they do not require an application-specific integration.
+
 Run source checks with `node --test test/workflow-separation.test.mjs` (Node 18+).
 They check instruction boundaries, preserved outcome structure, source dependencies and a temporary installed-file
 layout. They do not run PowerShell setup, a model, a relay or ZADLoop, and do not prove behavioral compliance.

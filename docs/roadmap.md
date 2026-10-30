@@ -1,5 +1,20 @@
 # Roadmap — status, next steps, open decisions
 
+## Reusable native setup smoke pack — 2026-10-30 (branch work)
+
+Added `test/native-smoke/` with a separate test-only lane map, a dependency-free Node driver, explicit session-run
+skill cases and a tiny inspect/fix/test workflow fixture. Routes target Gemini CLI, an owner-selected OpenCode free
+route and regular `openai/gpt-6-luna` low (not Fast). Installed files and actual configured lanes are inspected;
+real model calls require `--live` and use installed relays with approved disposable project config, never global writes.
+The driver preserves evidence and distinguishes failed/unavailable/skipped checks from semantic outputs needing review.
+
+Validation: 16/16 combined offline checks passed, including a synthetic relay, real vendored project-lane
+write/trust/resolve, and rejection of empty/wrong responses,
+route mismatches, workspace mutation and test tampering. Preparation was exercised with missing installed components
+and correctly reported unavailable/skipped, not success. No authenticated Gemini/OpenCode/model call or native owner
+installation was run in this environment. The pack is host-independent; the requested desktop session can drive it.
+`plan-debate` remains unchanged and parked. See `test/native-smoke/README.md` for the reusable run instruction.
+
 ## Workflow/delegation separation — 2026-10-30 (branch work)
 
 Separated the shared workflow/global instructions from the guarded `docs/ai-skills-delegation.md` profile.

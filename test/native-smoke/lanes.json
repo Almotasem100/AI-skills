@@ -1,0 +1,19 @@
+{
+  "version": "delegate-fleet.v1",
+  "lanes": {
+    "smoke-gemini": {
+      "implementer": "gemini",
+      "model": "gemini-3.8-flash"
+    },
+    "smoke-opencode-free": {
+      "implementer": "opencode",
+      "model": "opencode/deepseek-v4.1-flash-free",
+      "variant": "high"
+    },
+    "smoke-opencode-luna": {
+      "implementer": "opencode",
+      "model": "openai/gpt-6-luna",
+      "variant": "low"
+    }
+  }
+}

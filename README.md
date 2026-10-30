@@ -97,6 +97,12 @@ The guarded [AI Skills delegation mode profile](docs/ai-skills-delegation.md) us
 [lane catalog](docs/delegation-lanes.md). These files describe responsibilities, not live model/provider settings.
 They do not install or change workstation configuration. Secret-free lane export/bootstrap remains future work.
 
+## Small setup smoke tests
+
+After installing a changed branch, use [`test/native-smoke/README.md`](test/native-smoke/README.md). It provides
+separate test-only lanes, installed-file/config checks, small real relay tasks and session-run skill/workflow cases.
+No host-specific integration or global lane rewrite is required. Model-backed calls require `--live`.
+
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
 example call.

@@ -260,6 +260,14 @@ Then **start a new agent session** (skills are read at start-up). In Gemini CLI,
 Keep these together in the same folder: the `*-delegate` relays need `delegate-setup` beside them (for lanes),
 and `debate-review` looks for the relays in `~/.agents/skills`, `~/.claude/skills` or `~/.codex/skills`.
 
+### Check the installed setup
+
+Use `test/native-smoke/README.md` after a branch update and setup. Run
+`node test/native-smoke/run.mjs --live` with the installed path options appropriate to your host, then have the
+session execute the generated `TASKS.md` and independently verify/report results. The pack uses separate test
+lanes in disposable projects; it does not change your everyday lanes or install missing tools. Native execution
+of this revised setup remains a separate check from the pack's offline tests.
+
 ### Optional delegation installation and activation
 
 After choosing delegation components, explicitly say **"Use AI Skills delegation mode"** to activate
