@@ -50,6 +50,7 @@ proof that the whole setup is dependable.
 | `task-context` | The driving session applies the installed skill to settled and undecided rename behavior, then checks the output against explicit acceptance criteria. |
 | `plan-review` | The driving session applies the installed skill to a planted owner-authorization contradiction. |
 | `qa-scenarios` | The driving session checks grounded scenarios and separation of undecided behavior. |
+| Fresh-session host probes | One explicit task-context probe and one ordinary global-instruction probe each for Gemini CLI and OpenCode. Record behavior and loading attribution separately; Claude CLI is not applicable. |
 | Hypothetical full-feature walkthrough | Explain the complete workflow from actual installed rules/routes without dispatching or implementing. Review the answer against the rubric below. |
 | Bounded workflow | Inspect a tiny broken helper, fix it, run its original tests, inspect the diff and stop. The verifier reruns the original tests and rejects test-source changes/additional workflow-directory files. The session reviews process evidence and scope. |
 
@@ -57,6 +58,21 @@ Read each generated skill output and walkthrough: the verifier labels existing o
 are explicit-use tests; record observed file access/native activation and do not claim automatic discovery from them.
 `plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
+
+## Fresh-session host probes
+
+Preparation generates `HOST-CHECKS.md` from the adjacent `host-checks.md`. The driving session runs its four tiny
+prompts through the installed Gemini/OpenCode relays, using fresh disposable project workspaces and the test map.
+The probe prompts contain no installed instruction paths or expected answers. Explicit skill selection should
+produce observable native activation where the host exposes that mechanism; direct file application is labelled
+separately. The ordinary workflow question checks behavior and, where exposed, automatic global loading. A correct
+answer without reliable loading evidence does not prove that the global file was loaded.
+
+Capture minimal relevant events/results and report behavior versus activation/loading separately. No Claude CLI
+probe or installation is required, and no cross-product model/skill matrix is requested. These are additional real
+model calls when the session executes them; the Node preparation/verification commands do not launch these probes
+automatically. Use the session-run checklist so the model can inspect evidence rather than guessing from host-specific
+log strings. `--verify` exposes their report files as `needs-review` and Claude CLI as `not-applicable`.
 
 ## Walkthrough review rubric
 
@@ -117,10 +133,12 @@ Raw captures remain local in the run directory; summarize errors without copying
 
 > Use this checkout's native smoke pack. Verify its branch/revision and the selected installed skill/instruction
 > paths; preserve existing work and configuration. Run `node test/native-smoke/run.mjs --live` with the appropriate
-> path options. Read its generated TASKS.md and execute the three installed-skill cases, bounded workflow task and hypothetical walkthrough
+> path options. Read its generated TASKS.md and execute the three installed-skill cases, bounded workflow task, hypothetical walkthrough and fresh-session host probes
 > only in the printed disposable paths. If our delegation profile is already active, this request authorizes direct
 > execution of the three skill cases and bounded implementation case as a task-scoped exception; it does not change the selected profile. For the final explanation-only walkthrough I explicitly select
-> AI Skills delegation mode; follow WALKTHROUGH.md without making delegate calls or feature changes. Inspect
+> AI Skills delegation mode; follow WALKTHROUGH.md without making delegate calls or feature changes. The
+> HOST-CHECKS.md probes are separate authorized test-lane calls; perform their launch/inspection directly as a
+> task-scoped exception, and do not dispatch their coordination to a production lane. Claude CLI is not applicable. Inspect
 > actual outputs against the acceptance criteria, run --verify, and save a concise results.md in the run directory.
 > Report passed, failed, unavailable and skipped separately. Do not call source checks native acceptance, change
 > global lanes, install software, publish or deploy. Do not retry failing provider calls automatically.

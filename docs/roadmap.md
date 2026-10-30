@@ -1,5 +1,19 @@
 # Roadmap — status, next steps, open decisions
 
+## Focused native host probes — 2026-10-30 (branch work)
+
+Added `test/native-smoke/host-checks.md`, generated as `HOST-CHECKS.md` per run: two tiny fresh-session probes each
+for Gemini CLI and OpenCode, covering explicit task-context activation and ordinary global-instruction behavior/
+loading. Prompts do not supply instruction paths or expected answers to the child. The session retains relevant
+trace evidence and distinguishes output correctness, native activation, direct resource access and unverified
+automatic loading. Claude CLI is explicitly not applicable; no binary probe or installation is requested.
+
+The verifier exposes host report files as `needs-review`, absent reports as skipped, and Claude CLI as
+`not-applicable`. No workflow/role policy or installed host settings changed. Validation: 17/17 expanded offline
+checks passed, including generated prompt paths and honest host-case status handling. No native host/model calls
+were made here; Luna should run the incremental host probes and the newly added hypothetical walkthrough locally.
+Previously passing provider calls need not be repeated unless affected setup changes justify a rerun.
+
 ## Native feedback fixes and hypothetical walkthrough — 2026-10-30 (branch work)
 
 The owner's Luna report for `e8258fa` records three native relay passes, three skill-output acceptances and the

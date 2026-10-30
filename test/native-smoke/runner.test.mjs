@@ -63,6 +63,10 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.match(walkthrough, /use AI Skills delegation mode/);
       assert.match(walkthrough, /Do not\s+run any delegate\/model calls/);
       assert.match(readFileSync(join(runDir, 'TASKS.md'), 'utf8'), /Hypothetical full-feature walkthrough/);
+      const hosts = readFileSync(join(runDir, 'HOST-CHECKS.md'), 'utf8');
+      assert.doesNotMatch(hosts, /\{\{[A-Z_]+\}\}/);
+      assert.match(hosts, /Claude CLI is \*\*not/);
+      assert.match(hosts, /without invoking a skill or supplying instruction paths/);
       const verify = () => spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });
       assert.equal(verify().status, 1); // Original helper incorrectly includes pending rows.
       writeFileSync(join(runDir, 'workflow/total.mjs'), 'export const totalApproved = items => items.filter(item => item.approved === true).reduce((n,item) => n+item.amount,0);\n');
@@ -70,10 +74,14 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       const summary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
       assert.equal(summary.sessionCases.find(item => item.case === 'workflow-tests').status, 'passed');
       assert.ok(summary.sessionCases.filter(item => item.case !== 'workflow-tests').every(item => item.status === 'skipped'));
+      assert.equal(summary.hostCases.find(item => item.case === 'claude-cli').status, 'not-applicable');
+      assert.ok(summary.hostCases.filter(item => item.case !== 'claude-cli').every(item => item.status === 'skipped'));
+      writeFileSync(join(runDir, 'responses/gemini-skill-activation.md'), 'Behavior checked; activation evidence requires review.');
       writeFileSync(join(runDir, 'responses/workflow-walkthrough.md'), 'A walkthrough still requires semantic review.');
       verify();
       const reviewedSummary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
       assert.equal(reviewedSummary.sessionCases.find(item => item.case === 'workflow-walkthrough').status, 'needs-review');
+      assert.equal(reviewedSummary.hostCases.find(item => item.case === 'gemini-skill-activation').status, 'needs-review');
       writeFileSync(join(runDir, 'workflow/total.test.mjs'), '// disabled\n');
       assert.equal(verify().status, 1);
     } finally { rmSync(runDir, { recursive: true, force: true }); }
