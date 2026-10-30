@@ -18,11 +18,9 @@ _Written 2026-09-25. What has and hasn't been tested is marked; don't assume mor
 Think of the skills as helpers you call at each stage of a ticket. Most start on their own when you describe
 what you want; the ones marked **(by name)** only start when you type their command.
 
-**Orchestration rule:** the model you opened is the workflow orchestrator/control plane by default. It understands
-the objective, chooses the smallest sufficient workflow, resolves needed roles (planner, implementer, reviewer,
-QA-scenario designer, docs) through configured lanes, tracks state/exceptions, and moves authorized work forward. You normally
-describe the outcome and any checkpoint; you do **not** need to name a model, lane or effort for routine delegation.
-Explicit route/checkpoint instructions still override the inferred workflow.
+**Shared workflow:** follow `docs/orchestration-contract.md` and the active project's canonical rules.
+Choose the smallest sufficient workflow, preserve required outcomes and checkpoints, and use appropriate skills.
+The optional **AI Skills delegation mode** has separate installation and activation instructions below.
 
 ### 🟢 Starting a ticket
 **`grill-me` (by name): clarify when a small ticket actually needs clarification.** It asks focused questions in rounds. Skip it when the bug/task is already clear enough to inspect, fix and verify directly.
@@ -43,7 +41,7 @@ It returns prioritized findings with source evidence, assumptions, missing decis
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
-**`plan-debate`:** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
+**`plan-debate` (separately selected; existing requirements unchanged):** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
 exchange in a temporary debate record; the project scratchpad stays compact. The plan-author and reviewer roles own their substantive outputs.
 Configured lanes select the actual providers/models unless you override them. Give each role only the context and
 source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
@@ -55,14 +53,8 @@ or perform active testing.
 > "Audit this change for relevant security risks and evidence gaps"
 
 ### 🔨 Building
-**Implementation roles:** once implementation is inside the authorized workflow, the orchestrator routes it through
-the configured implementer lane when delegation is useful. You normally state the task, not the transport details.
-The delegate relay itself never commits.
+**Implementation:** implement the authorized scope and run applicable project checks.
 > "Implement the approved plan and run the targeted tests"
-
-You can still override the route when you care which provider/model should do a specific task, but that is an
-exception rather than the normal interface. The same role routing can run another installed skill when appropriate
-(see §4, "Have another agent run one of your skills").
 
 **Guards: a second look** after the code is written, at the code, the tests or the docs.
 > "Run clean-code-guard on this change"
@@ -81,7 +73,7 @@ only after you say yes.
 locally, then asks before pushing or replying.
 > "Babysit PR 123"
 
-**`debate-review` (optional, big tickets): two AIs review and argue.** Use `--dry-run` first, so nothing gets
+**`debate-review` (optional; requires the delegation tooling stack): two AIs review and argue.** Use `--dry-run` first, so nothing gets
 posted.
 > "debate-review PR 123 --dry-run"
 
@@ -187,50 +179,96 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
   - The implementer CLIs you want to delegate to (`codex`, `agy`, `opencode`…), installed and signed in.
 
 ### Copy the skills (PowerShell)
-Change the first line to where `AI-skills` lives on that machine, then paste the whole block. It installs
-into both skills folders, so compatible agents see the same set. **Tested 2026-09-25** on this laptop
-against a throwaway folder: the then-listed skill set landed in both targets (re-run 2026-09-26 after adding
-`work-closeout`), and the scripts ran from their new place. The newly added `qa-scenarios` entry has
-not yet been included in an install test or tested natively. On 2026-10-01, `plan-review` and `plan-debate` were
-copied into both user-level roots on this workstation and their `SKILL.md` hashes matched the repository copies.
-Gemini CLI 0.62.0 lists both as enabled; OpenCode v2.0.20 exposed both in this session. Gemini and OpenCode
-smoke-tested the workflows on synthetic input. These checks establish availability in those hosts here, not
-universal support by every model or agent. `security-audit` was copied to both user-level roots with matching
-hashes on 2026-10-01. Gemini CLI 0.62.0 smoke-tested it on a synthetic endpoint excerpt; OpenCode loaded the skill
-in this session, but did not run the same audit fixture. These checks do not validate real vulnerability detection
-or establish support by every model or agent. On 2026-10-01, `qa-scenarios` was installed in both roots;
-`plan-debate`, `plan-review`, `create-lld`, and `work-closeout` were synchronized from the repository after
-drift checks. The synchronized skill files match their repository copies; no user-only skill edits were found.
+Set `$setup` to this checkout, then choose **shared skills only** or **shared skills plus delegation**
+when prompted. The block installs the shared contract and shared global instructions for the hosts you select.
+Installing optional instructions does not activate them. `plan-debate` is a separate opt-in because its existing
+participant/lane contract is parked for discussion; neither setup choice changes that skill.
+
+Earlier copy commands were exercised on Windows, but this revised choice/companion-file block has not yet been
+run on the owner's hosts. Verify installed content and host loading after setup; source checks alone do not prove it.
+The documented block is setup guidance, not a new standalone installer.
+
+**For Gemini CLI delegation:** first follow
+[`overlays/gemini-delegate/README.md`](overlays/gemini-delegate/README.md#prepare-gemini-enabled-installation-from-this-repository)
+to prepare and verify `$geminiSource`, then run the copy block with delegation selected. That source supplies the
+matching enhanced setup and Gemini relay. Keep the variable in this PowerShell session; do not reset it before copying.
 
 ```powershell
-$setup   = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills"
+$setup   = "C:\path\to\AI-skills"
 $targets = "$HOME\.claude\skills", "$HOME\.agents\skills"
+$withDelegation = (Read-Host "Install delegation components too? [y/N]") -match '^(?i:y|yes)$'
+if (-not (Get-Variable geminiSource -ErrorAction SilentlyContinue)) { $geminiSource = $null }
+$withPlanDebate = (Read-Host "Also install plan-debate with its existing participant/lane requirements? [y/N]") -match '^(?i:y|yes)$'
 
-# 1. My skills and the copied (vendor) skills, straight from AI-skills.
-#    Delegate relays: keep only the ones for CLIs you actually have.
+# If Gemini delegation is wanted, prepare $geminiSource via the overlay README first.
+# Otherwise leave it unset/null. Validate the prepared source before any copies.
+if ($withDelegation -and $geminiSource) {
+  foreach ($name in 'delegate-setup', 'gemini-delegate') {
+    if (-not (Test-Path (Join-Path $geminiSource "skills/$name/SKILL.md"))) {
+      throw "Prepared Gemini source is missing $name."
+    }
+  }
+}
+
+# Shared skills and independently usable review/guard tools.
 $folders = @(
   "skills\describe-pr",
   "skills\task-context",
   "skills\create-lld",
   "skills\qa-scenarios",
   "skills\plan-review",
-  "skills\plan-debate",
   "skills\security-audit",
   "skills\work-closeout",
-  "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
-  "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
-  "vendor\amElnagdy\delegate-skills\skills\agy-delegate",
-  "vendor\amElnagdy\delegate-skills\skills\opencode-delegate",
   "vendor\amElnagdy\review-skills\skills\babysit-pr",
-  "vendor\amElnagdy\review-skills\skills\debate-review",
   "vendor\amElnagdy\guard-skills\skills\clean-code-guard",
   "vendor\amElnagdy\guard-skills\skills\test-guard",
   "vendor\amElnagdy\guard-skills\skills\docs-guard",
   "vendor\mattpocock\skills\skills\two-axis-review"
 )
+$delegationFolders = @(
+  "vendor\amElnagdy\delegate-skills\skills\delegate-setup",
+  "vendor\amElnagdy\delegate-skills\skills\codex-delegate",
+  "vendor\amElnagdy\delegate-skills\skills\agy-delegate",
+  "vendor\amElnagdy\delegate-skills\skills\opencode-delegate",
+  "vendor\amElnagdy\review-skills\skills\debate-review"
+)
+# Trim delegationFolders to the CLIs you have; keep delegate-setup for all retained relays.
+if ($withDelegation) { $folders += $delegationFolders }
+if ($withPlanDebate) { $folders += "skills\plan-debate" }
 foreach ($t in $targets) {
   New-Item -ItemType Directory -Force $t | Out-Null
-  foreach ($f in $folders) { Copy-Item -Recurse -Force "$setup\$f" $t }
+  foreach ($f in $folders) {
+    $from = "$setup\$f"
+    if ($f -eq "vendor\amElnagdy\delegate-skills\skills\delegate-setup") {
+      if ($geminiSource) {
+        $from = Join-Path $geminiSource 'skills/delegate-setup'
+      } elseif (Test-Path (Join-Path $t 'gemini-delegate')) {
+        throw 'Preserve Gemini support: prepare the verified overlay source before replacing delegate-setup.'
+      }
+    }
+    Copy-Item -Recurse -Force $from $t
+  }
+  if ($withDelegation -and $geminiSource) {
+    Copy-Item -Recurse -Force (Join-Path $geminiSource 'skills/gemini-delegate') $t
+  }
+}
+
+# Companion instructions have a stable path independent of the source checkout or host.
+$instructionRoot = "$HOME/.config/ai-skills"
+New-Item -ItemType Directory -Force $instructionRoot | Out-Null
+Copy-Item -Force "$setup/docs/orchestration-contract.md" $instructionRoot
+if ($withDelegation) {
+  Copy-Item -Force "$setup/docs/ai-skills-delegation.md" $instructionRoot
+  Copy-Item -Force "$setup/docs/delegation-lanes.md" $instructionRoot
+}
+# Select the hosts you use; copying replaces those selected host instruction files.
+# Preserve/merge any existing personal instructions before running these lines.
+$instructionTargets = "$HOME/.config/opencode/AGENTS.md", "$HOME/.claude/CLAUDE.md", "$HOME/.gemini/GEMINI.md"
+foreach ($destination in $instructionTargets) {
+  if ((Read-Host "Install shared instructions at $destination ? [y/N]") -match '^(?i:y|yes)$') {
+    New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null
+    Copy-Item -Force "$setup/templates/global-user-instructions/AGENTS.md" $destination
+  }
 }
 
 # 2. Pocock's pinned skills, from the reviewed commit in manifest.md.
@@ -251,19 +289,41 @@ Then **start a new agent session** (skills are read at start-up). In Gemini CLI,
 Keep these together in the same folder: the `*-delegate` relays need `delegate-setup` beside them (for lanes),
 and `debate-review` looks for the relays in `~/.agents/skills`, `~/.claude/skills` or `~/.codex/skills`.
 
-### One-time setup for delegating
+### Check the installed setup
+
+Use `test/native-smoke/README.md` after a branch update and setup. Run
+`node test/native-smoke/run.mjs --live` with the installed path options appropriate to your host, then have the
+session execute the generated `TASKS.md` and independently verify/report results. The pack uses separate test
+lanes in disposable projects; it does not change your everyday lanes or install missing tools. Native execution
+of this revised setup remains a separate check from the pack's offline tests.
+
+### Optional delegation installation and activation
+
+After choosing delegation components, explicitly say **"Use AI Skills delegation mode"** to activate
+`~/.config/ai-skills/ai-skills-delegation.md`. The profile links to the adjacent lane catalog and shared contract.
+Do not concatenate those optional instructions into the shared global template.
+
+The shared-only choice does not remove previously installed files or disable other execution systems. For an
+existing installation, inspect source/install parity and preserve existing user changes before replacing files.
+`two-axis-review` uses native subagents by its own contract; `babysit-pr` handles external bots and requires the
+optional stack only when the project selects its `debate-review` path. `plan-debate` remains separately selected.
+
+### One-time lane setup (optional components only)
 Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs, proposes lanes (e.g.
 `feature` → codex) and writes them only after your yes. **Choose "global"**: "project" creates
 `.delegate/config.json` inside the repository. For `debate-review`, add two lanes named `review-main` and
 `review-debate`, using two different CLIs.
 
-`install.ps1` will later do all of this in one command; it waits for the workstation's agent list.
+No standalone installer is implemented. After setup, compare copied files and confirm discovery in each selected host.
 
 ---
 
 ## 4. Use them
 
-### Roles choose work; lanes choose provider/model/effort
+### AI Skills delegation mode: roles and routes
+
+The following routing instructions apply only after explicit activation of **AI Skills delegation mode**;
+read `docs/ai-skills-delegation.md` first. They are not the shared workflow defaults.
 The normal interface is intent, not transport configuration. Configure lanes once, then let the orchestrator resolve
 the needed role automatically. This preserves the original cost-control lesson—never fall into an expensive unknown
 default—without making you repeat model and effort on every run.
@@ -342,9 +402,8 @@ upstream before adding it to the normal install instructions.
      read the file. Expect that; it's the point.
    - In Claude, `/grill-me` can only be typed by you. An agent that wants the interview itself uses `grilling`
      (the engine behind it).
-2. **Implement** the approved scope. The orchestrator may handle a tiny change directly or route the implementation
-   role through its configured lane; use the smallest sufficient workflow. The relay never commits. For a review or
-   diagnosis, route a read-only/reviewer role rather than turning implementation into a write-capable run.
+2. **Implement** the approved scope using the smallest sufficient workflow and applicable project verification.
+   For review-only or diagnosis-only requests, preserve the requested read-only boundary.
 3. **Guards**: *"run clean-code-guard on this change"* (also `test-guard` for tests, `docs-guard` for docs). On
    ported legacy code (HDC): write the findings down; don't fix them in the same change.
 4. **`two-axis-review`**: *"review since develop, the spec is C:\...\LLD_CADE-1234.md"*. You get a
@@ -425,8 +484,8 @@ Same tail, with more up front:
   user/project authorization envelope. Do not ask again for an effect that the user already explicitly included
   (for example, "take this slice through PR"), but do not infer publication/deployment from "plan", "implement" or
   "review" alone.
-- Delegated CLIs do not silently commit or broaden their scope.
-- Persistent lane configuration is deliberate setup, not an incidental task side effect.
+- Within the optional profile, delegated CLIs do not silently commit or broaden scope, and persistent lane
+  configuration is deliberate setup rather than an incidental task side effect.
 - `describe-pr` and `create-lld` keep temporary drafts outside code repos unless a project-approved destination
   or the current request says otherwise.
 

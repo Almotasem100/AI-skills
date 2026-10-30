@@ -1,5 +1,70 @@
 # Roadmap — status, next steps, open decisions
 
+## Focused native host probes — 2026-10-30 (branch work)
+
+Added `test/native-smoke/host-checks.md`, generated as `HOST-CHECKS.md` per run: two tiny fresh-session probes each
+for Gemini CLI and OpenCode, covering explicit task-context activation and ordinary global-instruction behavior/
+loading. Prompts do not supply instruction paths or expected answers to the child. The session retains relevant
+trace evidence and distinguishes output correctness, native activation, direct resource access and unverified
+automatic loading. Claude CLI is explicitly not applicable; no binary probe or installation is requested.
+
+The verifier exposes host report files as `needs-review`, absent reports as skipped, and Claude CLI as
+`not-applicable`. No workflow/role policy or installed host settings changed. Validation: 17/17 expanded offline
+checks passed, including generated prompt paths and honest host-case status handling. No native host/model calls
+were made here; Luna should run the incremental host probes and the newly added hypothetical walkthrough locally.
+Previously passing provider calls need not be repeated unless affected setup changes justify a rerun.
+
+## Native feedback fixes and hypothetical walkthrough — 2026-10-30 (branch work)
+
+The owner's Luna report for `e8258fa` records three native relay passes, three skill-output acceptances and the
+bounded implementation check. Its separate overlay parity check exposed a syntax defect. Corrected the overlay's
+parity-test patch by removing an accidental BOM before its shebang and a literal backslash-n at EOF; relay runtime
+source and the pinned base are unchanged. Added a regression that applies the overlay and runs the parity script.
+
+GUIDE now points to a concrete disposable overlay preparation/verification procedure and installs matching enhanced
+`delegate-setup` + `gemini-delegate` together. It refuses to replace an existing Gemini-enabled setup with the plain
+vendor copy accidentally. No host installation was changed here.
+
+The native pack now generates an explanation-only Full Feature walkthrough using installed instructions and actual
+routes, with a separate review rubric and `needs-review` output status. It dispatches no models and executes no
+feature work. `plan-debate` remains unchanged/parked; the workflow policy was not redesigned.
+
+Validation: 17/17 combined offline checks passed; corrected overlay applicability, JavaScript syntax and full parity
+passed in a disposable vendor copy. Focused Gemini/package-shape/syntax fake-CLI smoke was all green. These are
+cloud/Linux source and fake-CLI checks, not a rerun of the owner's native provider tests or the new walkthrough.
+The updated PowerShell setup block and hypothetical model answer still need owner-environment execution.
+
+## Reusable native setup smoke pack — 2026-10-30 (branch work)
+
+Added `test/native-smoke/` with a separate test-only lane map, a dependency-free Node driver, explicit session-run
+skill cases and a tiny inspect/fix/test workflow fixture. Routes target Gemini CLI, an owner-selected OpenCode free
+route and regular `openai/gpt-6-luna` low (not Fast). Installed files and actual configured lanes are inspected;
+real model calls require `--live` and use installed relays with approved disposable project config, never global writes.
+The driver preserves evidence and distinguishes failed/unavailable/skipped checks from semantic outputs needing review.
+
+Validation: 16/16 combined offline checks passed, including a synthetic relay, real vendored project-lane
+write/trust/resolve, and rejection of empty/wrong responses,
+route mismatches, workspace mutation and test tampering. Preparation was exercised with missing installed components
+and correctly reported unavailable/skipped, not success. No authenticated Gemini/OpenCode/model call or native owner
+installation was run in this environment. The pack is host-independent; the requested desktop session can drive it.
+`plan-debate` remains unchanged and parked. See `test/native-smoke/README.md` for the reusable run instruction.
+
+## Workflow/delegation separation — 2026-10-30 (branch work)
+
+Separated the shared workflow/global instructions from the guarded `docs/ai-skills-delegation.md` profile.
+The explicit selection is now **AI Skills delegation mode**. Shared instructions contain one activation pointer;
+engineering stages, deliverables, review requirements and project gates are preserved. README/GUIDE/resume
+instructions and historical-policy authority are aligned. Setup guidance separates common and optional components,
+installs companion files at `~/.config/ai-skills/`, and leaves `plan-debate` separately selected and unchanged pending
+its own discussion. Vendor source, overlays, live routes and host installations were not changed.
+
+Validation: `node --test test/workflow-separation.test.mjs` passed 6/6; `git diff --check` passed. Two fresh-agent
+source-instruction trials passed: task-context preserved undecided behavior, and plan-review identified the supplied
+ownership contradiction without a configured controller. These are bounded source/model checks, not native
+ZADLoop/Gemini, PowerShell installation or relay acceptance. Native trial prompts are in
+`docs/workflow-smoke-tests.md`; the requested normal-ZADLoop + explicit-profile trial remains to run on the owner's
+installed environment. Records below are historical status snapshots, not instructions to activate an execution profile.
+
 ## Approved security-audit workflow synchronization — 2026-10-25
 
 Fast-forwarded local `master` to merged PR #8 at `32b31102f58e91264f29a44da86201e45c443147`. Synchronized only `skills/security-audit/SKILL.md` into the existing `~/.agents/skills/security-audit/` and `~/.claude/skills/security-audit/` installations; source/install content parity verified. The orchestration-contract additions were verified in the canonical document. Global-instruction template and mirrors were already aligned and required no change. No native audit trial was run, per request.

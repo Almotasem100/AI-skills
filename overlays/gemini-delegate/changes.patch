@@ -1252,12 +1252,11 @@ index e16495f..7cb2b1d 100644
  const check = (name, condition) => {
    console.log(`${condition ? "  ok " : "  FAIL"}  ${name}`);
 diff --git a/test/relay-parity.mjs b/test/relay-parity.mjs
-index 913f453..515d925 100644
+index 913f453..2b412a4 100644
 --- a/test/relay-parity.mjs
 +++ b/test/relay-parity.mjs
 @@ -1,10 +1,10 @@
--#!/usr/bin/env node
-+﻿#!/usr/bin/env node
+ #!/usr/bin/env node
  import { readFileSync } from "node:fs";
  import { dirname, join } from "node:path";
  import { fileURLToPath } from "node:url";
@@ -1287,13 +1286,6 @@ index 913f453..515d925 100644
    // agy takes one sha256 over the whole worktree (gitWorktreeFingerprint:
    // status, both raw diffs, then hash-object per dirty path) rather than the
    // per-path fingerprints the other four share, so its readOnlyVerdict has a
-@@ -108,4 +111,4 @@ if (failed) {
-   console.error(`relay parity: ${failed} failure(s)`);
-   process.exit(1);
- }
--console.log("relay parity: all checks passed");
-+console.log("relay parity: all checks passed");\n
-\ No newline at end of file
 diff --git a/test/relay-smoke.mjs b/test/relay-smoke.mjs
 index 4be665b..0b9547c 100644
 --- a/test/relay-smoke.mjs
