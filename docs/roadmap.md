@@ -1,5 +1,20 @@
 # Roadmap — status, next steps, open decisions
 
+## Gemini recovery and evidence preservation — 2026-10-31
+
+Updated the base-pinned Gemini overlay on `work/step-two`: `--resume` accepts a full session UUID as well
+as index/latest, and the skill prefers the recorded UUID for a known assignment. Populated output directories
+are rejected before dispatch without replacing their contents; empty directories remain supported, default
+directories have unique suffixes, and exclusive brief creation prevents concurrent runs claiming the same path.
+Input-access guidance distinguishes approved-but-filtered files from usable inputs without changing ignore
+settings or permissions. Recovery inspects saved artifacts, response text and partial edits before redispatch.
+
+Validation: 17/17 repository offline tests passed, including overlay applicability/parity and the expanded Gemini
+fake-CLI regressions for UUID forwarding, malformed selectors and evidence preservation. Focused Gemini,
+package-shape and syntax checks also passed in a disposable overlay-applied copy. Pinned upstream base and vendor
+snapshot are unchanged. No native Gemini call or workstation installation was performed; exact-session resume
+still needs a bounded native check after installation. Planning ownership and broader workflow changes remain open.
+
 ## Focused native host probes — 2026-10-30 (branch work)
 
 Added `test/native-smoke/host-checks.md`, generated as `HOST-CHECKS.md` per run: two tiny fresh-session probes each
