@@ -1,5 +1,21 @@
 # Roadmap — status, next steps, open decisions
 
+## Workflow/delegation separation — 2026-10-30 (branch work)
+
+Separated the shared workflow/global instructions from the guarded `docs/ai-skills-delegation.md` profile.
+The explicit selection is now **AI Skills delegation mode**. Shared instructions contain one activation pointer;
+engineering stages, deliverables, review requirements and project gates are preserved. README/GUIDE/resume
+instructions and historical-policy authority are aligned. Setup guidance separates common and optional components,
+installs companion files at `~/.config/ai-skills/`, and leaves `plan-debate` separately selected and unchanged pending
+its own discussion. Vendor source, overlays, live routes and host installations were not changed.
+
+Validation: `node --test test/workflow-separation.test.mjs` passed 6/6; `git diff --check` passed. Two fresh-agent
+source-instruction trials passed: task-context preserved undecided behavior, and plan-review identified the supplied
+ownership contradiction without a configured controller. These are bounded source/model checks, not native
+ZADLoop/Gemini, PowerShell installation or relay acceptance. Native trial prompts are in
+`docs/workflow-smoke-tests.md`; the requested normal-ZADLoop + explicit-profile trial remains to run on the owner's
+installed environment. Records below are historical status snapshots, not instructions to activate an execution profile.
+
 ## Approved security-audit workflow synchronization — 2026-10-25
 
 Fast-forwarded local `master` to merged PR #8 at `32b31102f58e91264f29a44da86201e45c443147`. Synchronized only `skills/security-audit/SKILL.md` into the existing `~/.agents/skills/security-audit/` and `~/.claude/skills/security-audit/` installations; source/install content parity verified. The orchestration-contract additions were verified in the canonical document. Global-instruction template and mirrors were already aligned and required no change. No native audit trial was run, per request.

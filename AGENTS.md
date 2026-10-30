@@ -11,7 +11,7 @@ Before planning or changing this repository, read:
 1. `docs/roadmap.md` for the current status, checkpoint, next steps, and open decisions.
 2. `docs/orchestration-contract.md` for the current portable workflow semantics.
 3. `README.md` for the skill authoring rules and repository layout.
-4. `docs/decisions.md` for the reasoning/history behind the setup.
+Read `docs/decisions.md` only when the reasoning/history is relevant; it is not current execution policy.
 
 The roadmap currently marks v1 as frozen until it is installed and used on real work. Respect that checkpoint:
 do not resume parked builds or trials on your own. A change the owner explicitly requests, or a fix grounded in

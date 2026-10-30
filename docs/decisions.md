@@ -1,5 +1,11 @@
 # Decisions (2026-09-25)
 
+> This is a decision/history record, not an execution-profile entrypoint. Current shared behavior is defined in
+> `docs/orchestration-contract.md`. Recorded routing and mode rules below describe prior setup decisions;
+> their current equivalents apply only within the explicitly selected optional profile. Historical prose does
+> not activate a profile or override the current shared instructions. Keep the records for provenance.
+
+
 Reached in an open design discussion. Project-specific history stays in the project that produced it; this file
 keeps only what applies everywhere.
 

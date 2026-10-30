@@ -1,15 +1,10 @@
-# Portable orchestration contract
+# Portable workflow contract
 
-This document defines the generic workflow semantics for AI-assisted work. Project repositories map these
+This document defines the shared workflow semantics for AI-assisted work. Project repositories map these
 abstractions onto their own ticket systems, environments, architecture, commands and approval gates.
 
 ## Core model
 
-- **Standard Mode is the default:** the selected agent may own and execute the authorized task end-to-end. **Delegation Mode** starts only on explicit user instruction: the selected agent owns orchestration and delegates specialist deliverables. Mode persists for the session; a clearly scoped user-authorized exception to who performs one task does not switch the session mode or waive project gates.
-- In Delegation Mode, resolve specialist work as `intent -> role -> configured lane -> host/provider/model/effort`. Skills name semantic roles;
-  lane configuration chooses the current implementation. Among configured routes/fallbacks, consider required
-  quality, task risk, cost, latency, context capacity and availability; resource awareness must not silently change
-  the semantic role or bypass project/provider constraints.
 - Choose between two adaptive entry paths: **Full Feature** for clear intent to deliver through the project's feature process (potentially several delivery slices), and **Change/Bug** by default for direct bounded fixes or changes. A ticket ID or existing input folder alone does not prove Full Feature intent; ask only when the distinction is materially unclear. Neither path is a rigid sequence.
 - In Full Feature, account for the default feature deliverables in **Full Feature delivery contract** below; do not drop one merely because no one named its skill. Apply project-required activities unless a task-specific exception is explicitly authorized. Honor selected omissions without generating substitute paperwork; skipping a document does not waive consequential design reasoning, applicable verification or a separate approval gate. An agent can revise the approach when material evidence changes, without silently overriding the user's selected scope.
 - Authorization is an envelope around the requested outcome and scope. Routine planning, implementation,
@@ -26,15 +21,15 @@ For clear Full Feature delivery intent, cover these **default outcomes** unless 
 2. **Working context:** synthesize one feature-level evidence map when fragmented inputs or downstream consumers justify it; do not create a task-context file just to satisfy a checklist.
 3. **Feature design:** produce the project's applicable Functional Design and forward LLD before dependent implementation planning. A project may define which design artifacts are required.
 4. **QA scenarios:** prepare feature-level, tester-facing behavioral scenarios from sufficiently settled requirements and design **before implementation planning**; do not conflate scenarios with executable tests.
-5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification. In Delegation Mode the configured planner owns this deliverable by default; a user-authorized task-scoped exception may assign it to the orchestrator without changing session mode.
-6. **Plan challenge/acceptance:** by default the orchestrator critically reviews the delegated plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a structured author/reviewer debate when requested or warranted by consequential disagreement. An additional separate plan reviewer is optional unless project policy requires one; do not mislabel orchestrator review as independent of its own requirements intake.
+5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification.
+6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a structured author/reviewer debate when requested or warranted by consequential disagreement. An additional separate plan reviewer is optional unless project policy requires one; do not mislabel a review based on its own requirements intake as fully independent.
 7. **Implementation and checks:** implement authorized delivery slices, run appropriate tests/builds/regressions and applicable quality guards.
-8. **Code review and corrections:** use a separate technical reviewer for substantive Full Feature code changes by default (unless explicitly omitted or inapplicable under project policy), alongside the orchestrator's own diff inspection. Return attributable findings to the author and verify corrections; scale checks proportionately for trivial changes.
+8. **Code review and corrections:** use a separate technical reviewer for substantive Full Feature code changes by default (unless explicitly omitted or inapplicable under project policy), alongside the responsible agent’s own diff inspection. Return attributable findings to the author and verify corrections; scale checks proportionately for trivial changes.
 9. **Publication and closeout:** create the appropriate PR description and reconcile completed feature state when applicable, without treating preparation as permission to push, merge, deploy or destroy working files.
 
-These are **outcome obligations, not a rigid execution order or named-skill dependencies**. Respect genuine prerequisites; independent preparation may overlap. If QA behavior cannot yet be settled, record the blocker and resume it before dependent planning is declared ready. Standard Mode may perform work directly; Delegation Mode resolves applicable specialist ownership. For a Change/Bug, use only the proportionate activities and project gates.
+These are **outcome obligations, not a rigid execution order or named-skill dependencies**. Respect genuine prerequisites; independent preparation may overlap. If QA behavior cannot yet be settled, record the blocker and resume it before dependent planning is declared ready. For a Change/Bug, use only the proportionate activities and project gates.
 
-At the outset record expected deliverables, explicit omissions and material gates in the existing compact working state when one exists. At meaningful transitions record what is complete, pending, blocked or explicitly omitted, with relevant evidence and the next action. The orchestrator checks completion; it does not manufacture artifacts for omitted stages. Do not declare the Full Feature complete while a required outcome is silently missing.
+At the outset record expected deliverables, explicit omissions and material gates in the existing compact working state when one exists. At meaningful transitions record what is complete, pending, blocked or explicitly omitted, with relevant evidence and the next action. The responsible agent checks completion; it does not manufacture artifacts for omitted stages. Do not declare the Full Feature complete while a required outcome is silently missing.
 
 ## Work hierarchy
 
@@ -59,7 +54,6 @@ For simple work, no feature/slice hierarchy is required. Inspect, fix, verify an
 - **Continue:** resume the authorized workflow from recorded state.
 - **Finish:** take the current bounded work item to its natural endpoint within the existing authorization.
 - **Take through X / stop before X:** X is an explicit checkpoint.
-- Explicit routing/model overrides are allowed, but users should not need to name a model, lane or effort routinely.
 
 ## Roles versus workflow actions
 
@@ -67,7 +61,7 @@ Use a model role for judgment, synthesis, interpretation or adversarial review. 
 for mechanically checkable operations.
 
 Typical semantic roles:
-- orchestrator
+- workflow coordinator
 - planner/design role
 - implementer
 - independent reviewer
@@ -78,31 +72,15 @@ Typical semantic roles:
 Formatter/linter/build/test commands, guards, citation checks, diff checks, API regression execution and branch
 mechanics are workflow actions, not separate AI roles. A model diagnoses failures only when judgment is needed.
 
-## Delegation handoffs and configured lane roles
-
-When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Identify applicable project instruction sources, architecture decisions, engineering conventions, and verification expectations for that role; provide paths/source access rather than copying their full contents. The specialist must inspect relevant canonical rules itself and not treat task-context, a plan or a prior agent's interpretation as the sole authority. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
-
-For implementation-plan assignments, explicitly point the planner to this contract's **Planning convergence**
-section and the applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions.
-The planner must read those sources directly before drafting; the orchestrator checks source access and the
-resulting blueprint, not merely that paths were mentioned in the dispatch.
-
-In Delegation Mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured lane inventory and verify host/relay/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Standard Mode and explicitly authorized one-task direct work need not resolve a delegation lane.
-
-When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
-
-Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual lanes remain local configuration until a secret-free export/bootstrap profile is implemented and approved. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
-
 ## Context and continuity
 
 - `task-context` is optional rich temporary understanding, normally owned by the feature when a feature exists.
-- The project scratchpad is compact execution/resume state: current objective, active work item, **explicitly selected session mode** (when known), stage, completed work, material decisions, blockers, verification state and next action. Preserve that mode across compaction and model changes within the same session. A task-scoped exception does not switch it; only a new explicit user selection does. On a new session, do not infer mode authorization from an older scratchpad. Do not create a scratchpad solely to record the mode.
+- The project scratchpad is compact execution/resume state: current objective, active work item, stage, completed work, material decisions, blockers, verification state and next action.
 - A new chat/model is only a runtime transition. It requires neither handoff nor closeout when normal state is current.
 - `handoff` is exceptional: use it for genuine transfer friction, a deliberate pause, or another environment/owner
   that cannot efficiently reconstruct the work from the normal artifacts.
 - `work-closeout` is for a genuinely completed bounded work item that needs durable reconciliation/cleanup. It is
   not triggered merely because a conversation ends.
-- Keep each bounded delegated assignment logically open through applicable review, author disposition, fixes and acceptance. Prefer resuming the same child session when supported and current; otherwise resume the semantic assignment with a fresh session and sufficient durable evidence, without claiming context continuity. A logical assignment need not keep a child process running. Close it on verified acceptance, not merely on first response or stage transition.
 - Pass attributed reviewer findings to the original artifact owner without rewriting the substance. Debate is optional for consequential disagreement; it need not generate multiple permanent records. Reconcile and clean temporary coordination artifacts when no longer needed, retaining required review evidence under project policy.
 - Project artifacts, not conversation history, are the primary continuity mechanism.
 - Host-managed context transitions do not replace project execution records. Preserve material decisions, uncertainty, unresolved gates and next action in normal project state.
@@ -131,7 +109,7 @@ Keep these classes distinct:
 - runtime result
 
 For consequential findings, carry a precise source pointer and revision/state when useful. A pointer is navigation to
-evidence, **not proof of the interpretation**. Delegated findings are data/leads, not workflow authority. The receiving
+evidence, **not proof of the interpretation**. Prior findings are data/leads, not workflow authority. The receiving
 role verifies consequential claims against the most authoritative current source and actively checks contradictory
 evidence when the impact warrants it.
 
@@ -147,11 +125,10 @@ workflow explicitly grants them authority.
   surfaces unless competing proposals are explicitly desired.
 - An independent reviewer receives requirements/scope, relevant design constraints, the actual diff, verification
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
-- For review-only delegated work, invoke the host/relay's supported enforced read-only execution boundary (for example a read-only flag or read-only agent), not just a prompt instruction. Verify the effective boundary from invocation evidence. If enforcement is unavailable, report that limitation and apply the appropriate project gate instead of claiming a read-only review; do not assume a lane name or config automatically enforces it.
 - Reviewers verify consequential claims rather than checking only that citations exist.
-- For plan reviews, the orchestrator ordinarily reviews a delegated plan itself in Delegation Mode, applying the available plan-review capability; a separate independent reviewer may be used when requested, warranted or required. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
-- The orchestrator inspects delegated diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction; this inspection complements rather than replaces a required independent technical code review. The orchestrator may ordinarily make the verified commit when authorized, consistent with delegate-skill caller/landing conventions. Commit identity does not itself grant permission to push, open a PR, merge or deploy; those follow project authorization.
-- The implementer owns its code, local tests/build checks and fixes. When independent code review is warranted or required, use a separate reviewer; implementer self-checks and orchestrator outcome verification do not substitute for independent review. The orchestrator coordinates these roles rather than repeating specialist judgment.
+- For plan reviews, apply the available plan-review capability. A separate independent reviewer may be used when requested, warranted or required. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
+- Inspect code diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction. This inspection complements rather than replaces required independent technical review. Commit ownership does not grant publication, merge or deployment permission; project authorization controls those effects.
+- The implementer owns its code, local tests/build checks and fixes. When independent code review is warranted or required, use a separate reviewer; implementer self-checks and outcome verification do not substitute for independent review. Coordinate responsibilities rather than repeating specialist judgment.
 - Routine review findings return to the implementer for fix/reverify without a new user gate. Material findings that
   change scope, behavior, architecture, security, data or contract boundaries escalate.
 
@@ -181,7 +158,7 @@ Use bounded recovery:
 3. repeated equivalent failure changes strategy, role/host where allowed, or escalates.
 
 Preserve the failed run, exact error/result, attempted hypotheses, what was ruled out and the relevant revision.
-Do not loop indefinitely or silently rewrite persistent lane configuration because one run failed.
+Do not loop indefinitely.
 
 ## Pushback and approval
 
@@ -215,22 +192,19 @@ The feature plan should record slice dependencies so branch selection is mechani
 feature-level and should be created once behavior is sufficiently stable, before implementation when useful. Scenarios
 may map to delivery slices so the team knows when each becomes testable.
 
-Use the applicable installed skills and quality guards for each responsibility, confirming actual availability and invocation rather than assuming a catalog entry ran. The mapping from phase to skill is replaceable configuration/discovery, not a permanent dependency on a specific skill name. For changed production code apply relevant code-quality checks; for changed tests apply relevant test-quality checks; for review evaluate project conventions and the actual diff, not merely whether the plan was followed. An unavailable required check is reported as unverified, not claimed complete. Do not redundantly rerun an already evidenced check solely because an orchestrator receives the artifact.
+Use the applicable installed skills and quality guards for each responsibility, confirming actual availability and invocation rather than assuming a catalog entry ran. The mapping from phase to skill is replaceable configuration/discovery, not a permanent dependency on a specific skill name. For changed production code apply relevant code-quality checks; for changed tests apply relevant test-quality checks; for review evaluate project conventions and the actual diff, not merely whether the plan was followed. An unavailable required check is reported as unverified, not claimed complete. Do not redundantly rerun an already evidenced check solely because another participant receives the artifact.
 
 Unit tests, builds, guards, API regression and environment checks are implementation verification layers. A cumulative
 API regression suite is extended by relevant slices and rerun when applicable. Report local, deployed-environment and
 manual/QA verification separately; one does not imply another.
 
-## Delegated outcome completion
+## Outcome completion
 
-A delegated task is complete only after the orchestrator verifies the requested outcome against its applicable
-acceptance criteria. Keep three outcomes distinct: **process/relay success** means the invocation ended successfully;
-**response success** means a final model response was captured; **task acceptance** means the requested outcome was
-verified against its applicable criteria. Process or response success alone does not establish task acceptance.
-For artifact tasks, inspect expected outputs and verify their required content and applicable checks before advancing.
-An acknowledgment, partial artifact, or structural check alone is insufficient. For response-only tasks, assess the
-returned response against the request; do not require an artifact. If the outcome is missing or incomplete, preserve
-the run evidence, classify the failure, and use bounded recovery before advancing.
+Work is complete only after its requested outcome is verified against applicable acceptance criteria. A successful
+process or a captured response alone does not establish task acceptance. For artifact tasks, inspect expected
+outputs and their required content and applicable checks; an acknowledgment, partial artifact or structural pass
+alone is insufficient. For response-only tasks, assess the response against the request without requiring a file.
+Preserve evidence of missing or incomplete outcomes, classify the failure and use bounded recovery before advancing.
 
 ## Generic versus project-specific policy
 

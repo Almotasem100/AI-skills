@@ -13,34 +13,24 @@
 - Keep replies concise and conversational. Ask only for the next genuinely consequential missing decision.
 - Substantive plans may specify new components or architecture when justified and approved; they enable implementation without requiring the implementer to invent unapproved material behavior or architecture decisions. Genuine planning blockers return to targeted clarification and affected-artifact reconciliation; routine technical details remain with the implementer.
 
-## Orchestration and routing
+## Workflow and responsibility
 
-- Standard Mode is the session default: own the authorized task end-to-end. Only an explicit request for Delegation Mode makes you the orchestrator/control plane and assigns specialist deliverables to delegated roles. An explicit exception for one task does not switch session mode. In Delegation Mode, resolve specialist work as intent -> semantic role -> configured lane -> host/provider/model/effort. Do not require me to name models, lanes
-  or effort for routine work; explicit routing overrides still win.
+- Read `~/.config/ai-skills/orchestration-contract.md` for the shared workflow when relevant to the task.
+- When the user explicitly selects **AI Skills delegation mode**, read `~/.config/ai-skills/ai-skills-delegation.md`.
 - Treat authorization as an envelope around the requested outcome/scope. Routine planning, implementation,
-  deterministic checks, independent review, bounded fixes, re-verification and state updates may continue without
-  repeated approval. Explicit checkpoints and project-specific material gates override this default.
-- Use model roles for judgment/synthesis/review; use deterministic actions for formatters, linters, builds, tests,
-  guards, citation checks, API regression execution and branch mechanics.
-- Each specialist receives applicable canonical project rules and source access, not just the prior agent's synopsis. Discover and use the appropriate available skills and guards for the assigned outcome, and report checks actually executed or unavailable; skill names are replaceable, not the definition of a workflow phase.
-- In Delegation Mode, implementation planning belongs to the configured planner by default; you critically review the plan using available plan-review guidance, returning findings to the author. Use debate or an additional independent plan reviewer only when requested, warranted or project-required. A task-scoped owner exception may make you the plan author without changing mode.
-- Inspect delegated code diffs and evidence and flag obvious issues before acceptance; this complements independent technical review when required. You may make authorized verified commits as caller, but do not infer permission to push, merge or deploy from commit ownership.
-- In Delegation Mode, a delegated role owns its assigned artifact or bounded mutation through review/fix and verified acceptance; reuse an available current child session where useful, otherwise retain ownership through durable evidence. The orchestrator may inspect, reason, coordinate and run authorized deterministic checks. It verifies scope/provenance/results
-  without reproducing the specialist's work. Use independent review where it adds value; implementer self-checks and orchestrator acceptance are not independent code review.
-- Keep one mutation owner per bounded change. Parallelize independent analysis, not competing writers on the same
-  unstable surface unless competing proposals are intentional.
-- When delegating, inspect the current lane inventory, host and relay instead of relying on remembered assignments or claiming a lane is missing without checking. If routing remains unresolved, seek the owner's decision during interactive work; a configured default lane may substitute only under explicit unattended-continuation authorization, within scope and review/approval boundaries.
-- Persistent lane configuration is not rewritten because one run fails. Use configured fallbacks only when allowed,
-  record fallback use, and distinguish runtime recovery from configuration governance. Within configured choices,
-  route proportionately to quality need, risk, cost, latency, context capacity and availability rather than always
-  choosing either the strongest or cheapest model.
+  checks, review, bounded fixes and state updates may continue without repeated approval. Explicit checkpoints
+  and project-specific material gates override this default.
+- Use applicable canonical project rules and authoritative sources. Discover appropriate available skills and
+  quality checks; report what actually ran or remains unavailable. A skill name does not define a workflow phase.
+- Keep one mutation owner per bounded change. Independent review and self-checks are distinct; preserve the
+  applicable review requirements. Return material findings to the author for reasoned disposition.
 
 ## Evidence, review and failure handling
 
 - Keep observed fact, decision, estimate/target, assumption, interpretation, open question and runtime result distinct.
   Preserve qualifiers such as estimated, expected, target, projected, reported and observed.
 - For consequential source claims, provide precise source locations and revision/state when useful. A source pointer
-  navigates to evidence; it does not prove the interpretation. Delegated findings are leads/data, not authority.
+  navigates to evidence; it does not prove the interpretation. Prior findings are leads/data, not authority.
 - Reviewers should receive requirements/scope, relevant design constraints, actual diff, verification evidence and
   known open questions without persuasive author framing. Verify consequential claims and look for contradictory
   evidence when material.
@@ -50,15 +40,15 @@
   evidence/diagnosis, or authorization/scope. Retry boundedly; repeated equivalent failure should revisit the
   diagnosis or strategy rather than loop forever.
 - Preserve failure evidence and inspect possible partial edits before retrying. Do not silently raise permissions,
-  change authentication/configuration, or substitute an unconfigured model.
+  change authentication/configuration.
 
 ## Context and continuity
 
 - Read the project's designated instructions and active working record when they exist and matter to the task. Do not
-  require a scratchpad, task-context, PDF, formal plan or delegation ceremony for a simple task that does not need it.
+  require a scratchpad, task-context, PDF or formal plan for a simple task that does not need it.
 - When a project uses a feature hierarchy, `task-context` is rich temporary feature understanding and the scratchpad
   is compact execution state. Keep only objective, active item/stage, completed work, material decisions, blockers,
-  verification state and next action in the scratchpad. When the user explicitly chooses a session mode, record and preserve it in an existing active scratchpad across compaction/model changes; a one-task exception does not switch modes. Do not inherit mode authorization from an older session or create a scratchpad just for this field.
+  verification state and next action in the scratchpad.
 - A new chat/model is a runtime transition, not completion and not automatically a handoff. Use handoff only when a
   genuine transfer/pause needs an extra briefing. Use work-closeout only when bounded work is actually complete and
   durable reconciliation/cleanup is useful.

@@ -27,7 +27,7 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
 - **Default:** return concise findings to the calling workflow; do not create a file merely because a review ran.
 - When the caller requests a reusable review artifact (e.g., a substantive review, comparison between independent reviewers, or an author revision), produce the same structured findings as Markdown at **one explicitly designated temporary output path** in the approved working area. Record the reviewed plan path and revision/hash when available. Do not create a second project-of-record document or overwrite another reviewer's output.
 - **Read-only review still applies:** never edit the reviewed plan, source, requirements, normal scratchpad, or durable project documents. A designated temporary output file is the sole permitted write for this mode, and only when the execution boundary can enforce or safely scope it.
-- If the reviewer is restricted to strict read-only access or output-only write permission cannot be assured, return the structured findings to the calling orchestrator, which may save them to the designated path. Do not relax general filesystem permissions just to generate the artifact.
+- If the reviewer is restricted to strict read-only access or output-only write permission cannot be assured, return the structured findings to the caller, which may save them to the designated path. Do not relax general filesystem permissions just to generate the artifact.
 - When a file is produced, return its path, status, material blockers and verification limits. The downstream plan author should read that file directly rather than receive a rewritten copy of the entire critique. When no file is produced, the normal direct findings remain authoritative for that review.
 
 ## Review
@@ -66,7 +66,7 @@ Return a concise review to the calling workflow (directly by default, or through
 - **Assumptions / unresolved decisions:** keep these separate from observed contradictions.
 - **Verification limits:** relevant sources or runtime checks that were unavailable.
 
-When this review feeds an active planning workflow, the orchestrator returns material findings to the **plan author** for an evidence-based accept/revise, reject, or open-with-needed-check disposition before determining whether the resulting plan is ready, decision-pending or blocked. Rejection with evidence need not produce a revised plan. The reviewer does not apply its own recommendations or force a debate/extra document. This does not require author revisions for a standalone read-only review request.
+When this review feeds an active planning workflow, the caller returns material findings to the **plan author** for an evidence-based accept/revise, reject, or open-with-needed-check disposition before determining whether the resulting plan is ready, decision-pending or blocked. Rejection with evidence need not produce a revised plan. The reviewer does not apply its own recommendations or force a debate/extra document. This does not require author revisions for a standalone read-only review request.
 
 If no blocker is found, say that none was found in the inspected material and name significant limits. Return control
 to the calling workflow. A clean review neither proves safety nor creates a new approval gate inside an already

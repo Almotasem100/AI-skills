@@ -49,50 +49,31 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `skills/` | My own skills, one folder each with a `SKILL.md` |
 | `vendor/` | Copied third-party skills I may modify, each with an `UPSTREAM.md` (source, base commit, my changes) and, when changed, a `local-changes.patch` |
 | `overlays/` | Local contributions/patches kept separate from upstream/vendor snapshots; each overlay documents its base and application procedure |
-| `delegates/` | Delegate lane configs: which CLI and model does which job |
+| `docs/delegation-lanes.md` | Optional profile’s lane responsibilities; live model/provider configuration stays local |
 | `tools/` | Standalone scripts that aren't skills. `json-compare/`: diff two recorded API responses (used by HDC's B9). `url-map/`: URL → handler → caller map for Java web apps, with gaps (replaces Graphify) |
-| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Keep identical copies at `~/.config/opencode/AGENTS.md`, `~/.claude/CLAUDE.md` and `~/.gemini/GEMINI.md`; update them explicitly together, verify hashes and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
+| `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Copy the shared template to the instruction paths of selected hosts; install the shared contract and optional companion instructions using `GUIDE.md`, verify parity and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
 
 ## Installing on a new machine
-See [`GUIDE.md`](GUIDE.md): a tested PowerShell block that copies every skill (mine, the copied ones, and the
+See [`GUIDE.md`](GUIDE.md): PowerShell setup choices that copy selected skills (mine, the copied ones, and the
 pinned Pocock ones at their commit) into `~/.claude/skills` and `~/.agents/skills`, plus how to use each skill.
-`install.ps1` will later turn that block into one command.
+The updated setup choices require native verification; no standalone installer is implemented.
 
 ## The workflow
 
-The active model works in **Standard Mode by default**, owning authorized work end-to-end. On explicit **Delegation Mode** activation, it becomes the orchestrator: coordinates the requested outcome, chooses the smallest
-sufficient workflow, resolves semantic roles through configured lanes, tracks state and exceptions, and stops only
-at completion, an explicit checkpoint, or a genuine material gate.
+The shared [workflow contract](docs/orchestration-contract.md) defines Full Feature and Change/Bug entry paths,
+applicable design, QA scenarios before implementation planning, plan critique, implementation/checks, code review
+and authorized publication/closeout. Skills are replaceable capabilities; project instructions own tracker mappings,
+architecture, environment gates and approvals. Rich task context is optional; the scratchpad is compact execution
+state. Preserve source evidence, proportionate verification, findings disposition and explicit omissions.
 
-The durable semantics live in [`docs/orchestration-contract.md`](docs/orchestration-contract.md). Highlights:
-
-- work enters either a **Full Feature** path for explicit feature-process delivery or a **Change/Bug** path for ordinary bounded requests; Full Feature has default outcomes for clarification, applicable design, QA scenarios **before implementation planning**, plan challenge, implementation/checks, review and applicable PR/closeout, while explicitly authorized omissions remain respected without substitute paperwork;
-- projects may map a parent **Feature** to one or more **Delivery Slices**;
-- stage commands such as `plan`, `implement`, `review`, `continue` and `finish` have predictable bounded
-  meanings;
-- in Delegation Mode, specialist deliverables belong to routed owners through review/fix and acceptance; delegated planning is the default, with orchestrator plan review and optional independent challenge. A user-approved one-task exception may make the orchestrator planner without switching mode; assigned child sessions may be reused when supported, not kept running indefinitely;
-- interactive routing gaps return to the user after diagnosis; only explicit unattended-continuation authorization enables a suitable configured default-lane fallback within existing gates;
-- models are interchangeable resources beneath semantic roles; provider/model/effort are configuration, not normal
-  user syntax;
-- deterministic guards/build/tests/regression are workflow actions rather than separate agents; discover applicable skills at execution time and verify use rather than hardcoding phase ownership to one skill name;
-- `task-context` is rich temporary understanding, the scratchpad is compact execution state, handoff is exceptional,
-  and `work-closeout` is about completed work rather than ending a chat;
-- evidence carries provenance/revision where consequential, while reviewers verify claims independently;
-- repeated failures trigger diagnosis changes or escalation rather than infinite retries;
-- preserve material execution state and unresolved decisions across context transitions.
-
-Substantive plans should settle material implementation decisions without freezing routine technical judgment. A technically complete plan can still await material approval. Genuine gaps return to targeted clarification; plan-review findings go to the author for reasoned disposition. Resolve the current lane and host when delegating, not for permitted direct work.
-
-A delegated role receives relevant canonical project instructions, architectural decisions and conventions, not only synthesized task notes; reviewers check these sources independently when consequential. A delegated role owns its assigned artifact or bounded mutation. The orchestrator does not duplicate specialist work
-as verification; use independent review and deterministic checks. Give each role the minimum useful context and
-canonical source access required for its responsibility.
-
-Routine workflow progression inside an authorized scope does not need per-stage approval. The owner may always
-override routing, participants, checkpoints or boundaries. Persistent/outward effects remain subject to the active
-project's authorization policy.
+The shared collaboration template is `templates/global-user-instructions/AGENTS.md`. It contains one activation
+pointer for the optional **AI Skills delegation mode**. That separately guarded profile is
+[`docs/ai-skills-delegation.md`](docs/ai-skills-delegation.md); install its companion files only when wanted.
+The profile retains our existing specialist ownership, configured routing, fallback and session-continuity rules.
+The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
 
 ### Generic project hierarchy
 
@@ -110,9 +91,11 @@ Feature
 The generic repo never hardcodes a tracker. A project may map Feature to Jira, Delivery Slice to CodeBeamer, or use
 different systems entirely.
 
-### Delegation lane catalog
+### Optional delegation setup
 
-[Delegation lane roles and workflow routing](docs/delegation-lanes.md) records the stable semantic meaning of the current seven lanes and the proposed feature-design addition, without pinning providers, models or effort variants. These descriptions do **not** install or modify workstation lane configuration; local routing must be synchronized and smoke-tested separately. The eventual goal remains a secret-free, reproducible lane profile and bootstrap path for a fresh clone.
+The guarded [AI Skills delegation mode profile](docs/ai-skills-delegation.md) uses the
+[lane catalog](docs/delegation-lanes.md). These files describe responsibilities, not live model/provider settings.
+They do not install or change workstation configuration. Secret-free lane export/bootstrap remains future work.
 
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an
@@ -204,6 +187,10 @@ unless separately requested.
 
 
 ### `plan-review` and `plan-debate`
+
+`plan-debate` retains its existing multi-participant/configured-lane requirements unchanged, pending separate
+discussion. It is a separately selected skill, not a prerequisite for the shared workflow.
+
 Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
 no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to
 planning work and record resulting decisions/blockers/next action, but it should not become the store for full plans,
@@ -274,7 +261,7 @@ repo; see `docs/roadmap.md` before treating it as a generally available relay.
 2. **Delegate a task:** *"delegate this to codex: <task>"* (or agy, opencode…). Your agent writes a
    self-contained brief and the relay runs the CLI. This relay does not create Git commits; publication and
    commit authorization follow the active project's rules. Add "read-only" for reviews or diagnosis without edits.
-   For generic outcome verification and independent review responsibilities, see the orchestration contract.
+   For shared outcome verification and independent review requirements, see the workflow contract; our routing policy lives in the optional profile.
 3. **Guards after implementing:** *"run clean-code-guard on this change"* (also `test-guard` for tests,
    `docs-guard` for docs).
 4. **Review loop on a PR:** *"babysit PR 123"*. It verifies each bot or Copilot finding, fixes blockers
