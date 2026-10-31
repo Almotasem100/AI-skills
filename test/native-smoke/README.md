@@ -61,28 +61,27 @@ not native behavioral acceptance. These limits are intentional to keep the pack 
 
 ## Full-scenario host trials
 
-Preparation creates `FULL-SCENARIO.md` and two separate disposable projects. Run each trial in a **fresh session**
-of its named host, using the prompts in that document. These are real, session-driven model calls, separately
-from `--live`; preparation/verification alone never dispatch them. Do not run the OpenCode profile and ZadLoop's
-orchestration in the same trial. Everyday CLI lanes and host lanes remain unchanged.
+Preparation creates `FULL-SCENARIO.md`, a ready-to-paste `OPENCODE-PROMPT.md`, and independent disposable fixtures.
+Open the exact **full-opencode root**, containing POLICY.md/requirements.md and project/, rather than project/.
+The runner initializes a local Git baseline commit at that root and records its status; no remote, user-level Git
+configuration, hooks or provider calls are involved. Feature writes remain restricted to the policy's project/
+paths. Failed Git preparation is reported unavailable; preserve old runs rather than rebuilding them in place.
 
-OpenCode selects AI Skills delegation mode and must route specialist outcomes through configured CLI skills.
-ZadLoop uses its own Delegate mode with shared instructions and an explicit session-only rule: when no internal
-responsibility fits, use Gemini CLI rather than the default lane. A higher-priority conflict is a reported blocker,
-not a claimed pass. Neither trial asks the model to delegate to a named role. The prompts request actual design,
-QA and complete feature delivery; inspect the dispatch record to judge automatic routing.
+Run the generated natural prompt in a fresh OpenCode session after approved installation/parity checks. It selects
+AI Skills delegation mode without teaching discovery commands, lanes or workflow stages. A guided diagnostic must
+use a separate session and cannot establish automatic discovery. **ZadLoop remains on hold**; its fixture is only
+retained scaffolding. Do not resume it or add host-specific routing rules during these corrections.
 
-The lifecycle covers context, FD/LLD, QA, plan/critique, implementation/tests, independent code review, corrections,
-PR-description preparation and local closeout. It stops before publication. API regressions are inapplicable to the
-pure-library fixture. A separate functional-document request tests routing without telling the model a lane.
-Run that request in the same host session; it must not ask again which transport to use.
+The evaluator inspects design ownership and chronology, QA before dependent planning, plan authorship/critique,
+implementation/tests, separate code review/corrections, PR preparation and accurate local closeout. The optional
+standalone customer-guide follow-up tests a distinct intent under the same selection. Lifecycle and routing checks
+use actual dispatch/results/artifacts; a post-implementation design correction is not retroactive compliance.
 
-`--verify` independently runs fixed acceptance tests for a reported trial and checks immutable fixture inputs.
-Semantic outputs and routing evidence remain `needs-review`; passing code tests does not prove the workflow ran.
-Missing reports remain skipped. An untouched bounded helper trial also remains skipped, so it does not fail an
-otherwise successful full-scenario-only run. Exit 2 still means incomplete coverage; inspect each case rather than
-calling the whole pack passed. Keep failed, blocked, unavailable and skipped separate. Old execution.json files
-and host-agent definitions are untouched and unused; native comparison records remain in Git history.
+`--verify` independently runs fixed acceptance tests for a reported trial and checks immutable inputs, allowed
+scope and the preparation Git baseline. It never starts model assignments. Reports stay `needs-review` until a
+caller checks their meaning; a code pass does not certify routing or lifecycle. Untouched trials remain skipped,
+and exit 2 can mean incomplete coverage. Preserve old execution.json files and host agents unchanged/unused.
+See the generated guide for exact paths, capture instructions and the evaluator rubric.
 
 ## Fresh-session host probes
 
@@ -175,13 +174,14 @@ and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.m
 ## Full-scenario driving instruction
 
 > After the approved setup/parity update, prepare a fresh run with this checkout's runner. Read generated
-> FULL-SCENARIO.md and help me run its two host trials in separate fresh sessions. Use the natural prompts
-> unchanged; do not supply the evaluator rubric as routing hints. Real bounded assignments on existing approved
-> routes are authorized. Preserve settings, capture real calls/results and independently run --verify. Report
-> each lifecycle outcome and automatic routing separately; do not turn unavailable host support into a pass.
+> FULL-SCENARIO.md, confirm its exact full-opencode workspace root and baseline, and return that path plus
+> OPENCODE-PROMPT.md for a new OpenCode session. Do not supply the evaluator rubric or routing hints to that
+> session. Existing approved bounded assignments are authorized. Capture actual calls/results and independently
+> run --verify after the trial. Report code, routing, lifecycle and remaining limits separately. Preserve old runs,
+> settings and production lanes. ZadLoop stays paused; do not run its trial.
 
-These full-feature trials are additional to the small smoke cases above. Their separate sessions deliberately avoid
-inheriting the hypothetical walkthrough's profile selection into the ZadLoop trial.
+The full-feature trial is separate from the small smoke cases above. Its fresh session avoids inheriting explicit
+routing guidance from a diagnostic or hypothetical walkthrough.
 
 ## Checks for the runner itself
 

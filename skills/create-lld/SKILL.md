@@ -55,6 +55,9 @@ checks that actually ran. Do not create it merely because implementation finishe
 - Run `node <skill-dir>/scripts/check-lld.mjs <lld.md> --size <small|normal>` for an LLD. A structural pass is not
   a content-quality or architect-approval result.
 - Manually check Functional Design against approved feature behavior.
+- When both LLD and Functional Design are requested, check their material decisions and observable behavior
+  together. For a revision, inspect the affected companion document and update it when needed; distinguish
+  revised content from content checked and left unchanged. Do not claim both were reconciled from one file edit.
 - Present requested artifacts for the applicable project review/approval boundary.
 
 ## Files

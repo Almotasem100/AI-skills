@@ -5,6 +5,40 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 export const scenarioHosts = ['opencode', 'zadloop'];
+export const featurePrompt = `You are in AI Skills delegation mode.
+Deliver DRAFT-RENAME as a complete Full Feature in this disposable fixture.
+
+Read POLICY.md and requirements.md in the current workspace root, then inspect project/. Follow the installed
+workflow and applicable project instructions. Real bounded assignments through existing configured routes are authorized.
+
+Only project/ is writable, within POLICY.md's permitted paths. Do not modify requirements, policy or fixed tests.
+Do not change global configuration, install software or publish anything.
+
+Complete the feature within that scope and verify it from the workspace root using:
+node --test acceptance.test.mjs
+
+Preserve actual assignment and verification evidence under project/working/. Return a concise report of delivered
+outcomes, routes/tools actually used, test results, review/corrections, blockers and limitations. Distinguish observed
+execution from assumptions.
+`;
+function fixtureGit(base, args) {
+  const env = { ...process.env };
+  for (const key of Object.keys(env)) if (key.startsWith('GIT_')) delete env[key];
+  return spawnSync('git', ['-c','core.autocrlf=false','-c','commit.gpgsign=false',
+    '-c',`core.hooksPath=${join(base,'.git','disabled-hooks')}`, ...args],
+    {cwd:base,encoding:'utf8',timeout:15000,env});
+}
+function gitBaseline(base) {
+  const commands = [ ['init','--quiet'], ['symbolic-ref','HEAD','refs/heads/main'],
+    ['add','--force','--','POLICY.md','requirements.md','acceptance.test.mjs','baseline.json','project/drafts.mjs'],
+    ['-c','user.name=AI Skills Fixture','-c','user.email=fixture@example.invalid','commit','--quiet','-m','Fixture baseline'] ];
+  for (const args of commands) {
+    const result=fixtureGit(base,args);
+    if(result.status!==0) return {status:'unavailable',reason:`Fixture Git baseline failed: ${result.error?.message || result.stderr || result.status}`};
+  }
+  return {status:'passed',baselineCommit:fixtureGit(base,['rev-parse','HEAD']).stdout.trim(),
+    reason:'Fixture root is a local Git repository with one preparation commit, no remote or nested repository'};
+}
 const requirements = `# Feature DRAFT-RENAME
 Add owner-only draft renaming to the existing in-memory draft library.
 R1: renameDraft(drafts, actorId, draftId, name) returns a new array containing the renamed draft; inputs stay unchanged.
@@ -27,6 +61,9 @@ API regressions and an as-built Technical Design are inapplicable: this is a pur
 No separate design approval gate is required for this fully settled fixture. Report consequential ambiguities if found;
 routine technical decisions and corrections are authorized. Do not automatically stack plan debate or extra plan reviews.
 A separate technical reviewer must inspect substantive code changes; do not call implementer self-review independent.
+The preparation baseline commit is fixture scaffolding, not feature delivery. Compare uncommitted changes against
+that baseline. A commit-only PR helper may not represent the working tree; use verified worktree evidence for local
+PR text instead of fabricating a develop branch or making feature commits to satisfy the helper.
 Prepare PR text, but do not commit, push, open PRs, merge, deploy, change global settings or install/upgrade tools.
 Local closeout reconciles final docs and working state; retain review/dispatch evidence for this test.
 `;
@@ -42,6 +79,10 @@ test('blank name rejected', () => { for(const name of ['','  ','\\t']) assert.th
 test('duplicates allowed', () => assert.equal(api.renameDraft(rows(),'u1','a','Duplicate')[0].title,'Duplicate'));
 `;
 export function prepareFullScenarios(dir) {
+  for (const host of scenarioHosts) if (existsSync(join(dir, `full-${host}`)))
+    throw Error('Refusing to overwrite an existing full-scenario fixture; prepare a fresh run');
+  const prepared = [];
+  writeFileSync(join(dir,'OPENCODE-PROMPT.md'), featurePrompt);
   for (const host of scenarioHosts) {
     const base = join(dir, `full-${host}`), project = join(base, 'project');
     mkdirSync(join(project, 'docs'), { recursive: true });
@@ -52,7 +93,11 @@ export function prepareFullScenarios(dir) {
     writeFileSync(join(base, 'acceptance.test.mjs'), acceptance);
     const protectedFiles = ['requirements.md', 'POLICY.md', 'acceptance.test.mjs'];
     writeFileSync(join(base, 'baseline.json'), JSON.stringify(Object.fromEntries(protectedFiles.map(name=>[name,hash(join(base,name))])),null,2));
+    const setup={host,workspaceRoot:base,writableRoot:project,...gitBaseline(base)};
+    writeFileSync(join(dir,`full-${host}-setup.json`),JSON.stringify(setup,null,2));
+    prepared.push(setup);
   }
+  return prepared;
 }
 export function verifyFullScenario(dir, host) {
   if (!scenarioHosts.includes(host)) throw Error('Unknown scenario host');
@@ -71,10 +116,13 @@ export function verifyFullScenario(dir, host) {
     const files = [];
     function walk(path) { for (const entry of readdirSync(path,{withFileTypes:true})) {
       const next=join(path,entry.name); if(entry.isSymbolicLink()) throw Error('Symlink outside fixture scope');
-      if (next === join(base,'project','.git') && entry.isDirectory()) continue;
+      if (next === join(base,'.git') && entry.isDirectory()) continue;
       if(entry.isDirectory()) walk(next); else files.push(relative(base,next).replaceAll('\\','/'));
     } }
     walk(base);
+    const setup=JSON.parse(readFileSync(join(dir,`full-${host}-setup.json`),'utf8'));
+    const head=fixtureGit(base,['rev-parse','HEAD']);
+    unchanged = unchanged && setup.status==='passed' && head.status===0 && head.stdout.trim()===setup.baselineCommit;
     unchanged = unchanged && files.every(name=> ['baseline.json',...names,'project/drafts.mjs'].includes(name) ||
       name.startsWith('project/docs/') || name.startsWith('project/working/'));
   } catch { unchanged = false; }

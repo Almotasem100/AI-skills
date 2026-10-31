@@ -323,7 +323,8 @@ by this profile. No standalone installer is implemented. Confirm copied-file par
 
 For another harness's own orchestration, install/use the shared instructions without selecting our optional profile.
 Any external fallback rule for that harness is an explicit user/session instruction, subject to its permissions and
-higher-priority rules; it is not part of shared workflow policy. See the full-scenario trials for separate host tests.
+higher-priority rules; it is not part of shared workflow policy. ZadLoop trials are currently on hold. Use the
+generated OPENCODE-PROMPT.md and exact fixture root in FULL-SCENARIO.md for the current OpenCode retest.
 
 ---
 

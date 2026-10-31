@@ -25,8 +25,12 @@ decision that actually matters.
 ## Establish completion scope
 
 Confirm from evidence what is complete, what is deferred, what verification actually ran, and the current repository
-state. Do not call a delivery slice, feature, deployment or acceptance complete merely because code exists or one
-check passed.
+state. Check required outcomes against actual artifacts, relevant changes, reviewer responses and execution
+results; do not rely solely on a prior completion summary. Distinguish authored/revised, inspected and left unchanged,
+and independently verified. A revision to one design does not prove its companion was reconciled. If evidence
+contradicts a working-record claim, correct that claim before propagating it. Preserve material unmet prerequisites
+or late corrections accurately; final consistency does not prove the required sequence occurred.
+Do not call a delivery slice, feature, deployment or acceptance complete merely because code exists or one check passed.
 
 ## Reconcile the working record
 

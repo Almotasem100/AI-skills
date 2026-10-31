@@ -1,6 +1,41 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: CLI profile and separate full-scenario host trials — 2026-10-31
+## Current: OpenCode trial corrections; ZadLoop on hold — 2026-10-31
+
+The owner-host initial feature trial read retired execution settings, did not use the installed fleet loader and
+performed specialist work directly; its claim that no routes existed was unsupported. A subsequent guided relay
+probe succeeded. The fresh feature retest dispatched configured OpenCode/Gemini roles and recovered missing QA
+output through the same session. Luna independently reported 6/6 fixed acceptance and 6/6 authored checks, separate
+code review and consistent final behavior. This is owner-host evidence reported by Luna, not execution inspected
+here. It does not erase the original failure or prove reliable fresh-session routing.
+The retest also required user-guided workspace correction, routed initial feature design through standalone docs,
+corrected only the LLD after implementation, and overstated paired design reconciliation in closeout.
+
+Corrections: the guarded CLI profile now gives installed read-only loader/resolver commands, distinguishes discovery
+from invocation failures, and explicitly prevents solo specialist work without a task exception. Feature design owns
+both requested FD/LLD before dependent planning/implementation; late changes require checking affected artifacts,
+not rewriting everything or treating late correction as earlier compliance. create-lld and work-closeout distinguish
+revised, inspected/unchanged and verified outcomes and correct unsupported completion claims. Shared global
+instructions and the portable workflow contract remain unchanged. Production lanes and plan-debate are untouched.
+
+The full-scenario runner now creates the Git baseline at the exact full-opencode root that is opened; project/ is
+only the writable subtree, with no nested repository. OPENCODE-PROMPT.md is the natural request, without discovery
+commands, lane hints or a stage checklist. Preparation refuses existing fixtures, records Git setup availability
+and requires no global Git configuration/hooks. Commit-only PR helpers are not evidence for uncommitted changes;
+local PR text must use actual worktree changes/results. Full-scenario verification still separates code from manual
+routing/lifecycle review. Existing runs must retain their matching revision's verifier and original evidence.
+
+Validation: 23/23 offline checks passed, including Gemini overlay regressions, actual isolated fleet-loader
+resolution from root/child, Git baseline/diff, fixture scope/integrity and shared separation. A fresh participant
+using only revised instructions and raw case records selected the read-only discovery procedure, refused solo
+specialist fallback, assigned paired feature design correctly and rejected unsupported reconciliation/chronology
+claims. This is source-understanding evidence, not a native OpenCode adherence pass.
+Next: Luna should refresh the changed profile/catalog and managed create-lld/work-closeout, verify parity and prepare one
+fresh OpenCode fixture/session. Do not paste diagnostic guidance into the feature session. ZadLoop remains paused;
+no host-specific routing rules, production settings, owner installation or authenticated provider calls change here.
+Do not merge before review of the updated installed trial.
+
+## Historical: CLI profile and separate full-scenario host trials — 2026-10-31
 
 Owner decision: park native-agent preference/mapping setup. AI Skills delegation mode now uses configured CLI
 skills directly; the specialist planner still authors and the orchestrator reviews. Existing local execution.json

@@ -1,7 +1,7 @@
 # Small workflow smoke tests
 
-For real Full Feature execution in separate OpenCode and ZadLoop sessions, use the generated `FULL-SCENARIO.md`
-from the reusable pack. It includes natural feature and standalone documentation requests, actual dispatch evidence
+For the current real Full Feature OpenCode trial, use generated `FULL-SCENARIO.md` and `OPENCODE-PROMPT.md`
+from the reusable pack. ZadLoop trials are on hold. It includes natural feature and standalone documentation requests, actual dispatch evidence
 and fixed acceptance tests; it is distinct from the explanation-only walkthrough below.
 
 For the reusable general installed-setup/relay/skill pack, start with

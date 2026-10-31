@@ -72,8 +72,13 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.match(hosts, /without invoking a skill or supplying instruction paths/);
       const fullScenario = readFileSync(join(runDir, 'FULL-SCENARIO.md'), 'utf8');
       assert.doesNotMatch(fullScenario, /\{\{[A-Z_]+\}\}/);
-      assert.match(fullScenario, /instead of the default internal lane/);
-      assert.match(fullScenario, /complete Full Feature workflow/);
+      assert.match(fullScenario, /ZadLoop is on hold/);
+      assert.match(fullScenario, /Open this exact workspace root/);
+      const featurePrompt = readFileSync(join(runDir, 'OPENCODE-PROMPT.md'), 'utf8');
+      assert.match(featurePrompt, /^You are in AI Skills delegation mode/);
+      assert.match(featurePrompt, /Deliver DRAFT-RENAME as a complete Full Feature/);
+      assert.doesNotMatch(featurePrompt, /config\.mjs|write-plan|draft-feature-design|Take the feature through/);
+      assert.ok(fullScenario.includes(JSON.stringify(join(runDir, 'full-opencode'))));
       assert.match(fullScenario, /Create a short customer-facing functional guide/);
       const verify = () => spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });
       assert.equal(verify().status, 2); // Untouched trials remain skipped.
