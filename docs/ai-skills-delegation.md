@@ -31,8 +31,11 @@ node "<installed-delegate-setup>/scripts/lane.mjs" resolve --cwd "<project-root>
 ```
 
 The loader reports the global/project config paths, effective lanes and project trust; the resolver identifies the
-matching installed delegation skill and dials. Use that skill's documented relay procedure. These are read-only
-operations, not a request to enter the setup interview or write configuration. Reuse the inventory until relevant
+matching installed delegation skill and dials. Read that skill's installed instructions and run its documented
+`scripts/relay.mjs` command through the available shell/terminal. A CLI relay is a script, not a registered host
+tool: absence from the host tool catalog does not make it unavailable. Use the shell's actual argument schema;
+a malformed tool call is not a permission denial. Route resolution alone is not dispatch. The loader/resolver
+calls are read-only operations, not a request to enter the setup interview or write configuration. Reuse the inventory until relevant
 configuration changes or a dispatch fails. Preserve permissions, source access and independent-review requirements.
 The semantic catalog, host model list and filename searches are not the live fleet. This profile does not read local execution.json
 or require native-agent mappings. Leave existing local preferences and host agents untouched.
@@ -78,6 +81,11 @@ Stable lane meanings and their workflow usage are catalogued in [delegation-lane
 ## Assignment, review and landing
 
 - Keep each bounded delegated assignment logically open through applicable review, author disposition, fixes and acceptance. Prefer resuming the same child session when supported and current; otherwise resume the semantic assignment with a fresh session and sufficient durable evidence, without claiming context continuity. A logical assignment need not keep a child process running. Close it on verified acceptance, not merely on first response or stage transition.
+
+- For continuation, copy the session ID from that assignment's recorded result/events and use the selected
+  relay's documented continuation option; do not guess an ID or reuse another assignment's session. Give each
+  invocation/retry a fresh output directory, preserving prior attempts. A transport failure may leave usable
+  artifacts: inspect them before retrying, but keep the failed process status separate from artifact acceptance.
 
 - For review-only delegated work, invoke the host/relay's supported enforced read-only execution boundary (for example a read-only flag or read-only agent), not just a prompt instruction. Verify the effective boundary from invocation evidence, including shell/process access as well as edit-tool permissions. A named plan/read-only agent or no observed writes does not establish full filesystem containment. If enforcement is unavailable, report that limitation and apply the appropriate project gate instead of claiming a read-only review; do not assume a lane name or config automatically enforces it.
 

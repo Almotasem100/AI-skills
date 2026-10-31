@@ -27,6 +27,19 @@ Copy **only the generated `OPENCODE-PROMPT.md`** into the fresh session. Its nat
 profile but gives no loader paths, lane choices or stage checklist. Do not paste diagnostic findings or the rubric
 below into that session. A guided relay diagnostic must use a separate session; it is not an automatic-routing pass.
 
+## Capture preflight — setup caller only
+
+Before another feature trial, demonstrate that the installed host's supported export/log facilities retain a tiny
+isolated probe's original user text, file-read path/output, terminal command/result and final assistant response,
+with event IDs and individual tool timestamps sufficient to establish order. Keep this probe separate from the
+feature session. If capture is insufficient, report the gap before repeating the feature. Do not infer capability
+from a missing dedicated event tool; inspect installed CLI help and verify the actual export.
+
+Locate the completed feature by exact workspace and title in session metadata, then verify its identity before
+exporting only that session. Save the original final response verbatim, never reconstructed from artifacts.
+Keep raw exports local and protect unrelated content/credentials. Compare actual tool times, not export listing
+order or later summaries. Record user intervention and distinguish missing evidence from contradiction.
+
 Requirements: {{OPENCODE_REQUIREMENTS}}
 Project policy: {{OPENCODE_POLICY}}
 

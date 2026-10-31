@@ -1,6 +1,30 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: OpenCode trial corrections; ZadLoop on hold — 2026-10-31
+## Current: CLI invocation clarification and final evidence capture — 2026-11-01
+
+Owner-host export evidence identified the latest dispatch failure: the feature session successfully read the
+profile, loaded/resolved the fleet and executed shell commands, then searched the host tool catalog rather than
+invoking the installed relay. Its report that no shell existed was contradicted by its own execution records.
+After explicit user correction, the same fixture reportedly completed configured design/planning/implementation/
+review and Gemini QA, with 6/6 acceptance and 5/5 focused checks. This was guided recovery, not automatic routing.
+Transport failures retained usable outputs; incorrect Gemini continuation ID and reused output directory attempts
+were rejected before subsequent recovery. These are owner-provided records, not fresh provider runs performed here.
+
+The guarded profile now distinguishes shell-invoked CLI scripts from registered host tools, malformed calls from
+permission denials, and resolution from dispatch. Continuation must use the assignment's recorded session ID and
+a fresh output directory per invocation. Existing recovery/acceptance rules remain; no vendor relay or model/role
+configuration changed. The full-scenario guide adds a setup-only timestamped capture probe and exact-session,
+verbatim-response capture, without adding hints to the natural feature prompt. Shared instructions are unchanged.
+
+Next: setup Luna should inspect the existing plan/critique/author-disposition evidence to resolve the ambiguous
+summary wording, without new assignments or speculative artifact repairs. Refresh only the managed profile,
+confirm capture capability and prepare one fresh fixture for an unassisted OpenCode session. Independently check
+that run before merge; earlier guided success does not erase the original dispatch failure. ZadLoop stays on hold.
+Validation: 17/17 existing separation and runner checks passed, including generated guide preparation and
+unchanged shared boundaries. This instruction-only patch does not change relay code; native acceptance awaits
+the owner-host trial.
+
+## Historical: OpenCode trial corrections; ZadLoop on hold — 2026-10-31
 
 The owner-host initial feature trial read retired execution settings, did not use the installed fleet loader and
 performed specialist work directly; its claim that no routes existed was unsupported. A subsequent guided relay
