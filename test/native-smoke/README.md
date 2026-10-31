@@ -59,18 +59,30 @@ are explicit-use tests; record observed file access/native activation and do not
 `plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
 
-## Execution preference and native assignments
+## Full-scenario host trials
 
-Preparation generates `EXECUTION-CHECKS.md` for explanation-only routing cases, one tiny native assignment with
-same-session continuation, and the retained Gemini CLI relay path. It authorizes those small session-driven calls,
-not a large comparison campaign or production role reassignment. Configure only disposable test agents; preserve
-local preferences, global host agents and everyday model lanes. Native calls must actually use the host's native
-mechanism; an unavailable interface is not a relay pass. Retain route/root/permission evidence and child-session ID.
+Preparation creates `FULL-SCENARIO.md` and two separate disposable projects. Run each trial in a **fresh session**
+of its named host, using the prompts in that document. These are real, session-driven model calls, separately
+from `--live`; preparation/verification alone never dispatch them. Do not run the OpenCode profile and ZadLoop's
+orchestration in the same trial. Everyday CLI lanes and host lanes remain unchanged.
 
-`execution.json` receives read-only format validation; source parity intentionally does not compare personal
-preferences to the empty example. Missing configuration uses the documented default without claiming native
-readiness. Semantic/native reports remain `needs-review`, never automatic pass. Matching model names or no observed
-writes do not prove account equivalence or shell-write containment. No cost/speed superiority is assumed.
+OpenCode selects AI Skills delegation mode and must route specialist outcomes through configured CLI skills.
+ZadLoop uses its own Delegate mode with shared instructions and an explicit session-only rule: when no internal
+responsibility fits, use Gemini CLI rather than the default lane. A higher-priority conflict is a reported blocker,
+not a claimed pass. Neither trial asks the model to delegate to a named role. The prompts request actual design,
+QA and complete feature delivery; inspect the dispatch record to judge automatic routing.
+
+The lifecycle covers context, FD/LLD, QA, plan/critique, implementation/tests, independent code review, corrections,
+PR-description preparation and local closeout. It stops before publication. API regressions are inapplicable to the
+pure-library fixture. A separate functional-document request tests routing without telling the model a lane.
+Run that request in the same host session; it must not ask again which transport to use.
+
+`--verify` independently runs fixed acceptance tests for a reported trial and checks immutable fixture inputs.
+Semantic outputs and routing evidence remain `needs-review`; passing code tests does not prove the workflow ran.
+Missing reports remain skipped. An untouched bounded helper trial also remains skipped, so it does not fail an
+otherwise successful full-scenario-only run. Exit 2 still means incomplete coverage; inspect each case rather than
+calling the whole pack passed. Keep failed, blocked, unavailable and skipped separate. Old execution.json files
+and host-agent definitions are untouched and unused; native comparison records remain in Git history.
 
 ## Fresh-session host probes
 
@@ -98,8 +110,7 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
 - Preserves this profile's delegated planner authorship, orchestrator critique and author findings disposition.
   Extra independent plan review/debate is conditional, not automatically stacked. Mentioning the parked debate
   capability is not permission to execute or modify `plan-debate`.
-- Resolves the standing execution preference, explicit overrides and current host mappings without per-assignment
-  questions; keeps external CLI assignments on their approved relay and reports incompatible explicit selections.
+- Resolves configured CLI routes without per-assignment mechanism questions and preserves explicit routing overrides.
 - Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,
   confuse a lane with a skill, or require the orchestrator to reproduce specialist work. Deterministic checks are
   distinguished from participant responsibilities.
@@ -161,10 +172,21 @@ Raw captures remain local in the run directory; summarize errors without copying
 Installing or changing files is not part of the runner. Use the approved GUIDE setup first. For focused mode-selection
 and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.md`.
 
+## Full-scenario driving instruction
+
+> After the approved setup/parity update, prepare a fresh run with this checkout's runner. Read generated
+> FULL-SCENARIO.md and help me run its two host trials in separate fresh sessions. Use the natural prompts
+> unchanged; do not supply the evaluator rubric as routing hints. Real bounded assignments on existing approved
+> routes are authorized. Preserve settings, capture real calls/results and independently run --verify. Report
+> each lifecycle outcome and automatic routing separately; do not turn unavailable host support into a pass.
+
+These full-feature trials are additional to the small smoke cases above. Their separate sessions deliberately avoid
+inheriting the hypothetical walkthrough's profile selection into the ZadLoop trial.
+
 ## Checks for the runner itself
 
 ```sh
-node --test test/native-smoke/runner.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
+node --test test/native-smoke/runner.test.mjs test/native-smoke/full-scenario.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
 ```
 
 These are offline unit/integration checks, including a **synthetic** relay. They test the driver and rejection paths;

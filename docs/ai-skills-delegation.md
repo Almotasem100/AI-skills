@@ -7,10 +7,10 @@
 
 The selected agent owns orchestration and delegates specialist deliverables. Apply the shared
 [workflow contract](orchestration-contract.md) and canonical project policy without changing their required outcomes.
-Resolve specialist work as `intent -> role -> approved route -> execution mechanism`. A configured lane retains
-its approved provider/model/effort and account/environment constraints when invoked through another mechanism.
-Among configured routes, consider quality, risk, cost, latency, context capacity and availability without changing responsibilities
-or bypassing project/provider constraints. Honor explicit routing/model overrides.
+Resolve specialist work as `intent -> responsibility -> configured lane -> installed CLI delegation skill`.
+Read the actual local lane configuration and use the matching CLI relay with its configured provider/model/effort
+and authorized environment. A model's presence in a host catalog does not select a route. Honor explicit user
+routing/model overrides without silently changing persistent configuration.
 
 The configured planner authors the implementation plan by default; the orchestrator critically reviews it using
 applicable plan-review guidance and authoritative evidence, and returns material findings to that author for
@@ -19,40 +19,21 @@ project-required. Debate is requested or risk-justified, not an automatic second
 requirements-derived review is not fully independent. A user-authorized task exception may assign planning or
 another deliverable to the orchestrator without changing the selected session profile or waiving project gates.
 
-## Execution preference
+## Execution mechanism
 
-Read local `~/.config/ai-skills/execution.json` when present. It is owner-managed routing configuration, not an
-activation signal. Format: `version: "ai-skills.execution.v1"`, `preference: "native-preferred"` or
-`"relay-preferred"`, `nativeAgents: { "<host-id>": { "<role>": "<agent-id>" } }`, and optional
-`roleMechanisms: { "<role>": "native" | "relay" }`. Never overwrite it during a refresh or add unsupported
-fields to delegate-fleet configuration. If absent, use native-preferred with no assumed native mappings;
-existing configured relay routes still work. Invalid configuration is a setup blocker, not permission to guess.
-
-Resolve each assignment in this order:
-1. Honor an explicit user task/session mechanism override, then a saved per-role mechanism, then the standing
-   preference. A task override expires with that task; a session override lasts only that session. Neither
-   silently rewrites the saved preference. Do not ask which mechanism to use for every assignment.
-2. A native route requires a mapped agent in the current host and verified support for the approved model/effort,
-   account/environment, project root/instructions, source access, permissions and necessary skills/tools.
-   A provider catalog entry or matching model name alone does not establish route equivalence. Inspect effective
-   agent configuration; do not invent an agent or silently reconfigure the host. Routes requiring an external
-   CLI environment, including Gemini CLI, remain relay routes even if that provider also exists in the host.
-3. Under native-preferred, use an eligible native agent; otherwise use the already-approved equivalent relay.
-   Under relay-preferred, use the approved relay; native is an explicit role/task/session override.
-   An explicit native/relay selection is binding: if unavailable or incompatible, report the blocker rather than
-   silently choosing the other mechanism. A failed invocation follows bounded recovery below; a mechanism
-   preference does not authorize switching accounts/models, weaker permissions or unapproved fallback.
-
-Configure the preference and native role mappings once during setup; recheck affected mappings when configuration
-changes. Maintain model/provider assignments in their existing local route configuration. Preserve the host and
-child session ID with the active assignment so findings/fixes return to that participant; completing a call does
-not require destroying its conversation. Neither mechanism is presumed cheaper, faster or more reliable.
+This optional profile uses the configured CLI delegation skills for specialist assignments, including Gemini CLI.
+Resolve the responsibility from the user's requested outcome; the user need not name a lane or choose a mechanism
+for each task. Load the lane inventory once at session setup and refresh affected routes when configuration changes
+or a dispatch fails. Preserve applicable permissions, source access and independent-review requirements.
+Do not substitute a harness worker merely because the host exposes one. Selecting another execution system is a
+separate user choice, not an automatic transport fallback. This profile does not read local execution.json or
+require native-agent mappings. Existing local preference files and host agent definitions must be left untouched.
 
 ## Session continuity
 
 Selection persists across compaction and model changes within the same session. Record the explicit selection in
 an existing active project scratchpad; do not create one solely for this field. Preserve it until the user changes
-it. Retain any session execution override and active child-session pointers across compaction as well.
+it. Retain active CLI session pointers across compaction as well.
 A task-scoped exception does not change the selection. A new session must not infer activation from an older
 session's scratchpad. Preserve the ordinary objective, decisions, evidence, stage and next action as usual.
 
@@ -65,11 +46,11 @@ section and the applicable approved requirements, Functional Design/LLD, QA scen
 The planner must read those sources directly before drafting; the orchestrator checks source access and the
 resulting blueprint, not merely that paths were mentioned in the dispatch.
 
-In AI Skills delegation mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured routes and native-agent inventory, applying the execution preference and verifying host/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Explicitly authorized one-task direct work need not resolve a delegation lane.
+In AI Skills delegation mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Explicitly authorized one-task direct work need not resolve a delegation lane.
 
 When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
 
-Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual lanes, execution preferences and native mappings remain local configuration; the repository supplies an empty execution-preference example, not live routes. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
+Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual provider/model/effort assignments remain local configuration; the repository does not supply live production routes. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
 
 ## Assignment, review and landing
 

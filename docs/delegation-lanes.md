@@ -17,10 +17,10 @@ The lane names below describe semantic responsibilities, not a claim about any w
 | `write-qa-scenarios` | Specify tester-facing feature behavior through `qa-scenarios` | Uses approved requirements and Functional Design where available; does **not** implement or execute automated tests. It is distinct from executable unit and API regression tests. |
 | `write-api-regression-tests` | Author executable API regression tests | During relevant implementation/verification slices; tests must be checked/run through deterministic actions when authorized. Distinct from QA scenarios. |
 | `implement-code` | Bounded code implementation | Uses approved plan and scoped source; one mutation owner per change, with deterministic checks and independent review when warranted. |
+| `review-code` | Separate technical code review | Checks actual diff, requirements and verification evidence; returns attributable findings to the implementer for disposition, corrections and recheck. Must not be the author reviewing its own change. |
 
-Execution uses the guarded profile's standing preference and local role-to-native-agent mappings. The same role
-and V3 ownership apply through native subagents or CLI relays; do not add a role or change its meaning merely to
-change transport. External-CLI requirements, approved accounts and effective permissions remain controlling.
+In this optional profile, configured lanes run through installed CLI delegation skills. Role ownership and
+acceptance checks do not change with a model rotation. Approved accounts and effective permissions remain controlling.
 
 ## Role-to-capability mapping
 
@@ -41,7 +41,7 @@ If planning reveals a consequential unresolved owner decision or invalid approve
 
 Resolve the configured specialist route first. A missing/failed route warrants diagnosis; in interactive work, request owner direction before unapproved substitution. Only explicit unattended-continuation authorization permits a suitable configured default route as fallback, preserving task scope, independent-review requirements and project gates. Do not automatically equate a default model with a qualified reviewer or silently reconfigure lanes.
 
-Keep a specialist's bounded assignment open through its required review, findings disposition, corrections and acceptance. Reuse a valid child session when the selected host/relay supports continuation, otherwise restart the same semantic role from authoritative artifacts. Do not require idle child processes to remain alive or generate a permanent session ledger.
+Keep a specialist's bounded assignment open through its required review, findings disposition, corrections and acceptance. Reuse a valid child session when the selected CLI relay supports continuation, otherwise restart the same semantic role from authoritative artifacts. Do not require idle child processes to remain alive or generate a permanent session ledger.
 
 ## File-first handoff, review output and local lifecycle
 
@@ -49,4 +49,4 @@ When files are accessible, dispatch only objective, input paths, scope/source pe
 
 `plan-review` returns concise findings directly by default. For substantial reviews or multi-model comparisons it may produce **one designated temporary Markdown findings artifact** under the skill's output-only restrictions; in strict read-only mode, the orchestrator writes the artifact from the reviewer's returned findings. `plan-debate` uses one temporary debate record and attributed exchanges, not the normal compact scratchpad.
 
-This catalog does not set any host/provider/model/variant. Update it when a lane's **role or lifecycle meaning** changes, not when a model rotates. Local lane additions/renames require checking native/relay support, aliases/consumers, host/model availability, privacy authorization, and bounded synthetic smoke behavior before promotion. A reproducible secret-free lane profile and fresh-clone installation remains a tracked future deliverable.
+This catalog does not set any host/provider/model/variant. Update it when a lane's **role or lifecycle meaning** changes, not when a model rotates. Local lane additions/renames require checking installed relay support, aliases/consumers, host/model availability, privacy authorization, and bounded synthetic smoke behavior before promotion. A reproducible secret-free lane profile and fresh-clone installation remains a tracked future deliverable.

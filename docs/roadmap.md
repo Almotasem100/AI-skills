@@ -1,6 +1,34 @@
 # Roadmap — status, next steps, open decisions
 
-## Optional native/relay execution preference — 2026-10-31
+## Current: CLI profile and separate full-scenario host trials — 2026-10-31
+
+Owner decision: park native-agent preference/mapping setup. AI Skills delegation mode now uses configured CLI
+skills directly; the specialist planner still authors and the orchestrator reviews. Existing local execution.json
+files, host agents, provider/model lanes and authentication are preserved, unused by this profile. Removed the
+unused example and native-assignment cases from active setup; their experiment/evidence remains in Git history.
+Shared instructions/contract stay unchanged and mechanism-neutral except the existing positive activation pointer.
+Added the existing review-code responsibility to the semantic catalog; no production lane/model assignment changed.
+Keep Gemini recovery fixes, simplified task-context and work-closeout reconciliation. Plan-debate remains parked.
+
+The smoke pack now generates FULL-SCENARIO.md plus two independent disposable draft-renaming feature fixtures.
+Natural requests cover complete feature delivery and a separate customer guide, without naming lanes. OpenCode
+selects our CLI profile; ZadLoop uses its own Delegate mode/shared instructions with the owner's explicit session
+rule: when no internal responsibility fits, use Gemini CLI instead of the internal default. This is test-session
+policy, not a shared fallback rule or guaranteed override of harness instructions. A genuinely fitting internal
+lane prevents proving the no-match fallback; higher-priority conflicts are reported blocked.
+Fixed tests cover ownership, error precedence, trimming, allowed duplicates, preserved inputs and existing listing.
+Verification checks fixture integrity/scope and code; reports still need manual artifact/lifecycle/routing review.
+Unrun fixtures are skipped. A code pass alone is not an automatic-routing or complete-workflow pass.
+
+Validation: 21/21 offline tests passed, including the Gemini overlay regressions. Source/fixture checks cover
+unchanged shared boundaries, CLI-only selection, preserving unused legacy
+preferences, natural-prompt generation, isolated host fixtures, negative behavior and test tampering. No owner-host installation or real full-feature provider run happened
+here. Next: Luna incrementally installs the changed companion profile/catalog from this branch (preserving local
+settings), checks parity, and prepares the two fresh host trials. Execute them in the VM and return actual dispatch,
+artifact, test/review and closeout evidence before claiming either host works by default. Do not merge yet.
+The next section is superseded experiment history, not current setup instructions.
+
+## Historical: optional native/relay execution preference — 2026-10-31
 
 The guarded delegation profile now resolves explicit task/session choices, saved role overrides and a standing
 native-preferred or relay-preferred policy. V3 ownership stays unchanged: a specialist authors the plan and the

@@ -72,10 +72,9 @@ state. Preserve source evidence, proportionate verification, findings dispositio
 The shared collaboration template is `templates/global-user-instructions/AGENTS.md`. It contains one activation
 pointer for the optional **AI Skills delegation mode**. That separately guarded profile is
 [`docs/ai-skills-delegation.md`](docs/ai-skills-delegation.md); install its companion files only when wanted.
-The profile retains V3 specialist ownership and adds a standing native-preferred or relay-preferred execution
-choice with per-role overrides. The planner still authors; the orchestrator reviews. Local verified native-agent
-mappings select eligible native routes; external CLI routes retain relays. No per-assignment mechanism question
-is needed. See GUIDE for the one-time local preference setup.
+The profile retains V3 specialist ownership and uses configured CLI delegation skills: the planner authors and
+the orchestrator reviews. Ordinary requests select the appropriate configured responsibility without per-task
+transport questions. Native-agent preference setup is parked; existing host agents/local preferences are preserved.
 The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
 
 ### Generic project hierarchy
@@ -104,7 +103,7 @@ They do not install or change workstation configuration. Secret-free lane export
 
 After installing a changed branch, use [`test/native-smoke/README.md`](test/native-smoke/README.md). It provides
 separate test-only lanes, installed-file/config checks, small real relay tasks and session-run skill/workflow cases.
-No host-specific integration or global lane rewrite is required. Model-backed calls require `--live`.
+No host-specific integration or global lane rewrite is required. The runner's relay calls require `--live`; full-scenario calls require the separate session prompts and authorization described in the run guide.
 
 ## Skills
 Each skill gets an entry here once it exists: what it does, when to call it, its inputs and outputs, and an

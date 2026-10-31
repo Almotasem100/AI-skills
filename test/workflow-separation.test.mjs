@@ -39,17 +39,17 @@ test('optional instructions guard activation before routing and retain continuit
   }
 });
 
-test('execution choice stays optional, preserves V3 ownership and does not overwrite local preferences', () => {
+test('optional profile uses CLI routes without native preference setup and preserves ownership', () => {
   assert.match(profile, /configured planner authors the implementation plan by default/);
-  assert.match(profile, /native-preferred/);
-  assert.match(profile, /relay-preferred/);
-  assert.match(profile, /roleMechanisms/);
-  assert.match(profile, /Do not ask which mechanism to use for every assignment/);
+  assert.match(profile, /configured CLI delegation skills/);
+  assert.match(profile, /user need not name a lane or choose a mechanism/);
   assert.match(profile, /including Gemini CLI/);
-  assert.match(profile, /explicit native\/relay selection is binding/);
+  assert.match(profile, /does not read local execution.json/);
   assert.match(profile, /shell\/process access as well as edit-tool permissions/);
-  assert.match(guide, /if \(-not \(Test-Path \$executionFile\)\)/);
-  assert.doesNotMatch(globalInstructions + contract, /execution\.json|native-preferred|relay-preferred/);
+  assert.match(guide, /Do not create,[\s\S]*?delete existing local execution.json/);
+  assert.doesNotMatch(profile, /native-preferred|relay-preferred|roleMechanisms/);
+  assert.doesNotMatch(guide, /Copy-Item.*execution.example|\$executionFile/);
+  assert.doesNotMatch(globalInstructions + contract, /execution\.json|Gemini CLI|native-preferred|relay-preferred/);
 });
 
 test('shared workflow retains nine outcomes, prerequisite order and independent review', () => {

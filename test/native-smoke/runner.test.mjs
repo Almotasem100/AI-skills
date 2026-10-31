@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'nod
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { parseArgs, validateLanes, validateExecutionPreferences, expectedAnswer, assessRelay, repoRoot } from './run.mjs';
+import { parseArgs, validateLanes, expectedAnswer, assessRelay, repoRoot } from './run.mjs';
 
 const lane = { implementer: 'opencode', model: 'openai/gpt-6-luna', variant: 'low' };
 const answer = { token: 'fixture-a', sum: 11, count: 2 };
@@ -26,42 +26,6 @@ test('dedicated map uses test-only names and regular Luna', () => {
   assert.throws(() => validateLanes({ version: 'delegate-fleet.v1', lanes: { 'implement-code': lane } }));
   assert.throws(() => validateLanes({ version: 'delegate-fleet.v1', lanes: { 'smoke-x': { ...lane, sandbox: 'off' } } }));
 });
-test('execution preferences validate without changing model lanes or inventing native agents', () => {
-  const example = JSON.parse(readFileSync(join(repoRoot, 'templates/delegation/execution.example.json'), 'utf8'));
-  assert.deepEqual(validateExecutionPreferences(example).nativeAgents, {});
-  const saved = { ...example, preference: 'relay-preferred', nativeAgents: { host: { 'write-plan': 'planner' } },
-    roleMechanisms: { 'write-plan': 'native', 'write-qa-scenarios': 'relay' } };
-  assert.equal(validateExecutionPreferences(saved), saved);
-  for (const bad of [null, [], { ...example, preference: 'automatic' }, { ...example, version: 'delegate-fleet.v1' },
-    { ...example, model: 'unexpected/model' }, { ...example, nativeAgents: [] },
-    { ...example, nativeAgents: { host: { role: '' } } }, { ...example, roleMechanisms: { role: 'default' } },
-    { ...example, roleMechanisms: null }]) assert.throws(() => validateExecutionPreferences(bad));
-});
-test('invalid local execution settings fail preparation and remain failed after verification without rewriting them', () => {
-  const root = mkdtempSync(join(tmpdir(), 'execution-config-test-'));
-  const instructions = join(root, 'instructions'); mkdirSync(instructions);
-  const path = join(instructions, 'execution.json');
-  const original = '{"version":"ai-skills.execution.v1","preference":"guess","nativeAgents":{}}';
-  writeFileSync(path, original);
-  const env = { ...process.env }; delete env.NODE_TEST_CONTEXT;
-  let runDir;
-  try {
-    const prepared = spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'),
-      '--skills-root', join(root, 'missing-skills'), '--instructions-root', instructions], { encoding: 'utf8', env });
-    assert.equal(prepared.status, 1);
-    runDir = prepared.stdout.match(/Run directory: (.+)/)[1].trim();
-    const summary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
-    assert.equal(summary.cases.find(item => item.case === 'execution-preference').status, 'failed');
-    assert.equal(readFileSync(path, 'utf8'), original);
-    writeFileSync(join(runDir, 'workflow/total.mjs'), 'export const totalApproved = items => items.filter(item => item.approved === true).reduce((n,item) => n+item.amount,0);\n');
-    const verified = spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });
-    assert.equal(verified.status, 1);
-  } finally {
-    if (runDir) rmSync(runDir, { recursive: true, force: true });
-    rmSync(root, { recursive: true, force: true });
-  }
-});
-
 test('expected answer is independently computed from approved fixture rows', () => {
   assert.deepEqual(expectedAnswer({ token: answer.token, items: [
     {approved:true,amount:7},{approved:false,amount:900},{approved:true,amount:4}] }), answer);
@@ -89,9 +53,12 @@ test('workflow verifier catches original bug and test tampering, then runs the a
   delete env.NODE_TEST_CONTEXT; // Nested node --test must run as an independent process.
   try {
     mkdirSync(join(root, 'missing-skills')); mkdirSync(join(root, 'missing-instructions'));
+    const legacyPreference = join(root, 'missing-instructions/execution.json');
+    writeFileSync(legacyPreference, '{old unrecognized local preference}');
     const preparation = spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'),
       '--skills-root', join(root, 'missing-skills'), '--instructions-root', join(root, 'missing-instructions')], { encoding: 'utf8', env });
     assert.equal(preparation.status, 2);
+    assert.equal(readFileSync(legacyPreference, 'utf8'), '{old unrecognized local preference}');
     const runDir = preparation.stdout.match(/Run directory: (.+)/)[1].trim();
     try {
       const walkthrough = readFileSync(join(runDir, 'WALKTHROUGH.md'), 'utf8');
@@ -103,11 +70,14 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.doesNotMatch(hosts, /\{\{[A-Z_]+\}\}/);
       assert.match(hosts, /Claude CLI is \*\*not/);
       assert.match(hosts, /without invoking a skill or supplying instruction paths/);
-      const execution = readFileSync(join(runDir, 'EXECUTION-CHECKS.md'), 'utf8');
-      assert.doesNotMatch(execution, /\{\{[A-Z_]+\}\}/);
-      assert.match(execution, /Resume that exact child/);
-      assert.match(execution, /not a native Gemini provider/);
+      const fullScenario = readFileSync(join(runDir, 'FULL-SCENARIO.md'), 'utf8');
+      assert.doesNotMatch(fullScenario, /\{\{[A-Z_]+\}\}/);
+      assert.match(fullScenario, /instead of the default internal lane/);
+      assert.match(fullScenario, /complete Full Feature workflow/);
+      assert.match(fullScenario, /Create a short customer-facing functional guide/);
       const verify = () => spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });
+      assert.equal(verify().status, 2); // Untouched trials remain skipped.
+      writeFileSync(join(runDir, 'responses/workflow.md'), 'Bounded trial claimed complete; independently verify.');
       assert.equal(verify().status, 1); // Original helper incorrectly includes pending rows.
       writeFileSync(join(runDir, 'workflow/total.mjs'), 'export const totalApproved = items => items.filter(item => item.approved === true).reduce((n,item) => n+item.amount,0);\n');
       assert.equal(verify().status, 2); // Runtime passes; semantic skill reviews are still pending.
@@ -122,10 +92,10 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       const reviewedSummary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
       assert.equal(reviewedSummary.sessionCases.find(item => item.case === 'workflow-walkthrough').status, 'needs-review');
       assert.equal(reviewedSummary.hostCases.find(item => item.case === 'gemini-skill-activation').status, 'needs-review');
-      writeFileSync(join(runDir, 'responses/native-execution.md'), 'Native evidence still needs semantic review.');
+      writeFileSync(join(runDir, 'responses/full-opencode.md'), 'Full workflow evidence still needs semantic review.');
       verify();
       const nativeSummary = JSON.parse(readFileSync(join(runDir, 'summary.json')));
-      assert.equal(nativeSummary.sessionCases.find(item => item.case === 'native-execution').status, 'needs-review');
+      assert.equal(nativeSummary.sessionCases.find(item => item.case === 'full-opencode').status, 'needs-review');
       writeFileSync(join(runDir, 'workflow/total.test.mjs'), '// disabled\n');
       assert.equal(verify().status, 1);
     } finally { rmSync(runDir, { recursive: true, force: true }); }
