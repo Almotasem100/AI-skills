@@ -30,6 +30,10 @@ check passed.
 
 ## Reconcile the working record
 
+Reconcile relevant final working artifacts (requirements, design, plan, review and verification evidence) before
+writing durable updates. Use the scratchpad to navigate them, not as their sole substitute. Distinguish approved
+intent, implemented behavior and verified outcomes; do not copy or archive every draft automatically.
+
 Preserve the project's format and keep the normal scratchpad compact. Confirm that its objective/work item, final
 stage, material decisions, blockers/deferred items, verification state and next/closed state are accurate. Do not turn
 it into a duplicate closeout report, evidence dump, full plan/review transcript or proposed-text queue. Gather detailed
@@ -41,6 +45,15 @@ real-source claims, follow the project's evidence/revision rules.
 Do not refresh every project document. Update or propose only the documents whose owned fact actually changed.
 Follow the project's authorization policy: apply already-authorized write-backs, or present exact proposed text when
 the project reserves them for approval. Do not promote temporary task-context into permanent documentation by default.
+
+Replace superseded guidance in its canonical document and affected active references instead of appending a
+competing amendment. Preserve displaced rationale/evidence in on-demand history when useful or required by project
+policy; keep applicable technical constraints intact.
+
+Keep temporary restrictions and unresolved follow-ups in current work/state records with a next action and an
+explicit completion/removal condition. Once that condition is met, remove obsolete reminders, pauses and gates from
+active guidance; retain the ongoing procedure and real remaining limitations. Do not retire unresolved items merely
+because the current work item is closing.
 
 ## Validate citations and claims
 

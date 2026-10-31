@@ -1,5 +1,13 @@
 # Roadmap — status, next steps, open decisions
 
+## Focused closeout reconciliation clarification — 2026-10-31
+
+Clarified `work-closeout` to reconcile relevant final working artifacts, replace superseded active guidance, and
+retire temporary restrictions/reminders only when their completion condition is met. Existing authority, evidence,
+cleanup permissions and unresolved-follow-up protections remain. Source text/frontmatter and the two-file diff were
+checked; no native model/host trial or workstation installation was performed. Next: assess these clarifications in
+normal closeout use. The paused Gemini recovery work and its pending native checks below remain unchanged.
+
 ## Gemini recovery and evidence preservation — 2026-10-31
 
 Updated the base-pinned Gemini overlay on `work/step-two`: `--resume` accepts a full session UUID as well
