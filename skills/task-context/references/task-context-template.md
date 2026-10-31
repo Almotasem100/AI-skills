@@ -1,45 +1,23 @@
 # Task Context
 
-> Temporary working synthesis for this task. Not a project-of-record document.
+> Shared temporary understanding; canonical requirements and project rules remain authoritative.
 
-## Objective
-<!-- Requested outcome in 1-3 sentences. -->
+## Objective and scope
+<!-- Requested outcome, supplied business rationale, affected users/processes and explicit exclusions. -->
 
-## Business rationale
-<!-- Why this work exists; affected users/processes; expected value. Preserve qualifiers. -->
+## Approved behavior and decisions
+<!-- Requirements, business rules, meaningful UX/visual conclusions, acceptance criteria and owner decisions.
+Preserve consequential clarification Q&A or an unambiguous sourced decision summary. State each item once. -->
 
-## Approved requirements / behavior
-<!-- Concise, complete requirements that downstream work must preserve. -->
+## Relevant current-system findings and constraints
+<!-- Relevant existing behavior, reuse opportunities and technical boundaries, with precise source pointers.
+Distinguish current behavior from requested behavior. -->
 
-## Business rules / domain constraints
-<!-- Rules, terminology and domain constraints that affect behavior. -->
+## Open questions and assumptions
+<!-- Conflicts, consequential gaps and unverified premises. Label useful author proposals as unapproved;
+do not develop a competing plan. Omit this section if nothing remains open. -->
 
-## UX / visual conclusions
-<!-- Relevant conclusions from screenshots/Figma/CSS; do not copy whole artifacts. -->
-
-## Technical constraints / boundaries
-<!-- Architecture, API, data, security, compatibility, platform constraints. -->
-
-## Acceptance criteria / verification expectations
-<!-- What must be verified; do not claim tests have passed here unless supported by evidence. -->
-
-## Decisions
-<!-- Settled choices. Include decision owner/source when useful. Preserve the original clarification question and answer when losing their pairing would distort a material decision; don't reproduce an entire interview transcript. -->
-
-## Non-goals / excluded scope
-<!-- Explicit exclusions so downstream roles do not widen the task. -->
-
-## Estimates / targets / measurements
-<!-- Keep estimates/targets separate from observed/measured results. -->
-
-## Assumptions
-<!-- Plausible but unverified statements. -->
-
-## Unresolved questions / blockers
-<!-- Consequential gaps that still need resolution. -->
-
-## Author observations / recommendations (optional; not approved decisions)
-<!-- Useful interpretations, proposed approaches and tradeoffs from the context author. Mark as non-authoritative, with evidence references where consequential. Omit if unnecessary. -->
-
-## Source map
-<!-- Short pointers to authoritative sources used: ticket, requirement artifact, decision doc, screenshot set, etc. -->
+## Source references
+<!-- Compact pointers to authoritative inputs and current design/plan/review/verification artifacts.
+Keep estimates/targets distinct from measured results wherever included. Omit empty sections and do not copy
+whole source artifacts or duplicate items across sections. -->

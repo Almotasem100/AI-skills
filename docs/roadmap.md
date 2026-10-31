@@ -1,5 +1,20 @@
 # Roadmap — status, next steps, open decisions
 
+## Task-context simplification — 2026-10-31
+
+Reduced the task-context skill and template from fourteen content sections to five flexible groups: objective/scope,
+approved behavior/decisions, current-system findings/constraints, open questions/assumptions, and source references.
+Consolidated repeated evidence rules; retain consequential grilling answers, UX constraints, acceptance criteria,
+exclusions, estimate/result distinctions, source authority and feature-level continuity. State information once,
+keep useful author observations explicitly unapproved, and leave solution development to design/planning.
+Refresh context when understanding changes; link detailed design/plan/review/results instead of duplicating them.
+
+Validation: six workflow-separation checks and frontmatter/template-path checks passed. A fresh-agent source-skill
+trial preserved owner-only rename, whitespace rejection, undecided duplicates, excluded sharing/deletion, the
+unmeasured benefit target and unapproved investigator suggestion. This is a bounded synthesis trial, not owner-host
+installation or a real-ticket quality evaluation. No planning ownership, delegation routes or running Luna test was
+changed. Existing Gemini recovery and closeout changes remain in this branch.
+
 ## Focused closeout reconciliation clarification — 2026-10-31
 
 Clarified `work-closeout` to reconcile relevant final working artifacts, replace superseded active guidance, and
