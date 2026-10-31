@@ -1,5 +1,27 @@
 # Roadmap — status, next steps, open decisions
 
+## Optional native/relay execution preference — 2026-10-31
+
+The guarded delegation profile now resolves explicit task/session choices, saved role overrides and a standing
+native-preferred or relay-preferred policy. V3 ownership stays unchanged: a specialist authors the plan and the
+orchestrator reviews it. Eligible native routes require a verified mapping in the current host; external CLI
+requirements (including Gemini CLI), account/environment, source access and effective permissions remain binding.
+Missing native mappings use already-approved relays under native-preferred; explicit incompatible selections block.
+Shared instructions/contract remain mechanism-neutral. No everyday model/provider lanes were changed.
+
+GUIDE creates local execution.json from an empty example only when absent and describes one-time host mapping
+validation without overwriting existing preferences. Native agents are not installed by that file or by these
+repository edits. The smoke pack validates preference format read-only and generates EXECUTION-CHECKS.md for
+12 explanation cases, one native fixture plus exact-session continuation, and the retained Gemini relay path.
+All semantic reports remain needs-review; verification now also retains failed preparation checks in its exit code.
+
+Validation: 20/20 offline tests passed, including the Gemini overlay regressions, isolation, configuration rejection,
+generated native checks and shared/optional separation. A fresh participant answered all 12 routing scenarios
+correctly without their expected answers. This is policy-understanding evidence, not installed native execution.
+Next: Luna should incrementally install the branch, configure/validate approved native mappings once, and run the
+generated installed-setup cases. Native dispatch/resumption, updated Gemini recovery and workstation loading remain
+owner-host verification; no host configuration, installation or authenticated provider call was performed here.
+
 ## Task-context simplification — 2026-10-31
 
 Reduced the task-context skill and template from fourteen content sections to five flexible groups: objective/scope,

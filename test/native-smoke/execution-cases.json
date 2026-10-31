@@ -1,0 +1,62 @@
+[
+  {
+    "id": "native-ready",
+    "input": "Native-preferred. The write-plan role maps to an available native agent in this host. Its approved model, effort, account/environment, project instructions, tools and permissions have been verified equivalent to the configured route. No override.",
+    "expected": "native"
+  },
+  {
+    "id": "external-cli",
+    "input": "Native-preferred. write-qa-scenarios has an approved Gemini CLI route using its CLI account/environment. A native Gemini provider is visible but equivalence is not established. The CLI relay is available.",
+    "expected": "relay"
+  },
+  {
+    "id": "relay-preferred",
+    "input": "Relay-preferred. implement-code has both an eligible mapped native agent and an available approved relay. No override.",
+    "expected": "relay"
+  },
+  {
+    "id": "role-relay",
+    "input": "Native-preferred. implement-code has both eligible mechanisms. Saved roleMechanisms pins implement-code to relay.",
+    "expected": "relay"
+  },
+  {
+    "id": "explicit-native-missing",
+    "input": "Relay-preferred. The user explicitly requests native execution of write-plan for this task. No native mapping is available; a relay is available.",
+    "expected": "blocked"
+  },
+  {
+    "id": "native-not-ready",
+    "input": "Native-preferred. No eligible mapped native agent exists for write-plan. Its already-approved relay is available and meets the task constraints. No explicit mechanism override.",
+    "expected": "relay"
+  },
+  {
+    "id": "explicit-relay",
+    "input": "Native-preferred. Both mechanisms are eligible. The user requests relay for this task only.",
+    "expected": "relay"
+  },
+  {
+    "id": "wrong-account",
+    "input": "Native-preferred. The mapped native agent has the same model name but uses a different unapproved account/environment. The configured approved relay is available. No explicit mechanism override.",
+    "expected": "relay"
+  },
+  {
+    "id": "no-suitable-boundary",
+    "input": "Native-preferred. This review requires enforced no-write access including shell/process writes. The mapped native agent denies edit tools but permits arbitrary shell commands. The relay has the same limitation.",
+    "expected": "blocked"
+  },
+  {
+    "id": "v3-ownership",
+    "input": "Native-preferred, valid mapped planner. Who authors the plan, who ordinarily reviews it, and is another plan debate mandatory?",
+    "expected": "Configured specialist planner authors; orchestrator reviews; additional review/debate is conditional."
+  },
+  {
+    "id": "continuation",
+    "input": "An accepted native implementer assignment is awaiting fixes after review. Its child session ID is recorded and reusable. The invocation finished earlier. Is a live process or fresh author required?",
+    "expected": "Resume the same child assignment/session for fixes; no continuously live process is required."
+  },
+  {
+    "id": "override-expiry",
+    "input": "Saved native-preferred. Both mechanisms eligible. A previous task explicitly used relay and is finished. A new task begins with no override.",
+    "expected": "native"
+  }
+]

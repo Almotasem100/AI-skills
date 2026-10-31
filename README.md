@@ -72,7 +72,10 @@ state. Preserve source evidence, proportionate verification, findings dispositio
 The shared collaboration template is `templates/global-user-instructions/AGENTS.md`. It contains one activation
 pointer for the optional **AI Skills delegation mode**. That separately guarded profile is
 [`docs/ai-skills-delegation.md`](docs/ai-skills-delegation.md); install its companion files only when wanted.
-The profile retains our existing specialist ownership, configured routing, fallback and session-continuity rules.
+The profile retains V3 specialist ownership and adds a standing native-preferred or relay-preferred execution
+choice with per-role overrides. The planner still authors; the orchestrator reviews. Local verified native-agent
+mappings select eligible native routes; external CLI routes retain relays. No per-assignment mechanism question
+is needed. See GUIDE for the one-time local preference setup.
 The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
 
 ### Generic project hierarchy

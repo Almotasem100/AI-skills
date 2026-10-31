@@ -59,6 +59,19 @@ are explicit-use tests; record observed file access/native activation and do not
 `plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
 
+## Execution preference and native assignments
+
+Preparation generates `EXECUTION-CHECKS.md` for explanation-only routing cases, one tiny native assignment with
+same-session continuation, and the retained Gemini CLI relay path. It authorizes those small session-driven calls,
+not a large comparison campaign or production role reassignment. Configure only disposable test agents; preserve
+local preferences, global host agents and everyday model lanes. Native calls must actually use the host's native
+mechanism; an unavailable interface is not a relay pass. Retain route/root/permission evidence and child-session ID.
+
+`execution.json` receives read-only format validation; source parity intentionally does not compare personal
+preferences to the empty example. Missing configuration uses the documented default without claiming native
+readiness. Semantic/native reports remain `needs-review`, never automatic pass. Matching model names or no observed
+writes do not prove account equivalence or shell-write containment. No cost/speed superiority is assumed.
+
 ## Fresh-session host probes
 
 Preparation generates `HOST-CHECKS.md` from the adjacent `host-checks.md`. The driving session runs its four tiny
@@ -85,6 +98,8 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
 - Preserves this profile's delegated planner authorship, orchestrator critique and author findings disposition.
   Extra independent plan review/debate is conditional, not automatically stacked. Mentioning the parked debate
   capability is not permission to execute or modify `plan-debate`.
+- Resolves the standing execution preference, explicit overrides and current host mappings without per-assignment
+  questions; keeps external CLI assignments on their approved relay and reports incompatible explicit selections.
 - Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,
   confuse a lane with a skill, or require the orchestrator to reproduce specialist work. Deterministic checks are
   distinguished from participant responsibilities.
@@ -119,8 +134,8 @@ trial. The relay receives `--lane smoke-*`; no global configuration is rewritten
 visible through normal merging, but these selected test lanes override only their names inside the disposable repo.
 Testing these routes does not establish that every production lane can execute its responsibilities.
 
-OpenCode is called with its supported `--read-only` flag. Gemini uses `--approval-mode plan`, which **does not
-establish enforced read-only access**. Both tasks request response-only work and their local file contents are
+OpenCode is called with its supported `--read-only` flag and Gemini with `--approval-mode plan`.
+Neither flag alone establishes filesystem containment, especially when shell access remains allowed. Both tasks request response-only work and their local file contents are
 compared afterward. This detects observed fixture changes; it does not establish that no transient or out-of-folder
 writes occurred. The runner does not change authentication, CLI permissions, host installation or configuration.
 

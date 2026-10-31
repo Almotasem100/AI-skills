@@ -260,6 +260,10 @@ Copy-Item -Force "$setup/docs/orchestration-contract.md" $instructionRoot
 if ($withDelegation) {
   Copy-Item -Force "$setup/docs/ai-skills-delegation.md" $instructionRoot
   Copy-Item -Force "$setup/docs/delegation-lanes.md" $instructionRoot
+  $executionFile = Join-Path $instructionRoot 'execution.json'
+  if (-not (Test-Path $executionFile)) {
+    Copy-Item "$setup/templates/delegation/execution.example.json" $executionFile
+  }
 }
 # Select the hosts you use; copying replaces those selected host instruction files.
 # Preserve/merge any existing personal instructions before running these lines.
@@ -314,6 +318,28 @@ Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs,
 `.delegate/config.json` inside the repository. For `debate-review`, add two lanes named `review-main` and
 `review-debate`, using two different CLIs.
 
+### One-time execution preference
+
+Keep `~/.config/ai-skills/execution.json` local and preserve it on updates. The copy block creates the empty
+native-preferred example only if no file exists. Choose native-preferred, relay-preferred, or per-role overrides
+once; routine assignments then resolve without asking you again. This preference does not activate the profile.
+
+During authorized setup, inspect the selected host's effective agent definitions and permissions. Map a role
+under `nativeAgents.<host-id>` to its real native agent ID only after checking the same approved route/model/effort,
+account/environment, project-root/instruction access and required tools. For example, an existing approved OpenCode
+agent named `planner` can be bound locally as `nativeAgents.opencode.write-plan = "planner"`; this is a binding,
+not an instruction to create or overwrite that agent. Check actual dispatch and resumption once. Do not assume
+native agent model/permissions from its name or silently change provider authentication. No native bindings ship
+in the example, so existing relay routes remain usable until setup validates a mapping.
+
+`roleMechanisms.<role>` can pin `native` or `relay` without editing model lanes. Preserve external CLI routes,
+including the company Gemini CLI path, as relay assignments; a host's Gemini provider may use a different account
+or execution environment. Explicit native selection with no eligible mapped agent is a blocker. With no explicit
+selection, native-preferred uses the already-approved relay when no eligible native mapping is available.
+A session/task override changes only that scope; persistent configuration changes are separate setup work.
+
+Use the generated `EXECUTION-CHECKS.md` from the native smoke pack to verify policy understanding, one native
+assignment plus resumption, and the retained relay path. The tests distinguish missing setup from failed output.
 No standalone installer is implemented. After setup, compare copied files and confirm discovery in each selected host.
 
 ---
@@ -324,7 +350,7 @@ No standalone installer is implemented. After setup, compare copied files and co
 
 The following routing instructions apply only after explicit activation of **AI Skills delegation mode**;
 read `docs/ai-skills-delegation.md` first. They are not the shared workflow defaults.
-The normal interface is intent, not transport configuration. Configure lanes once, then let the orchestrator resolve
+The normal interface is intent, not transport configuration. Configure lanes and execution preference once, then let the orchestrator resolve
 the needed role automatically. This preserves the original cost-control lesson—never fall into an expensive unknown
 default—without making you repeat model and effort on every run.
 

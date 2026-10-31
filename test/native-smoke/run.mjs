@@ -55,6 +55,34 @@ export function validateLanes(config) {
   return entries;
 }
 
+export function validateExecutionPreferences(config) {
+  const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const key = value => typeof value === 'string' && value.trim().length > 0;
+  if (!object(config) || config.version !== 'ai-skills.execution.v1' ||
+      !['native-preferred', 'relay-preferred'].includes(config.preference) ||
+      Object.keys(config).some(name => !['version', 'preference', 'nativeAgents', 'roleMechanisms'].includes(name)))
+    throw Error('Invalid execution preference version, preference or fields');
+  if (!object(config.nativeAgents) || (config.roleMechanisms !== undefined && !object(config.roleMechanisms)))
+    throw Error('Expected nativeAgents and optional roleMechanisms maps');
+  for (const [host, roles] of Object.entries(config.nativeAgents)) {
+    if (!key(host) || !object(roles) || Object.entries(roles).some(([role, agent]) => !key(role) || !key(agent)))
+      throw Error('Native mappings require host, role and agent IDs');
+  }
+  if (Object.entries(config.roleMechanisms || {}).some(([role, mechanism]) => !key(role) || !['native', 'relay'].includes(mechanism)))
+    throw Error('Role mechanisms must select native or relay');
+  return config;
+}
+
+function executionPreferenceCheck(opts) {
+  const path = join(opts.instructionsRoot, 'execution.json');
+  if (!existsSync(path)) return { case: 'execution-preference', status: 'passed',
+    reason: 'Absent local file: native-preferred, no assumed native mappings; approved relays remain usable' };
+  try {
+    validateExecutionPreferences(json(path));
+    return { case: 'execution-preference', status: 'passed', reason: 'Local format valid; actual native capability/mapping verification remains a session check' };
+  } catch (error) { return { case: 'execution-preference', status: 'failed', reason: error.message }; }
+}
+
 export function expectedAnswer(fixture) {
   const kept = fixture.items.filter(item => item.approved);
   return { token: fixture.token, sum: kept.reduce((n, item) => n + item.amount, 0), count: kept.length };
@@ -165,19 +193,28 @@ function prepareTasks(dir, opts) {
     .replaceAll('{{GEMINI_GLOBAL_OUTPUT}}', quote(join(dir, 'responses/gemini-global-loading.md')))
     .replaceAll('{{OPENCODE_GLOBAL_OUTPUT}}', quote(join(dir, 'responses/opencode-global-loading.md')));
   writeFileSync(join(dir, 'HOST-CHECKS.md'), hostPrompts);
+  const executionChecks = read(source('test/native-smoke/execution-checks.md'))
+    .replaceAll('{{INSTRUCTIONS_ROOT}}', quote(opts.instructionsRoot))
+    .replaceAll('{{CASES_FILE}}', quote(source('test/native-smoke/execution-cases.json')))
+    .replaceAll('{{LANES_FILE}}', quote(join(dir, 'test-lanes.json')))
+    .replaceAll('{{RUN_DIRECTORY}}', quote(dir))
+    .replaceAll('{{POLICY_OUTPUT}}', quote(join(dir, 'responses/execution-policy.md')))
+    .replaceAll('{{NATIVE_OUTPUT}}', quote(join(dir, 'responses/native-execution.md')))
+    .replaceAll('{{RELAY_OUTPUT}}', quote(join(dir, 'responses/retained-relay.md')));
+  writeFileSync(join(dir, 'EXECUTION-CHECKS.md'), executionChecks);
   const out = name => quote(join(dir, 'responses', name));
   mkdirSync(join(dir, 'responses'));
   const work = join(dir, 'workflow'); mkdirSync(work);
   writeFileSync(join(work, 'total.mjs'), 'export function totalApproved(items) {\n  return items.reduce((sum, item) => sum + item.amount, 0);\n}\n');
   writeFileSync(join(work, 'total.test.mjs'), `import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { totalApproved } from './total.mjs';\ntest('approved amounts only', () => assert.equal(totalApproved([{approved:true,amount:7},{approved:false,amount:90},{approved:true,amount:4}]),11));\ntest('empty input', () => assert.equal(totalApproved([]),0));\ntest('pending only', () => assert.equal(totalApproved([{approved:false,amount:9}]),0));\n`);
   save(join(dir, 'workflow-baseline.json'), { testHash: digest(readFileSync(join(work, 'total.test.mjs'))) });
-  writeFileSync(join(dir, 'TASKS.md'), `# Session-run native cases\n\nUse installed files, not source substitutes. Skip a case as unavailable if its installed skill/instructions are missing or stale; do not silently substitute source files. The three skill cases do not select our delegation profile. Report observable skill file access/native activation separately. Use only the disposable paths below.\n\n## 1. task-context\nRead ${skill('task-context')}. Requirement R1: owners can rename their own draft. Grilling decision D1: whitespace-only names are invalid. Duplicate-name behavior remains undecided. Use task-context and write the Markdown result to ${out('task-context.md')}.\n\nAccept when: R1 and D1 are preserved, duplicate-name behavior remains unresolved, and no implementation/test results are invented.\n\n## 2. plan-review\nRead ${skill('plan-review')}. Requirement R1: only draft owners may rename drafts. Plan P1: show Rename to every signed-in user and update by draft ID without an ownership check. Use plan-review, return findings without editing the inputs; capture returned findings at ${out('plan-review.md')} as caller if reviewer access is read-only.\n\nAccept when: identifies the non-owner authorization contradiction, cites R1/P1, recommends ownership enforcement and does not claim runtime verification.\n\n## 3. qa-scenarios\nRead ${skill('qa-scenarios')}. Approved requirements R1: owners can rename their own draft; R2: whitespace-only names are rejected. Duplicate-name policy is undecided. Write QA scenarios to ${out('qa-scenarios.md')}.\n\nAccept when: covers owner rename and whitespace rejection, keeps duplicate-name expectations under clarifications and never claims execution.\n\n## 4. Bounded workflow\nRead the installed shared contract at ${contract}. In ${quote(work)}, fix totalApproved so it sums only items with approved === true. Amounts are integers; no new validation or dependencies. Inspect, fix, verify with node --test total.test.mjs, review against the requirement, then stop. Do not change total.test.mjs, publish, commit or create feature-level paperwork. You may change only total.mjs. Record actual verification and limits at ${out('workflow.md')}.\n\nAccept when: the original tests pass, test source is unchanged, only the requested helper changed, and the report matches actual verification. Run the verification command below to independently recheck.\n\n## 5. Hypothetical full-feature walkthrough\nExecute the explanation-only prompt in WALKTHROUGH.md. It explicitly selects AI Skills delegation mode for this case, but authorizes no delegate calls or feature execution. Read installed sources and actual routes; return the proposed complete workflow. Capture the answer at ${out('workflow-walkthrough.md')} as caller. Evaluate it against the walkthrough rubric in the source run guide. It must remain a hypothetical explanation, not an executed feature.\n\n## 6. Fresh-session host probes\nFollow HOST-CHECKS.md for Gemini CLI and OpenCode: explicit task-context activation plus a separate ordinary global-instruction behavior/loading probe. No Claude CLI check is required. Use fresh child sessions, actual installed components and only the selected test lanes. Keep loading attribution separate from output correctness.\n\n## Final report\nRun: node ${quote(source('test/native-smoke/run.mjs'))} --verify ${quote(dir)}\nRead the three skill outputs, walkthrough and host probe reports, and check their acceptance criteria. Write a short results.md in this run directory listing each case as passed/failed/unavailable/skipped with observed evidence and limits. The verifier reports skill outputs as needs-review, never semantic success from file existence. Keep actual dispatch evidence separate from source checks.\n`);
+  writeFileSync(join(dir, 'TASKS.md'), `# Session-run native cases\n\nUse installed files, not source substitutes. Skip a case as unavailable if its installed skill/instructions are missing or stale; do not silently substitute source files. The three skill cases do not select our delegation profile. Report observable skill file access/native activation separately. Use only the disposable paths below.\n\n## 1. task-context\nRead ${skill('task-context')}. Requirement R1: owners can rename their own draft. Grilling decision D1: whitespace-only names are invalid. Duplicate-name behavior remains undecided. Use task-context and write the Markdown result to ${out('task-context.md')}.\n\nAccept when: R1 and D1 are preserved, duplicate-name behavior remains unresolved, and no implementation/test results are invented.\n\n## 2. plan-review\nRead ${skill('plan-review')}. Requirement R1: only draft owners may rename drafts. Plan P1: show Rename to every signed-in user and update by draft ID without an ownership check. Use plan-review, return findings without editing the inputs; capture returned findings at ${out('plan-review.md')} as caller if reviewer access is read-only.\n\nAccept when: identifies the non-owner authorization contradiction, cites R1/P1, recommends ownership enforcement and does not claim runtime verification.\n\n## 3. qa-scenarios\nRead ${skill('qa-scenarios')}. Approved requirements R1: owners can rename their own draft; R2: whitespace-only names are rejected. Duplicate-name policy is undecided. Write QA scenarios to ${out('qa-scenarios.md')}.\n\nAccept when: covers owner rename and whitespace rejection, keeps duplicate-name expectations under clarifications and never claims execution.\n\n## 4. Bounded workflow\nRead the installed shared contract at ${contract}. In ${quote(work)}, fix totalApproved so it sums only items with approved === true. Amounts are integers; no new validation or dependencies. Inspect, fix, verify with node --test total.test.mjs, review against the requirement, then stop. Do not change total.test.mjs, publish, commit or create feature-level paperwork. You may change only total.mjs. Record actual verification and limits at ${out('workflow.md')}.\n\nAccept when: the original tests pass, test source is unchanged, only the requested helper changed, and the report matches actual verification. Run the verification command below to independently recheck.\n\n## 5. Hypothetical full-feature walkthrough\nExecute the explanation-only prompt in WALKTHROUGH.md. It explicitly selects AI Skills delegation mode for this case, but authorizes no delegate calls or feature execution. Read installed sources and actual routes; return the proposed complete workflow. Capture the answer at ${out('workflow-walkthrough.md')} as caller. Evaluate it against the walkthrough rubric in the source run guide. It must remain a hypothetical explanation, not an executed feature.\n\n## 6. Fresh-session host probes\nFollow HOST-CHECKS.md for Gemini CLI and OpenCode: explicit task-context activation plus a separate ordinary global-instruction behavior/loading probe. No Claude CLI check is required. Use fresh child sessions, actual installed components and only the selected test lanes. Keep loading attribution separate from output correctness.\n\n## 7. Execution preference and native continuation\nFollow EXECUTION-CHECKS.md for the explanation cases, a tiny native assignment/resume, and the retained Gemini relay path. Actual model calls are separately explicit there; preparation/verification does not launch them.\n\n## Final report\nRun: node ${quote(source('test/native-smoke/run.mjs'))} --verify ${quote(dir)}\nRead the three skill outputs, walkthrough, host probe reports and execution reports, and check their acceptance criteria. Write a short results.md in this run directory listing each case as passed/failed/unavailable/skipped with observed evidence and limits. The verifier reports skill outputs as needs-review, never semantic success from file existence. Keep actual dispatch evidence separate from source checks.\n`);
 }
 
 export function verifyRun(dir) {
   dir = resolve(dir);
   const cases = [];
-  for (const name of ['task-context', 'plan-review', 'qa-scenarios', 'workflow-walkthrough']) {
+  for (const name of ['task-context', 'plan-review', 'qa-scenarios', 'workflow-walkthrough', 'execution-policy', 'native-execution', 'retained-relay']) {
     const path = join(dir, 'responses', `${name}.md`);
     cases.push({ case: name, status: existsSync(path) && read(path).trim() ? 'needs-review' : 'skipped', reason: 'Session must inspect output against TASKS.md; file existence is not skill correctness' });
   }
@@ -209,7 +246,8 @@ async function main() {
   if (opts.verify) {
     const summary = verifyRun(opts.verify);
     console.log(JSON.stringify(summary, null, 2));
-    process.exitCode = summary.sessionCases.some(item => item.status === 'failed') ? 1 : 2;
+    process.exitCode = [...(summary.cases || []), ...summary.sessionCases, ...(summary.hostCases || [])]
+      .some(item => item.status === 'failed') ? 1 : 2;
     return;
   }
   const entries = validateLanes(json(opts.lanes));
@@ -217,7 +255,7 @@ async function main() {
   const dir = mkdtempSync(join(tmpdir(), 'ai-skills-native-'));
   const checks = parity(opts);
   const setup = join(opts.skillsRoot, 'delegate-setup');
-  checks.push(productionRoutes(opts, setup));
+  checks.push(productionRoutes(opts, setup), executionPreferenceCheck(opts));
   const revision = git(['rev-parse', 'HEAD'], repoRoot);
   const state = git(['status', '--porcelain'], repoRoot);
   const summary = { schema: 'ai-skills-native-smoke.v1', revision: revision.stdout?.trim() || null,

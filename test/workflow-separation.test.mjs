@@ -39,6 +39,19 @@ test('optional instructions guard activation before routing and retain continuit
   }
 });
 
+test('execution choice stays optional, preserves V3 ownership and does not overwrite local preferences', () => {
+  assert.match(profile, /configured planner authors the implementation plan by default/);
+  assert.match(profile, /native-preferred/);
+  assert.match(profile, /relay-preferred/);
+  assert.match(profile, /roleMechanisms/);
+  assert.match(profile, /Do not ask which mechanism to use for every assignment/);
+  assert.match(profile, /including Gemini CLI/);
+  assert.match(profile, /explicit native\/relay selection is binding/);
+  assert.match(profile, /shell\/process access as well as edit-tool permissions/);
+  assert.match(guide, /if \(-not \(Test-Path \$executionFile\)\)/);
+  assert.doesNotMatch(globalInstructions + contract, /execution\.json|native-preferred|relay-preferred/);
+});
+
 test('shared workflow retains nine outcomes, prerequisite order and independent review', () => {
   const section = contract.split('## Full Feature delivery contract')[1].split('## Work hierarchy')[0];
   const outcomes = [...section.matchAll(/^\d+\. \*\*([^*]+)\*\*/gm)].map(match => match[1]);

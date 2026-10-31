@@ -13,7 +13,9 @@ Installed sources:
 - Installed configuration reader: {{CONFIG_READER}}
 - Project whose route inventory is inspected: {{PROJECT}}
 
-Use the installed setup's read-only `load`/`resolve` operations. Report route gaps rather than inventing assignments
+Read local execution.json if present, including native mappings and standing/session/task overrides. Explain
+which roles would use native agents or external relays, and why. Do not treat missing native setup as a reason
+to change V3 ownership or bypass required permissions. Then use the installed setup's read-only `load`/`resolve` operations. Report route gaps rather than inventing assignments
 or treating a configured model as proven available. The real project is used only for its lane inventory; the
 following fictional project policy defines this scenario's requirements and gates.
 
