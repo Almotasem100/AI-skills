@@ -46,7 +46,8 @@
 
 - Read the project's designated instructions and active working record when they exist and matter to the task. Do not
   require a scratchpad, task-context, PDF or formal plan for a simple task that does not need it.
-- When a project uses a feature hierarchy, `task-context` is rich temporary feature understanding and the scratchpad
+- When a project uses a feature hierarchy, `task-context` is an optional intake-first record of sources, scope,
+  consequential Q&A/decisions and open questions; add later synthesis only for a genuine continuity need. The scratchpad
   is compact execution state. Keep only objective, active item/stage, completed work, material decisions, blockers,
   verification state and next action in the scratchpad.
 - A new chat/model is a runtime transition, not completion and not automatically a handoff. Use handoff only when a

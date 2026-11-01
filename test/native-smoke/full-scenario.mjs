@@ -1,7 +1,8 @@
 // Disposable, host-neutral feature fixture. This module never dispatches models or writes global configuration.
 import { mkdirSync, writeFileSync, readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 export const scenarioHosts = ['opencode', 'zadloop'];
@@ -103,33 +104,71 @@ export function verifyFullScenario(dir, host) {
   if (!scenarioHosts.includes(host)) throw Error('Unknown scenario host');
   const report = join(dir, 'responses', `full-${host}.md`), base = join(dir, `full-${host}`);
   if (!existsSync(report) || !readFileSync(report,'utf8').trim()) return { case:`full-${host}-acceptance`, status:'skipped', reason:'No session report; fixture not treated as executed' };
+  const details = {
+    version: 'ai-skills.feature-verification.v1', host, startedAt: new Date().toISOString(),
+    workspaceRoot: base, reportPath: report, nodeVersion: process.version,
+    verifierSha256: hash(fileURLToPath(import.meta.url)),
+    integrity: { inputs: [], scopeViolations: [], errors: [] },
+    acceptance: { executed: false, command: [process.execPath, '--test', 'acceptance.test.mjs'], cwd: base },
+    // Code execution cannot authenticate the session's routing, review or lifecycle claims.
+    workflowAssessment: 'needs-review',
+  };
   // Validate the expected manifest independently, not just the saved manifest's arbitrary keys.
   const names = ['POLICY.md','acceptance.test.mjs','requirements.md'];
   let unchanged = false;
   try {
     const baseline = JSON.parse(readFileSync(join(base,'baseline.json'),'utf8'));
-    unchanged = JSON.stringify(Object.keys(baseline).sort()) === JSON.stringify(names) &&
-      names.every(name=>hash(join(base,name)) === baseline[name]) &&
-      readFileSync(join(base,'requirements.md'),'utf8') === requirements &&
-      readFileSync(join(base,'POLICY.md'),'utf8') === policy &&
-      readFileSync(join(base,'acceptance.test.mjs'),'utf8') === acceptance;
+    details.integrity.manifestKeysMatch = JSON.stringify(Object.keys(baseline).sort()) === JSON.stringify(names);
+    const sources = {'POLICY.md': policy, 'acceptance.test.mjs': acceptance, 'requirements.md': requirements};
+    details.integrity.inputs = names.map(name => {
+      const observed = hash(join(base,name));
+      const expected = createHash('sha256').update(sources[name]).digest('hex');
+      return {path:name, recordedSha256:baseline[name] ?? null, observedSha256:observed,
+        expectedSha256:expected, matchesRecorded:observed===baseline[name], matchesPreparedSource:observed===expected};
+    });
+    unchanged = details.integrity.manifestKeysMatch &&
+      details.integrity.inputs.every(input=>input.matchesRecorded && input.matchesPreparedSource);
     const files = [];
     function walk(path) { for (const entry of readdirSync(path,{withFileTypes:true})) {
-      const next=join(path,entry.name); if(entry.isSymbolicLink()) throw Error('Symlink outside fixture scope');
+      const next=join(path,entry.name); if(entry.isSymbolicLink()) throw Error(`Symlink outside fixture scope: ${relative(base,next)}`);
       if (next === join(base,'.git') && entry.isDirectory()) continue;
       if(entry.isDirectory()) walk(next); else files.push(relative(base,next).replaceAll('\\','/'));
     } }
     walk(base);
     const setup=JSON.parse(readFileSync(join(dir,`full-${host}-setup.json`),'utf8'));
     const head=fixtureGit(base,['rev-parse','HEAD']);
+    details.integrity.git = {setupStatus:setup.status, expectedCommit:setup.baselineCommit ?? null,
+      observedCommit:(head.stdout||'').trim(), exitCode:head.status, stderr:head.stderr||'',
+      error:head.error?.message ?? null};
     unchanged = unchanged && setup.status==='passed' && head.status===0 && head.stdout.trim()===setup.baselineCommit;
-    unchanged = unchanged && files.every(name=> ['baseline.json',...names,'project/drafts.mjs'].includes(name) ||
-      name.startsWith('project/docs/') || name.startsWith('project/working/'));
-  } catch { unchanged = false; }
+    details.integrity.scopeViolations = files.filter(name=> !(['baseline.json',...names,'project/drafts.mjs'].includes(name) ||
+      name.startsWith('project/docs/') || name.startsWith('project/working/')));
+    unchanged = unchanged && details.integrity.scopeViolations.length===0;
+  } catch (error) {
+    unchanged = false;
+    details.integrity.errors.push(error.message);
+  }
+  details.integrity.passed = unchanged;
   const env = { ...process.env }; delete env.NODE_TEST_CONTEXT;
+  details.acceptance.startedAt = new Date().toISOString();
   const run = unchanged ? spawnSync(process.execPath,['--test','acceptance.test.mjs'],{cwd:base,encoding:'utf8',timeout:15000,env}) :
     {status:null,stdout:'',stderr:'Not executed: immutable fixture inputs or file scope changed.'};
+  Object.assign(details.acceptance, {attempted:unchanged, executed:unchanged && (run.pid||0)>0, finishedAt:new Date().toISOString(),
+    exitCode:run.status, signal:run.signal ?? null, error:run.error?.message ?? null, errorCode:run.error?.code ?? null});
+  details.status = unchanged && run.status===0 ? 'passed' : 'failed';
+  details.failureStage = !unchanged ? 'fixture-integrity' : run.error || run.signal ? 'command-execution' : run.status!==0 ? 'acceptance-tests' : null;
+  // Preserve every verification attempt, including failures; stable filenames remain latest-result pointers.
+  const attemptDir=join(dir,`full-${host}-verification`,`${Date.now()}-${randomUUID()}`);
+  mkdirSync(attemptDir,{recursive:true});
+  details.acceptance.stdoutPath=join(attemptDir,'stdout.txt');
+  details.acceptance.stderrPath=join(attemptDir,'stderr.txt');
+  writeFileSync(details.acceptance.stdoutPath,run.stdout||'');
+  writeFileSync(details.acceptance.stderrPath,run.stderr||'');
+  details.finishedAt=new Date().toISOString();
+  writeFileSync(join(attemptDir,'result.json'),JSON.stringify(details,null,2)+'\n');
+  const detailsPath=join(dir,`full-${host}-verification.json`);
+  writeFileSync(detailsPath,JSON.stringify(details,null,2)+'\n');
   writeFileSync(join(dir,`full-${host}-test-output.txt`),`${run.stdout||''}\n${run.stderr||''}`);
-  return {case:`full-${host}-acceptance`,status:unchanged && run.status===0?'passed':'failed',
+  return {case:`full-${host}-acceptance`,status:details.status, detailsPath,
     reason: unchanged?'Fixed feature acceptance tests executed; routing, artifacts and lifecycle require separate review':'Protected fixture inputs or allowed file scope changed'};
 }

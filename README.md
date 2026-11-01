@@ -66,14 +66,15 @@ The updated setup choices require native verification; no standalone installer i
 The shared [workflow contract](docs/orchestration-contract.md) defines Full Feature and Change/Bug entry paths,
 applicable design, QA scenarios before implementation planning, plan critique, implementation/checks, code review
 and authorized publication/closeout. Skills are replaceable capabilities; project instructions own tracker mappings,
-architecture, environment gates and approvals. Rich task context is optional; the scratchpad is compact execution
+architecture, environment gates and approvals. Intake-first task context is optional; the scratchpad is compact execution
 state. Preserve source evidence, proportionate verification, findings disposition and explicit omissions.
 
 The shared collaboration template is `templates/global-user-instructions/AGENTS.md`. It contains one activation
 pointer for the optional **AI Skills delegation mode**. That separately guarded profile is
 [`docs/ai-skills-delegation.md`](docs/ai-skills-delegation.md); install its companion files only when wanted.
-The profile retains V3 specialist ownership and uses configured CLI delegation skills: the planner authors and
-the orchestrator reviews. Ordinary requests select the appropriate configured responsibility without per-task
+The profile makes the orchestrator the implementation-plan author and uses configured CLI delegation skills for
+a separate plan reviewer and the other specialist deliverables. The author dispositions findings and revises the
+plan; `write-plan` remains available only for explicit user-assigned external authorship. Ordinary requests select the appropriate configured responsibility without per-task
 transport questions. Native-agent preference setup is parked; existing host agents/local preferences are preserved.
 The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
 
@@ -112,14 +113,14 @@ example call.
 ### My skills
 | Skill | Status | Use |
 |---|---|---|
-| `task-context` | **Added 2026-10-10; bounded Gemini CLI 0.62.0 native smoke passed 2026-10-11.** | Fragmented feature/task requirements, decisions, UX/project evidence and constraints → one rich temporary working synthesis for downstream design, planning, implementation, tests, review and PR work. Adaptive, not mandatory; not a project-of-record document. |
-| `create-lld` | **Refined 2026-10-11; native re-test pending after reinstall.** Earlier bounded smokes proved discovery and showed Gemini/OpenCode adherence differences, but they predate the adaptive template/checker changes on this branch. | Forward: task context/approved requirements → concise feature-level LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. |
-| `qa-scenarios` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
-| `plan-review` | **Refined 2026-10-11; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic smoke; the current version separates planning records from the compact project scratchpad. | One-shot, read-only critique of a plan, dedicated planning record, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
-| `plan-debate` | **Refined 2026-10-11; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic exchange; the current version uses a temporary debate record and keeps project scratchpad state compact. | Structured pre-implementation challenge/response in one temporary debate record; the normal project scratchpad remains compact execution state; does not apply the plan to project documents |
+| `task-context` | **Intake-first refinement 2026-11-01; installed native re-test pending.** The earlier bounded Gemini smoke predates this change. | Original inputs/source pointers, approved scope, consequential Q&A/decisions and unresolved questions → one temporary intake record. Retains narrow sourced concerns without preselecting solutions; later synthesis only when continuity needs it. Adaptive, not a project-of-record document. |
+| `create-lld` | **Intake consumer refined 2026-11-01; native re-test pending after reinstall.** Earlier bounded smokes proved discovery and showed Gemini/OpenCode adherence differences, but they predate the adaptive template/checker changes on this branch. | Forward: task context/approved requirements → concise feature-level LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. |
+| `qa-scenarios` | **Intake consumer refined 2026-11-01; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
+| `plan-review` | **Intake consumer refined 2026-11-01; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic smoke; the current version separates planning records from the compact project scratchpad. | One-shot, read-only critique of a plan, dedicated planning record, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
+| `plan-debate` | **Authorship preservation refined 2026-11-01; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic exchange; the current version uses a temporary debate record and keeps project scratchpad state compact. | Structured pre-implementation challenge/response in one temporary debate record; the normal project scratchpad remains compact execution state; does not apply the plan to project documents |
 | `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
 | `work-closeout` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** Citation checker retained. | Reconcile a genuinely completed feature/bounded work item using the project's working record. Not triggered by ending a chat or by completing one child delivery slice; durable write-backs/cleanup follow project policy. |
-| `describe-pr` | **Evidence flow smoke-tested on a corrected synthetic fixture 2026-10-11.** A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
+| `describe-pr` | **Intake provenance refined 2026-11-01; native re-test pending.** Earlier evidence-flow smoke: 2026-10-11. A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
 
 ### `task-context`
 **Install:** copy `skills/task-context/` into the same skills folder as the other first-party skills.
@@ -129,10 +130,13 @@ roles. For automatic selection, ask naturally, e.g. *"synthesize the task contex
 grilling decisions and screenshots."* If the agent does not select it, invoke it explicitly: *"Use
 `task-context` for this task."* If the task is already simple and clear, skip it.
 
-The result is a temporary working artifact: objective, business rationale, approved behavior, business/UX/technical
-constraints, acceptance expectations, decisions, non-goals, estimates/targets, assumptions, open questions and a
-compact source map. Facts, decisions, estimates and assumptions stay explicitly distinct. It summarizes evidence
-rather than copying whole PDFs or chats, and it is not promoted into permanent project documentation by default.
+The initial result preserves original-source navigation, approved scope and rationale, consequential grilling Q&A,
+decisions/corrections and open questions. Narrow consequential observations or cross-source concerns may remain
+with precise sources, uncertainty and a verification question; they do not select architecture or imply approval.
+Routine technical summaries and reuse recommendations are excluded from the initial handoff. This reduces inherited
+interpretation without claiming to eliminate bias or save tokens. Facts, decisions, estimates and inferences remain
+distinct; do not copy whole PDFs or chats. A genuine later continuity need may justify a labeled working synthesis
+in the same artifact, not a second mandatory document. Older rich contexts remain usable with source verification.
 
 For projects with an approved current-work folder, save it there. Otherwise present it in chat or write it only to
 an approved working path. Downstream skills still verify consequential claims against authoritative sources when
@@ -196,8 +200,8 @@ unless separately requested.
 
 ### `plan-review` and `plan-debate`
 
-`plan-debate` retains its existing multi-participant/configured-lane requirements unchanged, pending separate
-discussion. It is a separately selected skill, not a prerequisite for the shared workflow.
+`plan-debate` preserves the calling workflow's author and separate reviewer roles. It is a separately selected
+skill, not a prerequisite or an automatic extra review; one-shot `plan-review` remains the default critique.
 
 Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
 no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to
@@ -212,12 +216,14 @@ when available.
   handoff."*
 - **`plan-debate`:** structured multi-role challenge/response around a proposed plan. The orchestrator coordinates
   the exchange in one temporary debate record; the normal project scratchpad stays compact. Coordination ownership
-  does **not** make the orchestrator the plan author. The workflow selects a plan-author role and the required challenge/independent-review roles from
-  configured lanes unless the owner explicitly chooses participants. Reviewers return attributed findings and
+  does not replace the workflow's plan author: in AI Skills delegation mode, the orchestrator normally authors
+  and revises the plan, while the challenge reviewer uses a configured lane. Explicit user-assigned external
+  authorship remains supported. Reviewers return attributed findings and
   the plan author responds to them; the orchestrator routes the rounds, records state and escalates only material
   unresolved decisions. Give each participant only the context and source access needed for its role. Use an
-  immutable scratchpad/plan snapshot when an enforced read-only boundary is required and unavailable on the live
-  record. The skill itself stops before implementation, but a clean debate does not create a new approval gate:
+  scratchpad/plan snapshot when stable review inputs are needed. A snapshot does not enforce read-only execution;
+  use the supported execution boundary and report missing containment under the applicable project gate.
+  The skill itself stops before implementation, but a clean debate does not create a new approval gate:
   an already-authorized parent workflow may continue unless the owner requested a checkpoint or a genuine blocker
   remains. A clean debate is not proof of safety.
 

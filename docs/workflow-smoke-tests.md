@@ -30,9 +30,15 @@ explain stages, ownership, actual routes, reviews, gates and completion. It read
 feature work or delegate calls. Review its answer using `test/native-smoke/README.md`; this tests understanding,
 not end-to-end execution.
 
-`plan-debate` is excluded from this change's behavioral trials while its existing participant/lane contract is
-parked for separate discussion. Its skill source is unchanged. Other multi-participant review skills retain their
-own requirements; `debate-review` needs the optional relays and its two configured review lanes.
+The current Full Feature trial checks orchestrator-authored planning followed by a separate configured review,
+author disposition and affected material rechecks. Keep its natural prompt unchanged: do not teach it the expected
+ownership or lane names. Verify tool events and review results, not artifact names. A missing reviewer route must
+remain blocked unless an applicable exception/recovery is authorized; do not count self-review as separate review.
+Explicit user-assigned external plan authorship is supported but is not the default-routing case.
+
+`plan-debate` preserves the workflow's author (which may be the orchestrator) and separate reviewer; it is not an
+extra mandatory stage. Other multi-participant review skills retain their own requirements; `debate-review` needs
+the optional relays and its two configured review lanes. These source checks are not native debate execution.
 
 Before native case 3, verify copied profile/catalog/contract content against this branch and confirm Gemini's
 actual configured role if that is the intended route. This repository does not contain the owner's live lane map;

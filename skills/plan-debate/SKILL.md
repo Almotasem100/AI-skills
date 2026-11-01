@@ -13,8 +13,10 @@ do not create a new approval gate.
 ## Set up
 
 1. Read project instructions and identify the plan-author role, challenge-reviewer role, any justified independent
-   reviewer, and the applicable owner/material gates. Resolve roles through configured lanes unless explicitly
-   overridden. Do not present the orchestrator's self-review as independent.
+   reviewer, and the applicable owner/material gates. Preserve the calling workflow's plan author, including when
+   the orchestrator is that author; do not dispatch a replacement author merely because a planning lane exists.
+   Resolve external roles through configured lanes unless explicitly overridden. Keep the challenge reviewer
+   distinct from the author; do not present the orchestrator's self-review as independent.
 2. Gather only the task context and authoritative sources needed to test material premises. Record provenance and
    revision/state where useful. Prior delegate findings are leads, not authority.
 3. Use one dedicated temporary debate record outside durable project documentation unless the project explicitly

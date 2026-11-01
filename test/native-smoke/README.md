@@ -47,7 +47,7 @@ proof that the whole setup is dependable.
 | Installed instructions | Shared contract, optional profile/catalog, and optionally the selected host instruction file compared with the branch. A shared-only installation can legitimately report optional components unavailable. |
 | Actual configured lanes | Installed `delegate-setup` loads and resolves all configured lanes in `--project`. It validates configuration, not live provider availability. No mandatory role names are built into these checks. |
 | Gemini / OpenCode free route / OpenCode Luna | Installed relays read randomized fixture data and return a small JSON calculation. Check exit, result status, response, requested route metadata, independently computed answer and observed workspace changes. |
-| `task-context` | The driving session applies the installed skill to settled and undecided rename behavior, then checks the output against explicit acceptance criteria. |
+| `task-context` | The driving session applies the installed intake-first skill to original Q&A, corrected scope, undecided behavior and an unapproved reuse suggestion; checks fidelity/supersession without accepting a preferred solution. |
 | `plan-review` | The driving session applies the installed skill to a planted owner-authorization contradiction. |
 | `qa-scenarios` | The driving session checks grounded scenarios and separation of undecided behavior. |
 | Fresh-session host probes | One explicit task-context probe and one ordinary global-instruction probe each for Gemini CLI and OpenCode. Record behavior and loading attribution separately; Claude CLI is not applicable. |
@@ -83,6 +83,12 @@ caller checks their meaning; a code pass does not certify routing or lifecycle. 
 and exit 2 can mean incomplete coverage. Preserve old execution.json files and host agents unchanged/unused.
 See the generated guide for exact paths, capture instructions and the evaluator rubric.
 
+Verification emits `full-<host>-verification.json` with exact command/cwd, timing, exit/signal/error, input hashes,
+baseline commit, scope violations and a failure-stage classification. Per-attempt result/stdout/stderr files under
+`full-<host>-verification/` preserve failures across reruns; stable filenames show the latest attempt. The generated
+guide's caller-report rubric joins these deterministic results to original session events, assignment routes,
+reviewed versions, question-tool answers and recovery evidence. It does not turn missing records into a pass.
+
 ## Fresh-session host probes
 
 Preparation generates `HOST-CHECKS.md` from the adjacent `host-checks.md`. The driving session runs its four tiny
@@ -106,9 +112,10 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
 - Covers the applicable Full Feature outcomes through the authorized endpoint. Clarifies consequential unresolved
   behavior before treating dependent design/QA/planning as settled; includes required FD/LLD approval and QA before
   implementation planning. Keeps optional context synthesis conditional and the feature/slice distinction meaningful.
-- Preserves this profile's delegated planner authorship, orchestrator critique and author findings disposition.
-  Extra independent plan review/debate is conditional, not automatically stacked. Mentioning the parked debate
-  capability is not permission to execute or modify `plan-debate`.
+- Preserves this profile's orchestrator plan authorship, separate configured plan review and author findings
+  disposition, including reviewer rechecks of affected material revisions. `write-plan` is not dispatched by
+  default; explicit user-assigned external authorship is recorded as an exception. Extra review/debate is
+  conditional, not automatically stacked. Mentioning a capability is not permission to modify it.
 - Resolves configured CLI routes without per-assignment mechanism questions and preserves explicit routing overrides.
 - Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,
   confuse a lane with a skill, or require the orchestrator to reproduce specialist work. Deterministic checks are

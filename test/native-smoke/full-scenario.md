@@ -62,17 +62,60 @@ The caller runs `node {{RUNNER}} --verify {{RUN_DIRECTORY}}` and inspects actual
 unrun smoke/skill/host cases; it is incomplete coverage, not failed acceptance. Do not turn file existence or a
 code pass into a routing/lifecycle pass. No provider calls are launched by the verifier.
 
+The verifier writes `full-<host>-verification.json` with its own SHA-256, runtime version, command/arguments,
+working directory, timestamps, exit code/signal/error, protected-input hashes, baseline commit and forbidden paths.
+`failureStage` distinguishes fixture-integrity, command-execution and acceptance-test failures. Each invocation
+keeps a separate `full-<host>-verification/<attempt>/` result plus exact stdout/stderr, so a successful rerun does
+not erase the first failure. Stable JSON/text filenames point to the latest attempt. An absent feature report
+remains skipped; the verifier never certifies workflow behavior from a code pass.
+
+### Debuggable caller report
+
+Reuse the run's `results.md`; do not create extra feature deliverables or paste this rubric into the feature prompt.
+Keep the actual final response verbatim in the designated response file, separate from the assessment. Include:
+
+- **Identity:** source revision, installed-file parity result, exact workspace, root session ID/title and reported
+  agent/model/effort; raw export path and capture limits. Locate by exact metadata before inspecting content.
+- **Case verdicts:** for code, intake, design/QA prerequisites, plan authorship/review/disposition, implementation,
+  separate code review/corrections and closeout, give expected behavior, observed behavior, verdict and evidence
+  locator. Distinguish passed/failed/blocked/unverified/skipped; do not collapse missing evidence into failure.
+- **Chronology and assignments:** relevant event IDs and timestamps, configured role/route, invocation/result
+  paths, child session ID, output and reviewed artifact version/hash where captured. Show profile/fleet access
+  before dispatch, prerequisite readiness and material reviewer rechecks. Metadata reports the requested/reported
+  route, not proof of internal provider routing. Include question-tool answers when assessing user intervention.
+- **Failures and recovery:** preserve the first actual error, exact relevant command/tool input, cwd, exit code,
+  stdout/stderr or raw event pointer, attempted correction, fresh output directory and continuation session ID.
+  State what remained failed, what recovered and what was accepted separately; do not replace failed runs with
+  successful summaries. Record unsupported claims without inventing a permission/provider cause.
+- **Next action:** smallest evidence-supported correction for each unresolved blocker, plus native/containment
+  limits. Missing original events stay unverified; do not reconstruct them or automatically repeat the feature.
+
+Redact credentials and unrelated conversation content; do not collect environment dumps or account identity merely
+to fill report fields. File existence or narration is not evidence of authorship, review or execution. Automatic
+verification details supplement, rather than replace, the captured root/relay records.
+
 ## Evaluator rubric — do not paste as task instructions
 
 - Confirm observed reads of the current profile and actual loader/resolver use. The retired execution.json and
   semantic catalog are not the live fleet. A claimed absent route needs actual discovery/invocation evidence;
-  general feature authorization does not permit direct specialist work in this profile.
+  general feature authorization does not permit direct specialist work outside this profile's ownership rules.
+  Implementation-plan authorship is the orchestrator's default responsibility, not a missing-route exception.
 - Feature-design responsibility covers requested FD and LLD together, before dependent planning/implementation.
   Check output content, assignment scope and chronology. A post-implementation design fix must remain identified
   as late; passing a structural checker or final behavioral consistency cannot establish earlier compliance.
-- QA scenarios precede dependent planning; planner authors and orchestrator critiques, with author disposition.
-  Additional plan challenge is conditional. Implementation and substantive separate code review have real dispatch
-  evidence. Verify missing-output recovery from result/artifact evidence, including session continuity when claimed.
+- Intake preserves source pointers, approved scope, consequential Q&A/decisions and open questions without
+  preselecting a technical solution. Narrow consequential observations remain sourced leads, not approvals.
+  Design/QA/planning verify relevant originals; absence of a broad technical context summary is not itself a
+  blocker. Reuse one record, not a mandatory second handoff, and check superseded decisions stay superseded.
+- QA scenarios precede dependent planning. Verify that the root session authored the plan, then dispatched a
+  separate configured plan reviewer; the root author dispositions findings and revises the plan, with affected
+  material revisions rechecked before implementation. An explicit user-assigned external author is an exception
+  to record, not an automatic-routing pass for the default. Read question-tool answers as well as user messages.
+  Do not infer authorship, review or chronology from file existence or later narration: inspect actual root tool
+  events and reviewer invocation/results, preserving reviewed plan versions or hashes where available. Self-critique
+  is not separate review. Additional review/debate is conditional; missing reviewer routes must not become silent
+  self-acceptance. Implementation and substantive separate code review have real dispatch evidence. Verify
+  missing-output recovery from result/artifact evidence, including session continuity when claimed.
 - Final artifacts and local closeout accurately distinguish revised, checked unchanged and independently verified.
   Inspect paired design reconciliation rather than accepting a summary that says both were updated. Correct
   material inaccuracies; operational hiccups belong in working evidence, not automatically in customer/PR prose.

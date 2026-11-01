@@ -14,7 +14,8 @@ the slice(s) that make each scenario testable.
 ## Sources and authority
 
 Use approved requirements/acceptance criteria and Functional Design/business rules first. Use feature task-context as
-a navigation map. Use the LLD only when a technical constraint materially affects observable behavior. Follow project
+a navigation map for original inputs and clarification decisions, not as an approved technical solution. Sourced
+concerns or later working synthesis are investigative leads, not expected results. Use the LLD only when a technical constraint materially affects observable behavior. Follow project
 testing conventions. Do not require an implementation handoff and do not derive expected behavior from current code
 unless characterization scenarios are explicitly requested.
 

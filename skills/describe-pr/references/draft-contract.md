@@ -51,8 +51,9 @@ The context's `requiredSections` says which keys must appear. A required key lef
 ## Hard rules
 - **Never invent** test results, measurements, business impact, reasons, severity or rollback steps. Write
   `[NEEDS INPUT]` and ask.
-- `why` / `problem` use this evidence order: explicit user rationale -> task context -> approved
-  ticket/requirements -> relevant approved design artifact -> ask. Never derive business rationale from the diff.
+- `why` / `problem` use this evidence order: explicit user rationale -> approved ticket/requirements -> relevant
+  approved design artifact -> ask. Task-context may preserve or locate that evidence; its observations or later
+  synthesis are not a higher authority. `taskContext` records the carrier, not approval. Never derive business rationale from the diff.
 - Do not infer causal links between separately stated objectives, rationale, estimates, benefits, or outcomes unless
   authoritative evidence explicitly connects them.
 - Preserve qualifiers on value/measurement claims. `estimated 20%` cannot become `improved by 20%`.

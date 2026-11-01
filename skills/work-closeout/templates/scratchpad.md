@@ -1,6 +1,6 @@
 # <Work item> — active work scratchpad
 
-<!-- Compact execution/resume state only. Rich requirements belong in task-context/design artifacts; full plans,
+<!-- Compact execution/resume state only. Requirements remain in their sources; intake/Q&A in task-context; full plans,
 review transcripts, evidence dumps and closeout reports belong elsewhere. Keep this file useful to the next worker. -->
 
 **Objective:** <bounded outcome>

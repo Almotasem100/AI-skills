@@ -1,6 +1,96 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: step-two accepted for merge — 2026-11-01
+## Current: combined update ready for owner document review — 2026-11-01
+
+The owner authorized pushing the combined orchestrator-planner/intake-first branch and improving diagnostic
+detail in the tests, while deferring the setup Luna prompt. FD/LLD/QA quality changes remain paused until the owner
+uploads representative latest outputs and discusses concrete issues; no speculative coverage-rule patch was applied.
+
+The full-feature verifier now records exact command/cwd, timing, exit code/signal/error, verifier hash, protected
+input hashes, baseline commit and forbidden paths, classifying integrity/execution/acceptance failures. Each
+verification attempt retains its own result and stdout/stderr; later success does not overwrite failed evidence.
+The generated caller-report rubric separates code/workflow verdicts and requires original event/assignment/review
+locators, intervention including question answers, actual recovery and explicit missing-evidence limits. It does
+not add feature deliverables, leak expected routing into the natural prompt or claim native behavior.
+
+Validation: 32/32 offline checks passed, including failed-then-passed verification history, exact command/output
+capture, tampered-input/scope diagnostics and malformed-manifest handling. An initial new assertion assumed TAP
+output despite the runtime using another reporter; it now checks the actual missing-function error and preserves
+raw output without assuming a reporter. No host/provider trial ran. Next: push the reviewed branch, wait for the
+owner's document uploads, analyze before proposing skill-quality changes, and batch approved changes into one
+subsequent workstation installation/trial. Setup Luna prompt remains deferred.
+
+## Historical: intake-first handoff and combined ownership update — 2026-11-01
+
+The owner approved implementing the intake-first record and its downstream consumers alongside the selected
+orchestrator-as-planner/separate-reviewer arrangement. `task-context` retains its skill name and artifact path;
+the initial handoff now preserves source navigation, approved scope, consequential original Q&A, corrections/
+supersession, open questions and narrowly sourced consequential observations. It does not routinely select
+architecture/reuse or supply a technical digest. Later established synthesis may extend the same record only for
+an actual continuity need; older rich records remain usable with source verification. No second document/stage
+is required, and no claim of eliminated bias or measured token savings is made.
+
+Updated consumers: create-lld develops design from original sources without requiring a technical intake summary;
+qa-scenarios does not promote investigative concerns to expected behavior; plan-review checks framing against
+originals; describe-pr follows sourced approved rationale rather than treating task-context itself as authority.
+Its JSON `taskContext` source label remains compatible and means the carrier, not approval. The scratchpad remains
+execution state. Design/QA audience rules are preserved; these changes do not establish company-facing quality
+on representative real documents. Templates, shared contract, lane catalog and native evaluator guidance agree.
+
+Validation: 29/29 offline checks passed, including generated corrected-Q&A/unapproved-proposal cases, consumer
+authority checks and real LLD checker invocations. A fresh agent produced intake from original fixture sources,
+retaining corrected owner answers, undecided behavior and an uncertain cross-source authorization concern without
+adopting an unapproved service proposal. A second fresh agent used it plus originals to produce paired FD/LLD,
+kept the concern unverified and surfaced an in-transit delivery ambiguity. Its structural check exposed the
+checker requiring an absent feature ID; title-only headers are now supported without inventing metadata, with
+regressions for malformed headings and missing core sections. The generated LLD then passed with no warnings.
+Independent combined review found stale roadmap/global context wording and an ambiguous external-author ownership
+sentence; these were corrected. No workstation installation, authenticated CLI calls or native OpenCode behavior
+is claimed. The exercises validate this source-based handoff, not broad company-document quality or host adherence.
+
+Next: push the reviewed combined branch, refresh installed changed managed files with backups/parity checks,
+then use one fresh generated OpenCode Full Feature trial with exact-session evidence capture. The natural
+feature prompt stays unchanged. Diagnose the workstation default route separately; local live dials and accounts
+are not stored or changed here. ZadLoop/native-worker integration remains on hold.
+
+## Historical: orchestrator owns planning; separate reviewer — 2026-11-01
+
+The owner selected orchestrator-as-planner with a separate plan reviewer after an evidence-led comparison that
+excluded existing implementation and switching costs. This supersedes V3's default external planner and
+orchestrator critique. It is an architectural choice, not a measured speed, token-cost or quality improvement.
+
+The optional AI Skills delegation profile now assigns implementation-plan authorship, revisions and findings
+disposition to the orchestrator. Substantive plans use the separate configured `challenge-plan` responsibility;
+`write-plan` remains available for explicit user-assigned external authorship. Missing reviewer routes follow
+existing diagnosis/recovery, not silent self-review. Debate preserves the same author/reviewer roles and is not
+an automatic extra stage. Shared workflow semantics remain execution-neutral; separate code review is unchanged.
+No production model/provider/effort, lane configuration, host integration or installed user files are changed.
+
+The full-scenario evaluator now checks actual root authorship, separate reviewer dispatch, author disposition,
+material rechecks and prerequisite chronology. The natural feature prompt is unchanged. Offline validation and
+source-understanding results are recorded below; a fresh installed OpenCode behavior check remains pending and
+earlier V3 trials do not establish this new ownership behavior.
+
+Validation: 24/24 offline tests passed (workflow separation, runner, full-scenario fixtures and Gemini overlay),
+including generated evaluator ownership checks and unchanged natural feature prompts. A fresh read-only agent
+applied the sources correctly to default planning, material findings, failed-review routing, explicit external
+authorship and a requested debate. Its two wording findings were corrected: external authors retain revisions/
+disposition, and a stable snapshot does not imply enforced read-only execution. These checks establish source
+consistency/understanding, not native host loading, live routing or performance improvements.
+
+The intake-first handoff proposal is agreed in discussion but not implemented by this change. Existing
+task-context and create-lld dependencies remain intact; their coordinated revision is separate work.
+
+### Remaining work
+
+- Refresh changed managed instructions/skill on the workstation and run one fresh natural Full Feature trial
+  with timestamped capture; assess routing/lifecycle separately from code acceptance. Preserve old fixtures.
+- Implement the agreed intake-first handoff and reconcile its downstream consumers as a separately scoped change.
+- Improve company-facing FD/LLD and QA quality; continue evidence-led instruction trimming where warranted.
+- Diagnose the workstation default-lane failure without putting transient model/provider choices in this repo.
+- Keep ZadLoop integration and native-worker routing on hold.
+
+## Historical: step-two accepted for merge — 2026-11-01
 
 The owner approved documentation cleanup and merge after branch review and independent subagent debate. The
 review found no functional blocker; 23/23 offline checks passed. Generated TASKS now agrees with FULL-SCENARIO:

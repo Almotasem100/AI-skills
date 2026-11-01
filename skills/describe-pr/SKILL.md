@@ -1,11 +1,11 @@
 ---
 name: describe-pr
-description: Write a pull request title and description for the current branch from its git changes plus authoritative task context/requirements and optional design artifacts. Use when the user asks to write, draft, create, open or update a pull request or its description, or to describe their changes for review.
+description: Write a pull request title and description for the current branch from its git changes plus approved task requirements, sourced intake decisions and optional design artifacts. Use when the user asks to write, draft, create, open or update a pull request or its description, or to describe their changes for review.
 ---
 
 # describe-pr
 
-Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* may come from the parent feature's authoritative task context or requirements. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
+Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* comes from explicit rationale or approved task sources, which task-context may preserve or locate. Task-context itself does not grant authority to its author's inferences. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
 Context is rebuilt from git on every run, so it works whether or not an AI wrote the code.
 
 `<skill-dir>` below means the folder that contains this file. Write every temporary file to the system temp
@@ -13,7 +13,7 @@ folder, **never inside the repository**.
 
 ## Inputs
 All optional. Use whatever the user gives; ask only for what's missing after checking available task evidence (step 5).
-- A task-context artifact for this task (preferred rationale source when available).
+- A task-context artifact for this task (navigation to sourced rationale and approved decisions when available).
 - The internal ticket: ID, title, description / acceptance criteria.
 - Approved requirements or other authoritative task inputs already available to the session.
 - A one-line note: why the change was made and how it was tested.
@@ -36,7 +36,8 @@ All optional. Use whatever the user gives; ask only for what's missing after che
    - Before asking for the Why, inspect the task-context artifact if one is available. If no task context exists,
      inspect the relevant approved ticket/requirements/design material already supplied or referenced for this task.
      Do **not** read every unrelated PDF/source file by default; use the minimum evidence needed to establish the
-     rationale and verify consequential claims.
+     rationale and verify consequential claims. Follow intake pointers to authoritative sources as needed; do not
+     promote an observation, cross-source concern or later working synthesis into approved rationale.
    - Read relevant Functional Design / LLD / Technical Design when supplied: they ground terminology, intended
      behavior and design, but concise design documents are not expected to preserve every business rationale detail.
 
@@ -48,8 +49,9 @@ All optional. Use whatever the user gives; ask only for what's missing after che
      `[NEEDS INPUT]` and add a question.
    - Preserve evidence qualifiers exactly: `estimated`, `expected`, `target`, `projected`, `reported`,
      and `observed` are not interchangeable. Never turn a target/estimate into a measured result.
-   - For Why/Problem, use this priority: explicit user rationale -> task context -> approved ticket/requirements
-     -> relevant approved design artifact -> ask the developer. Never derive business rationale from the diff alone.
+   - For Why/Problem, use explicit user rationale, then approved ticket/requirements, then relevant approved design,
+     then ask the developer. Task-context may preserve those statements and their provenance; it is not a separate
+     higher authority. Never derive business rationale from the diff alone.
    - List the distinct concerns in `detected.unrelatedConcerns`, and any difference between the code and the
      LLD in `detected.designDocDivergence` (also mention it in reviewer notes).
 
@@ -62,7 +64,7 @@ All optional. Use whatever the user gives; ask only for what's missing after che
    don't reformat, shorten or summarise it (that is what gets pasted into the PR).
    Then ask **at most 4 questions**, only for what's still missing after checking available task evidence
    (ticket ID if the branch has none, unresolved why, testing, rollback when there's a migration or it's a hotfix,
-   reviewer focus). Do not ask the developer for rationale already established by authoritative task context or
+   reviewer focus). Do not ask the developer for rationale already established by sourced approved decisions or
    requirements. Make questions confirmation-shaped only when the guess is grounded in those sources.
 
 6. **Apply the answers.** Update the draft, render again and show the new result. Repeat only for the parts

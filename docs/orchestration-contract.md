@@ -18,11 +18,11 @@ abstractions onto their own ticket systems, environments, architecture, commands
 For clear Full Feature delivery intent, cover these **default outcomes** unless the owner explicitly omits an applicable deliverable or the project explicitly makes it inapplicable:
 
 1. **Intake and clarification:** inspect the current project state and available requirements/visual/code evidence; resolve consequential owner-level ambiguities through focused grilling.
-2. **Working context:** synthesize one feature-level evidence map when fragmented inputs or downstream consumers justify it; do not create a task-context file just to satisfy a checklist.
+2. **Working context:** preserve one intake-first record of source pointers, approved scope, consequential clarification Q&A, decisions and open questions when fragmented inputs or downstream consumers justify it. Retain exceptional consequential sourced observations without prescribing a solution; do not create a task-context file just to satisfy a checklist.
 3. **Feature design:** produce the project's applicable Functional Design and forward LLD before dependent implementation planning. A project may define which design artifacts are required.
 4. **QA scenarios:** prepare feature-level, tester-facing behavioral scenarios from sufficiently settled requirements and design **before implementation planning**; do not conflate scenarios with executable tests.
 5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification.
-6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a structured author/reviewer debate when requested or warranted by consequential disagreement. An additional separate plan reviewer is optional unless project policy requires one; do not mislabel a review based on its own requirements intake as fully independent.
+6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a reviewer distinct from the plan author when required by the selected workflow or project policy; self-checks do not satisfy that requirement. Recheck affected material revisions before declaring readiness. Use a structured author/reviewer debate when requested or warranted by consequential disagreement, without automatically adding another review. Do not label shared assumptions as independently verified merely because participants differ.
 7. **Implementation and checks:** implement authorized delivery slices, run appropriate tests/builds/regressions and applicable quality guards.
 8. **Code review and corrections:** use a separate technical reviewer for substantive Full Feature code changes by default (unless explicitly omitted or inapplicable under project policy), alongside the responsible agent’s own diff inspection. Return attributable findings to the author and verify corrections; scale checks proportionately for trivial changes.
 9. **Publication and closeout:** create the appropriate PR description and reconcile completed feature state when applicable, without treating preparation as permission to push, merge, deploy or destroy working files.
@@ -74,7 +74,11 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 
 ## Context and continuity
 
-- `task-context` is optional rich temporary understanding, normally owned by the feature when a feature exists.
+- `task-context` is an optional intake-first working record, normally owned by the feature when a feature exists.
+  Its initial handoff preserves inputs, approved scope, consequential Q&A/decisions, uncertainty and source access,
+  not a routine technical synthesis or preferred solution. Retain consequential sourced observations/cross-source
+  concerns with uncertainty and verification questions. Later established understanding may extend the same
+  artifact when continuity genuinely needs it; no second mandatory document. Original sources remain authoritative.
 - The project scratchpad is compact execution/resume state: current objective, active work item, stage, completed work, material decisions, blockers, verification state and next action.
 - A new chat/model is only a runtime transition. It requires neither handoff nor closeout when normal state is current.
 - `handoff` is exceptional: use it for genuine transfer friction, a deliberate pause, or another environment/owner
@@ -126,7 +130,7 @@ workflow explicitly grants them authority.
 - An independent reviewer receives requirements/scope, relevant design constraints, the actual diff, verification
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
 - Reviewers verify consequential claims rather than checking only that citations exist.
-- For plan reviews, apply the available plan-review capability. A separate independent reviewer may be used when requested, warranted or required. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
+- For plan reviews, apply the available plan-review capability and the selected workflow's author/reviewer ownership. Use a separate reviewer when requested, warranted or required; the author retains plan mutations and findings disposition. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
 - Inspect code diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction. This inspection complements rather than replaces required independent technical review. Commit ownership does not grant publication, merge or deployment permission; project authorization controls those effects.
 - The implementer owns its code, local tests/build checks and fixes. When independent code review is warranted or required, use a separate reviewer; implementer self-checks and outcome verification do not substitute for independent review. Coordinate responsibilities rather than repeating specialist judgment.
 - Routine review findings return to the implementer for fix/reverify without a new user gate. Material findings that

@@ -1,23 +1,23 @@
 # Task Context
 
-> Shared temporary understanding; canonical requirements and project rules remain authoritative.
+> Temporary intake-first record; original sources and approved decisions remain authoritative.
 
-## Objective and scope
-<!-- Requested outcome, supplied business rationale, affected users/processes and explicit exclusions. -->
+## Objective and approved scope
+<!-- Requested outcome, supplied rationale, explicit inclusions/exclusions and approved constraints with sources. -->
 
-## Approved behavior and decisions
-<!-- Requirements, business rules, meaningful UX/visual conclusions, acceptance criteria and owner decisions.
-Preserve consequential clarification Q&A or an unambiguous sourced decision summary. State each item once. -->
+## Source inventory
+<!-- Original inputs/rules and existing artifacts, with relevant pages/sections/revision/state. Navigation, not a
+technical digest. Preserve meaningful visual constraints without copying whole attachments. -->
 
-## Relevant current-system findings and constraints
-<!-- Relevant existing behavior, reuse opportunities and technical boundaries, with precise source pointers.
-Distinguish current behavior from requested behavior. -->
+## Clarification Q&A and decisions
+<!-- Consequential original question and answer, source/owner and qualifiers. Mark corrections/supersession;
+do not leave old and new decisions simultaneously active. No invented approvals. -->
 
-## Open questions and assumptions
-<!-- Conflicts, consequential gaps and unverified premises. Label useful author proposals as unapproved;
-do not develop a competing plan. Omit this section if nothing remains open. -->
+## Open questions and conflicts
+<!-- Undecided behavior, contradictory sources and unverified premises, with source pointers. -->
 
-## Source references
-<!-- Compact pointers to authoritative inputs and current design/plan/review/verification artifacts.
-Keep estimates/targets distinct from measured results wherever included. Omit empty sections and do not copy
-whole source artifacts or duplicate items across sections. -->
+## Consequential observations
+<!-- Optional: sourced observations or cross-source concerns that are consequential and easily lost. Distinguish
+fact from inference, record uncertainty and a verification question; no prescribed solution/reuse recommendation.
+Omit empty sections. Later working synthesis may be added here only for a real continuity need, clearly labeled
+as later synthesis with source/state; do not create a second mandatory artifact or duplicate existing plans. -->

@@ -10,6 +10,7 @@ const read = path => readFileSync(join(root, path), 'utf8');
 const globalInstructions = read('templates/global-user-instructions/AGENTS.md');
 const contract = read('docs/orchestration-contract.md');
 const profile = read('docs/ai-skills-delegation.md');
+const lanes = read('docs/delegation-lanes.md');
 const guide = read('GUIDE.md');
 
 // Source regressions: these do not establish model adherence or native host loading.
@@ -40,7 +41,10 @@ test('optional instructions guard activation before routing and retain continuit
 });
 
 test('optional profile uses CLI routes without native preference setup and preserves ownership', () => {
-  assert.match(profile, /configured planner authors the implementation plan by default/);
+  assert.match(profile, /orchestrator authors and revises the implementation plan by default/);
+  assert.match(profile, /separate plan review through the configured `challenge-plan` responsibility/);
+  assert.match(profile, /Self-checks do not\s+replace this separate review/);
+  assert.match(profile, /missing review route is a blocker/);
   assert.match(profile, /configured CLI delegation skills/);
   assert.match(profile, /user need not name a lane or choose a mechanism/);
   assert.match(profile, /including Gemini CLI/);
@@ -50,6 +54,21 @@ test('optional profile uses CLI routes without native preference setup and prese
   assert.doesNotMatch(profile, /native-preferred|relay-preferred|roleMechanisms/);
   assert.doesNotMatch(guide, /Copy-Item.*execution.example|\$executionFile/);
   assert.doesNotMatch(globalInstructions + contract, /execution\.json|Gemini CLI|native-preferred|relay-preferred/);
+});
+
+test('planning ownership stays consistent through routing, corrections and optional debate', () => {
+  assert.match(lanes, /Do not dispatch `write-plan` merely because the lane exists/);
+  assert.match(profile, /Only an explicit user assignment delegates plan authorship/);
+  assert.match(lanes, /plan author owns revisions and evidence-backed findings disposition/);
+  assert.match(lanes, /reviewer checks affected material revisions before the plan is called ready/);
+  const debate = read('skills/plan-debate/SKILL.md');
+  assert.match(debate, /Preserve the calling workflow's plan author/);
+  assert.match(debate, /do not dispatch a replacement author/);
+  assert.match(debate, /challenge reviewer\s+distinct from the author/);
+  for (const source of [profile, lanes, read('README.md'), read('test/native-smoke/README.md'),
+    read('test/native-smoke/full-scenario.md')]) {
+    assert.doesNotMatch(source, /configured planner authors|delegated planner authorship|planner authors and orchestrator critiques|orchestrator reviews\. Ordinary/);
+  }
 });
 
 test('shared workflow retains nine outcomes, prerequisite order and independent review', () => {
@@ -71,6 +90,31 @@ test('standalone context and plan review do not require configured routing', () 
   }
   assert.match(read('skills/task-context/SKILL.md'), /targeted grilling\/decision work/);
   assert.match(read('skills/plan-review/SKILL.md'), /plan author/);
+});
+
+test('intake skill and template preserve decisions and narrow evidence without a mandatory technical handoff', () => {
+  const skill = read('skills/task-context/SKILL.md');
+  const template = read('skills/task-context/references/task-context-template.md');
+  assert.match(skill, /consequential original questions and answers/);
+  assert.match(skill, /corrections and superseded decisions/);
+  assert.match(skill, /sourced observation or cross-source concern/);
+  assert.match(skill, /do not prescribe an implementation/);
+  assert.match(skill, /later working synthesis to this same artifact/);
+  assert.match(skill, /Older rich\s+task-context files remain usable/);
+  for (const heading of ['Objective and approved scope', 'Source inventory', 'Clarification Q&A and decisions',
+    'Open questions and conflicts', 'Consequential observations']) assert.ok(template.includes(`## ${heading}`));
+  assert.doesNotMatch(template, /## Relevant current-system findings|reuse opportunities/);
+});
+
+test('intake consumers retain source authority and do not require an upstream technical solution', () => {
+  assert.match(contract, /optional intake-first working record/);
+  assert.match(read('skills/create-lld/SKILL.md'), /absent technical summary is not a missing-input blocker/);
+  assert.match(read('skills/qa-scenarios/SKILL.md'), /investigative leads, not expected results/);
+  assert.match(read('skills/plan-review/SKILL.md'), /do not treat a sourced\s+concern as an approved requirement/);
+  const pr = read('skills/describe-pr/SKILL.md');
+  assert.doesNotMatch(pr, /authoritative task context|explicit user rationale -> task context/);
+  assert.match(pr, /Task-context itself does not grant authority/);
+  assert.match(read('skills/describe-pr/references/draft-contract.md'), /`taskContext` records the carrier, not approval/);
 });
 
 function installGroup(name) {

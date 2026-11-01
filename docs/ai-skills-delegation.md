@@ -5,19 +5,24 @@
 
 ## Ownership and activation
 
-The selected agent owns orchestration and delegates specialist deliverables. Apply the shared
+The selected agent owns orchestration and implementation-plan authorship, and delegates the other specialist deliverables. Apply the shared
 [workflow contract](orchestration-contract.md) and canonical project policy without changing their required outcomes.
 Resolve specialist work as `intent -> responsibility -> configured lane -> installed CLI delegation skill`.
 Read the actual local lane configuration and use the matching CLI relay with its configured provider/model/effort
 and authorized environment. A model's presence in a host catalog does not select a route. Honor explicit user
 routing/model overrides without silently changing persistent configuration.
 
-The configured planner authors the implementation plan by default; the orchestrator critically reviews it using
-applicable plan-review guidance and authoritative evidence, and returns material findings to that author for
-reasoned disposition. An additional independent plan reviewer is optional unless requested, warranted or
-project-required. Debate is requested or risk-justified, not an automatic second review. The orchestrator's
-requirements-derived review is not fully independent. A user-authorized task exception may assign planning or
-another deliverable to the orchestrator without changing the selected session profile or waiving project gates.
+The orchestrator authors and revises the implementation plan by default. For substantive plans, delegate a
+separate plan review through the configured `challenge-plan` responsibility using applicable plan-review guidance
+and authoritative sources, unless explicitly omitted or inapplicable under project policy. As plan author, the orchestrator
+dispositions each material finding: accept/revise, reject with evidence, or leave open with the needed check or
+decision. Recheck affected material revisions with the reviewer before calling the plan ready. Self-checks do not
+replace this separate review. Give the reviewer original-source access without a persuasive defense of the plan;
+a separate session alone does not guarantee an unbiased review. Debate is requested or risk-justified, not an
+automatic second review. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
+that author owns plan revisions and findings disposition, while the orchestrator coordinates the separate review.
+A user-authorized task exception may assign another deliverable to the
+orchestrator without changing the session profile or waiving project gates.
 
 ## Execution mechanism
 
@@ -67,12 +72,13 @@ acceptance. If design changes later, have its owner check affected companion des
 revise only what is affected and record the actual disposition. A late correction does not establish that the
 prerequisite was met earlier. Do not rerun unaffected stages or invent an additional owner-approval gate.
 
-For implementation-plan assignments, explicitly point the planner to the shared contract's **Planning convergence**
-section and the applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions.
-The planner must read those sources directly before drafting; the orchestrator checks source access and the
-resulting blueprint, not merely that paths were mentioned in the dispatch.
+For implementation planning, the orchestrator applies the shared contract's **Planning convergence** section and
+reads applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions directly.
+Give the separate reviewer the plan and access to those original sources, relevant decisions and open questions.
+Verify actual review findings and disposition, not merely that a review file or successful relay result exists.
+If the user explicitly assigns an external plan author, that author must inspect the same sources directly.
 
-In AI Skills delegation mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Explicitly authorized one-task direct work need not resolve a delegation lane.
+In AI Skills delegation mode, the implementation plan is the orchestrator's deliverable; other specialist deliverables, including the separate plan review, are delegated. The orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring other deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. The orchestrator's own planning and explicitly authorized one-task direct work need not resolve an authoring lane; required review still needs a suitable separate route. A missing review route is a blocker, not permission to substitute self-review.
 
 When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
 

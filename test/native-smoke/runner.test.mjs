@@ -66,6 +66,9 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.match(walkthrough, /use AI Skills delegation mode/);
       assert.match(walkthrough, /Do not\s+run any delegate\/model calls/);
       assert.match(readFileSync(join(runDir, 'TASKS.md'), 'utf8'), /Hypothetical full-feature walkthrough/);
+      const taskCases = readFileSync(join(runDir, 'TASKS.md'), 'utf8');
+      assert.match(taskCases, /D0 is clearly superseded/);
+      assert.match(taskCases, /brainstorming proposal is not promoted into approved design/);
       const hosts = readFileSync(join(runDir, 'HOST-CHECKS.md'), 'utf8');
       assert.doesNotMatch(hosts, /\{\{[A-Z_]+\}\}/);
       assert.match(hosts, /Claude CLI is \*\*not/);
@@ -74,10 +77,16 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.doesNotMatch(fullScenario, /\{\{[A-Z_]+\}\}/);
       assert.match(fullScenario, /ZadLoop is on hold/);
       assert.match(fullScenario, /Open this exact workspace root/);
+      assert.match(fullScenario, /root session authored the plan, then dispatched a\s+separate configured plan reviewer/);
+      assert.match(fullScenario, /root author dispositions findings and revises the plan/);
+      assert.match(fullScenario, /inspect actual root tool\s+events and reviewer invocation\/results/);
+      assert.match(fullScenario, /Debuggable caller report/);
+      assert.match(fullScenario, /event IDs and timestamps/);
+      assert.match(fullScenario, /do not reconstruct them or automatically repeat the feature/);
       const featurePrompt = readFileSync(join(runDir, 'OPENCODE-PROMPT.md'), 'utf8');
       assert.match(featurePrompt, /^You are in AI Skills delegation mode/);
       assert.match(featurePrompt, /Deliver DRAFT-RENAME as a complete Full Feature/);
-      assert.doesNotMatch(featurePrompt, /config\.mjs|write-plan|draft-feature-design|Take the feature through/);
+      assert.doesNotMatch(featurePrompt, /config\.mjs|write-plan|challenge-plan|draft-feature-design|orchestrator|Take the feature through/);
       assert.ok(fullScenario.includes(JSON.stringify(join(runDir, 'full-opencode'))));
       assert.match(fullScenario, /Create a short customer-facing functional guide/);
       const verify = () => spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'), '--verify', runDir], { encoding: 'utf8', env });

@@ -12,8 +12,9 @@ A short accurate description beats a long polished one.
 - `feat(kpi): add project status and multi-code filtering [#14972296]`
 
 ## Evidence split
-- **Why / problem:** task context and approved requirements are primary. Concise design docs are useful secondary
-  evidence; the diff is never enough to invent business rationale.
+- **Why / problem:** explicit rationale and approved requirements are primary; task-context may preserve their
+  decisions and source pointers, but its inferences are not approval. Concise approved design docs are useful
+  secondary evidence; the diff is never enough to invent business rationale.
 - **What changed:** git/diff and implemented code are primary.
 - **Testing:** actual verification evidence or the developer's report is primary.
 - **Impact/risk:** combine approved requirements with the actual implementation; distinguish expected impact from

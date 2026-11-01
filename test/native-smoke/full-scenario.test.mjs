@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -39,6 +39,60 @@ test('fixed acceptance checks cover feature behavior without accepting lifecycle
     assert.equal(verifyFullScenario(dir,'opencode').status,'failed');
     assert.equal(verifyFullScenario(dir,'zadloop').status,'skipped');
   } finally { if(env!==undefined) process.env.NODE_TEST_CONTEXT=env; }
+}));
+test('verification records exact commands, integrity and durable failure-to-success history', ()=>fixture(dir=>{
+  const base=join(dir,'full-opencode');
+  writeFileSync(join(dir,'responses/full-opencode.md'),'Verbatim response is captured separately; assess claims independently.');
+  const failed=verifyFullScenario(dir,'opencode');
+  assert.equal(failed.status,'failed');
+  const before=JSON.parse(readFileSync(failed.detailsPath,'utf8'));
+  assert.equal(before.failureStage,'acceptance-tests');
+  assert.equal(before.acceptance.executed,true);
+  assert.notEqual(before.acceptance.exitCode,0);
+  const firstStdout=readFileSync(before.acceptance.stdoutPath,'utf8');
+  assert.match(firstStdout,/renameDraft is not a function/);
+  writeFileSync(join(base,'project/drafts.mjs'),reference);
+  const passed=verifyFullScenario(dir,'opencode');
+  const after=JSON.parse(readFileSync(passed.detailsPath,'utf8'));
+  assert.equal(passed.status,'passed');
+  assert.deepEqual(after.acceptance.command,[process.execPath,'--test','acceptance.test.mjs']);
+  assert.equal(after.acceptance.cwd,base);
+  assert.equal(after.acceptance.exitCode,0);
+  assert.ok(after.integrity.inputs.every(input=>input.matchesRecorded && input.matchesPreparedSource));
+  assert.equal(after.integrity.git.expectedCommit,after.integrity.git.observedCommit);
+  assert.equal(after.workflowAssessment,'needs-review');
+  assert.match(after.verifierSha256,/^[a-f0-9]{64}$/);
+  assert.ok(Date.parse(after.finishedAt)>=Date.parse(after.startedAt));
+  assert.equal(readdirSync(join(dir,'full-opencode-verification')).length,2);
+  assert.notEqual(after.acceptance.stdoutPath,before.acceptance.stdoutPath);
+  assert.equal(readFileSync(before.acceptance.stdoutPath,'utf8'),firstStdout);
+}));
+
+test('integrity diagnostics identify changed inputs and forbidden paths without running acceptance', ()=>fixture(dir=>{
+  const base=join(dir,'full-opencode');
+  writeFileSync(join(dir,'responses/full-opencode.md'),'Claim requiring inspection.');
+  writeFileSync(join(base,'requirements.md'),'Changed requirement');
+  writeFileSync(join(base,'project/forbidden.txt'),'Outside permitted file set');
+  const result=verifyFullScenario(dir,'opencode');
+  const details=JSON.parse(readFileSync(result.detailsPath,'utf8'));
+  assert.equal(result.status,'failed');
+  assert.equal(details.failureStage,'fixture-integrity');
+  assert.equal(details.acceptance.executed,false);
+  const input=details.integrity.inputs.find(input=>input.path==='requirements.md');
+  assert.equal(input.matchesRecorded,false);
+  assert.equal(input.matchesPreparedSource,false);
+  assert.deepEqual(details.integrity.scopeViolations,['project/forbidden.txt']);
+  assert.equal(readFileSync(details.acceptance.stdoutPath,'utf8'),'');
+}));
+
+test('malformed manifests preserve the inspection error rather than a generic availability claim', ()=>fixture(dir=>{
+  writeFileSync(join(dir,'responses/full-opencode.md'),'Claim requiring inspection.');
+  writeFileSync(join(dir,'full-opencode/baseline.json'),'{broken');
+  const result=verifyFullScenario(dir,'opencode');
+  const details=JSON.parse(readFileSync(result.detailsPath,'utf8'));
+  assert.equal(details.failureStage,'fixture-integrity');
+  assert.equal(details.acceptance.executed,false);
+  assert.equal(details.integrity.errors.length,1);
 }));
 test('tampered test/manifest and out-of-scope files prevent execution', ()=>{
   fixture(dir=>{

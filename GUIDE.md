@@ -139,7 +139,7 @@ you change a skill here, copy it again.
 | Start of a small ticket | `grill-me` | Interviews you about the plan until nothing is left assumed | Pocock (pinned) |
 | Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
-| Context synthesis, when useful | `task-context` | Consolidates fragmented requirements, grilling decisions, business rationale, UX evidence and constraints into a temporary rich working map for downstream roles | Mine |
+| Intake record, when useful | `task-context` | Preserves original-source pointers, approved scope, consequential grilling Q&A/decisions and open questions; narrow sourced concerns remain leads, not approved solutions | Mine |
 | Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
@@ -456,11 +456,13 @@ Same tail, with more up front:
      plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
 2. **`task-context`**, when the ticket has several inputs/decisions or several downstream consumers:
    *"Synthesize the task context from the ticket, requirements, grilling answers, screenshots/CSS and current project decisions."*
-   Save it in the project's approved working-artifact location. It is rich temporary context, not a team deliverable.
+   Save it in the project's approved working-artifact location. It is an intake-first record, not a team deliverable
+   or routine technical survey; preserve original Q&A and superseded decisions clearly.
 3. **`create-lld`**, forward mode: *"write the LLD for CADE-1234 from the task context and approved requirements."*
-   The Functional Design/LLD remain concise and audience-specific; task context carries the detail they deliberately omit.
-4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** when several reviewers should
-   challenge and respond in a shared scratchpad. Review the scratchpad and resolve open decisions before
+   The design author reads original inputs and develops the design; task-context is navigation, not a preselected solution.
+4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** for a warranted author/challenger
+   exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
+   the orchestrator writes/revises the plan and a separate configured reviewer critiques it. Resolve material findings before
    implementation; then continue through the appropriate implementation, verification and PR stages.
 5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
    the configured `review-main` and `review-debate` lanes); without
@@ -468,8 +470,10 @@ Same tail, with more up front:
 
 ### Any time
 - **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
-  same sources: synthesize one working context. Skip it for trivial work. Keep facts, decisions, estimates/targets,
-  assumptions and unresolved questions distinct. Use the active project's approved working location; the generic skill does not choose a project-specific path.
+  same inputs: preserve one intake-first record. Skip it for trivial work. Keep approved scope, original Q&A,
+  decisions/supersession and open questions with source pointers. Retain consequential sourced concerns as leads,
+  not solutions; add later synthesis only for a genuine continuity need in the same artifact. Use the active
+  project's approved working location; the generic skill does not choose a project-specific path.
 - **`create-lld`**, optional Technical Design mode: invoke only when the active project/team explicitly requires a separate as-built design artifact after implementation.
 
 - **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.

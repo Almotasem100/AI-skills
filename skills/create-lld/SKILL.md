@@ -18,8 +18,9 @@ design by child ticket IDs unless the project explicitly requires otherwise.
 ## Deliverable rules
 1. Use the project-approved parent feature identifier and terminology. Do not expose internal delivery-slice IDs in
    customer/architect deliverables unless the project requires them.
-2. Use task-context as a navigation map when available, then verify consequential claims against authoritative
-   sources. Do not dump task-context evidence classes, source maps, attachment names/pages or code-location
+2. Use task-context as an intake/source map when available, preserving approved scope and clarification Q&A;
+   do not expect a technical survey or approved solution in it. Verify consequential observations and any older
+   working synthesis against original sources before using them as design premises. Do not dump task-context evidence classes, source maps, attachment names/pages or code-location
    inventories into the deliverable.
 3. Inspect relevant source internally as needed; keep code file/line citations, source maps and investigation trails in working notes, not as routine citations in official deliverables. Apply audience-aware exceptions: Functional Design describes business-visible behavior without code identifiers; a forward LLD may name proposed components, services, APIs or logical paths when essential to communicate architecture, but must not become a file/line inventory; an as-built Technical Design may identify actual interfaces/files when necessary to explain the delivered design. Never invent identifiers or silently strip references explicitly required by the project's document standard.
 4. Be concise. Do not repeat the same requirement across sections merely to fill the template. Omit conditional
@@ -27,10 +28,12 @@ design by child ticket IDs unless the project explicitly requires otherwise.
 5. Never invent requirements, components, endpoints, release/sprint metadata, decisions, measurements, rollout
    mechanics, test results or questions merely because a template has a heading.
 6. Ask only about unresolved consequential behavior/design decisions. Omit nonessential metadata when absent.
+   Use `# LLD — <Title>` if no feature identifier was supplied, otherwise `# LLD — <FEATURE-ID>: <Title>`.
 
 ## Forward LLD
 Read feature requirements, project instructions and existing feature task-context when available. Inspect current
-architecture/source only as needed. Resolve only consequential ambiguity. Surface unresolved material owner-level behavior or design choices for targeted clarification before dependent design is treated as settled; routine implementation decisions do not create owner gates.
+architecture/source as needed to develop the design rather than asking intake to preselect architecture or reuse.
+An absent technical summary is not a missing-input blocker when authorized originals are available. Resolve only consequential ambiguity. Surface unresolved material owner-level behavior or design choices for targeted clarification before dependent design is treated as settled; routine implementation decisions do not create owner gates.
 
 Draft one concise feature-level LLD. Core content is Context, Objectives & constraints, applicable design boundaries,
 and Material decisions. Impact/risks, verification intent, rollout/rollback and open questions are conditional and

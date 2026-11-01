@@ -1,4 +1,5 @@
-<!-- Concise forward LLD for one feature/parent work item. Omit conditional sections that add no value. -->
+<!-- Concise forward LLD for one feature/parent work item. Omit conditional sections that add no value.
+Use # LLD — <Title> when no project-approved feature identifier was supplied; do not invent one. -->
 # LLD — <FEATURE-ID>: <Title>
 
 <!-- Optional metadata when supplied: release/sprint, tech designer, status. -->
