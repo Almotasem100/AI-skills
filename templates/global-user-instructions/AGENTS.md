@@ -27,8 +27,11 @@
 - Keep one mutation owner per bounded change. Independent review and self-checks are distinct; preserve the
   applicable review requirements. Return material findings to the author for reasoned disposition.
 - A plan-only request includes applicable review/corrections and stops before implementation. Owner answers
-  resume that planning task. Ordinary author/reviewer feedback and rechecks do not require a separate debate;
-  start a structured debate only when explicitly selected. Keep substantive findings/disposition in Markdown
+  resume that planning task. Accepted corrections and minor preferences remain ordinary feedback. Start focused
+  structured debate at the author's first reasoned dispute of a consequential technical finding, or on explicit
+  request, reusing existing participants/evidence without a second refusal or extra approval. Investigate missing
+  facts and escalate material owner choices; pause unresolved consequential disputes rather than letting the
+  author close them alone. Keep substantive findings/disposition in Markdown
   in the approved working area, with the caller saving findings when the reviewer cannot write.
 - Batch tests and authorized deployments around coherent changes. Use earlier targeted checks for a concrete
   reason; do not rerun unrelated suites or redeploy after every edit. After corrections, recheck affected work.

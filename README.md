@@ -202,9 +202,10 @@ unless separately requested.
 
 ### `plan-review` and `plan-debate`
 
-`plan-debate` preserves the calling workflow's author and separate reviewer roles and requires explicit selection.
-Ordinary `plan-review` includes author feedback, corrections and material rechecks; it is not an automatic debate
-or extra reviewer. Plan-only requests stop after reviewed planning; end-to-end delivery retains working artifacts
+`plan-debate` preserves the calling workflow's author and separate reviewer roles. It starts at the author's
+first reasoned dispute of a consequential technical finding, or on explicit request, using the same plan, finding
+and participants. No second reviewer refusal or additional permission is required. Accepted corrections, minor
+preferences and ordinary rechecks do not trigger it; missing facts and owner decisions need their own resolution. Plan-only requests stop after reviewed planning; end-to-end delivery retains working artifacts
 and does not automatically run work-closeout, archive/delete inputs, push, open a PR or merge. Verification and
 authorized environment deployment are batched around coherent changes rather than every edit.
 

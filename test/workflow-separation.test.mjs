@@ -93,7 +93,21 @@ test('operator boundaries retain evidence, stop plan-only work and batch verific
   assert.match(contract, /cosmetic edit does not justify unrelated full-suite or API-regression runs/);
   assert.match(contract, /Do not deploy after every edit/);
   assert.match(read('skills/work-closeout/SKILL.md'), /request to finish implementation is not authorization/);
-  assert.match(read('skills/plan-debate/SKILL.md'), /Require explicit debate selection/);
+  assert.match(read('skills/plan-debate/SKILL.md'), /first gives a reasoned objection to a consequential technical finding/);
+});
+
+test('debate starts at first material technical disagreement without restarting review or overriding owner choices', () => {
+  const debate = read('skills/plan-debate/SKILL.md');
+  assert.match(profile, /When the author first disputes a\s+consequential technical finding/);
+  assert.match(profile, /No second reviewer refusal, extra permission/);
+  assert.match(debate, /existing review, reuse its finding as the initial challenge/);
+  assert.match(debate, /author cannot unilaterally close a consequential finding/);
+  assert.match(debate, /Accepted corrections and minor preferences remain ordinary/);
+  assert.match(debate, /Investigate missing facts, and ask the owner/);
+  assert.match(debate, /Stop cycling when another round is not changing a material issue/);
+  assert.match(guide, /\$withPlanDebate = \$withDelegation -or/);
+  assert.doesNotMatch(profile + lanes + debate + globalInstructions,
+    /Require explicit debate selection|structured debate only when explicitly selected|run `plan-debate` only when explicitly selected/);
 });
 
 test('recovery distinguishes transport, quota and unknown-worker status without new configuration', () => {
@@ -149,7 +163,7 @@ function installGroup(name) {
   return [...match[1].matchAll(/"([^"]+)"/g)].map(match => match[1].replaceAll('\\', '/'));
 }
 
-test('documented install separates optional runtime dependencies and leaves debate opt-in', () => {
+test('documented install separates optional runtime dependencies and includes conditional debate', () => {
   const shared = installGroup('$folders');
   const optional = installGroup('$delegationFolders');
   for (const path of [...shared, ...optional]) assert.ok(existsSync(join(root, path, 'SKILL.md')), path);

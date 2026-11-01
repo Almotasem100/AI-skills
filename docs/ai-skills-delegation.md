@@ -21,8 +21,15 @@ replace this separate review. Give the reviewer original-source access without a
 a separate session alone does not guarantee an unbiased review. Ordinary author responses/corrections and
 reviewer rechecks are part of review, not an automatic debate or another reviewer. Preserve attributed findings,
 author dispositions and material rechecks in a concise Markdown record in the approved working area; save the
-reviewer's returned findings as caller if its boundary prevents writes. Propose a structured debate for unresolved
-consequential disagreement and run it only when explicitly selected. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
+reviewer's returned findings as caller if its boundary prevents writes. When the author first disputes a
+consequential technical finding, start focused `plan-debate` immediately using the same plan, finding and reviewer;
+the author's evidence-backed objection is its first contribution. No second reviewer refusal, extra permission,
+new review stage or extra agent is required. Explicit debate requests also apply. Accepted corrections and minor
+preferences stay ordinary feedback; investigate missing facts and ask the owner for material product decisions.
+Stop unproductive exchanges and pause affected work for an unresolved consequential dispute, reporting both
+positions, evidence and recommendation. The orchestrator cannot unilaterally close that disputed concern.
+If the required debate capability cannot run, record the limitation and keep the affected issue unresolved rather
+than bypassing it or silently installing tooling. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
 that author owns plan revisions and findings disposition, while the orchestrator coordinates the separate review.
 A user-authorized task exception may assign another deliverable to the
 orchestrator without changing the session profile or waiving project gates.

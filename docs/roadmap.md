@@ -1,6 +1,22 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: operator boundaries and recovery implemented — 2026-11-01
+## Current: first consequential technical dispute starts focused plan-debate — 2026-11-01
+
+The owner approved the earlier trigger: when the plan author first gives a reasoned objection to a consequential
+technical review finding, continue immediately through focused plan-debate with the existing plan/finding and
+same participants. No second reviewer refusal or extra approval is required. Accepted corrections and minor
+preferences remain ordinary feedback. Investigate missing facts and ask the owner for material product decisions;
+do not debate them into existence. Unproductive exchanges stop, and unresolved consequential disputes pause
+affected work with both positions/evidence/recommendation rather than unilateral author closure.
+
+Instructions, standalone skills, source checks and operator probes are aligned. The setup guide includes the
+plan-debate skill with the optional delegation components; standalone shared-only installation remains opt-in.
+If the required capability is unavailable, retain the limitation and unresolved issue instead of silently skipping
+review or installing tooling. All 35 portable offline checks passed (workflow separation, runner, full-scenario,
+LLD checker and Gemini overlay); no installed-host/model test
+or company-document rewrite is part of this adjustment. Setup Luna and FD/LLD/QA quality discussion stay deferred.
+
+## Historical: operator boundaries and recovery implemented — 2026-11-01
 
 The owner authorized implementing and committing agreed scenario decisions on the existing GitHub branch rather
 than retaining them only in conversation. Plan-only requests include ordinary review/corrections and stop before

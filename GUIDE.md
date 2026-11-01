@@ -41,7 +41,7 @@ It returns prioritized findings with source evidence, assumptions, missing decis
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
-**`plan-debate` (separately selected; existing requirements unchanged):** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
+**`plan-debate` (material technical disagreement or explicit request):** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
 exchange in a temporary debate record; the project scratchpad stays compact. The plan-author and reviewer roles own their substantive outputs.
 Configured lanes select the actual providers/models unless you override them. Give each role only the context and
 source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
@@ -181,8 +181,9 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 ### Copy the skills (PowerShell)
 Set `$setup` to this checkout, then choose **shared skills only** or **shared skills plus delegation**
 when prompted. The block installs the shared contract and shared global instructions for the hosts you select.
-Installing optional instructions does not activate them. `plan-debate` is a separate opt-in because its existing
-participant/lane contract is parked for discussion; neither setup choice changes that skill.
+Installing optional instructions does not activate them. Include `plan-debate` with the optional delegation
+components so its conditional disagreement trigger is available; shared-only installations may opt into it for
+explicit standalone use. Availability is not proof of native loading or execution.
 
 Earlier copy commands were exercised on Windows, but this revised choice/companion-file block has not yet been
 run on the owner's hosts. Verify installed content and host loading after setup; source checks alone do not prove it.
@@ -198,7 +199,7 @@ $setup   = "C:\path\to\AI-skills"
 $targets = "$HOME\.claude\skills", "$HOME\.agents\skills"
 $withDelegation = (Read-Host "Install delegation components too? [y/N]") -match '^(?i:y|yes)$'
 if (-not (Get-Variable geminiSource -ErrorAction SilentlyContinue)) { $geminiSource = $null }
-$withPlanDebate = (Read-Host "Also install plan-debate with its existing participant/lane requirements? [y/N]") -match '^(?i:y|yes)$'
+$withPlanDebate = $withDelegation -or ((Read-Host "Also install standalone plan-debate? [y/N]") -match '^(?i:y|yes)$')
 
 # If Gemini delegation is wanted, prepare $geminiSource via the overlay README first.
 # Otherwise leave it unset/null. Validate the prepared source before any copies.
@@ -306,7 +307,8 @@ Do not concatenate those optional instructions into the shared global template.
 The shared-only choice does not remove previously installed files or disable other execution systems. For an
 existing installation, inspect source/install parity and preserve existing user changes before replacing files.
 `two-axis-review` uses native subagents by its own contract; `babysit-pr` handles external bots and requires the
-optional stack only when the project selects its `debate-review` path. `plan-debate` remains separately selected.
+optional stack only when the project selects its `debate-review` path. `plan-debate` is included with the profile
+for consequential technical disagreement, not invoked after every review.
 
 ### One-time lane setup (optional components only)
 Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs, proposes lanes (e.g.
@@ -460,8 +462,8 @@ Same tail, with more up front:
    or routine technical survey; preserve original Q&A and superseded decisions clearly.
 3. **`create-lld`**, forward mode: *"write the LLD for CADE-1234 from the task context and approved requirements."*
    The design author reads original inputs and develops the design; task-context is navigation, not a preselected solution.
-4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** for an explicitly selected author/challenger
-   exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
+4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** at the author's first reasoned dispute of a consequential technical finding, or explicit
+   request, continuing the same author/challenger exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
    the orchestrator writes/revises the plan and a separate configured reviewer critiques it. Resolve material findings before
    implementation; then continue through the appropriate implementation, verification and PR stages.
 5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are

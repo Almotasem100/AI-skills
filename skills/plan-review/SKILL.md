@@ -7,8 +7,10 @@ description: Read-only, one-model critique of a proposed plan before implementat
 
 Critique the proposed approach before work begins. Inspect and report; do not rewrite the plan, decide on the
 owner's behalf, or treat a clean review as proof that the plan is safe. This is ordinary review, not a separately
-selected structured debate. The author may respond and request targeted rechecks of material corrections without
-creating another review stage. Do not start extra reviewers or a debate merely because a finding is disputed.
+structured debate until the author first disputes a consequential technical finding. At that point the calling
+workflow continues through focused plan-debate with the same plan, finding and participants; no second refusal
+or extra reviewer is required. Accepted corrections, straightforward factual fixes and minor preferences remain
+ordinary feedback and targeted rechecks.
 
 ## Inputs and boundaries
 
@@ -72,7 +74,7 @@ Return a concise review to the calling workflow (directly by default, or through
 - **Assumptions / unresolved decisions:** keep these separate from observed contradictions.
 - **Verification limits:** relevant sources or runtime checks that were unavailable.
 
-When this review feeds an active planning workflow, the caller returns material findings to the **plan author** for an evidence-based accept/revise, reject, or open-with-needed-check disposition before determining whether the resulting plan is ready, decision-pending or blocked. Rejection with evidence need not produce a revised plan. The reviewer does not apply its own recommendations or force a debate/extra document. This does not require author revisions for a standalone read-only review request.
+When this review feeds an active planning workflow, the caller returns material findings to the **plan author** for an evidence-based accept/revise, reject, or open-with-needed-check disposition before determining whether the resulting plan is ready, decision-pending or blocked. Rejection with evidence need not produce a revised plan, but the author cannot close an unresolved consequential dispute alone. A first reasoned disagreement with such a technical finding triggers focused plan-debate using existing evidence; missing facts need investigation and material owner choices go to the owner. The reviewer does not apply its own recommendations or demand unrelated extra documentation. This does not require author revisions for a standalone read-only review request.
 
 If no blocker is found, say that none was found in the inspected material and name significant limits. Return control
 to the calling workflow. A clean review neither proves safety nor creates a new approval gate inside an already
