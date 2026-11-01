@@ -1,6 +1,46 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: CLI invocation clarification and final evidence capture — 2026-11-01
+## Current: step-two accepted for merge — 2026-11-01
+
+The owner approved documentation cleanup and merge after branch review and independent subagent debate. The
+review found no functional blocker; 23/23 offline checks passed. Generated TASKS now agrees with FULL-SCENARIO:
+one fresh OpenCode session; ZadLoop remains on hold. Shared instructions/contract and production lanes are unchanged.
+
+Latest owner-host evidence: setup Luna exported the exact Sol/medium root session and independently reported
+profile/catalog reads and fleet loading before dispatch; configured feature-design, Gemini QA, planning,
+implementation and separate code-review assignments; QA before planning and critique/author disposition before
+implementation; review corrections/rechecks; 6/6 acceptance and 5/5 focused tests; intact fixed inputs/allowed scope.
+The default route failed, and the question-tool result explicitly recorded the user's functional-docs selection for
+remaining PR text/closeout. That was an authorized task exception, not an unauthorized substitution or a persistent
+configuration fix. Relays resolve lanes internally, so a separate visible resolver command was not required to
+establish resolution. This is a passed bounded trial with an authorized fallback, reported by the owner/inspector;
+the raw workstation export was not independently inspected from this cloud checkout.
+
+Limits: Luna Fast's earlier tool-use failures remain model/host-specific unresolved behavior; do not claim all
+models/harnesses reliable. The local default route still needs its concrete error/configuration checked. OS-level
+review containment was not established or claimed. The plan's planning-stage next-action text should be labeled
+as a snapshot if retained; the current working state recorded completion. No more full-feature rerun is required
+for this documentation-only cleanup. The tested 2b70cd6 installed profile/skills are unchanged by the cleanup;
+fetching merged master does not itself require reinstalling them.
+
+### Remaining work, in discussion order
+
+- Improve company-facing FD/LLD and QA output quality using representative artifacts and clear audience/format
+  expectations. The consistency fixes here do not complete that broader deliverable-quality work.
+- Revisit plan-review versus plan-debate usage and the parked plan-debate skill contract before changing it.
+- Discuss whether to retain V3's specialist planner or combine orchestration/planning; no architecture change was
+  selected. Keep useful shared context for downstream skills and continuity under either choice.
+- Continue evidence-led trimming of broader instructions/skills where actual friction warrants it; do not turn
+  every model mistake into another workflow rule. Further resource-inspired ideas remain evaluation, not adoption.
+- On the workstation, diagnose/repair the default lane and optionally smoke-check configured models/variants.
+  Do not pin transient provider/model choices in portable repository instructions.
+- Keep ZadLoop integration and native-worker routing parked. A future Standard-mode + explicit AI Skills profile
+  trial would test the same CLI workflow; the harness's own Delegate-mode integration is separate work.
+
+Earlier sections are dated checkpoints. This current section supersedes their stale installation, lane-count,
+model-choice and pending-trial statements; historical backlog items are not automatically reopened.
+
+## Historical: CLI invocation clarification and final evidence capture — 2026-11-01
 
 Owner-host export evidence identified the latest dispatch failure: the feature session successfully read the
 profile, loaded/resolved the fleet and executed shell commands, then searched the host tool catalog rather than
