@@ -25,10 +25,18 @@ decision that actually matters.
 ## Establish completion scope
 
 Confirm from evidence what is complete, what is deferred, what verification actually ran, and the current repository
-state. Do not call a delivery slice, feature, deployment or acceptance complete merely because code exists or one
-check passed.
+state. Check required outcomes against actual artifacts, relevant changes, reviewer responses and execution
+results; do not rely solely on a prior completion summary. Distinguish authored/revised, inspected and left unchanged,
+and independently verified. A revision to one design does not prove its companion was reconciled. If evidence
+contradicts a working-record claim, correct that claim before propagating it. Preserve material unmet prerequisites
+or late corrections accurately; final consistency does not prove the required sequence occurred.
+Do not call a delivery slice, feature, deployment or acceptance complete merely because code exists or one check passed.
 
 ## Reconcile the working record
+
+Reconcile relevant final working artifacts (requirements, design, plan, review and verification evidence) before
+writing durable updates. Use the scratchpad to navigate them, not as their sole substitute. Distinguish approved
+intent, implemented behavior and verified outcomes; do not copy or archive every draft automatically.
 
 Preserve the project's format and keep the normal scratchpad compact. Confirm that its objective/work item, final
 stage, material decisions, blockers/deferred items, verification state and next/closed state are accurate. Do not turn
@@ -41,6 +49,15 @@ real-source claims, follow the project's evidence/revision rules.
 Do not refresh every project document. Update or propose only the documents whose owned fact actually changed.
 Follow the project's authorization policy: apply already-authorized write-backs, or present exact proposed text when
 the project reserves them for approval. Do not promote temporary task-context into permanent documentation by default.
+
+Replace superseded guidance in its canonical document and affected active references instead of appending a
+competing amendment. Preserve displaced rationale/evidence in on-demand history when useful or required by project
+policy; keep applicable technical constraints intact.
+
+Keep temporary restrictions and unresolved follow-ups in current work/state records with a next action and an
+explicit completion/removal condition. Once that condition is met, remove obsolete reminders, pauses and gates from
+active guidance; retain the ongoing procedure and real remaining limitations. Do not retire unresolved items merely
+because the current work item is closing.
 
 ## Validate citations and claims
 

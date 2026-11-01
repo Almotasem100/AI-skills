@@ -314,7 +314,17 @@ Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs,
 `.delegate/config.json` inside the repository. For `debate-review`, add two lanes named `review-main` and
 `review-debate`, using two different CLIs.
 
-No standalone installer is implemented. After setup, compare copied files and confirm discovery in each selected host.
+### Execution mechanism
+
+AI Skills delegation mode uses the configured CLI delegation skills. Set up lanes once; ordinary requests select
+responsibilities and their configured routes automatically. Native-agent preference setup is parked. Do not create,
+validate, migrate or delete existing local execution.json files or host agents during this refresh; they are unused
+by this profile. No standalone installer is implemented. Confirm copied-file parity and loading in selected hosts.
+
+For another harness's own orchestration, install/use the shared instructions without selecting our optional profile.
+Any external fallback rule for that harness is an explicit user/session instruction, subject to its permissions and
+higher-priority rules; it is not part of shared workflow policy. ZadLoop trials are currently on hold. Use the
+generated OPENCODE-PROMPT.md and exact fixture root in FULL-SCENARIO.md for the current OpenCode retest.
 
 ---
 
@@ -324,7 +334,7 @@ No standalone installer is implemented. After setup, compare copied files and co
 
 The following routing instructions apply only after explicit activation of **AI Skills delegation mode**;
 read `docs/ai-skills-delegation.md` first. They are not the shared workflow defaults.
-The normal interface is intent, not transport configuration. Configure lanes once, then let the orchestrator resolve
+The normal interface is intent, not transport configuration. Configure CLI lanes once, then let the orchestrator resolve
 the needed role automatically. This preserves the original cost-control lesson—never fall into an expensive unknown
 default—without making you repeat model and effort on every run.
 

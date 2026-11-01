@@ -7,9 +7,10 @@
 
 The selected agent owns orchestration and delegates specialist deliverables. Apply the shared
 [workflow contract](orchestration-contract.md) and canonical project policy without changing their required outcomes.
-Resolve specialist work as `intent -> role -> configured lane -> host/provider/model/effort`. Among configured
-routes, consider quality, risk, cost, latency, context capacity and availability without changing responsibilities
-or bypassing project/provider constraints. Honor explicit routing/model overrides.
+Resolve specialist work as `intent -> responsibility -> configured lane -> installed CLI delegation skill`.
+Read the actual local lane configuration and use the matching CLI relay with its configured provider/model/effort
+and authorized environment. A model's presence in a host catalog does not select a route. Honor explicit user
+routing/model overrides without silently changing persistent configuration.
 
 The configured planner authors the implementation plan by default; the orchestrator critically reviews it using
 applicable plan-review guidance and authoritative evidence, and returns material findings to that author for
@@ -18,33 +19,75 @@ project-required. Debate is requested or risk-justified, not an automatic second
 requirements-derived review is not fully independent. A user-authorized task exception may assign planning or
 another deliverable to the orchestrator without changing the selected session profile or waiving project gates.
 
+## Execution mechanism
+
+This optional profile uses the configured CLI delegation skills for specialist assignments, including Gemini CLI.
+Resolve the responsibility from the user's requested outcome; the user need not name a lane or choose a mechanism
+for each task. At session setup, locate the installed `delegate-setup` and load the effective fleet read-only:
+
+```text
+node "<installed-delegate-setup>/scripts/config.mjs" load --cwd "<project-root>"
+node "<installed-delegate-setup>/scripts/lane.mjs" resolve --cwd "<project-root>" --lane "<selected-lane>" --implementer "<configured-implementer>"
+```
+
+The loader reports the global/project config paths, effective lanes and project trust; the resolver identifies the
+matching installed delegation skill and dials. Read that skill's installed instructions and run its documented
+`scripts/relay.mjs` command through the available shell/terminal. A CLI relay is a script, not a registered host
+tool: absence from the host tool catalog does not make it unavailable. Use the shell's actual argument schema;
+a malformed tool call is not a permission denial. Route resolution alone is not dispatch. The loader/resolver
+calls are read-only operations, not a request to enter the setup interview or write configuration. Reuse the inventory until relevant
+configuration changes or a dispatch fails. Preserve permissions, source access and independent-review requirements.
+The semantic catalog, host model list and filename searches are not the live fleet. This profile does not read local execution.json
+or require native-agent mappings. Leave existing local preferences and host agents untouched.
+
+Before declaring a route unavailable, retain the loader/resolver result and the relevant installed skill/relay
+check or invocation error. A blank CLI lookup with errors suppressed does not prove absence; diagnose the actual
+selected relay/CLI environment. Distinguish unresolved configuration, missing tools and failed invocation.
+A discovery or dispatch failure does not authorize the orchestrator to write specialist deliverables itself.
+Report the affected blocker and request a specific exception or use already-authorized bounded recovery; general
+permission to finish the feature is not such an exception. Do not substitute a harness worker merely because one
+is exposed; selecting another execution system is a separate user choice.
+
 ## Session continuity
 
 Selection persists across compaction and model changes within the same session. Record the explicit selection in
 an existing active project scratchpad; do not create one solely for this field. Preserve it until the user changes
-it. A task-scoped exception does not change the selection. A new session must not infer activation from an older
+it. Retain active CLI session pointers across compaction as well.
+A task-scoped exception does not change the selection. A new session must not infer activation from an older
 session's scratchpad. Preserve the ordinary objective, decisions, evidence, stage and next action as usual.
 
 ## Delegation handoffs and configured lane roles
 
 When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Identify applicable project instruction sources, architecture decisions, engineering conventions, and verification expectations for that role; provide paths/source access rather than copying their full contents. The specialist must inspect relevant canonical rules itself and not treat task-context, a plan or a prior agent's interpretation as the sole authority. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
 
+Use the feature-design responsibility for the feature LLD and required Functional Design together; standalone
+functional-document maintenance is a different responsibility. Verify the assigned design outputs and their
+consistency with requirements before dependent planning/implementation. A structural checker pass is not design
+acceptance. If design changes later, have its owner check affected companion design, QA, plan and delivered work;
+revise only what is affected and record the actual disposition. A late correction does not establish that the
+prerequisite was met earlier. Do not rerun unaffected stages or invent an additional owner-approval gate.
+
 For implementation-plan assignments, explicitly point the planner to the shared contract's **Planning convergence**
 section and the applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions.
 The planner must read those sources directly before drafting; the orchestrator checks source access and the
 resulting blueprint, not merely that paths were mentioned in the dispatch.
 
-In AI Skills delegation mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured lane inventory and verify host/relay/provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Explicitly authorized one-task direct work need not resolve a delegation lane.
+In AI Skills delegation mode, specialist deliverables are delegated, while the orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. Explicitly authorized one-task direct work need not resolve a delegation lane.
 
 When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
 
-Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual lanes remain local configuration until a secret-free export/bootstrap profile is implemented and approved. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
+Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual provider/model/effort assignments remain local configuration; the repository does not supply live production routes. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
 
 ## Assignment, review and landing
 
 - Keep each bounded delegated assignment logically open through applicable review, author disposition, fixes and acceptance. Prefer resuming the same child session when supported and current; otherwise resume the semantic assignment with a fresh session and sufficient durable evidence, without claiming context continuity. A logical assignment need not keep a child process running. Close it on verified acceptance, not merely on first response or stage transition.
 
-- For review-only delegated work, invoke the host/relay's supported enforced read-only execution boundary (for example a read-only flag or read-only agent), not just a prompt instruction. Verify the effective boundary from invocation evidence. If enforcement is unavailable, report that limitation and apply the appropriate project gate instead of claiming a read-only review; do not assume a lane name or config automatically enforces it.
+- For continuation, copy the session ID from that assignment's recorded result/events and use the selected
+  relay's documented continuation option; do not guess an ID or reuse another assignment's session. Give each
+  invocation/retry a fresh output directory, preserving prior attempts. A transport failure may leave usable
+  artifacts: inspect them before retrying, but keep the failed process status separate from artifact acceptance.
+
+- For review-only delegated work, invoke the host/relay's supported enforced read-only execution boundary (for example a read-only flag or read-only agent), not just a prompt instruction. Verify the effective boundary from invocation evidence, including shell/process access as well as edit-tool permissions. A named plan/read-only agent or no observed writes does not establish full filesystem containment. If enforcement is unavailable, report that limitation and apply the appropriate project gate instead of claiming a read-only review; do not assume a lane name or config automatically enforces it.
 
 - The orchestrator inspects delegated diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction; this inspection complements rather than replaces a required independent technical code review. The orchestrator may ordinarily make the verified commit when authorized, consistent with delegate-skill caller/landing conventions. Commit identity does not itself grant permission to push, open a PR, merge or deploy; those follow project authorization.
 

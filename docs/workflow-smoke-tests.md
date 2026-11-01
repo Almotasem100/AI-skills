@@ -1,5 +1,9 @@
 # Small workflow smoke tests
 
+For the current real Full Feature OpenCode trial, use generated `FULL-SCENARIO.md` and `OPENCODE-PROMPT.md`
+from the reusable pack. ZadLoop trials are on hold. It includes natural feature and standalone documentation requests, actual dispatch evidence
+and fixed acceptance tests; it is distinct from the explanation-only walkthrough below.
+
 For the reusable general installed-setup/relay/skill pack, start with
 [`test/native-smoke/README.md`](../test/native-smoke/README.md). The cases below remain focused selection/continuity
 trials; they do not require an application-specific integration.

@@ -1,142 +1,63 @@
 ---
 name: task-context
-description: Synthesize fragmented task evidence into one rich, temporary working context for downstream planning, design, implementation, testing, review, and PR-description work. Use when a task has multiple requirements sources, grilling decisions, screenshots/CSS, business rationale, constraints, or several downstream consumers that should not each reread all raw inputs.
+description: Synthesize fragmented task evidence into a shared, temporary working context for design, planning, implementation, testing, review, and PR-description work. Use when requirements, grilling decisions, UX evidence or technical findings are spread across inputs, or several participants need the same understanding; skip simple tasks whose context is already clear.
 ---
 
-# task-context
+# Task context
 
-Create or refresh a **working synthesis**, not a human-facing design document and not a new project-of-record file. When the project has a Feature / Delivery Slice hierarchy, keep one feature-level task context by default; derive slice briefs/views rather than duplicating the whole context for every child slice.
+Create or refresh a shared understanding of the task, not another design, plan or permanent project document.
+When the project has a Feature / Delivery Slice hierarchy, keep one feature-level context and reference it from
+slice assignments. The scratchpad tracks execution progress and next action; this context preserves understanding.
 
-Use this skill when the task understanding is fragmented across several inputs or when multiple downstream roles
-would otherwise need to reread the same raw evidence. Skip it for simple tasks whose objective, expected behavior,
-constraints and rationale are already clear enough to carry directly.
+## Gather and synthesize
 
-## Role in the workflow
+Read the available, authorized requirements, consequential grilling answers, relevant visual evidence, project
+rules and source findings. Inspect additional code only where needed to understand behavior or constraints;
+do not repeat an investigation whose findings are already adequately evidenced and current.
 
-```text
-raw task evidence
-  -> grilling / clarification when needed
-  -> task-context synthesis
-  -> concise design artifacts / plan / implementation / tests / review / PR
-```
+Use `references/task-context-template.md` or the project's equivalent. Cover five flexible sections:
 
-This skill does **not** replace requirements, Functional Design, LLD, the implementation plan, the project
-scratchpad, or canonical project documentation.
+1. **Objective and scope:** requested outcome, supplied business rationale, affected users/processes and explicit
+   exclusions. Do not infer business rationale from the implementation.
+2. **Approved behavior and decisions:** requirements, business rules, meaningful UX/visual conclusions,
+   acceptance criteria and consequential owner decisions. Preserve the clarification question and answer, or an
+   unambiguous sourced decision summary, when the answer alone would lose meaning.
+3. **Relevant current-system findings and constraints:** existing behavior, reusable components and material
+   architecture, API, data, security or platform boundaries. Distinguish what exists from what is requested.
+4. **Open questions and assumptions:** unresolved conflicts, consequential gaps and unverified premises.
+   Include an evidence-backed author observation only when useful; label it as a proposal, never approval,
+   and leave solution development to design/planning rather than drafting a competing plan here.
+5. **Source references:** a compact map to the authoritative inputs and current working artifacts.
 
-- Requirements and approved project documents remain authoritative sources.
-- The project scratchpad remains compact execution/resume state.
-- Human-facing Functional Design / LLD stay concise and audience-specific; an as-built Technical Design is optional only when the project explicitly requires one.
-- The task context is a temporary, rich map of the task for AI/workflow consumption.
+State each item once in the most useful section. Omit empty sections; add subheadings only when they help.
+Summarize conclusions rather than copying PDFs, transcripts, screenshots, code or whole design/plan documents.
+Preserve source terminology and enough detail for downstream work; concision must not erase requirements,
+exclusions, meaningful visual constraints or consequential owner decisions.
 
-## Inputs
+## Evidence and gaps
 
-Use only inputs available and authorized for this task, for example:
+Keep facts, approved decisions, assumptions, proposals and open questions distinguishable in the text.
+Keep estimates/targets separate from measured or verified outcomes, wherever they belong; preserve qualifiers
+such as expected, estimated, reported and observed. Never invent requirements, rationale, results or approval.
+When sources conflict, retain the conflict and references rather than silently resolving it.
 
-- Feature/task tracker title, description and acceptance criteria.
-- Approved requirements, PDFs/slides and customer material.
-- Grilling answers and explicit owner decisions.
-- Screenshots, Figma evidence, copied CSS or other UX evidence.
-- Relevant project instructions, architecture decisions and domain glossary.
-- Relevant source-code inspection when needed to understand constraints or current behavior.
-- Existing Functional Design / LLD / plan, plus an optional project-required Technical Design, when refreshing context later.
+Attach precise source pointers near consequential findings (path, symbol/section/page and revision when useful).
+A source map is navigation, not proof of an interpretation. Canonical requirements and project rules remain
+authoritative; recipients verify consequential claims against those sources as needed, not reread every input
+merely because they received a context file. Respect project data-sharing rules; never copy secrets/credentials.
 
-Do not ingest unrelated session history or copy entire repositories merely because they are available.
+Surface consequential unresolved gaps to the caller for targeted grilling/decision work. This is synthesis,
+not another interview: do not ask questions merely to fill the template or restart unrelated workflow stages.
 
-## Output location
+## Save and maintain
 
-Prefer the project's approved working-artifact location. If the project defines no such location, present the
-context in chat or write it only to an explicitly approved path.
+Use the project's approved working-artifact location. If none exists, present the context in chat or write only
+to an explicitly approved path. Do not promote it into durable documentation automatically.
 
-The artifact is temporary working context. Do not silently promote it into permanent project documentation.
+Update the affected content when task understanding materially changes. Link to the current design, plan,
+reviews and verification records for their details; an artifact change alone does not require rewriting context.
+Replace stale understanding instead of appending a chronological log. Completing a slice does not retire context
+while the parent feature remains active.
 
-## Required structure
-
-Use `references/task-context-template.md` unless the project defines an equivalent structure.
-
-The synthesis should cover, when applicable:
-
-1. **Objective** — the requested outcome.
-2. **Business rationale** — why the work exists, who/processes are affected, and expected value.
-3. **Approved requirements / behavior** — what must be true.
-4. **Business rules / domain constraints**.
-5. **UX / visual conclusions** — only the relevant conclusions from screenshots, Figma, CSS, etc.
-6. **Technical constraints / boundaries** — architecture, API, data, security, compatibility or platform facts.
-7. **Acceptance criteria / verification expectations**.
-8. **Decisions already made** — including the decision owner where relevant; preserve consequential owner answers to clarification questions and what question they resolved.
-9. **Non-goals / explicitly excluded scope**.
-10. **Estimates / targets / measurements** — preserve their status exactly.
-11. **Assumptions**.
-12. **Unresolved questions / blockers**.
-13. **Author observations / recommendations (optional, non-authoritative)** — useful proposed approaches and interpretations, clearly separate from approved decisions and observed constraints.
-14. **Source map** — concise pointers to the authoritative evidence used.
-
-Omit empty sections rather than filling them with noise.
-
-## Evidence discipline
-
-Keep these categories distinct:
-
-- **Fact:** directly supported by authoritative evidence.
-- **Decision:** explicitly approved/selected.
-- **Estimate / target / expectation:** projected value, not an observed result.
-- **Assumption:** plausible but not established.
-- **Open question:** unresolved and consequential.
-
-Never convert an estimate into a measured outcome. Preserve qualifiers such as `estimated`, `expected`,
-`target`, `projected`, `reported`, and `observed`.
-
-Examples:
-
-- Good: `Requirements estimate a 20% reduction in development time; this is a target, not a measured result.`
-- Bad: `The change reduces development time by 20%.`
-
-When two sources conflict, record the conflict and source pointers. Do not silently reconcile them.
-
-## Synthesis rules
-
-- Summarize conclusions; do not duplicate full PDFs, slide decks, code listings or screenshots.
-- Preserve the terminology used by approved requirements and project documents.
-- Attach usable source locators near consequential technical findings (path/symbol/line and revision when useful), not merely a general bibliography. Do not create an exhaustive code inventory.
-- Keep enough provenance that a downstream role can verify a consequential claim against the original source.
-- Prefer the most authoritative/current source when several repeat the same fact, but note meaningful conflicts.
-- Do not invent business rationale from implementation details.
-- Do not invent expected behavior from the current code when requirements are missing.
-- Do not turn implementation observations, the synthesis author's recommendations, or inferences from grilling into approved requirements. Where a consequential clarification answer could be misunderstood without its question, preserve the question-answer pair or an unambiguous decision summary with its source.
-- Sensitive inputs remain subject to project data-sharing rules; never copy secrets or credentials.
-
-## Questions and grilling
-
-This is a synthesis skill, not another interview workflow.
-
-If a consequential gap remains:
-- record it under **Unresolved questions / blockers**;
-- surface it to the caller;
-- return it to the caller for targeted grilling/decision work when required. If discovered during planning, the responsible agent coordinates the relevant artifact owners' updates and resumes the affected work, without restarting unrelated stages.
-
-Do not start a long new interview merely to make every section complete.
-
-## Updating the context
-
-Refresh the same task context when material understanding changes:
-- a requirement is clarified,
-- an owner decision is made,
-- implementation reveals an important constraint,
-- a design is approved or materially revised,
-- verification changes what is known.
-
-Keep the artifact aligned with current approved understanding. Do not append an unbounded chronological log; Git,
-project history, or other designated history mechanisms own chronology, while the scratchpad stays compact execution
-state. Completing one delivery slice does not retire feature context while the parent feature remains active.
-
-## Downstream use
-
-Downstream roles should receive this context plus only the additional artifact/source access their job needs.
-
-Examples:
-- **create-lld:** task context + authoritative sources as needed -> concise Functional Design / LLD.
-- **planner:** task context + approved design -> implementation plan.
-- **qa-scenarios:** task context + approved requirements/Functional Design -> feature-level QA scenarios.
-- **implementer:** task context + approved plan + relevant source access -> bounded code change.
-- **describe-pr:** task context for the Why, git/diff for What changed, verification evidence for Testing.
-
-A downstream role must still verify consequential claims against canonical sources when precision matters. Treat context-author recommendations as proposals to assess, not as binding requirements; do not discard useful prior analysis merely because it is non-authoritative.
+Downstream assignments receive this context plus the additional sources/artifacts their responsibility needs.
+It supports, but does not replace, requirements, Functional Design/LLD, implementation plans or verification evidence.

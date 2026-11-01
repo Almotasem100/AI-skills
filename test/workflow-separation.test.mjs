@@ -39,6 +39,19 @@ test('optional instructions guard activation before routing and retain continuit
   }
 });
 
+test('optional profile uses CLI routes without native preference setup and preserves ownership', () => {
+  assert.match(profile, /configured planner authors the implementation plan by default/);
+  assert.match(profile, /configured CLI delegation skills/);
+  assert.match(profile, /user need not name a lane or choose a mechanism/);
+  assert.match(profile, /including Gemini CLI/);
+  assert.match(profile, /does not read local execution.json/);
+  assert.match(profile, /shell\/process access as well as edit-tool permissions/);
+  assert.match(guide, /Do not create,[\s\S]*?delete existing local execution.json/);
+  assert.doesNotMatch(profile, /native-preferred|relay-preferred|roleMechanisms/);
+  assert.doesNotMatch(guide, /Copy-Item.*execution.example|\$executionFile/);
+  assert.doesNotMatch(globalInstructions + contract, /execution\.json|Gemini CLI|native-preferred|relay-preferred/);
+});
+
 test('shared workflow retains nine outcomes, prerequisite order and independent review', () => {
   const section = contract.split('## Full Feature delivery contract')[1].split('## Work hierarchy')[0];
   const outcomes = [...section.matchAll(/^\d+\. \*\*([^*]+)\*\*/gm)].map(match => match[1]);

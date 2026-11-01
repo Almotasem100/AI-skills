@@ -1,5 +1,192 @@
 # Roadmap — status, next steps, open decisions
 
+## Current: step-two accepted for merge — 2026-11-01
+
+The owner approved documentation cleanup and merge after branch review and independent subagent debate. The
+review found no functional blocker; 23/23 offline checks passed. Generated TASKS now agrees with FULL-SCENARIO:
+one fresh OpenCode session; ZadLoop remains on hold. Shared instructions/contract and production lanes are unchanged.
+
+Latest owner-host evidence: setup Luna exported the exact Sol/medium root session and independently reported
+profile/catalog reads and fleet loading before dispatch; configured feature-design, Gemini QA, planning,
+implementation and separate code-review assignments; QA before planning and critique/author disposition before
+implementation; review corrections/rechecks; 6/6 acceptance and 5/5 focused tests; intact fixed inputs/allowed scope.
+The default route failed, and the question-tool result explicitly recorded the user's functional-docs selection for
+remaining PR text/closeout. That was an authorized task exception, not an unauthorized substitution or a persistent
+configuration fix. Relays resolve lanes internally, so a separate visible resolver command was not required to
+establish resolution. This is a passed bounded trial with an authorized fallback, reported by the owner/inspector;
+the raw workstation export was not independently inspected from this cloud checkout.
+
+Limits: Luna Fast's earlier tool-use failures remain model/host-specific unresolved behavior; do not claim all
+models/harnesses reliable. The local default route still needs its concrete error/configuration checked. OS-level
+review containment was not established or claimed. The plan's planning-stage next-action text should be labeled
+as a snapshot if retained; the current working state recorded completion. No more full-feature rerun is required
+for this documentation-only cleanup. The tested 2b70cd6 installed profile/skills are unchanged by the cleanup;
+fetching merged master does not itself require reinstalling them.
+
+### Remaining work, in discussion order
+
+- Improve company-facing FD/LLD and QA output quality using representative artifacts and clear audience/format
+  expectations. The consistency fixes here do not complete that broader deliverable-quality work.
+- Revisit plan-review versus plan-debate usage and the parked plan-debate skill contract before changing it.
+- Discuss whether to retain V3's specialist planner or combine orchestration/planning; no architecture change was
+  selected. Keep useful shared context for downstream skills and continuity under either choice.
+- Continue evidence-led trimming of broader instructions/skills where actual friction warrants it; do not turn
+  every model mistake into another workflow rule. Further resource-inspired ideas remain evaluation, not adoption.
+- On the workstation, diagnose/repair the default lane and optionally smoke-check configured models/variants.
+  Do not pin transient provider/model choices in portable repository instructions.
+- Keep ZadLoop integration and native-worker routing parked. A future Standard-mode + explicit AI Skills profile
+  trial would test the same CLI workflow; the harness's own Delegate-mode integration is separate work.
+
+Earlier sections are dated checkpoints. This current section supersedes their stale installation, lane-count,
+model-choice and pending-trial statements; historical backlog items are not automatically reopened.
+
+## Historical: CLI invocation clarification and final evidence capture — 2026-11-01
+
+Owner-host export evidence identified the latest dispatch failure: the feature session successfully read the
+profile, loaded/resolved the fleet and executed shell commands, then searched the host tool catalog rather than
+invoking the installed relay. Its report that no shell existed was contradicted by its own execution records.
+After explicit user correction, the same fixture reportedly completed configured design/planning/implementation/
+review and Gemini QA, with 6/6 acceptance and 5/5 focused checks. This was guided recovery, not automatic routing.
+Transport failures retained usable outputs; incorrect Gemini continuation ID and reused output directory attempts
+were rejected before subsequent recovery. These are owner-provided records, not fresh provider runs performed here.
+
+The guarded profile now distinguishes shell-invoked CLI scripts from registered host tools, malformed calls from
+permission denials, and resolution from dispatch. Continuation must use the assignment's recorded session ID and
+a fresh output directory per invocation. Existing recovery/acceptance rules remain; no vendor relay or model/role
+configuration changed. The full-scenario guide adds a setup-only timestamped capture probe and exact-session,
+verbatim-response capture, without adding hints to the natural feature prompt. Shared instructions are unchanged.
+
+Next: setup Luna should inspect the existing plan/critique/author-disposition evidence to resolve the ambiguous
+summary wording, without new assignments or speculative artifact repairs. Refresh only the managed profile,
+confirm capture capability and prepare one fresh fixture for an unassisted OpenCode session. Independently check
+that run before merge; earlier guided success does not erase the original dispatch failure. ZadLoop stays on hold.
+Validation: 17/17 existing separation and runner checks passed, including generated guide preparation and
+unchanged shared boundaries. This instruction-only patch does not change relay code; native acceptance awaits
+the owner-host trial.
+
+## Historical: OpenCode trial corrections; ZadLoop on hold — 2026-10-31
+
+The owner-host initial feature trial read retired execution settings, did not use the installed fleet loader and
+performed specialist work directly; its claim that no routes existed was unsupported. A subsequent guided relay
+probe succeeded. The fresh feature retest dispatched configured OpenCode/Gemini roles and recovered missing QA
+output through the same session. Luna independently reported 6/6 fixed acceptance and 6/6 authored checks, separate
+code review and consistent final behavior. This is owner-host evidence reported by Luna, not execution inspected
+here. It does not erase the original failure or prove reliable fresh-session routing.
+The retest also required user-guided workspace correction, routed initial feature design through standalone docs,
+corrected only the LLD after implementation, and overstated paired design reconciliation in closeout.
+
+Corrections: the guarded CLI profile now gives installed read-only loader/resolver commands, distinguishes discovery
+from invocation failures, and explicitly prevents solo specialist work without a task exception. Feature design owns
+both requested FD/LLD before dependent planning/implementation; late changes require checking affected artifacts,
+not rewriting everything or treating late correction as earlier compliance. create-lld and work-closeout distinguish
+revised, inspected/unchanged and verified outcomes and correct unsupported completion claims. Shared global
+instructions and the portable workflow contract remain unchanged. Production lanes and plan-debate are untouched.
+
+The full-scenario runner now creates the Git baseline at the exact full-opencode root that is opened; project/ is
+only the writable subtree, with no nested repository. OPENCODE-PROMPT.md is the natural request, without discovery
+commands, lane hints or a stage checklist. Preparation refuses existing fixtures, records Git setup availability
+and requires no global Git configuration/hooks. Commit-only PR helpers are not evidence for uncommitted changes;
+local PR text must use actual worktree changes/results. Full-scenario verification still separates code from manual
+routing/lifecycle review. Existing runs must retain their matching revision's verifier and original evidence.
+
+Validation: 23/23 offline checks passed, including Gemini overlay regressions, actual isolated fleet-loader
+resolution from root/child, Git baseline/diff, fixture scope/integrity and shared separation. A fresh participant
+using only revised instructions and raw case records selected the read-only discovery procedure, refused solo
+specialist fallback, assigned paired feature design correctly and rejected unsupported reconciliation/chronology
+claims. This is source-understanding evidence, not a native OpenCode adherence pass.
+Next: Luna should refresh the changed profile/catalog and managed create-lld/work-closeout, verify parity and prepare one
+fresh OpenCode fixture/session. Do not paste diagnostic guidance into the feature session. ZadLoop remains paused;
+no host-specific routing rules, production settings, owner installation or authenticated provider calls change here.
+Do not merge before review of the updated installed trial.
+
+## Historical: CLI profile and separate full-scenario host trials — 2026-10-31
+
+Owner decision: park native-agent preference/mapping setup. AI Skills delegation mode now uses configured CLI
+skills directly; the specialist planner still authors and the orchestrator reviews. Existing local execution.json
+files, host agents, provider/model lanes and authentication are preserved, unused by this profile. Removed the
+unused example and native-assignment cases from active setup; their experiment/evidence remains in Git history.
+Shared instructions/contract stay unchanged and mechanism-neutral except the existing positive activation pointer.
+Added the existing review-code responsibility to the semantic catalog; no production lane/model assignment changed.
+Keep Gemini recovery fixes, simplified task-context and work-closeout reconciliation. Plan-debate remains parked.
+
+The smoke pack now generates FULL-SCENARIO.md plus two independent disposable draft-renaming feature fixtures.
+Natural requests cover complete feature delivery and a separate customer guide, without naming lanes. OpenCode
+selects our CLI profile; ZadLoop uses its own Delegate mode/shared instructions with the owner's explicit session
+rule: when no internal responsibility fits, use Gemini CLI instead of the internal default. This is test-session
+policy, not a shared fallback rule or guaranteed override of harness instructions. A genuinely fitting internal
+lane prevents proving the no-match fallback; higher-priority conflicts are reported blocked.
+Fixed tests cover ownership, error precedence, trimming, allowed duplicates, preserved inputs and existing listing.
+Verification checks fixture integrity/scope and code; reports still need manual artifact/lifecycle/routing review.
+Unrun fixtures are skipped. A code pass alone is not an automatic-routing or complete-workflow pass.
+
+Validation: 21/21 offline tests passed, including the Gemini overlay regressions. Source/fixture checks cover
+unchanged shared boundaries, CLI-only selection, preserving unused legacy
+preferences, natural-prompt generation, isolated host fixtures, negative behavior and test tampering. No owner-host installation or real full-feature provider run happened
+here. Next: Luna incrementally installs the changed companion profile/catalog from this branch (preserving local
+settings), checks parity, and prepares the two fresh host trials. Execute them in the VM and return actual dispatch,
+artifact, test/review and closeout evidence before claiming either host works by default. Do not merge yet.
+The next section is superseded experiment history, not current setup instructions.
+
+## Historical: optional native/relay execution preference — 2026-10-31
+
+The guarded delegation profile now resolves explicit task/session choices, saved role overrides and a standing
+native-preferred or relay-preferred policy. V3 ownership stays unchanged: a specialist authors the plan and the
+orchestrator reviews it. Eligible native routes require a verified mapping in the current host; external CLI
+requirements (including Gemini CLI), account/environment, source access and effective permissions remain binding.
+Missing native mappings use already-approved relays under native-preferred; explicit incompatible selections block.
+Shared instructions/contract remain mechanism-neutral. No everyday model/provider lanes were changed.
+
+GUIDE creates local execution.json from an empty example only when absent and describes one-time host mapping
+validation without overwriting existing preferences. Native agents are not installed by that file or by these
+repository edits. The smoke pack validates preference format read-only and generates EXECUTION-CHECKS.md for
+12 explanation cases, one native fixture plus exact-session continuation, and the retained Gemini relay path.
+All semantic reports remain needs-review; verification now also retains failed preparation checks in its exit code.
+
+Validation: 20/20 offline tests passed, including the Gemini overlay regressions, isolation, configuration rejection,
+generated native checks and shared/optional separation. A fresh participant answered all 12 routing scenarios
+correctly without their expected answers. This is policy-understanding evidence, not installed native execution.
+Next: Luna should incrementally install the branch, configure/validate approved native mappings once, and run the
+generated installed-setup cases. Native dispatch/resumption, updated Gemini recovery and workstation loading remain
+owner-host verification; no host configuration, installation or authenticated provider call was performed here.
+
+## Task-context simplification — 2026-10-31
+
+Reduced the task-context skill and template from fourteen content sections to five flexible groups: objective/scope,
+approved behavior/decisions, current-system findings/constraints, open questions/assumptions, and source references.
+Consolidated repeated evidence rules; retain consequential grilling answers, UX constraints, acceptance criteria,
+exclusions, estimate/result distinctions, source authority and feature-level continuity. State information once,
+keep useful author observations explicitly unapproved, and leave solution development to design/planning.
+Refresh context when understanding changes; link detailed design/plan/review/results instead of duplicating them.
+
+Validation: six workflow-separation checks and frontmatter/template-path checks passed. A fresh-agent source-skill
+trial preserved owner-only rename, whitespace rejection, undecided duplicates, excluded sharing/deletion, the
+unmeasured benefit target and unapproved investigator suggestion. This is a bounded synthesis trial, not owner-host
+installation or a real-ticket quality evaluation. No planning ownership, delegation routes or running Luna test was
+changed. Existing Gemini recovery and closeout changes remain in this branch.
+
+## Focused closeout reconciliation clarification — 2026-10-31
+
+Clarified `work-closeout` to reconcile relevant final working artifacts, replace superseded active guidance, and
+retire temporary restrictions/reminders only when their completion condition is met. Existing authority, evidence,
+cleanup permissions and unresolved-follow-up protections remain. Source text/frontmatter and the two-file diff were
+checked; no native model/host trial or workstation installation was performed. Next: assess these clarifications in
+normal closeout use. The paused Gemini recovery work and its pending native checks below remain unchanged.
+
+## Gemini recovery and evidence preservation — 2026-10-31
+
+Updated the base-pinned Gemini overlay on `work/step-two`: `--resume` accepts a full session UUID as well
+as index/latest, and the skill prefers the recorded UUID for a known assignment. Populated output directories
+are rejected before dispatch without replacing their contents; empty directories remain supported, default
+directories have unique suffixes, and exclusive brief creation prevents concurrent runs claiming the same path.
+Input-access guidance distinguishes approved-but-filtered files from usable inputs without changing ignore
+settings or permissions. Recovery inspects saved artifacts, response text and partial edits before redispatch.
+
+Validation: 17/17 repository offline tests passed, including overlay applicability/parity and the expanded Gemini
+fake-CLI regressions for UUID forwarding, malformed selectors and evidence preservation. Focused Gemini,
+package-shape and syntax checks also passed in a disposable overlay-applied copy. Pinned upstream base and vendor
+snapshot are unchanged. No native Gemini call or workstation installation was performed; exact-session resume
+still needs a bounded native check after installation. Planning ownership and broader workflow changes remain open.
+
 ## Focused native host probes — 2026-10-30 (branch work)
 
 Added `test/native-smoke/host-checks.md`, generated as `HOST-CHECKS.md` per run: two tiny fresh-session probes each

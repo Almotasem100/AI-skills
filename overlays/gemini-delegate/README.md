@@ -16,6 +16,14 @@ overlay is separate from the vendored `delegate-setup` patch: do not duplicate G
 `vendor/amElnagdy/delegate-skills/local-changes.patch`. It does not install skills, modify host
 settings, launch a real Gemini session, or publish upstream.
 
+Recovery accepts a full Gemini session UUID in `--resume`, alongside the existing index/latest forms.
+Use the recorded UUID to continue a known assignment and compare the returned session ID before claiming
+continuity. Each attempt needs a fresh or empty output directory: populated `--out-dir` paths are rejected
+before dispatch without replacing previous evidence. Default run directories have unique suffixes.
+
+The skill also explains approved input access when Git-ignore filtering blocks a direct read, and recovery
+from saved artifacts after timeout/disconnect. It does not change ignore settings or workspace permissions.
+
 ## Apply to a separate upstream checkout
 
 From the root of Ahmed's `delegate-skills` checkout, ensure it is at the pinned base commit and

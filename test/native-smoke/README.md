@@ -59,6 +59,30 @@ are explicit-use tests; record observed file access/native activation and do not
 `plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
 
+## Full-scenario host trials
+
+Preparation creates `FULL-SCENARIO.md`, a ready-to-paste `OPENCODE-PROMPT.md`, and independent disposable fixtures.
+Open the exact **full-opencode root**, containing POLICY.md/requirements.md and project/, rather than project/.
+The runner initializes a local Git baseline commit at that root and records its status; no remote, user-level Git
+configuration, hooks or provider calls are involved. Feature writes remain restricted to the policy's project/
+paths. Failed Git preparation is reported unavailable; preserve old runs rather than rebuilding them in place.
+
+Run the generated natural prompt in a fresh OpenCode session after approved installation/parity checks. It selects
+AI Skills delegation mode without teaching discovery commands, lanes or workflow stages. A guided diagnostic must
+use a separate session and cannot establish automatic discovery. **ZadLoop remains on hold**; its fixture is only
+retained scaffolding. Do not resume it or add host-specific routing rules during these corrections.
+
+The evaluator inspects design ownership and chronology, QA before dependent planning, plan authorship/critique,
+implementation/tests, separate code review/corrections, PR preparation and accurate local closeout. The optional
+standalone customer-guide follow-up tests a distinct intent under the same selection. Lifecycle and routing checks
+use actual dispatch/results/artifacts; a post-implementation design correction is not retroactive compliance.
+
+`--verify` independently runs fixed acceptance tests for a reported trial and checks immutable inputs, allowed
+scope and the preparation Git baseline. It never starts model assignments. Reports stay `needs-review` until a
+caller checks their meaning; a code pass does not certify routing or lifecycle. Untouched trials remain skipped,
+and exit 2 can mean incomplete coverage. Preserve old execution.json files and host agents unchanged/unused.
+See the generated guide for exact paths, capture instructions and the evaluator rubric.
+
 ## Fresh-session host probes
 
 Preparation generates `HOST-CHECKS.md` from the adjacent `host-checks.md`. The driving session runs its four tiny
@@ -85,6 +109,7 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
 - Preserves this profile's delegated planner authorship, orchestrator critique and author findings disposition.
   Extra independent plan review/debate is conditional, not automatically stacked. Mentioning the parked debate
   capability is not permission to execute or modify `plan-debate`.
+- Resolves configured CLI routes without per-assignment mechanism questions and preserves explicit routing overrides.
 - Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,
   confuse a lane with a skill, or require the orchestrator to reproduce specialist work. Deterministic checks are
   distinguished from participant responsibilities.
@@ -119,8 +144,8 @@ trial. The relay receives `--lane smoke-*`; no global configuration is rewritten
 visible through normal merging, but these selected test lanes override only their names inside the disposable repo.
 Testing these routes does not establish that every production lane can execute its responsibilities.
 
-OpenCode is called with its supported `--read-only` flag. Gemini uses `--approval-mode plan`, which **does not
-establish enforced read-only access**. Both tasks request response-only work and their local file contents are
+OpenCode is called with its supported `--read-only` flag and Gemini with `--approval-mode plan`.
+Neither flag alone establishes filesystem containment, especially when shell access remains allowed. Both tasks request response-only work and their local file contents are
 compared afterward. This detects observed fixture changes; it does not establish that no transient or out-of-folder
 writes occurred. The runner does not change authentication, CLI permissions, host installation or configuration.
 
@@ -146,10 +171,22 @@ Raw captures remain local in the run directory; summarize errors without copying
 Installing or changing files is not part of the runner. Use the approved GUIDE setup first. For focused mode-selection
 and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.md`.
 
+## Full-scenario driving instruction
+
+> After the approved setup/parity update, prepare a fresh run with this checkout's runner. Read generated
+> FULL-SCENARIO.md, confirm its exact full-opencode workspace root and baseline, and return that path plus
+> OPENCODE-PROMPT.md for a new OpenCode session. Do not supply the evaluator rubric or routing hints to that
+> session. Existing approved bounded assignments are authorized. Capture actual calls/results and independently
+> run --verify after the trial. Report code, routing, lifecycle and remaining limits separately. Preserve old runs,
+> settings and production lanes. ZadLoop stays paused; do not run its trial.
+
+The full-feature trial is separate from the small smoke cases above. Its fresh session avoids inheriting explicit
+routing guidance from a diagnostic or hypothetical walkthrough.
+
 ## Checks for the runner itself
 
 ```sh
-node --test test/native-smoke/runner.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
+node --test test/native-smoke/runner.test.mjs test/native-smoke/full-scenario.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
 ```
 
 These are offline unit/integration checks, including a **synthetic** relay. They test the driver and rejection paths;

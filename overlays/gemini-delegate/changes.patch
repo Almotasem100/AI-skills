@@ -206,10 +206,10 @@ index c44c890..3436448 100644
        const map = {
 diff --git a/skills/gemini-delegate/SKILL.md b/skills/gemini-delegate/SKILL.md
 new file mode 100644
-index 0000000..f2e86e4
+index 0000000..28a4f69
 --- /dev/null
 +++ b/skills/gemini-delegate/SKILL.md
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,98 @@
 +---
 +name: gemini-delegate
 +description: >-
@@ -240,6 +240,13 @@ index 0000000..f2e86e4
 +- Use a clean target git repository or isolated worktree. Brief scope is guidance,
 +  not containment; do not delegate irreversible or sensitive operations without approval.
 +
++## Input access
++
++Give exact paths to approved inputs. Gemini CLI may reject Git-ignored files even through `read_file`;
++repeating the path does not fix that. If access fails, preserve the exact error and identify the inaccessible
++input. Use only authorized excerpts or an approved accessible copy, retaining the original source/revision;
++do not silently change ignore settings, broaden workspace access, or bypass an intentional exclusion.
++
 +## Model selection (optional)
 +
 +Omit `--model` to preserve the CLI's own Auto/default behavior. An explicit
@@ -261,7 +268,7 @@ index 0000000..f2e86e4
 +   # optional model:      add --model <id>
 +   # planning request:    add --approval-mode plan (not a read-only guarantee)
 +   # all-tool approval:   add --approval-mode yolo (explicit full trust)
-+   # resume:              list project sessions, use --resume <index>; --resume-last if safe
++   # resume:              list project sessions, use --resume <session-uuid>; --resume-last if safe
 +   # longer watchdog:     add --timeout 2h (default: 30m)
 +   ```
 +
@@ -269,12 +276,13 @@ index 0000000..f2e86e4
 +   the brief stays on stdin behind a fixed headless `--prompt`. Native Windows
 +   launches the npm `.cmd` shim with `shell:true`, keeping brief and paths out of argv.
 +3. **Wait** for the relay to exit and read its atomic `result.json`, not progress text.
++   Check the requested response/artifact before accepting the task; an acknowledgment is not delivery.
 +   See [dispatch-and-poll.md](references/dispatch-and-poll.md) for the result contract.
 +4. **Review** the diff against the brief and independently re-run the gates. A
 +   success event is not proof of a correct implementation. See
 +   [review-and-land.md](references/review-and-land.md).
 +5. **Land** only verified work, when authorized. For rework, identify the
-+   target session before sending a delta brief. For queues, read
++   target session before sending a delta brief; prefer its recorded UUID and a fresh output directory. For queues, read
 +   [multi-task-queues.md](references/multi-task-queues.md).
 +
 +## Approval modes and limits
@@ -302,10 +310,10 @@ index 0000000..f2e86e4
 +Neither headless write approval nor plan-mode containment has been live-tested.
 diff --git a/skills/gemini-delegate/references/dispatch-and-poll.md b/skills/gemini-delegate/references/dispatch-and-poll.md
 new file mode 100644
-index 0000000..701fc7d
+index 0000000..b8597b7
 --- /dev/null
 +++ b/skills/gemini-delegate/references/dispatch-and-poll.md
-@@ -0,0 +1,95 @@
+@@ -0,0 +1,100 @@
 +# Dispatch and poll
 +
 +```bash
@@ -321,7 +329,7 @@ index 0000000..701fc7d
 +| `--lane <name>` | Resolve an approved fleet lane for `gemini`; explicit dials win. |
 +| `--model <id>` | Optional explicit model. Omit to keep Gemini Auto/default. Shell-safe token. |
 +| `--approval-mode <mode>` | `default`, `auto_edit`, `yolo`, `plan`; default `auto_edit`. |
-+| `--resume <selector>` | `latest` or a positive index from `gemini --list-sessions` in the target project. |
++| `--resume <selector>` | A full session UUID, `latest`, or a positive index from `gemini --list-sessions` in the target project. |
 +| `--resume-last` | Alias for `--resume latest`; conflicts with `--resume`. |
 +| `--timeout <dur>` | Relay watchdog, default `30m`; positive h/m/s duration up to ~24.8 days. |
 +| `--out-dir <dir>` | Run artifacts; default a fresh system-temp directory. |
@@ -342,16 +350,17 @@ index 0000000..701fc7d
 +workspace containment. Plan can be downgraded by settings and is not enforced as
 +read-only by this relay. Approval mode in the result is the **requested** mode.
 +
-+Resume selectors use the help-documented latest/index forms. Re-list sessions in
-+the target project before picking an index; recorded `sessionId` is diagnostic,
-+not an accepted resume flag. `latest` can start fresh when no session exists;
-+`resumed` records the request, not proof prior context was loaded.
++Prefer `--resume <sessionId>` from the recorded run when continuing a known assignment. A full UUID
++selects that exact session; re-list sessions before using an index or `latest`, which can select other work.
++`latest` can start fresh when no session exists. `resumed` records the request, not proof prior context
++was loaded; compare the returned session ID when an exact UUID was requested.
 +
 +## Result contract and artifacts
 +
 +Artifacts: exact `brief.txt`, raw stdout `events.jsonl`, complete `stderr.txt`,
-+`final.txt` when assistant text exists, and atomic `result.json`. Reusing an
-+`--out-dir` clears old final/result files and truncates event/stderr logs. Keep
++`final.txt` when assistant text exists, and atomic `result.json`. A populated
++`--out-dir` is rejected with exit 2 before dispatch, preserving its contents. A missing or empty directory
++is accepted; default directories have unique suffixes. Use a fresh directory for every recovery attempt. Keep
 +artifacts outside the worktree if they should not appear in `touchedFiles`.
 +
 +`result.json` speaks `delegate-relay.result.v1`:
@@ -398,6 +407,10 @@ index 0000000..701fc7d
 +- Catchable relay signals write `aborted` and forward termination; the final Git
 +  snapshot is refreshed after the shutdown grace. Native Windows hard kills
 +  are uncatchable and may leave no result: inspect the tree and logs directly.
++
++Before redispatching after a timeout or disconnect, inspect saved response text, requested artifacts and
++partial edits. A transport failure may follow successful artifact creation; inspect content before deciding
++whether rework is needed. Preserve the previous run and send only the remaining work to the intended session.
 +
 +No live Gemini dispatch is recorded. Contract tests cover the transport and event
 +contract, not model correctness, trust/approval policy, or enforced read-only behavior.
@@ -516,10 +529,10 @@ index 0000000..36db7ca
 +project-scoped. Re-pass approval and model choices deliberately on each dispatch.
 diff --git a/skills/gemini-delegate/scripts/relay.mjs b/skills/gemini-delegate/scripts/relay.mjs
 new file mode 100644
-index 0000000..e9881f3
+index 0000000..9437a6b
 --- /dev/null
 +++ b/skills/gemini-delegate/scripts/relay.mjs
-@@ -0,0 +1,571 @@
+@@ -0,0 +1,579 @@
 +#!/usr/bin/env node
 +/**
 + * delegate-skills · gemini-delegate · relay.mjs
@@ -570,7 +583,7 @@ index 0000000..e9881f3
 + */
 +
 +import { spawn, execFileSync, spawnSync } from "node:child_process";
-+import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
++import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, statSync, writeFileSync } from "node:fs";
 +import { join, resolve, basename, dirname } from "node:path";
 +import { fileURLToPath } from "node:url";
 +import { constants, tmpdir } from "node:os";
@@ -582,6 +595,7 @@ index 0000000..e9881f3
 +const VERSION_TIMEOUT_MS = 10_000;
 +const STDIN_PROMPT = "Follow the task instructions provided on stdin.";
 +const SAFE_TOKEN = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
++const SESSION_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 +const APPROVAL_MODES = new Set(["default", "auto_edit", "yolo", "plan"]);
 +
 +function fail(message, code = 2) {
@@ -653,7 +667,7 @@ index 0000000..e9881f3
 +  applyFleetLane(opts, flagged);
 +  if (opts.model !== null && !SAFE_TOKEN.test(opts.model)) fail("--model has unsupported characters (allowed: letters, digits, . _ : / -)");
 +  if (!APPROVAL_MODES.has(opts.approvalMode)) fail("--approval-mode must be default, auto_edit, yolo, or plan");
-+  if (opts.resume !== null && opts.resume !== "latest" && !/^[1-9][0-9]*$/.test(opts.resume)) fail("--resume must be latest or a positive session index from gemini --list-sessions");
++  if (opts.resume !== null && opts.resume !== "latest" && !/^[1-9][0-9]*$/.test(opts.resume) && !SESSION_UUID.test(opts.resume)) fail("--resume must be latest, a positive session index, or a full session UUID from gemini --list-sessions");
 +  if (parseDuration(opts.timeout) === null) fail(`--timeout "${opts.timeout}" is not a positive schedulable duration; use h/m/s strings (maximum ~24.8 days)`);
 +  if (!existsSync(opts.cd) || !statSync(opts.cd).isDirectory()) fail(`working directory not found: ${opts.cd}`);
 +  return opts;
@@ -921,12 +935,19 @@ index 0000000..e9881f3
 +
 +function prepareRunDir(opts, brief) {
 +  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-+  const outDir = opts.outDir || join(tmpdir(), "delegate-relay", `${basename(opts.cd) || "repo"}-${stamp}`);
++  const parent = join(tmpdir(), "delegate-relay");
++  if (!opts.outDir) mkdirSync(parent, { recursive: true });
++  const outDir = opts.outDir || mkdtempSync(join(parent, `${basename(opts.cd) || "repo"}-${stamp}-`));
 +  mkdirSync(outDir, { recursive: true });
++  if (readdirSync(outDir).length > 0) fail(`output directory is not empty: ${outDir}; choose a fresh --out-dir to preserve prior run evidence`);
 +  const run = { startedAt: new Date().toISOString(), briefPath: join(outDir, "brief.txt"), finalPath: join(outDir, "final.txt"), eventsPath: join(outDir, "events.jsonl"), stderrPath: join(outDir, "stderr.txt"), resultPath: join(outDir, "result.json") };
-+  rmSync(run.finalPath, { force: true });
-+  rmSync(run.resultPath, { force: true });
-+  writeFileSync(run.briefPath, brief, "utf8");
++  // Claim the directory before writing logs; simultaneous attempts cannot replace a run.
++  try {
++    writeFileSync(run.briefPath, brief, { encoding: "utf8", flag: "wx" });
++  } catch (error) {
++    if (error.code === "EEXIST") fail(`output directory is already claimed: ${outDir}; choose a fresh --out-dir`);
++    throw error;
++  }
 +  writeFileSync(run.eventsPath, "", "utf8");
 +  writeFileSync(run.stderrPath, "", "utf8");
 +  return run;
@@ -1255,10 +1276,7 @@ diff --git a/test/relay-parity.mjs b/test/relay-parity.mjs
 index 913f453..2b412a4 100644
 --- a/test/relay-parity.mjs
 +++ b/test/relay-parity.mjs
-@@ -1,10 +1,10 @@
- #!/usr/bin/env node
- import { readFileSync } from "node:fs";
- import { dirname, join } from "node:path";
+@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
  import { fileURLToPath } from "node:url";
  
  const here = dirname(fileURLToPath(import.meta.url));
@@ -1323,10 +1341,10 @@ index 4be665b..0b9547c 100644
   * their own; both assert that this grandchild dies with the implementer.
 diff --git a/test/relay/gemini.mjs b/test/relay/gemini.mjs
 new file mode 100644
-index 0000000..61acf75
+index 0000000..1c22487
 --- /dev/null
 +++ b/test/relay/gemini.mjs
-@@ -0,0 +1,226 @@
+@@ -0,0 +1,243 @@
 +import { spawnSync } from "node:child_process";
 +import { chmodSync, existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 +import { delimiter, dirname, join } from "node:path";
@@ -1375,7 +1393,7 @@ index 0000000..61acf75
 +      h.pair(result.capture.args, "--model", "fake-model") && result.value.approvalMode === approval &&
 +      result.value.model === "fake-model" && !("readOnly" in result.value));
 +  }
-+  for (const [flags, selector] of [[["--resume", "5"], "5"], [["--resume-last"], "latest"]]) {
++  for (const [flags, selector] of [[["--resume", "5"], "5"], [["--resume-last"], "latest"], [["--resume", "123e4567-e89b-42d3-a456-426614174000"], "123e4567-e89b-42d3-a456-426614174000"]]) {
 +    const resumed = dispatch([...flags, "--approval-mode", "plan", "--model", "fake-model"]);
 +    h.check(`gemini: resume ${selector} retains explicit dials and stdin delta brief`,
 +      resumed.run.status === 0 && h.pair(resumed.capture.args, "--resume", selector) &&
@@ -1399,7 +1417,7 @@ index 0000000..61acf75
 +  for (const flags of [
 +    ["--model", "fake & whoami"], ["--model", "-option"], ["--model", ""],
 +    ["--approval-mode", "auto"], ["--approval-mode", "plan&whoami"],
-+    ["--resume", "0"], ["--resume", "5&whoami"], ["--resume", "-flag"],
++    ["--resume", "0"], ["--resume", "5&whoami"], ["--resume", "123e4567-e89b-42d3-a456-426614174000&whoami"], ["--resume", "123e4567-not-a-uuid"], ["--resume", "-flag"],
 +    ["--resume", "5", "--resume-last"], ["--read-only"], ["--sandbox", "read-only"],
 +    ["--model"], ["--timeout", "0s"], ["--unknown"],
 +  ]) {
@@ -1466,12 +1484,29 @@ index 0000000..61acf75
 +  h.check("gemini: unavailable Git reporting is null, not clean []", noGit.run.status === 0 && noGit.value.touchedFiles === null);
 +
 +  const reusedOut = success.out;
++  const evidenceNames = ["brief.txt", "events.jsonl", "stderr.txt", "final.txt", "result.json"];
++  const originalEvidence = evidenceNames.map((name) => readFileSync(join(reusedOut, name)));
 +  const reused = spawnSync(process.execPath, [h.relayPath("gemini"), "--brief", h.briefPath, "--cd", workDir, "--out-dir", reusedOut], {
 +    encoding: "utf8", env: { ...h.baseEnv, SMOKE_MODE: "gemini-garbled" },
 +  });
-+  h.check("gemini: reused out-dir cannot leak stale final report/result",
-+    reused.status === 1 && h.result(reusedOut).finalPath === null && !existsSync(join(reusedOut, "final.txt")) &&
-+    readFileSync(join(reusedOut, "events.jsonl"), "utf8") === '{"type":"result","status":');
++  h.check("gemini: reused out-dir fails before dispatch and preserves all prior evidence",
++    reused.status === 2 && /output directory is not empty/.test(reused.stderr) &&
++    evidenceNames.every((name, index) => readFileSync(join(reusedOut, name)).equals(originalEvidence[index])));
++  const unrelatedOut = join(h.scratch, "gemini-existing-output");
++  mkdirSync(unrelatedOut);
++  writeFileSync(join(unrelatedOut, "notes.txt"), "retain this unrelated file");
++  const occupied = spawnSync(process.execPath, [h.relayPath("gemini"), "--brief", h.briefPath, "--cd", workDir, "--out-dir", unrelatedOut], {
++    encoding: "utf8", env: h.baseEnv,
++  });
++  h.check("gemini: any populated out-dir is rejected without creating a result",
++    occupied.status === 2 && readFileSync(join(unrelatedOut, "notes.txt"), "utf8") === "retain this unrelated file" &&
++    !existsSync(join(unrelatedOut, "brief.txt")) && !existsSync(join(unrelatedOut, "result.json")));
++  const emptyOut = join(h.scratch, "gemini-empty-output");
++  mkdirSync(emptyOut);
++  const emptyOutput = spawnSync(process.execPath, [h.relayPath("gemini"), "--brief", h.briefPath, "--cd", workDir, "--out-dir", emptyOut], {
++    encoding: "utf8", env: { ...h.baseEnv, SMOKE_MODE: "gemini-success" },
++  });
++  h.check("gemini: pre-created empty out-dir remains supported", emptyOutput.status === 0 && h.result(emptyOut).status === "completed");
 +
 +  const missing = dispatch([], "gemini-success", { PATH: "" });
 +  h.check("gemini: missing binary exits 127 with complete unavailable contract",
