@@ -77,7 +77,7 @@ Keep the actual final response verbatim in the designated response file, separat
 - **Identity:** source revision, installed-file parity result, exact workspace, root session ID/title and reported
   agent/model/effort; raw export path and capture limits. Locate by exact metadata before inspecting content.
 - **Case verdicts:** for code, intake, design/QA prerequisites, plan authorship/review/disposition, implementation,
-  separate code review/corrections and closeout, give expected behavior, observed behavior, verdict and evidence
+  separate code review/corrections and retained completion state, give expected behavior, observed behavior, verdict and evidence
   locator. Distinguish passed/failed/blocked/unverified/skipped; do not collapse missing evidence into failure.
 - **Chronology and assignments:** relevant event IDs and timestamps, configured role/route, invocation/result
   paths, child session ID, output and reviewed artifact version/hash where captured. Show profile/fleet access
@@ -116,7 +116,7 @@ verification details supplement, rather than replace, the captured root/relay re
   is not separate review. Additional review/debate is conditional; missing reviewer routes must not become silent
   self-acceptance. Implementation and substantive separate code review have real dispatch evidence. Verify
   missing-output recovery from result/artifact evidence, including session continuity when claimed.
-- Final artifacts and local closeout accurately distinguish revised, checked unchanged and independently verified.
+- Final artifacts and retained completion state accurately distinguish revised, checked unchanged and independently verified.
   Inspect paired design reconciliation rather than accepting a summary that says both were updated. Correct
   material inaccuracies; operational hiccups belong in working evidence, not automatically in customer/PR prose.
 - Fixed acceptance tests cover R1–R4; relevant authored checks, review/correction and PR preparation are evidenced.
@@ -128,3 +128,11 @@ verification details supplement, rather than replace, the captured root/relay re
   evidence is acceptable here. Do not invent a develop branch or make feature commits to satisfy that helper.
 - Report code, routing, lifecycle and prose/evidence quality separately as passed/failed/blocked/unavailable/skipped.
   Test/artifact checks remain separate from the manual semantic assessment. Preserve failed originals.
+
+## Operator and recovery boundary probes
+
+After setup, use `operator-scenarios.md` from the same source revision for explanation-only checks of plan-only
+requests, unattended material blockers, retained artifacts, verification cadence and approved recovery. These
+probes authorize no provider calls, deployment, configuration changes or cleanup. Inspect actual instruction
+application; a correct explanation is not native execution proof. Batch them with the main trial where useful,
+not as another required installation. Preserve contradictions and unavailable capability as such.

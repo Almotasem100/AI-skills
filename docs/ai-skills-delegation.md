@@ -18,8 +18,11 @@ and authoritative sources, unless explicitly omitted or inapplicable under proje
 dispositions each material finding: accept/revise, reject with evidence, or leave open with the needed check or
 decision. Recheck affected material revisions with the reviewer before calling the plan ready. Self-checks do not
 replace this separate review. Give the reviewer original-source access without a persuasive defense of the plan;
-a separate session alone does not guarantee an unbiased review. Debate is requested or risk-justified, not an
-automatic second review. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
+a separate session alone does not guarantee an unbiased review. Ordinary author responses/corrections and
+reviewer rechecks are part of review, not an automatic debate or another reviewer. Preserve attributed findings,
+author dispositions and material rechecks in a concise Markdown record in the approved working area; save the
+reviewer's returned findings as caller if its boundary prevents writes. Propose a structured debate for unresolved
+consequential disagreement and run it only when explicitly selected. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
 that author owns plan revisions and findings disposition, while the orchestrator coordinates the separate review.
 A user-authorized task exception may assign another deliverable to the
 orchestrator without changing the session profile or waiving project gates.
@@ -50,8 +53,8 @@ check or invocation error. A blank CLI lookup with errors suppressed does not pr
 selected relay/CLI environment. Distinguish unresolved configuration, missing tools and failed invocation.
 A discovery or dispatch failure does not authorize the orchestrator to write specialist deliverables itself.
 Report the affected blocker and request a specific exception or use already-authorized bounded recovery; general
-permission to finish the feature is not such an exception. Do not substitute a harness worker merely because one
-is exposed; selecting another execution system is a separate user choice.
+permission to finish the feature is not such an exception. A harness worker is not a default substitute merely
+because one is exposed; the limited transport-recovery permission below requires verified equivalence.
 
 ## Session continuity
 
@@ -80,7 +83,33 @@ If the user explicitly assigns an external plan author, that author must inspect
 
 In AI Skills delegation mode, the implementation plan is the orchestrator's deliverable; other specialist deliverables, including the separate plan review, are delegated. The orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring other deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. The orchestrator's own planning and explicitly authorized one-task direct work need not resolve an authoring lane; required review still needs a suitable separate route. A missing review route is a blocker, not permission to substitute self-review.
 
-When a specialist route fails or is genuinely unavailable, diagnose it and use bounded recovery. In interactive operation, ask the owner before substituting an unapproved route. Only an explicit **unattended-continuation authorization** permits fallback to the configured default lane where suitable, with the task's semantic role, applicable independence and material gates preserved; being away alone is not unlimited approval. Record substitutions and unresolved limitations. Do not silently modify persistent lane configuration or assume a fallback can satisfy a specialized or required independent review.
+### Recovery and approved default fallback
+
+This profile standing-authorizes automatic fallback to the owner's already-approved configured default route for
+delegated responsibilities, including plan review, whether the owner is present or offline. It does not authorize
+new accounts, model/configuration changes or any arbitrary available model. Preserve the task's semantic role,
+source/privacy boundaries, permissions and separate-review requirements; a configured default is not proof of
+live availability or accepted output. If no suitable approved route can run, report the affected blocker.
+
+1. Diagnose the actual failure: transient connection/transport, relay/tooling, provider quota/rate limit,
+   configuration, or task/output failure. Preserve the exact result and possible partial effects. Use bounded
+   retries where they can help; do not repeatedly retry exhausted quota or treat an output defect as a relay fault.
+2. For an evidenced relay/tooling failure, a host-native child worker may be tried before changing the model,
+   but only if already verified to support the same configured model/effort and approved account/environment,
+   authorized source/instruction access and required permissions. Cache that verified capability for this session;
+   do not configure agents or infer equivalence from a model name or tool's presence. If controls/equivalence
+   cannot be established, skip this recovery option. Switching transport does not bypass provider quota.
+3. Before another dispatch, establish that the prior worker did not start or has stopped; inspect any partial
+   edits/outputs. An unresolved timeout is not permission to run a duplicate writer. Recover/pause the original
+   assignment if its status is unknown, rather than starting a competing worker or default-route retry.
+4. If bounded original-route recovery fails, or the equivalent native option is unavailable, use the approved
+   configured default route automatically when suitable. Record the actual route/session, failure, recovery and
+   acceptance separately; never call a fresh child the same continued session. If that route also fails, stop
+   equivalent retries and report the remaining blocker instead of looping or rewriting configuration.
+
+No special planning-lane fallback prohibition is added: the orchestrator owns default plan authorship. Loss of the
+orchestrator itself requires host/user session recovery; it cannot recover its own unavailable execution by
+dispatching a child. Preserve separate writer/reviewer assignments under any authorized model change.
 
 Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual provider/model/effort assignments remain local configuration; the repository does not supply live production routes. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
 

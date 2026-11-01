@@ -31,7 +31,7 @@ test('optional instructions guard activation before routing and retain continuit
   assert.match(profile.slice(0, guardEnd), /AI Skills delegation mode/);
   assert.match(profile, /same session/);
   assert.match(profile, /new session must not infer activation from an older/);
-  assert.match(profile, /unattended-continuation authorization/);
+  assert.match(profile, /standing-authorizes automatic fallback/);
   assert.match(profile, /process\/relay success/);
   assert.match(profile, /response success/);
   assert.match(profile, /task acceptance/);
@@ -82,6 +82,31 @@ test('shared workflow retains nine outcomes, prerequisite order and independent 
   assert.match(contract, /accept\/revise, reject with evidence, or leave open/);
   assert.match(contract, /self-checks and outcome verification do not substitute for independent review/);
   assert.match(section, /unless the owner explicitly omits/);
+});
+
+test('operator boundaries retain evidence, stop plan-only work and batch verification', () => {
+  assert.match(contract, /same planning task, not feature implementation/);
+  assert.match(contract, /Preserve working inputs, design, plans and review\/verification evidence/);
+  assert.match(contract, /does not automatically invoke work-closeout/);
+  assert.match(contract, /concise Markdown record of substantive review findings/);
+  assert.match(contract, /pause\s+only dependent work and continue genuinely independent work/);
+  assert.match(contract, /cosmetic edit does not justify unrelated full-suite or API-regression runs/);
+  assert.match(contract, /Do not deploy after every edit/);
+  assert.match(read('skills/work-closeout/SKILL.md'), /request to finish implementation is not authorization/);
+  assert.match(read('skills/plan-debate/SKILL.md'), /Require explicit debate selection/);
+});
+
+test('recovery distinguishes transport, quota and unknown-worker status without new configuration', () => {
+  assert.match(profile, /whether the owner is present or offline/);
+  assert.match(profile, /same configured model\/effort and approved account\/environment/);
+  assert.match(profile, /Switching transport does not bypass provider quota/);
+  assert.match(profile, /prior worker did not start or has stopped/);
+  assert.match(profile, /unresolved timeout is not permission to run a duplicate writer/);
+  assert.match(profile, /do not configure agents or infer equivalence/);
+  assert.match(profile, /No special planning-lane fallback prohibition is added/);
+  assert.doesNotMatch(profile + lanes, /Only (?:an )?explicit.*unattended-continuation authorization/);
+  for (const caseName of ['Plan only', 'Offline blocker', 'Completion and cadence', 'Relay-only failure',
+    'Exhausted quota', 'Unknown timeout']) assert.ok(read('test/native-smoke/operator-scenarios.md').includes(caseName));
 });
 
 test('standalone context and plan review do not require configured routing', () => {

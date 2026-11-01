@@ -73,7 +73,7 @@ use a separate session and cannot establish automatic discovery. **ZadLoop remai
 retained scaffolding. Do not resume it or add host-specific routing rules during these corrections.
 
 The evaluator inspects design ownership and chronology, QA before dependent planning, plan authorship/critique,
-implementation/tests, separate code review/corrections, PR preparation and accurate local closeout. The optional
+implementation/tests, separate code review/corrections, PR preparation and accurate retained completion state. The optional
 standalone customer-guide follow-up tests a distinct intent under the same selection. Lifecycle and routing checks
 use actual dispatch/results/artifacts; a post-implementation design correction is not retroactive compliance.
 
@@ -124,8 +124,8 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
   API regressions, independent substantive code review, author corrections and verification of accepted results.
 - Preserves authorization: routine progression does not need repeated permission; material decisions and the explicit
   design approval do. Preparing PR text is allowed; push/open/merge/deploy are not. Missing-route recovery does not
-  assume unattended fallback authorization or silently rewrite lanes.
-- States completion/evidence limits and relevant working-state/closeout handling without claiming execution. Missing
+  invent unapproved routes or silently rewrite lanes. The profile already authorizes suitable configured-default recovery; no extra unattended permission is needed.
+- States completion/evidence limits and retained working-state and explicitly selected closeout handling without claiming execution. Missing
   installed inputs produce an explicit limitation. An explanation that dispatches work violates this case's scope.
 
 Record observed contradictions separately from unanswered details. The session checks meaning; the verifier only

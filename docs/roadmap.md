@@ -1,6 +1,32 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: combined update ready for owner document review — 2026-11-01
+## Current: operator boundaries and recovery implemented — 2026-11-01
+
+The owner authorized implementing and committing agreed scenario decisions on the existing GitHub branch rather
+than retaining them only in conversation. Plan-only requests include ordinary review/corrections and stop before
+implementation; owner answers resume the same task. Substantive review findings, author dispositions and material
+rechecks remain in Markdown working evidence. A structured debate requires explicit selection.
+
+End-to-end delivery preserves working inputs/design/plan/review/verification records for owner inspection.
+It updates normal state without automatically invoking closeout, archival/deletion or publication. Verification
+and authorized deployments are batched around coherent changes; targeted early checks and affected rechecks
+remain appropriate. Unattended work does not guess material decisions: pause dependent work and continue truly
+independent work. Project-specific DEV version/environment authority is owned by HDC's canonical documents,
+updated on a separate branch there; no application deployment or user installation occurs here.
+
+The optional profile now permits automatic suitable approved-default recovery for specialist roles, including
+plan review, regardless of owner presence. Native workers are only bounded relay/tooling recovery when equivalent
+model/effort/account/source/permission controls are verified; they do not bypass quota or unknown running writers.
+No planning-lane exception remains, no native-preference setup is activated and no live configuration is changed.
+
+Validation: 34/34 offline portable tests and 5/5 HDC policy-source checks passed. A fresh source-based participant
+correctly applied plan-only continuation, unattended material blockers, retained artifacts/DEV version reuse,
+automatic approved-default review recovery, equivalent native relay recovery and unknown-writer handling; no
+substantive contradiction was reported. These are not installed host, provider, browser, deployment or regression-
+runner acceptance. The native pack adds explanation-only operator/recovery probes and retains detailed failure
+evidence. FD/LLD/QA quality work and the setup Luna prompt remain deferred.
+
+## Historical: combined update ready for owner document review — 2026-11-01
 
 The owner authorized pushing the combined orchestrator-planner/intake-first branch and improving diagnostic
 detail in the tests, while deferring the setup Luna prompt. FD/LLD/QA quality changes remain paused until the owner

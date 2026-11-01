@@ -78,7 +78,7 @@ posted.
 > "debate-review PR 123 --dry-run"
 
 ### ✅ Completing bounded work
-`work-closeout` reconciles a genuinely completed feature or other bounded work item. It reuses the project's working record, checks relevant citations, and updates/proposes only durable state that actually changed according to project policy. Ending a chat alone does not trigger it.
+`work-closeout` reconciles a genuinely completed feature or other bounded work item. It reuses the project's working record, checks relevant citations, and updates/proposes only durable state that actually changed according to project policy. Invoke it only for an explicit closeout/reconciliation request; implementation completion retains working files for owner inspection.
 > "Close out this feature"
 
 **`handoff` (by name): brief an actual transfer or deliberate pause** when normal project state is not enough for the next worker/environment. It is exceptional, not a chat-boundary ritual.
@@ -94,8 +94,8 @@ Commands for all three are in §2 and §4.
 ### The whole flow in one line
 - **Tiny/simple task:** inspect/clarify only what is needed → implement → targeted verification → stop or prepare/publish a PR only when requested/authorized.
 - **Small/medium work with fragmented inputs:** grill-me as needed → task-context if useful → lightweight plan/design as needed → implement → verification/review → PR stage when requested/authorized.
-- **Feature-scale work:** requirements/context → applicable Functional Design/LLD/QA scenarios → feature plan + delivery slices → slice implementation/verification/review/PRs → feature work-closeout.
-- **Completed feature/bounded work:** work-closeout when durable reconciliation or cleanup is useful. Ending a chat alone needs neither closeout nor handoff.
+- **Feature-scale work:** requirements/context → applicable Functional Design/LLD/QA scenarios → feature plan + delivery slices → slice implementation/verification/review and authorized publication → retained delivery state; closeout only when explicitly selected.
+- **Completed feature/bounded work:** preserve artifacts and working state; run work-closeout only when explicitly requested. Cleanup/archival needs explicit inventory authorization.
 
 `task-context` is adaptive, not mandatory: skip it when the task is already clear enough that another artifact would add no value.
 
@@ -317,7 +317,7 @@ Say: *"set up my delegation lanes"*. `delegate-setup` finds your installed CLIs,
 ### Execution mechanism
 
 AI Skills delegation mode uses the configured CLI delegation skills. Set up lanes once; ordinary requests select
-responsibilities and their configured routes automatically. Native-agent preference setup is parked. Do not create,
+responsibilities and their configured routes automatically. Native-agent preference setup is parked; a verified equivalent native child is permitted only for bounded relay/tooling recovery under the optional profile. Do not create,
 validate, migrate or delete existing local execution.json files or host agents during this refresh; they are unused
 by this profile. No standalone installer is implemented. Confirm copied-file parity and loading in selected hosts.
 
@@ -460,7 +460,7 @@ Same tail, with more up front:
    or routine technical survey; preserve original Q&A and superseded decisions clearly.
 3. **`create-lld`**, forward mode: *"write the LLD for CADE-1234 from the task context and approved requirements."*
    The design author reads original inputs and develops the design; task-context is navigation, not a preselected solution.
-4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** for a warranted author/challenger
+4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** for an explicitly selected author/challenger
    exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
    the orchestrator writes/revises the plan and a separate configured reviewer critiques it. Resolve material findings before
    implementation; then continue through the appropriate implementation, verification and PR stages.

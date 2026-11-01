@@ -6,7 +6,9 @@ description: Read-only, one-model critique of a proposed plan before implementat
 # Plan review
 
 Critique the proposed approach before work begins. Inspect and report; do not rewrite the plan, decide on the
-owner's behalf, or treat a clean review as proof that the plan is safe. This is a single review, not a debate.
+owner's behalf, or treat a clean review as proof that the plan is safe. This is ordinary review, not a separately
+selected structured debate. The author may respond and request targeted rechecks of material corrections without
+creating another review stage. Do not start extra reviewers or a debate merely because a finding is disputed.
 
 ## Inputs and boundaries
 
@@ -23,7 +25,8 @@ owner's behalf, or treat a clean review as proof that the plan is safe. This is 
   concerns against originals and challenge the plan's framing where evidence warrants it; do not treat a sourced
   concern as an approved requirement or demand a second context artifact merely to review.
 - This skill is read-only. It does not edit the plan, project scratchpad, handoff, code or durable project documents.
-  Use enforced read-only access or an immutable snapshot only when a real containment boundary requires it.
+  Use the supported enforced read-only boundary when required. A snapshot stabilizes inputs; it does not enforce
+  filesystem containment. Report a missing required boundary rather than claiming it from the absence of edits.
 
 ## Optional review artifact
 

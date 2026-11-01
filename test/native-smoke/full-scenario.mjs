@@ -55,7 +55,7 @@ Only project/drafts.mjs, project/docs/** and project/working/** may change. Neve
 requirements.md, acceptance.test.mjs, baseline.json or any other file outside project/.
 Use docs/ for final artifacts and working/ for compact state, context, plan/review evidence and test results.
 Produce a small customer Functional Design and architect LLD, QA scenarios, implementation plan with critique
-and author disposition, implemented code/tests, separate code review and disposition, PR description and local closeout.
+and author disposition, implemented code/tests, separate code review and disposition, PR description and retained completion state.
 Use task-context here: requirements, current code and this policy are separate inputs for downstream specialists.
 Tests are the fixed external acceptance.test.mjs plus relevant implementer-authored checks under working/.
 API regressions and an as-built Technical Design are inapplicable: this is a pure in-memory library.
@@ -66,7 +66,8 @@ The preparation baseline commit is fixture scaffolding, not feature delivery. Co
 that baseline. A commit-only PR helper may not represent the working tree; use verified worktree evidence for local
 PR text instead of fabricating a develop branch or making feature commits to satisfy the helper.
 Prepare PR text, but do not commit, push, open PRs, merge, deploy, change global settings or install/upgrade tools.
-Local closeout reconciles final docs and working state; retain review/dispatch evidence for this test.
+Update final working state and retain all inputs, docs and review/dispatch evidence for owner inspection.
+Do not automatically invoke work-closeout, archive or clear working files after implementation.
 `;
 const acceptance = `import { test } from 'node:test';
 import assert from 'node:assert/strict';

@@ -75,7 +75,9 @@ pointer for the optional **AI Skills delegation mode**. That separately guarded 
 The profile makes the orchestrator the implementation-plan author and uses configured CLI delegation skills for
 a separate plan reviewer and the other specialist deliverables. The author dispositions findings and revises the
 plan; `write-plan` remains available only for explicit user-assigned external authorship. Ordinary requests select the appropriate configured responsibility without per-task
-transport questions. Native-agent preference setup is parked; existing host agents/local preferences are preserved.
+transport questions. The approved configured default route may recover a failed specialist automatically. A verified
+equivalent native worker is permitted only as bounded relay/tooling recovery; native-preference setup remains parked,
+and existing host agents/local preferences are preserved.
 The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
 
 ### Generic project hierarchy
@@ -200,8 +202,11 @@ unless separately requested.
 
 ### `plan-review` and `plan-debate`
 
-`plan-debate` preserves the calling workflow's author and separate reviewer roles. It is a separately selected
-skill, not a prerequisite or an automatic extra review; one-shot `plan-review` remains the default critique.
+`plan-debate` preserves the calling workflow's author and separate reviewer roles and requires explicit selection.
+Ordinary `plan-review` includes author feedback, corrections and material rechecks; it is not an automatic debate
+or extra reviewer. Plan-only requests stop after reviewed planning; end-to-end delivery retains working artifacts
+and does not automatically run work-closeout, archive/delete inputs, push, open a PR or merge. Verification and
+authorized environment deployment are batched around coherent changes rather than every edit.
 
 Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
 no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to

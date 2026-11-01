@@ -22,10 +22,10 @@ For clear Full Feature delivery intent, cover these **default outcomes** unless 
 3. **Feature design:** produce the project's applicable Functional Design and forward LLD before dependent implementation planning. A project may define which design artifacts are required.
 4. **QA scenarios:** prepare feature-level, tester-facing behavioral scenarios from sufficiently settled requirements and design **before implementation planning**; do not conflate scenarios with executable tests.
 5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification.
-6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a reviewer distinct from the plan author when required by the selected workflow or project policy; self-checks do not satisfy that requirement. Recheck affected material revisions before declaring readiness. Use a structured author/reviewer debate when requested or warranted by consequential disagreement, without automatically adding another review. Do not label shared assumptions as independently verified merely because participants differ.
+6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a reviewer distinct from the plan author when required by the selected workflow or project policy; self-checks do not satisfy that requirement. Ordinary review includes evidence-backed author responses, corrections and rechecks of affected material revisions; it is not blind acceptance of every recommendation. A structured debate requires explicit selection: propose it for unresolved consequential disagreement rather than starting it automatically. Do not label shared assumptions as independently verified merely because participants differ.
 7. **Implementation and checks:** implement authorized delivery slices, run appropriate tests/builds/regressions and applicable quality guards.
 8. **Code review and corrections:** use a separate technical reviewer for substantive Full Feature code changes by default (unless explicitly omitted or inapplicable under project policy), alongside the responsible agent’s own diff inspection. Return attributable findings to the author and verify corrections; scale checks proportionately for trivial changes.
-9. **Publication and closeout:** create the appropriate PR description and reconcile completed feature state when applicable, without treating preparation as permission to push, merge, deploy or destroy working files.
+9. **Publication and closeout:** prepare the appropriate PR description and accurately record completed/pending state. Preserve working inputs, design, plans and review/verification evidence for owner inspection. End-to-end implementation does not automatically invoke work-closeout, archive or clear working files, push, open a PR or merge. Deployment follows the project's environment authorization; closeout/reconciliation and destructive cleanup need their applicable explicit scope.
 
 These are **outcome obligations, not a rigid execution order or named-skill dependencies**. Respect genuine prerequisites; independent preparation may overlap. If QA behavior cannot yet be settled, record the blocker and resume it before dependent planning is declared ready. For a Change/Bug, use only the proportionate activities and project gates.
 
@@ -46,7 +46,10 @@ For simple work, no feature/slice hierarchy is required. Inspect, fix, verify an
 ## Operator command semantics
 
 - **Inspect / analyze / debug:** investigate only unless the command also asks for a fix.
-- **Plan:** run the planning stage and its intrinsic checks, then stop.
+- **Plan / create an implementation plan:** author the plan, complete its applicable review, findings disposition
+  and material rechecks, then stop before implementation. Answers to outstanding planning questions resume that
+  same planning task, not feature implementation or a new approval interview. Return a reviewed plan or precise
+  unresolved decisions/limits; a first draft is not a final reviewed plan.
 - **Implement:** implement the active bounded work item and perform the technical verification/review needed to call
   the implementation complete; do not infer publication permission.
 - **Review:** perform independent review and report findings. Fix automatically only when the user asked for
@@ -54,6 +57,17 @@ For simple work, no feature/slice hierarchy is required. Inspect, fix, verify an
 - **Continue:** resume the authorized workflow from recorded state.
 - **Finish:** take the current bounded work item to its natural endpoint within the existing authorization.
 - **Take through X / stop before X:** X is an explicit checkpoint.
+
+**Implement this feature end to end** covers applicable preparation, planning/review, implementation, appropriate
+checks, separate technical review/corrections and authorized environment verification. It does not implicitly
+publish or clean up. Use standing environment authorization without asking again, while keeping other targets
+outside that scope. Preserve a concise Markdown record of substantive review findings, attributed author
+responses/dispositions and material rechecks in the existing approved working area so the owner can inspect it.
+If a reviewer cannot write, the caller saves the returned findings; no extra review transcript is required.
+
+**Continue without waiting / I am offline** authorizes routine progression within agreed scope, not guessed
+product, data, security or other material decisions. Record the exact question, options and recommendation; pause
+only dependent work and continue genuinely independent work. Preserve state and report partial completion honestly.
 
 ## Roles versus workflow actions
 
@@ -84,8 +98,12 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 - `handoff` is exceptional: use it for genuine transfer friction, a deliberate pause, or another environment/owner
   that cannot efficiently reconstruct the work from the normal artifacts.
 - `work-closeout` is for a genuinely completed bounded work item that needs durable reconciliation/cleanup. It is
-  not triggered merely because a conversation ends.
-- Pass attributed reviewer findings to the original artifact owner without rewriting the substance. Debate is optional for consequential disagreement; it need not generate multiple permanent records. Reconcile and clean temporary coordination artifacts when no longer needed, retaining required review evidence under project policy.
+  explicitly selected, not triggered merely because a conversation or implementation ends. Preserve working files
+  for owner inspection until their archival/removal is explicitly authorized.
+- Pass attributed reviewer findings to the original artifact owner without rewriting the substance. Ordinary
+  correction/recheck stays with those participants; propose a separately selected debate for consequential
+  unresolved disagreement. Reconcile compact execution state while retaining required review evidence; do not
+  clean temporary coordination artifacts automatically while owner inspection is pending.
 - Project artifacts, not conversation history, are the primary continuity mechanism.
 - Host-managed context transitions do not replace project execution records. Preserve material decisions, uncertainty, unresolved gates and next action in normal project state.
 
@@ -191,6 +209,18 @@ When a project uses delivery slices:
 The feature plan should record slice dependencies so branch selection is mechanical rather than inferred from filenames.
 
 ## QA scenarios and verification
+
+Batch verification around coherent changes rather than every file edit. Write relevant tests with the change;
+run proportionate tests/builds/review checks when that slice is ready. Earlier targeted checks are useful when
+they resolve a concrete uncertainty; a cosmetic edit does not justify unrelated full-suite or API-regression runs.
+After a correction, recheck affected behavior; broaden only for changed risk, failures or a required project gate.
+Do not repeat an evidenced check solely because another participant received its output.
+
+For ordinary end-to-end delivery, perform local checks/review/corrections before the consolidated authorized
+deployment and browser/API verification. Do not deploy after every edit. Re-deploy affected services when a later
+fix changes what must be verified; do not re-deploy unaffected services by habit. An explicit deployment-only
+request follows its own authorized scope rather than requiring the entire feature process first. Record local,
+deployed browser and authenticated API results separately, including unavailable login/fixture prerequisites.
 
 `qa-scenarios` specifies user-visible behavior for QA preparation; it does not execute tests. It is normally
 feature-level and should be created once behavior is sufficiently stable, before implementation when useful. Scenarios

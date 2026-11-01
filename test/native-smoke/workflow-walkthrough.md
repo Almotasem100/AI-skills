@@ -29,7 +29,7 @@ The project requires a customer-facing Functional Design and a forward LLD, with
 dependent implementation planning. Relevant automated tests/builds must run. Applicable API regressions and QA
 preparation are part of delivery. Security review is explicitly requested for the ownership boundary. Existing
 project-approved working records should be reused where present. PR-description preparation is authorized;
-push, opening a PR, merge and deployment are not authorized. No unattended fallback authorization was given.
+push, opening a PR, merge and deployment are not authorized. No arbitrary model/account/configuration changes are authorized; apply the profile's approved-default recovery permission without inventing routes.
 
 ## Your answer
 

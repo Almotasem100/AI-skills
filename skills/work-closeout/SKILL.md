@@ -1,6 +1,6 @@
 ---
 name: work-closeout
-description: Reconcile a genuinely completed feature or other bounded work item using the project's designated working record. Capture verified/unverified outcomes, decisions, deferred items, repo state and relevant durable write-backs; validate consequential source citations before relying on them. Use when the user asks to close out, wrap up completed work, reconcile the feature, or update durable project records. Do not invoke merely because a chat/session is ending, or for routine completion of a child/delivery slice while its parent feature remains active; update normal workflow state instead.
+description: Reconcile a genuinely completed feature or bounded work item when the user explicitly asks for closeout, durable reconciliation or project-record updates. Capture verified/unverified outcomes, decisions, deferred items and repo state; validate consequential citations. Do not invoke automatically after end-to-end implementation, a chat ending or a completed delivery slice. Preserve working files unless archival/removal is explicitly authorized.
 ---
 
 # Work closeout
@@ -8,8 +8,10 @@ description: Reconcile a genuinely completed feature or other bounded work item 
 Closeout is a **work-lifecycle** action, not a conversation-lifecycle action. A new chat/model, a pause, or a completed
 delivery slice does not require closeout when the parent work remains active.
 
-Use this skill when a feature or other agreed bounded work item is actually complete enough that durable project
-state, acceptance evidence, follow-ups or cleanup should be reconciled.
+Use this skill only when durable reconciliation/closeout is explicitly selected and the bounded work item is
+complete enough for it. Ordinary implementation completion updates normal working state without invoking this
+skill. Keep requirements, design, plans, review findings/responses and verification evidence available for owner
+inspection; a request to finish implementation is not authorization to archive or clear them.
 
 ## Inputs
 
@@ -76,7 +78,8 @@ the interpretation, implementation or acceptance outcome.
 Report the work item closed, durable write-backs, verification/acceptance actually established, deferred follow-ups,
 repository/publication/deployment state and any cleanup inventory.
 
-Cleanup is destructive. Perform it only when the current project/user authorization covers it. Preserve active parent
+Cleanup is destructive. Perform archival/removal only when the current explicit project/user authorization covers
+the identified inventory; requesting reconciliation alone does not clear the working folder. Preserve active parent
 feature context when only a child delivery slice completed. Do **not** automatically offer or create a handoff;
 handoff is for genuine transfer friction.
 

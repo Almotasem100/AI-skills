@@ -1,9 +1,12 @@
 ---
 name: plan-debate
-description: Run a structured, evidence-backed challenge/response debate on a proposed implementation plan before work begins. Use when the user asks to debate, stress-test, or challenge a draft plan with separate author and reviewer roles; not for one-shot plan review or code/PR review.
+description: Run a structured, evidence-backed author/reviewer debate on a proposed implementation plan when the user explicitly selects a debate. Ordinary review, author feedback and material rechecks use plan-review instead; do not activate this skill for every request to review or challenge a plan, or for code/PR review.
 ---
 
 # Plan debate
+
+Require explicit debate selection. For consequential disagreement in ordinary review, propose this process with
+the unresolved issue and expected value; do not activate it automatically or duplicate a completed review.
 
 Debate a plan before implementation. The working output is one **temporary debate record** plus the resulting plan,
 not a second project-of-record document and not the project's compact execution scratchpad. A clean debate is not
