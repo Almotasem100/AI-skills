@@ -222,11 +222,7 @@ test('standalone skill simplification preserves multi-reviewer debate and step-t
   assert.match(closeout, /Closing this item does not retire unresolved work/);
   assert.match(closeout, /consequential STALE citations or leave dependent closeout blocked/);
   assert.match(closeout, /current explicit\s+project\/user authorization covers that inventory/);
-  const starter = read('docs/next-session-prompt.md');
-  assert.match(starter, /not a skill or state updater/);
-  assert.match(starter, /does not verify or update it/);
-  assert.match(starter, /follow its AGENTS.md/);
-  assert.doesNotMatch(starter, /config\.mjs|work-closeout|^\d+\./m);
+
 });
 
 test('intake consumers retain source authority and do not require an upstream technical solution', () => {

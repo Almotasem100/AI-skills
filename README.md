@@ -55,7 +55,6 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `docs/future-ideas.md` | Candidate enhancements and source references; read only for future-option review, not normal task startup |
-| `docs/next-session-prompt.md` | Optional thin starter; not a skill and does not update working state |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
 
 ## Installing on a new machine

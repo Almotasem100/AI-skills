@@ -2,9 +2,9 @@
 
 ## Active
 
-- Trim and separate AI-skills instructions in owner-reviewed batches. Startup/role separation and shared-contract consolidation are complete. The third approved batch
-  simplifies intake, review/debate, closeout and the optional session starter while retaining standalone boundaries. No dashboard, new
-  execution system or general native routing is being built.
+- Trim and separate AI-skills instructions in owner-reviewed batches. Startup/role separation, shared-contract
+  consolidation and standalone intake/review/debate/closeout refinement are complete. No dashboard, new execution
+  system or general native routing is being built.
 - Participant allocation lives in the optional profile; role meanings live in the catalog. Shared workflow owns
   outcomes and review policy; skills own their bounded process. Project engineering policy remains in project repos.
 - Continue the comprehensive review in batches of five, using scenarios to evaluate principles rather than adding
