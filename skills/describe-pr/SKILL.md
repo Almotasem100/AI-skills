@@ -6,7 +6,8 @@ description: Write a pull request title and description for the current branch f
 # describe-pr
 
 Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* comes from explicit rationale or approved task sources, which task-context may preserve or locate. Task-context itself does not grant authority to its author's inferences. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
-Context is rebuilt from git on every run, so it works whether or not an AI wrote the code.
+Normally rebuild context from git on every run, whether or not an AI wrote the code. When that context cannot
+be established, a limited local draft is a separate outcome, not a validated branch comparison.
 
 `<skill-dir>` below means the folder that contains this file. Write every temporary file to the system temp
 folder, **never inside the repository**.
@@ -24,8 +25,10 @@ All optional. Use whatever the user gives; ask only for what's missing after che
 
 1. **Build the context.** From inside the repository run:
    `node <skill-dir>/scripts/context.mjs --out <temp>/describe-pr-context.json`
-   Options: `--base <branch>` if the base isn't the default for the branch type, `--budget <chars>`. If it
-   fails, show the error and stop.
+   Options: `--base <branch>` for a verified intended base, `--budget <chars>`. The helper compares committed
+   changes against that base; it does not include uncommitted work. If it fails or cannot represent the requested
+   change, report the limitation and follow [context-recovery.md](references/context-recovery.md). Do not silently
+   substitute a base or manufacture history. A limited local draft follows that reference instead of steps 2–7.
 
 2. **Read the context.** It holds the branch (type, ticket ID, naming problems), base, commits, stats, sizing,
    template, signals, `requiredSections`, and per-file diffs (`included: "full"`) or stats only (`"stat"`, with a

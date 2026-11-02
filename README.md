@@ -11,8 +11,8 @@ each host's skill-loading behavior, so no install guarantees availability in eve
   - `vendor/<owner>/<repo>/`: skills I copy in *and may modify* (my tech lead's delegate, review and guard
     skills). Each has an `UPSTREAM.md` recording the source repo and the exact commit it was copied from, plus a
     list of my local changes. To update: compare upstream from that commit to its latest, merge the changes in,
-    keep my additions, then record the new base commit. Once this folder is a git repo, `git subtree` does this
-    merge for me.
+    keep my additions, then record the new base commit. Preserve the vendor provenance and local patch when
+    integrating updates.
   - [`manifest.md`](manifest.md): skills I use unchanged (Pocock, …; Graphify was trialled and not adopted). Pinned to a commit and installed
     from source; to update, review the change and bump the pin. Never edit these in place: to change one, copy
     it into `vendor/` first.

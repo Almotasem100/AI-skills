@@ -1,22 +1,16 @@
 # Guide: install and use my skills with any AI agent
 
-> **Compatibility rename — 2026-10-11:** `session-closeout` is now `work-closeout`; `scenario-test-cases`
-> is now `qa-scenarios`. Reinstall the renamed directories and remove obsolete installed names only after
-> verifying the new copies. HDC's working folder is now `active-work/` in canonical project guidance.
-
-
 A plain-language guide to every skill in this setup: what it is for, how to install it on a machine, and what
 to say to your agent to use it. For *why* each skill is here, see `docs/decisions.md`; for the exact versions,
 see `manifest.md`.
 
-_Written 2026-09-25. What has and hasn't been tested is marked; don't assume more than that._
-
 ---
 
-## Quick start: which skill, when (added 2026-09-26)
+## Quick start: which skill, when
 
-Think of the skills as helpers you call at each stage of a ticket. Most start on their own when you describe
-what you want; the ones marked **(by name)** only start when you type their command.
+Skills are helpers for relevant tasks, not a mandatory sequence. Supporting hosts may select them from their
+descriptions; installation or matching wording does not guarantee loading. Explicit invocation syntax depends
+on the host. Examples marked **(by name)** are intended for explicit use.
 
 **Shared workflow:** follow `docs/orchestration-contract.md` and the active project's canonical rules.
 Choose the smallest sufficient workflow, preserve required outcomes and checkpoints, and use appropriate skills.
@@ -29,7 +23,7 @@ The optional **AI Skills delegation mode** has separate installation and activat
 Answer "agree" or "agree except Q3: …". Save its final summary: that's your spec.
 
 **`grill-with-docs` (by name): the same, for big tickets.** Use it when the ticket brings new business terms;
-it also builds a glossary as you answer. Run it from the docs folder, never a code repo.
+it also builds a glossary as you answer. Choose the project-approved working location: this skill writes glossary and ADR working files where it runs.
 > `/grill-with-docs new approval workflow for checklists`
 
 **`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A separate as-built Technical Design is optional only when the active project/team explicitly requires one. Source materials and code are inspected internally; deliverables omit evidence inventories and source-code paths/lines.
@@ -66,7 +60,7 @@ grill summary), as two separate reports. Don't apply findings blindly; some will
 
 ### 📬 The pull request
 **`describe-pr`: writes the PR for you.** It reads your changes, asks at most 4 questions, and opens the PR
-only after you say yes.
+only when the current authorization covers publication.
 > "Write the PR description. Ticket APP-123 'Navbar'. Tested: ng build, 108/108 specs."
 
 **`babysit-pr`: handles review comments.** Copilot or bot comments on your PR: it fixes the real problems
@@ -111,24 +105,25 @@ agent can load when a task matches. The same skill content is model-agnostic, bu
 the AI model does not search your disk itself, and not every agent supports this convention. After you copy a
 skill to a host's skills folder, confirm that host lists it; start a new session or reload skills if needed.
 
-An agent only sees a skill if the folder sits in **its skills folder**:
+This guide's copy procedure targets these user-level locations. Confirm the selected host actually discovers
+and loads the installed copy; a folder path alone is not proof of compatibility.
 
-| Agent | User-level skills folder (all projects) | Evidence |
-|---|---|---|
-| Claude Code | `C:\Users\<you>\.claude\skills\` | User-level skill loading has been exercised with earlier skills; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
-| Codex | `C:\Users\<you>\.agents\skills\` | Earlier skills were tested with codex-cli 0.157.0; the renamed/refined Portable workflow v2 skills are not yet reinstalled or natively re-tested here |
-| Gemini CLI | `C:\Users\<you>\.agents\skills\` | Gemini CLI 0.62.0 previously discovered/exercised task-context, create-lld and describe-pr on the pre-v2 source; current renamed/refined skills need reinstall + bounded re-test |
-| OpenCode and other compatible agents | `C:\Users\<you>\.agents\skills\` | OpenCode previously exercised plan/create-lld behavior on predecessor source; current v2 behavior remains to be verified after reinstall |
+| Host | Installation target used here |
+| --- | --- |
+| Claude Code | `~/.claude/skills/` |
+| Codex, Gemini CLI, OpenCode and compatible hosts | `~/.agents/skills/` |
 
-**Historical plan-skill smoke (2026-10-01):** the predecessor `plan-review` / `plan-debate` versions were exercised
-on a synthetic plan in read-only mode. The current 2026-10-11 refinements deliberately move full plan/review exchange
-out of the compact project scratchpad into a dedicated planning/debate record, so that old smoke is evidence for the
-earlier behavior only. No broad host/model compliance claim is made.
+If a host does not discover that location, follow its current documented configuration; do not duplicate or
+rewrite global settings blindly. Source checks, installed-file parity and observed host behavior are different
+claims. Use the [test pack](test/native-smoke/README.md) for verification and evidence limits, and the
+[roadmap](docs/roadmap.md) for pending work. Prior trials apply only to the revisions and environments recorded.
 
 Both folders start with a dot, so Windows Explorer may hide them: type the path in the address bar.
 
 **This repo is the source; those folders are the installed copies.** Copies don't update themselves: after
-you change a skill here, copy it again.
+you change a skill here, copy it again. When upgrading from obsolete installed names (`session-closeout` or
+`scenario-test-cases`), verify the `work-closeout` / `qa-scenarios` replacements before any authorized removal of
+the old directories.
 
 ---
 
@@ -170,8 +165,8 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 
 ### What you need first
 - **git** and **Node 18+** (`git --version`, `node --version`).
-- The **`AI-skills` folder** on that machine. Until it is a git repo, copy the whole folder across (USB,
-  network share, zip). Once it is a private repo, clone it.
+- A checkout of **`AI-skills`** at the intended revision. Clone `https://github.com/Almotasem100/AI-skills.git`
+  using your existing repository access, or use an authorized source copy. Confirm its revision before installation.
 - Optional, only for the skills that use them:
   - `gh` for `describe-pr` (create the PR) and `babysit-pr`/`debate-review`; set `GH_HOST` for GitHub
     Enterprise.
@@ -380,74 +375,44 @@ For Gemini, use the repository's current [overlay procedure](overlays/gemini-del
 local-branch or installed-version notes. Setup/parity and live host acceptance remain distinct; see the test pack.
 
 ### Small ticket
-1. **`grill-me`** (by name): *"/grill-me — ticket 38939409: add the shared header"*. It asks questions in
-   rounds, each with its recommended answer. Answer, and it continues until nothing is open. It changes nothing
-   until you confirm.
-   **Used for real 2026-09-26** (designing `tools/url-map`, in Claude): 2 rounds, 15 numbered questions, each
-   with a recommendation; the agent looked up the facts itself first (counts, file formats) and asked only for
-   decisions. Tips from that run:
-   - Answering *"agree"*, or *"agree except Q3: …"*, is enough.
-   - At the end it restates everything as one list for you to confirm: **save that list as the spec** (that run:
-     `tools/url-map/SPEC.md`). It's what `two-axis-review` checks the code against later.
-   - It pushed back on an earlier idea of its own (extend the triage TSV → a new generated file) once it had
-     read the file. Expect that; it's the point.
-   - In Claude, `/grill-me` can only be typed by you. An agent that wants the interview itself uses `grilling`
-     (the engine behind it).
-2. **Implement** the approved scope using the smallest sufficient workflow and applicable project verification.
-   For review-only or diagnosis-only requests, preserve the requested read-only boundary.
-3. **Guards**: *"run clean-code-guard on this change"* (also `test-guard` for tests, `docs-guard` for docs). On
-   ported legacy code (HDC): write the findings down; don't fix them in the same change.
-4. **`two-axis-review`**: *"review since develop, the spec is C:\...\LLD_CADE-1234.md"*. You get a
-   **Standards** report and a **Spec** report side by side. If it tells you to run `setup-matt-pocock-skills`,
-   **ignore that** and give it the LLD path instead.
-   **Used for real 2026-09-26** (reviewing `tools/url-map` against its grill spec, in Claude). What to know:
-   - It needs a **git diff**: a fixed point (branch, tag or commit) and committed changes after it. Uncommitted
-     work isn't reviewed. Without a repo, commit the spec, then the code, in a throwaway repo, and review from
-     the spec commit.
-   - It runs **two reviewers in parallel** (sub-agents). Their actual model/provider is a host/configuration detail;
-     the 2026-09-26 historical run happened to use Sonnet and cost ~155k tokens for a ~400-line diff.
-   - Read both reports, then **triage**: that run found 3 real spec gaps and 3 smells; one finding was wrong
-     (it wanted `AMBIGUOUS` on dispatch rules, which route many handlers by design) and was rejected with a
-     reason. Don't apply findings blindly.
-   - It does **not** merge the two reports, on purpose: code can match the spec and still break the standards,
-     or the other way round.
-5. **`describe-pr`**: *"write the PR description. Use the task context for the rationale. Tested: ng build, 108/108 specs."*
-   It asks at most 4 questions in one message and creates the PR only after your yes.
-6. **`babysit-pr`**: *"babysit PR 123"*. It checks each bot comment against the code and fixes real problems
-   locally, then shows you the commits and replies. **It pushes and posts only after your yes.**
+
+These are usage examples, not another execution policy. Use the shared contract and project rules for scope,
+required review, verification and authorization.
+
+- **Clarify when needed:** `/grill-me ticket APP-123: add the shared header`. Inspect accessible facts first;
+  ask for consequential decisions and retain the agreed requirements in the approved working record.
+- **Implement and check:** "Implement this bounded change and run the relevant project checks." Applicable
+  code/test/doc guards can provide a focused second pass; findings still need judgment and disposition.
+- **Review standards and behavior:** "Use two-axis-review since <verified-base>; the spec is <approved-path>."
+  The current vendored skill compares `<fixed-point>...HEAD`, so it needs a resolvable base and committed changes.
+  That comparison excludes uncommitted work. If the required history is missing, report that limitation and use an
+  appropriate working-tree/source review when available; do not create commits or a throwaway repo just to make
+  the tool run without authorization. Keep Standards and Spec findings distinct and assess them against sources.
+- **Prepare PR text:** "Write a local PR description from this change and the approved requirements; report only
+  recorded test results." `describe-pr` owns context recovery and drafting. Publication follows its authorization
+  rules; preparing text does not open a PR or push a branch.
+- **Handle PR feedback:** "Use babysit-pr on PR 123." Consult the selected skill for its actual capabilities
+  and posting/push boundaries rather than treating this example as authority for external actions.
 
 ### Big ticket
-Same tail, with more up front:
-1. **`grill-with-docs`** (by name), **run from an approved working-docs location, never from a code repo**:
-   current upstream creates `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADR working files wherever it runs. For HDC,
-   start the agent in `HDC-documents/active-work/`; treat those files as working artifacts and reconcile any
-   accepted durable decision into `HDC_Architecture_Decisions.md` during closeout. The historical trial started in
-   `C:\Users\Mohamed\Downloads\HDC\HDC\documents`, not in `cb379_hdc_pdc`.
-   **Trialled 2026-09-26** (HDC domain glossary, in Claude; stopped after round 1 on purpose). What to know:
-   - It works: `/grill-with-docs` loaded `grilling` + `domain-modeling`, read the Charter and the entity classes
-     itself (read-only), then asked 7 numbered questions with recommendations. It caught a real doc/code clash
-     (the Charter says review stages are fixed DR1–DR4; the code makes them a configurable per-tool list).
-   - **Where it writes:** the skill writes its glossary/ADR working files at its working root; choose that root deliberately.
-     If the project already keeps a decision log (HDC: `HDC_Architecture_Decisions.md`), tell it to propose
-     decisions there instead of starting a second one in `docs/adr/`.
-   - **Glossary questions need your domain knowledge** (what an Element *is*, what P/T stand for). Budget a
-     real session for it; it can't be answered from code.
-   - **Historical trial limit:** the 2026-09-26 run stopped before any glossary term was settled; the current `GLOSSARY.md` behavior has not yet been exercised natively on HDC.
-   - **Small tickets:** it runs on any size, but use `grill-me` there. `grill-with-docs` is the same interview
-     plus glossary/ADR upkeep, which only pays off when the ticket introduces or changes domain terms.
-2. **`task-context`**, when the ticket has several inputs/decisions or several downstream consumers:
-   *"Synthesize the task context from the ticket, requirements, grilling answers, screenshots/CSS and current project decisions."*
-   Save it in the project's approved working-artifact location. It is an intake-first record, not a team deliverable
-   or routine technical survey; preserve original Q&A and superseded decisions clearly.
-3. **`create-lld`**, forward mode: *"write the LLD for CADE-1234 from the task context and approved requirements."*
-   The design author reads original inputs and develops the design; task-context is navigation, not a preselected solution.
-4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** at the author's first reasoned dispute of a consequential technical finding, or explicit
-   request, continuing the same author/challenger exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
-   the profile’s ownership section assigns the plan author and separate reviewer. Resolve material findings before
-   implementation; then continue through the appropriate implementation, verification and PR stages.
-5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
-   the configured `review-main` and `review-debate` lanes); without
-   `--dry-run` it posts it. *"debate-review --local"* reviews your working tree before a PR exists.
+
+For larger work, use the applicable Full Feature outcomes in the shared contract. Useful requests include:
+
+- **Clarify domain concepts:** `/grill-with-docs new approval workflow`. Choose the active project's approved
+  working location first: the pinned skill creates glossary, glossary-map and ADR working files there. If the
+  project already has a glossary or decision log, use its canonical records rather than creating competing ones.
+- **Preserve shared intake when useful:** "Record the original source pointers, approved scope, consequential
+  Q&A/decisions and open questions." `task-context` is navigation to authoritative inputs, not a chosen solution.
+- **Design:** "Write the feature LLD and required Functional Design from these approved requirements."
+  `create-lld` owns the design process; project rules own artifact locations and applicable approval gates.
+- **Prepare QA:** "Draft tester-facing scenarios from the settled requirements and Functional Design."
+  Follow the shared contract's early QA timing; these scenarios do not execute tests.
+- **Plan and review:** "Prepare the implementation plan and complete its applicable independent review."
+  In AI Skills delegation mode, the profile assigns participants. `plan-review` and conditional `plan-debate`
+  own their bounded processes; this walkthrough does not assign models or duplicate their convergence policy.
+- **Optional PR debate:** `debate-review PR 123 --dry-run` prepares a review without posting it; consult the
+  selected skill for prerequisites and actual publication behavior. Do not remove `--dry-run` unless posting is
+  authorized.
 
 ### Any time
 - **`task-context`**, when task understanding is fragmented or several later roles would otherwise reread the
@@ -461,15 +426,11 @@ Same tail, with more up front:
 
 - **`work-closeout`**, when a feature or agreed bounded work item is actually complete: *"close out this feature."* It reuses the project's working record, reconciles relevant durable state, validates source citations where applicable, and follows project cleanup policy. A new chat or a completed delivery slice alone does not trigger it.
 
-- **`handoff`** (by name): *"/handoff — next session continues the navbar tests"*. It writes the brief to your
-  temp folder, not the project.
-  **Used for real 2026-09-26** (brief for the B9 side-effect audit, in Claude): ~1 page, pointed at the
-  runbook/Charter/rules by path instead of copying them, named the next skills, and flagged that the audit
-  doesn't actually need the deploy it was waiting on. What to know:
-  - **Different job from `work-closeout`:** closeout records what *happened* and queues doc updates;
-    `handoff` briefs *one next task*. Use handoff only when an actual transfer needs extra briefing; ending a chat alone needs neither.
-  - The temp folder isn't durable or discoverable: copy the file into the project's `sessions\` folder if it
-    must survive, and paste its path into the next agent's first message.
+- **`handoff`** (by name), for an actual transfer that needs extra briefing:
+  `/handoff transfer this unfinished investigation to the next environment`. The pinned skill writes to a temp
+  location. If the brief must survive, preserve it in the project's approved working location and pass its path
+  to the next participant. Ordinary continuation should use the existing current working state; a new chat alone
+  does not require a handoff or closeout.
 
 ---
 
