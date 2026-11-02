@@ -112,9 +112,8 @@ Evaluate the explanation against the **actual** installed contract/profile, scen
 - Covers the applicable Full Feature outcomes through the authorized endpoint. Clarifies consequential unresolved
   behavior before treating dependent design/QA/planning as settled; includes required FD/LLD approval and QA before
   implementation planning. Keeps optional context synthesis conditional and the feature/slice distinction meaningful.
-- Preserves this profile's orchestrator plan authorship, separate configured plan review and author findings
-  disposition, including reviewer rechecks of affected material revisions. `write-plan` is not dispatched by
-  default; explicit user-assigned external authorship is recorded as an exception. Extra review/debate is
+- Checks the active profile's participant assignments and separate plan review, author disposition and
+  reviewer rechecks of material revisions. Check explicit task overrides against the recorded user authority. Extra review/debate is
   conditional, not automatically stacked. Mentioning a capability is not permission to modify it.
 - Resolves configured CLI routes without per-assignment mechanism questions and preserves explicit routing overrides.
 - Assigns applicable specialist outputs to actual configured routes. Does not invent a lane/model for missing roles,

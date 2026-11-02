@@ -41,9 +41,9 @@ It returns prioritized findings with source evidence, assumptions, missing decis
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
 
-**`plan-debate` (material technical disagreement or explicit request):** a structured challenge/response workflow around a proposed plan. The orchestrator chairs the
+**`plan-debate` (material technical disagreement or explicit request):** a structured challenge/response workflow around a proposed plan. The caller coordinates the
 exchange in a temporary debate record; the project scratchpad stays compact. The plan-author and reviewer roles own their substantive outputs.
-Configured lanes select the actual providers/models unless you override them. Give each role only the context and
+The calling workflow supplies participants and execution; the skill does not bind providers or models. Give each role only the context and
 source access it needs; use immutable snapshots only when a real read-only/containment boundary requires them.
 > "Stress-test this implementation plan before coding and resolve the findings"
 
@@ -261,6 +261,7 @@ Copy-Item -Force "$setup/docs/orchestration-contract.md" $instructionRoot
 if ($withDelegation) {
   Copy-Item -Force "$setup/docs/ai-skills-delegation.md" $instructionRoot
   Copy-Item -Force "$setup/docs/delegation-lanes.md" $instructionRoot
+  Copy-Item -Force "$setup/docs/cli-dispatch.md" $instructionRoot
 }
 # Select the hosts you use; copying replaces those selected host instruction files.
 # Preserve/merge any existing personal instructions before running these lines.
@@ -464,7 +465,7 @@ Same tail, with more up front:
    The design author reads original inputs and develops the design; task-context is navigation, not a preselected solution.
 4. Use **`plan-review`** for a one-shot read-only critique, or **`plan-debate`** at the author's first reasoned dispute of a consequential technical finding, or explicit
    request, continuing the same author/challenger exchange in a temporary debate record, keeping the normal scratchpad compact. In AI Skills delegation mode,
-   the orchestrator writes/revises the plan and a separate configured reviewer critiques it. Resolve material findings before
+   the profile’s ownership section assigns the plan author and separate reviewer. Resolve material findings before
    implementation; then continue through the appropriate implementation, verification and PR stages.
 5. Optional: **`debate-review`**: *"debate-review PR 123 --dry-run"* prints the review (its two reviewers are
    the configured `review-main` and `review-debate` lanes); without

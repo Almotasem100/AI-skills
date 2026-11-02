@@ -22,7 +22,7 @@ For clear Full Feature delivery intent, cover these **default outcomes** unless 
 3. **Feature design:** produce the project's applicable Functional Design and forward LLD before dependent implementation planning. A project may define which design artifacts are required.
 4. **QA scenarios:** prepare feature-level, tester-facing behavioral scenarios from sufficiently settled requirements and design **before implementation planning**; do not conflate scenarios with executable tests.
 5. **Implementation plan:** produce an actionable blueprint with dependencies, delivery slices when relevant, applicable project architectural constraints and verification.
-6. **Plan challenge/acceptance:** critically review the plan using applicable plan-review guidance and source evidence; route material findings to the plan author. Use a reviewer distinct from the plan author when required by the selected workflow or project policy; self-checks do not satisfy that requirement. Ordinary review includes evidence-backed author responses, corrections and rechecks of affected material revisions; it is not blind acceptance of every recommendation. Start a focused structured debate when the plan author first disputes a consequential technical finding, or when explicitly requested; do not wait for a second reviewer refusal. Reuse the plan, existing finding and same participants. Minor preferences or an accepted correction do not require debate; missing facts require investigation and owner-level choices require the owner. Do not label shared assumptions as independently verified merely because participants differ.
+6. **Plan challenge/acceptance:** complete source-grounded critique and author findings disposition, with a distinct reviewer when required by the selected workflow or project. Apply **Review and ownership** below for corrections, debate and unresolved findings; self-review is not independent review.
 7. **Implementation and checks:** implement authorized delivery slices, run appropriate tests/builds/regressions and applicable quality guards.
 8. **Code review and corrections:** use a separate technical reviewer for substantive Full Feature code changes by default (unless explicitly omitted or inapplicable under project policy), alongside the responsible agent’s own diff inspection. Return attributable findings to the author and verify corrections; scale checks proportionately for trivial changes.
 9. **Publication and closeout:** prepare the appropriate PR description and accurately record completed/pending state. Preserve working inputs, design, plans and review/verification evidence for owner inspection. End-to-end implementation does not automatically invoke work-closeout, archive or clear working files, push, open a PR or merge. Deployment follows the project's environment authorization; closeout/reconciliation and destructive cleanup need their applicable explicit scope.
@@ -100,12 +100,8 @@ mechanics are workflow actions, not separate AI roles. A model diagnoses failure
 - `work-closeout` is for a genuinely completed bounded work item that needs durable reconciliation/cleanup. It is
   explicitly selected, not triggered merely because a conversation or implementation ends. Preserve working files
   for owner inspection until their archival/removal is explicitly authorized.
-- Pass attributed reviewer findings to the original artifact owner without rewriting the substance. Ordinary
-  correction/recheck stays with those participants. A first reasoned dispute of a consequential technical finding
-  starts focused debate with the same participants; do not require another refusal, restart review or add agents.
-  Bound exchanges by new evidence/progress. Unresolved material concerns return to the owner with both positions,
-  evidence and recommendation; the author cannot close them unilaterally while the reviewer still disputes them. Reconcile compact execution state while retaining required review evidence; do not
-  clean temporary coordination artifacts automatically while owner inspection is pending.
+- Preserve attributed review findings/dispositions in approved working evidence; keep the scratchpad limited to
+  resulting execution state. Apply **Review and ownership** for resolving disagreement.
 - Project artifacts, not conversation history, are the primary continuity mechanism.
 - Host-managed context transitions do not replace project execution records. Preserve material decisions, uncertainty, unresolved gates and next action in normal project state.
 
@@ -164,7 +160,17 @@ workflow explicitly grants them authority.
 - An independent reviewer receives requirements/scope, relevant design constraints, the actual diff, verification
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
 - Reviewers verify consequential claims rather than checking only that citations exist.
-- For plan reviews, apply the available plan-review capability and the selected workflow's author/reviewer ownership. Use a separate reviewer when requested, warranted or required; the author retains plan mutations and findings disposition. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
+- The actual plan author owns revisions and evidence-backed findings disposition: accept/revise, reject with
+  evidence, or leave open with the needed check/decision. Reviewers return findings and recheck affected material
+  revisions; they do not direct mutations. Preserve substantive findings, author responses and material rechecks
+  in concise Markdown working evidence, with the caller saving returned findings if the reviewer cannot write.
+- Start focused `plan-debate` at the plan author's first reasoned dispute of a consequential technical finding,
+  or explicit request. Reuse the existing plan, finding and participants; no second reviewer refusal, extra
+  permission or automatic additional reviewer. Accepted corrections and minor preferences stay ordinary feedback.
+  Investigate missing facts; material owner choices require the owner. Stop exchanges that add no evidence/progress.
+  The author cannot unilaterally close an unresolved consequential finding: pause affected work and return both
+  positions, evidence, alternatives and a recommendation. Independent authorized work may continue. If required
+  debate capability is unavailable, retain the blocker rather than silently skipping it or installing tooling.
 - Separate a valid review finding from the reviewer's proposed remedy. Prefer a smaller correction when the
   reviewer confirms it resolves the underlying issue. Return an unnecessary broader refactor to the owner as
   follow-up feedback; do not implement it automatically or make it a completion gate. If the reviewer rejects

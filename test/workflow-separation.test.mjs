@@ -12,6 +12,7 @@ const contract = read('docs/orchestration-contract.md');
 const profile = read('docs/ai-skills-delegation.md');
 const lanes = read('docs/delegation-lanes.md');
 const guide = read('GUIDE.md');
+const dispatch = read('docs/cli-dispatch.md');
 
 // Source regressions: these do not establish model adherence or native host loading.
 test('shared entry has one explicit opt-in pointer and no execution-mode policy', () => {
@@ -30,7 +31,7 @@ test('optional instructions guard activation before routing and retain continuit
   assert.match(profile.slice(0, guardEnd), /Do not read further or apply these instructions unless the user has explicitly selected/);
   assert.match(profile.slice(0, guardEnd), /AI Skills delegation mode/);
   assert.match(profile, /same session/);
-  assert.match(profile, /new session must not infer activation from an older/);
+  assert.match(profile, /new session must not infer\s+activation from an older/);
   assert.match(profile, /standing-authorizes automatic fallback/);
   assert.match(profile, /process\/relay success/);
   assert.match(profile, /response success/);
@@ -40,35 +41,34 @@ test('optional instructions guard activation before routing and retain continuit
   }
 });
 
-test('optional profile uses CLI routes without native preference setup and preserves ownership', () => {
-  assert.match(profile, /orchestrator authors and revises the implementation plan by default/);
-  assert.match(profile, /separate plan review through the configured `challenge-plan` responsibility/);
-  assert.match(profile, /Self-checks do not\s+replace this separate review/);
-  assert.match(profile, /missing review route is a blocker/);
+test('participant allocation is explicit and isolated from role meanings, skill process and transport', () => {
+  const ownership = profile.split('## Ownership and activation')[1].split('## Execution mechanism')[0];
+  assert.match(ownership, /Implementation-plan author \| The orchestrator by default/);
+  assert.match(ownership, /only an explicit user assignment selects an external author through `write-plan`/);
+  assert.match(ownership, /Plan reviewer \| A separate participant through `challenge-plan`/);
+  assert.match(ownership, /Self-checks do not\s+replace required separate review/);
+  assert.match(ownership, /missing review route is a blocker/);
+  assert.match(ownership, /role assigned to the orchestrator is\s+performed directly; externally assigned work uses/);
   assert.match(profile, /configured CLI delegation skills/);
   assert.match(profile, /user need not name a lane or choose a mechanism/);
   assert.match(profile, /including Gemini CLI/);
   assert.match(profile, /does not read local execution.json/);
-  assert.match(profile, /shell\/process access as well as edit-tool permissions/);
+  assert.match(profile, /shell\/process and edit\s+permissions/);
   assert.match(guide, /Do not create,[\s\S]*?delete existing local execution.json/);
   assert.doesNotMatch(profile, /native-preferred|relay-preferred|roleMechanisms/);
   assert.doesNotMatch(guide, /Copy-Item.*execution.example|\$executionFile/);
   assert.doesNotMatch(globalInstructions + contract, /execution\.json|Gemini CLI|native-preferred|relay-preferred/);
-});
-
-test('planning ownership stays consistent through routing, corrections and optional debate', () => {
-  assert.match(lanes, /Do not dispatch `write-plan` merely because the lane exists/);
-  assert.match(profile, /Only an explicit user assignment delegates plan authorship/);
-  assert.match(lanes, /plan author owns revisions and evidence-backed findings disposition/);
-  assert.match(lanes, /reviewer checks affected material revisions before the plan is called ready/);
-  const debate = read('skills/plan-debate/SKILL.md');
-  assert.match(debate, /Preserve the calling workflow's plan author/);
-  assert.match(debate, /do not dispatch a replacement author/);
-  assert.match(debate, /challenge reviewer\s+distinct from the author/);
-  for (const source of [profile, lanes, read('README.md'), read('test/native-smoke/README.md'),
-    read('test/native-smoke/full-scenario.md')]) {
-    assert.doesNotMatch(source, /configured planner authors|delegated planner authorship|planner authors and orchestrator critiques|orchestrator reviews\. Ordinary/);
+  assert.match(lanes, /not a fixed participant, provider, model or transport/);
+  assert.doesNotMatch(lanes, /orchestrator|by default|only an explicit user assignment/i);
+  for (const path of ['skills/plan-review/SKILL.md', 'skills/plan-debate/SKILL.md']) {
+    assert.doesNotMatch(read(path), /orchestrator|configured lanes?|write-plan|challenge-plan|Gemini CLI/i, path);
   }
+  assert.match(read('skills/plan-debate/SKILL.md'), /preserve the calling workflow's plan author/i);
+  assert.match(read('skills/plan-debate/SKILL.md'), /caller supplies\s+participants and execution mechanism/);
+  // Current allocation must not leak into role definitions, skill process, or transport instructions.
+  assert.doesNotMatch(profile.split('## Execution mechanism')[1], /orchestrator.*(?:authors|writes|reviews).*plan/i);
+  assert.match(read('README.md'), /participant-allocation authority/);
+
 });
 
 test('shared workflow retains nine outcomes, prerequisite order and independent review', () => {
@@ -79,7 +79,7 @@ test('shared workflow retains nine outcomes, prerequisite order and independent 
     'Code review and corrections:', 'Publication and closeout:']);
   assert.match(section, /QA scenarios:[\s\S]*?\*\*before implementation planning\*\*/);
   assert.match(section, /use a separate technical reviewer for substantive Full Feature code changes by default/);
-  assert.match(contract, /accept\/revise, reject with evidence, or leave open/);
+  assert.match(contract, /accept\/revise, reject with\s+evidence, or leave open/);
   assert.match(contract, /self-checks and outcome verification do not substitute for independent review/);
   assert.match(section, /unless the owner explicitly omits/);
 });
@@ -98,8 +98,8 @@ test('operator boundaries retain evidence, stop plan-only work and batch verific
 
 test('debate starts at first material technical disagreement without restarting review or overriding owner choices', () => {
   const debate = read('skills/plan-debate/SKILL.md');
-  assert.match(profile, /When the author first disputes a\s+consequential technical finding/);
-  assert.match(profile, /No second reviewer refusal, extra permission/);
+  assert.match(contract, /first reasoned dispute of a consequential technical finding/);
+  assert.match(contract, /no second reviewer refusal, extra\s+permission/);
   assert.match(debate, /existing review, reuse its finding as the initial challenge/);
   assert.match(debate, /author cannot unilaterally close a consequential finding/);
   assert.match(debate, /Accepted corrections and minor preferences remain ordinary/);
@@ -119,7 +119,7 @@ test('implementation evidence preserves discretion, plan ownership and focused r
   assert.match(section, /focused review of material revisions/);
   assert.match(section, /outside that authority requires the owner's decision/);
   assert.match(section, /Pause only dependent work/);
-  assert.match(profile, /orchestrator as plan author \(or the explicitly assigned\s+external author\)/);
+  assert.match(profile, /assigned author owns revisions and findings disposition/);
 });
 
 test('review corrections separate the finding, remedy and optional refactor', () => {
@@ -129,20 +129,34 @@ test('review corrections separate the finding, remedy and optional refactor', ()
   assert.match(contract, /Implement an agreed remedy within existing authority without extra permission/);
   assert.match(contract, /unresolved consequential disputes or remedies outside existing\s+authority return to the owner/);
   assert.match(contract, /Code-fix debate does not automatically invoke the\s+planning-only plan-debate skill/);
-  assert.match(profile, /same author\/reviewer; no additional reviewer or approval/);
+  assert.match(contract, /between those participants over the\s+fix/);
 });
 
 test('recovery distinguishes transport, quota and unknown-worker status without new configuration', () => {
   assert.match(profile, /whether the owner is present or offline/);
   assert.match(profile, /same configured model\/effort and approved account\/environment/);
   assert.match(profile, /Switching transport does not bypass provider quota/);
-  assert.match(profile, /prior worker did not start or has stopped/);
-  assert.match(profile, /unresolved timeout is not permission to run a duplicate writer/);
-  assert.match(profile, /do not configure agents or infer equivalence/);
-  assert.match(profile, /No special planning-lane fallback prohibition is added/);
+  assert.match(profile, /prior worker did not start\s+or has stopped/);
+  assert.match(profile, /Unknown status blocks a duplicate writer/);
+  assert.match(profile, /Do not configure agents or infer equivalence/);
+  assert.match(profile, /delegated responsibilities, including review/);
   assert.doesNotMatch(profile + lanes, /Only (?:an )?explicit.*unattended-continuation authorization/);
   for (const caseName of ['Plan only', 'Offline blocker', 'Completion and cadence', 'Relay-only failure',
     'Exhausted quota', 'Unknown timeout']) assert.ok(read('test/native-smoke/operator-scenarios.md').includes(caseName));
+});
+
+test('startup stays current and dispatch diagnostics load on demand', () => {
+  const roadmap = read('docs/roadmap.md');
+  assert.doesNotMatch(roadmap, /## Historical|## Owner decisions|## Status|## Active owner-approved plan/);
+  assert.match(roadmap, /Historical status and superseded decisions are retained in Git/);
+  assert.doesNotMatch(globalInstructions, /QA scenarios|plan-debate|challenge-plan|write-plan/);
+  assert.match(globalInstructions, /orchestration-contract.md/);
+  assert.match(profile, /CLI dispatch reference/);
+  assert.doesNotMatch(profile, /config\.mjs|lane\.mjs|argument shape|Blank command lookup/);
+  assert.match(dispatch, /config\.mjs.*load --cwd/);
+  assert.match(dispatch, /resolution internally/);
+  assert.match(dispatch, /rejected argument shape is not a permission denial/);
+  assert.match(dispatch, /Route resolution is not dispatch/);
 });
 
 test('standalone context and plan review do not require configured routing', () => {
@@ -208,7 +222,7 @@ test('companion file layout resolves the installed pointers with and without opt
     assert.ok(!existsSync(join(destination, 'ai-skills-delegation.md')));
     // The ordinary shared instruction path contains no dependency on the optional file.
     assert.doesNotMatch(contract, /ai-skills-delegation\.md|delegation-lanes\.md/);
-    for (const file of ['ai-skills-delegation.md', 'delegation-lanes.md']) {
+    for (const file of ['ai-skills-delegation.md', 'delegation-lanes.md', 'cli-dispatch.md']) {
       assert.ok(guide.includes(`Copy-Item -Force "$setup/docs/${file}" $instructionRoot`));
       copyFileSync(join(root, 'docs', file), join(destination, file));
     }

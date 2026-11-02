@@ -72,13 +72,11 @@ state. Preserve source evidence, proportionate verification, findings dispositio
 The shared collaboration template is `templates/global-user-instructions/AGENTS.md`. It contains one activation
 pointer for the optional **AI Skills delegation mode**. That separately guarded profile is
 [`docs/ai-skills-delegation.md`](docs/ai-skills-delegation.md); install its companion files only when wanted.
-The profile makes the orchestrator the implementation-plan author and uses configured CLI delegation skills for
-a separate plan reviewer and the other specialist deliverables. The author dispositions findings and revises the
-plan; `write-plan` remains available only for explicit user-assigned external authorship. Ordinary requests select the appropriate configured responsibility without per-task
-transport questions. The approved configured default route may recover a failed specialist automatically. A verified
-equivalent native worker is permitted only as bounded relay/tooling recovery; native-preference setup remains parked,
-and existing host agents/local preferences are preserved.
-The shared workflow does not choose an execution mechanism. See `GUIDE.md` for the two setup choices.
+The profile's **Ownership and activation** section is the participant-allocation authority. The semantic catalog
+and reusable skills do not hardcode who holds the planning/review roles. Its **Execution mechanism** section selects
+configured CLI relays; the on-demand [dispatch reference](docs/cli-dispatch.md) covers discovery/troubleshooting.
+The shared workflow does not select a transport. Native routing remains parked except for the profile's bounded
+recovery authorization. See `GUIDE.md` for installation choices; availability is not demonstrated execution.
 
 ### Generic project hierarchy
 
@@ -202,12 +200,8 @@ unless separately requested.
 
 ### `plan-review` and `plan-debate`
 
-`plan-debate` preserves the calling workflow's author and separate reviewer roles. It starts at the author's
-first reasoned dispute of a consequential technical finding, or on explicit request, using the same plan, finding
-and participants. No second reviewer refusal or additional permission is required. Accepted corrections, minor
-preferences and ordinary rechecks do not trigger it; missing facts and owner decisions need their own resolution. Plan-only requests stop after reviewed planning; end-to-end delivery retains working artifacts
-and does not automatically run work-closeout, archive/delete inputs, push, open a PR or merge. Verification and
-authorized environment deployment are batched around coherent changes rather than every edit.
+Use the shared contract's **Review and ownership** policy to decide when ordinary feedback becomes debate.
+The calling workflow supplies the author/reviewer assignments; these skills do not select models or transport.
 
 Both accept a proposed plan directly, including a dedicated temporary planning/debate record or an existing handoff;
 no separate implementation-brief artifact is needed. Keep the project's normal scratchpad compact: it may point to
@@ -220,18 +214,9 @@ when available.
   assertions. It does not edit the plan or project scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
   handoff."*
-- **`plan-debate`:** structured multi-role challenge/response around a proposed plan. The orchestrator coordinates
-  the exchange in one temporary debate record; the normal project scratchpad stays compact. Coordination ownership
-  does not replace the workflow's plan author: in AI Skills delegation mode, the orchestrator normally authors
-  and revises the plan, while the challenge reviewer uses a configured lane. Explicit user-assigned external
-  authorship remains supported. Reviewers return attributed findings and
-  the plan author responds to them; the orchestrator routes the rounds, records state and escalates only material
-  unresolved decisions. Give each participant only the context and source access needed for its role. Use an
-  scratchpad/plan snapshot when stable review inputs are needed. A snapshot does not enforce read-only execution;
-  use the supported execution boundary and report missing containment under the applicable project gate.
-  The skill itself stops before implementation, but a clean debate does not create a new approval gate:
-  an already-authorized parent workflow may continue unless the owner requested a checkpoint or a genuine blocker
-  remains. A clean debate is not proof of safety.
+- **`plan-debate`:** focused evidence-backed author/reviewer exchanges, using participants supplied by the
+  calling workflow. Reuse existing findings, record disposition and stop when no material progress is made.
+  The skill does not choose role allocation, model or transport, implement code or create publication permission.
 
 Neither skill reviews code or PRs; use `two-axis-review`, `debate-review`, or `babysit-pr` for those workflows.
 

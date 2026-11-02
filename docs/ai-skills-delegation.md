@@ -5,163 +5,82 @@
 
 ## Ownership and activation
 
-The selected agent owns orchestration and implementation-plan authorship, and delegates the other specialist deliverables. Apply the shared
-[workflow contract](orchestration-contract.md) and canonical project policy without changing their required outcomes.
-Resolve specialist work as `intent -> responsibility -> configured lane -> installed CLI delegation skill`.
-Read the actual local lane configuration and use the matching CLI relay with its configured provider/model/effort
-and authorized environment. A model's presence in a host catalog does not select a route. Honor explicit user
-routing/model overrides without silently changing persistent configuration.
+Apply the shared [workflow contract](orchestration-contract.md) for outcomes, prerequisites, review/debate,
+revision, evidence and authorization. Project instructions supply engineering constraints, not AI role allocation.
 
-The orchestrator authors and revises the implementation plan by default. For substantive plans, delegate a
-separate plan review through the configured `challenge-plan` responsibility using applicable plan-review guidance
-and authoritative sources, unless explicitly omitted or inapplicable under project policy. As plan author, the orchestrator
-dispositions each material finding: accept/revise, reject with evidence, or leave open with the needed check or
-decision. Recheck affected material revisions with the reviewer before calling the plan ready. Self-checks do not
-replace this separate review. Give the reviewer original-source access without a persuasive defense of the plan;
-a separate session alone does not guarantee an unbiased review. Ordinary author responses/corrections and
-reviewer rechecks are part of review, not an automatic debate or another reviewer. Preserve attributed findings,
-author dispositions and material rechecks in a concise Markdown record in the approved working area; save the
-reviewer's returned findings as caller if its boundary prevents writes. When the author first disputes a
-consequential technical finding, start focused `plan-debate` immediately using the same plan, finding and reviewer;
-the author's evidence-backed objection is its first contribution. No second reviewer refusal, extra permission,
-new review stage or extra agent is required. Explicit debate requests also apply. Accepted corrections and minor
-preferences stay ordinary feedback; investigate missing facts and ask the owner for material product decisions.
-Stop unproductive exchanges and pause affected work for an unresolved consequential dispute, reporting both
-positions, evidence and recommendation. The orchestrator cannot unilaterally close that disputed concern.
-If the required debate capability cannot run, record the limitation and keep the affected issue unresolved rather
-than bypassing it or silently installing tooling. Only an explicit user assignment delegates plan authorship (for example to `write-plan`);
-that author owns plan revisions and findings disposition, while the orchestrator coordinates the separate review.
-A user-authorized task exception may assign another deliverable to the
-orchestrator without changing the session profile or waiving project gates.
+This section alone assigns participants to roles. Role responsibilities are in the [catalog](delegation-lanes.md);
+skills describe how to perform them. Execution below supplies transport for external assignments without
+redefining their responsibilities.
+
+| Role | Current assignment |
+| --- | --- |
+| Coordination and shared execution state | The orchestrator |
+| Implementation-plan author | The orchestrator by default; only an explicit user assignment selects an external author through `write-plan` |
+| Plan reviewer | A separate participant through `challenge-plan` for substantive plans, unless explicitly omitted or inapplicable |
+| Other specialist deliverables | Separate participants through their matching configured responsibilities |
+
+An explicit user reassignment changes the participants for that task. A role assigned to the orchestrator is
+performed directly; externally assigned work uses the execution mechanism below. This changes neither the
+role responsibilities nor persistent configuration.
+
+The assigned author owns revisions and findings disposition; reviewers own findings and material rechecks.
+The orchestrator coordinates, inspects results and may run authorized deterministic checks. Self-checks do not
+replace required separate review. A task-scoped direct-work exception must be explicit; missing routes or broad
+permission to finish do not transfer specialist authorship to the orchestrator. Honor explicit task overrides
+without silently changing persistent configuration or this profile. A missing review route is a blocker after
+permitted recovery, not permission for self-review.
+
+Selection persists across compaction/model changes within the same session. Preserve it and useful active session
+pointers in existing working state; do not create a scratchpad just for selection. A new session must not infer
+activation from an older session's record. A one-task exception does not change the selected profile.
 
 ## Execution mechanism
 
-This optional profile uses the configured CLI delegation skills for specialist assignments, including Gemini CLI.
-Resolve the responsibility from the user's requested outcome; the user need not name a lane or choose a mechanism
-for each task. At session setup, locate the installed `delegate-setup` and load the effective fleet read-only:
+For external assignments, use configured CLI delegation skills, including Gemini CLI when configured. Resolve intent to a responsibility,
+then the effective configured route and installed skill. The user need not name a lane or choose a mechanism per task.
+Load the effective fleet read-only at session setup and reuse it until configuration changes or a failure warrants
+rediscovery. Read the selected skill and invoke its documented relay through the available terminal. Verify actual
+execution before claiming dispatch or unavailability. See [CLI dispatch reference](cli-dispatch.md) for loader
+commands and troubleshooting when needed. This profile does not read local execution.json or require native setup;
+leave existing preferences, host agents, accounts and permissions untouched.
 
-```text
-node "<installed-delegate-setup>/scripts/config.mjs" load --cwd "<project-root>"
-node "<installed-delegate-setup>/scripts/lane.mjs" resolve --cwd "<project-root>" --lane "<selected-lane>" --implementer "<configured-implementer>"
-```
+The catalog describes role meanings, not live models or routing. Local configuration chooses provider/model/effort;
+a host model inventory does not bind an assignment. Honor applicable source/privacy boundaries under every route.
 
-The loader reports the global/project config paths, effective lanes and project trust; the resolver identifies the
-matching installed delegation skill and dials. Read that skill's installed instructions and run its documented
-`scripts/relay.mjs` command through the available shell/terminal. A CLI relay is a script, not a registered host
-tool: absence from the host tool catalog does not make it unavailable. Use the shell's actual argument schema;
-a malformed tool call is not a permission denial. Route resolution alone is not dispatch. The loader/resolver
-calls are read-only operations, not a request to enter the setup interview or write configuration. Reuse the inventory until relevant
-configuration changes or a dispatch fails. Preserve permissions, source access and independent-review requirements.
-The semantic catalog, host model list and filename searches are not the live fleet. This profile does not read local execution.json
-or require native-agent mappings. Leave existing local preferences and host agents untouched.
+## Assignment and acceptance
 
-Before declaring a route unavailable, retain the loader/resolver result and the relevant installed skill/relay
-check or invocation error. A blank CLI lookup with errors suppressed does not prove absence; diagnose the actual
-selected relay/CLI environment. Distinguish unresolved configuration, missing tools and failed invocation.
-A discovery or dispatch failure does not authorize the orchestrator to write specialist deliverables itself.
-Report the affected blocker and request a specific exception or use already-authorized bounded recovery; general
-permission to finish the feature is not such an exception. A harness worker is not a default substitute merely
-because one is exposed; the limited transport-recovery permission below requires verified equivalence.
+Give each specialist the objective, authorized source/artifact paths, output/change scope and acceptance criteria.
+Prefer file access to copying entire documents. Specialists inspect relevant original requirements and project rules;
+working summaries are navigation, not authority. Use a minimal approved excerpt/copy when shared access is unavailable.
 
-## Session continuity
+Keep one mutation owner per bounded assignment through review, corrections and acceptance. Resume the recorded
+session when supported/current; otherwise continue the semantic assignment from durable evidence without claiming
+session continuity. Use a fresh output directory for every invocation and copy continuation IDs from actual results.
+Inspect partial effects before retries. Neither a failed process nor a successful response establishes artifact quality.
 
-Selection persists across compaction and model changes within the same session. Record the explicit selection in
-an existing active project scratchpad; do not create one solely for this field. Preserve it until the user changes
-it. Retain active CLI session pointers across compaction as well.
-A task-scoped exception does not change the selection. A new session must not infer activation from an older
-session's scratchpad. Preserve the ordinary objective, decisions, evidence, stage and next action as usual.
+For review-only assignments, use the supported read-only execution boundary. Verify effective shell/process and edit
+permissions; a named plan agent or no observed writes does not prove filesystem containment. Report missing enforcement
+and apply the actual project gate rather than claiming containment or silently weakening it.
 
-## Delegation handoffs and configured lane roles
+Verify expected outputs/content and applicable checks. Preserve actual invocation, session, failures, review/disposition
+and verification evidence in the approved working area. Keep **process/relay success**, **response success** and
+**task acceptance** distinct. Response-only work needs no invented artifact. Required outcomes remain incomplete
+until accepted or explicitly omitted; never substitute orchestration narration for specialist work or review.
 
-When a bounded artifact is already available to a delegate, prefer a **file-first handoff**: give the objective, authorized input artifact paths, requested output, constraints, and success checks. Identify applicable project instruction sources, architecture decisions, engineering conventions, and verification expectations for that role; provide paths/source access rather than copying their full contents. The specialist must inspect relevant canonical rules itself and not treat task-context, a plan or a prior agent's interpretation as the sole authority. Do not paste the whole task context, requirements, plan or conversation into the dispatch message if the delegated environment can read them. Give source access only within authorized scope, and let the specialist inspect additional relevant original evidence when consequential claims require verification. If shared file access is unavailable, supply only the minimum necessary excerpts or an approved copy. File-first routing reduces repeated orchestration text but does not imply lower total model tokens.
+## Recovery and approved default fallback
 
-Use the feature-design responsibility for the feature LLD and required Functional Design together; standalone
-functional-document maintenance is a different responsibility. Verify the assigned design outputs and their
-consistency with requirements before dependent planning/implementation. A structural checker pass is not design
-acceptance. If design changes later, have its owner check affected companion design, QA, plan and delivered work;
-revise only what is affected and record the actual disposition. A late correction does not establish that the
-prerequisite was met earlier. Do not rerun unaffected stages or invent an additional owner-approval gate.
+This profile standing-authorizes automatic fallback to the owner's suitable already-approved configured default for
+delegated responsibilities, including review, whether the owner is present or offline. Preserve role, permissions,
+source/privacy boundaries and writer/reviewer separation. It does not authorize new routes, accounts, configuration
+or arbitrary models. No suitable approved route means an affected blocker.
 
-For implementation planning, the orchestrator applies the shared contract's **Planning convergence** section and
-reads applicable approved requirements, Functional Design/LLD, QA scenarios and project conventions directly.
-Give the separate reviewer the plan and access to those original sources, relevant decisions and open questions.
-Verify actual review findings and disposition, not merely that a review file or successful relay result exists.
-If the user explicitly assigns an external plan author, that author must inspect the same sources directly.
+Diagnose the concrete failure and partial effects. Use bounded retries for transient transport errors; don't repeatedly
+retry exhausted quota or unsupported configuration. Before redispatch, establish that the prior worker did not start
+or has stopped. Unknown status blocks a duplicate writer, including a default-route retry.
 
-In AI Skills delegation mode, the implementation plan is the orchestrator's deliverable; other specialist deliverables, including the separate plan review, are delegated. The orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring other deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. The orchestrator's own planning and explicitly authorized one-task direct work need not resolve an authoring lane; required review still needs a suitable separate route. A missing review route is a blocker, not permission to substitute self-review.
-
-During implementation, the specialist may adapt routine coding details inside the approved behavior, scope and
-architectural approach and record consequential reasoning. If new source evidence invalidates the plan's approach,
-return that evidence and a proposed adjustment to the orchestrator as plan author (or the explicitly assigned
-external author). The author revises affected sections and coordinates focused review and any necessary design/QA
-reconciliation with their owners. Do not silently redesign, require approval for every detail, or restart all stages.
-Material choices outside existing authority go to the user; pause dependent work only. Follow the shared contract's
-**New evidence during implementation** rule and existing debate trigger for disputed technical revisions.
-
-For code-review corrections, keep the fix with its implementation owner and use the separate reviewer to
-confirm that a proposed smaller remedy resolves the finding. Return unnecessary broader refactors as owner
-follow-up suggestions. If the reviewer rejects the smaller remedy, coordinate a focused evidence-backed debate
-with the same author/reviewer; no additional reviewer or approval is required to implement an agreed fix inside
-existing authority. Recheck affected work and report the resolution. Bound unproductive exchanges and escalate
-unresolved consequential disputes or out-of-authority remedies. This is code-fix discussion, not automatic use of
-planning-only `plan-debate`; consequential plan revisions retain their normal ownership and review rules.
-
-### Recovery and approved default fallback
-
-This profile standing-authorizes automatic fallback to the owner's already-approved configured default route for
-delegated responsibilities, including plan review, whether the owner is present or offline. It does not authorize
-new accounts, model/configuration changes or any arbitrary available model. Preserve the task's semantic role,
-source/privacy boundaries, permissions and separate-review requirements; a configured default is not proof of
-live availability or accepted output. If no suitable approved route can run, report the affected blocker.
-
-1. Diagnose the actual failure: transient connection/transport, relay/tooling, provider quota/rate limit,
-   configuration, or task/output failure. Preserve the exact result and possible partial effects. Use bounded
-   retries where they can help; do not repeatedly retry exhausted quota or treat an output defect as a relay fault.
-2. For an evidenced relay/tooling failure, a host-native child worker may be tried before changing the model,
-   but only if already verified to support the same configured model/effort and approved account/environment,
-   authorized source/instruction access and required permissions. Cache that verified capability for this session;
-   do not configure agents or infer equivalence from a model name or tool's presence. If controls/equivalence
-   cannot be established, skip this recovery option. Switching transport does not bypass provider quota.
-3. Before another dispatch, establish that the prior worker did not start or has stopped; inspect any partial
-   edits/outputs. An unresolved timeout is not permission to run a duplicate writer. Recover/pause the original
-   assignment if its status is unknown, rather than starting a competing worker or default-route retry.
-4. If bounded original-route recovery fails, or the equivalent native option is unavailable, use the approved
-   configured default route automatically when suitable. Record the actual route/session, failure, recovery and
-   acceptance separately; never call a fresh child the same continued session. If that route also fails, stop
-   equivalent retries and report the remaining blocker instead of looping or rewriting configuration.
-
-No special planning-lane fallback prohibition is added: the orchestrator owns default plan authorship. Loss of the
-orchestrator itself requires host/user session recovery; it cannot recover its own unavailable execution by
-dispatching a child. Preserve separate writer/reviewer assignments under any authorized model change.
-
-Stable lane meanings and their workflow usage are catalogued in [delegation-lanes.md](delegation-lanes.md). That catalog defines *roles*, not current provider/model/variant assignments. Actual provider/model/effort assignments remain local configuration; the repository does not supply live production routes. Renaming or adding a lane locally requires validating its consumers and current installed relay/host support.
-
-## Assignment, review and landing
-
-- Keep each bounded delegated assignment logically open through applicable review, author disposition, fixes and acceptance. Prefer resuming the same child session when supported and current; otherwise resume the semantic assignment with a fresh session and sufficient durable evidence, without claiming context continuity. A logical assignment need not keep a child process running. Close it on verified acceptance, not merely on first response or stage transition.
-
-- For continuation, copy the session ID from that assignment's recorded result/events and use the selected
-  relay's documented continuation option; do not guess an ID or reuse another assignment's session. Give each
-  invocation/retry a fresh output directory, preserving prior attempts. A transport failure may leave usable
-  artifacts: inspect them before retrying, but keep the failed process status separate from artifact acceptance.
-
-- For review-only delegated work, invoke the host/relay's supported enforced read-only execution boundary (for example a read-only flag or read-only agent), not just a prompt instruction. Verify the effective boundary from invocation evidence, including shell/process access as well as edit-tool permissions. A named plan/read-only agent or no observed writes does not establish full filesystem containment. If enforcement is unavailable, report that limitation and apply the appropriate project gate instead of claiming a read-only review; do not assume a lane name or config automatically enforces it.
-
-- The orchestrator inspects delegated diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction; this inspection complements rather than replaces a required independent technical code review. The orchestrator may ordinarily make the verified commit when authorized, consistent with delegate-skill caller/landing conventions. Commit identity does not itself grant permission to push, open a PR, merge or deploy; those follow project authorization.
-
-The implementer owns code, local tests/build checks and fixes. The orchestrator coordinates, inspects scope and
-results, and performs authorized deterministic checks without reproducing specialist work. Independent review
-remains required where the shared workflow or project requires it. Use a suitable configured fallback only under
-the existing recovery authorization; persistent configuration changes remain separate setup actions.
-
-## Delegated outcome completion
-
-A delegated task is complete only after the orchestrator verifies the requested outcome against its applicable
-acceptance criteria. Keep three outcomes distinct: **process/relay success** means the invocation ended successfully;
-**response success** means a final model response was captured; **task acceptance** means the requested outcome was
-verified against its applicable criteria. Process or response success alone does not establish task acceptance.
-For artifact tasks, inspect expected outputs and verify their required content and applicable checks before advancing.
-An acknowledgment, partial artifact, or structural check alone is insufficient. For response-only tasks, assess the
-returned response against the request; do not require an artifact. If the outcome is missing or incomplete, preserve
-the run evidence, classify the failure, and use bounded recovery before advancing.
-
+Only for relay/tooling failure, an already-available native child may recover the assignment before model fallback
+when the same configured model/effort and approved account/environment, source access, working scope and effective
+permissions are verified. Do not configure agents or infer equivalence from a model name/tool's presence. This is
+bounded transport recovery, not general native preference. Switching transport does not bypass provider quota.
+If equivalent recovery is unavailable or fails, use the approved default when suitable. If it also fails, stop equivalent
+retries and report the blocker. Record changed routes/sessions honestly; root-session failure requires host/user recovery.

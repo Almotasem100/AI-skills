@@ -122,7 +122,7 @@ function parity(opts) {
   }
   checks.push({ case: 'host-instructions', status: !opts.hostInstructions ? 'skipped' : !existsSync(opts.hostInstructions) ? 'unavailable' : sameContent(source('templates/global-user-instructions/AGENTS.md'), opts.hostInstructions) ? 'passed' : 'failed',
     reason: opts.hostInstructions ? 'Shared host instruction file normalized content parity; loading still needs observation' : 'Pass --host-instructions with the instruction file used by this host' });
-  for (const name of ['orchestration-contract.md', 'ai-skills-delegation.md', 'delegation-lanes.md']) {
+  for (const name of ['orchestration-contract.md', 'ai-skills-delegation.md', 'delegation-lanes.md', 'cli-dispatch.md']) {
     const installed = join(opts.instructionsRoot, name);
     checks.push({ case: `installed-${name}`, status: !existsSync(installed) ? 'unavailable' : sameContent(source(`docs/${name}`), installed) ? 'passed' : 'failed', reason: 'Companion instruction normalized content parity' });
   }

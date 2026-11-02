@@ -19,20 +19,16 @@ do not create a new approval gate.
 
 ## Set up
 
-1. Read project instructions and identify the plan-author role, challenge-reviewer role, any justified independent
-   reviewer, and the applicable owner/material gates. Preserve the calling workflow's plan author, including when
-   the orchestrator is that author; do not dispatch a replacement author merely because a planning lane exists.
-   Resolve external roles through configured lanes unless explicitly overridden. Keep the challenge reviewer
-   distinct from the author; do not present the orchestrator's self-review as independent.
-2. Gather only the task context and authoritative sources needed to test material premises. Record provenance and
-   revision/state where useful. Prior delegate findings are leads, not authority.
-3. Use one dedicated temporary debate record outside durable project documentation unless the project explicitly
-   defines a planning-work location. The normal project scratchpad remains compact execution state and may point to
-   the debate/plan, but it must not become a dump of excerpts, full review exchanges or duplicate requirements.
-4. The orchestrator owns coordination state; the plan author owns the plan; reviewers own their findings. Delegated
-   roles return attributed outputs. Parallelize independent reviewers only when useful and avoid competing writers.
-5. Give each role the minimum useful context and source access. Use snapshots/worktrees only when a real
-   containment/read-only/concurrency need exists.
+1. Read applicable project constraints and preserve the calling workflow's plan author and a challenge reviewer
+   distinct from the author. Do not dispatch a replacement author or select models/routes here; the caller supplies
+   participants and execution mechanism. Reuse an existing review's participants when continuing its disagreement.
+2. Gather the plan and authorized original sources needed to test disputed premises. Prior findings are leads,
+   not authority; record relevant evidence gaps and revision/state.
+3. Use one approved temporary debate record for attributed findings/responses. Keep normal execution state compact;
+   do not duplicate requirements or overwrite another participant's work. The author owns plan mutations and
+   reviewers own findings; return results to the caller for coordination.
+4. Give participants minimum useful context and original-source access. Use snapshots/worktrees only for a real
+   containment or concurrency need. A separate session alone does not guarantee independent reasoning.
 
 ## Debate
 

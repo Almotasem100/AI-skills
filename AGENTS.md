@@ -13,9 +13,8 @@ Before planning or changing this repository, read:
 3. `README.md` for the skill authoring rules and repository layout.
 Read `docs/decisions.md` only when the reasoning/history is relevant; it is not current execution policy.
 
-The roadmap currently marks v1 as frozen until it is installed and used on real work. Respect that checkpoint:
-do not resume parked builds or trials on your own. A change the owner explicitly requests, or a fix grounded in
-real use, can proceed; record setup changes in the roadmap at the end of the session.
+Use the roadmap's current active/deferred scope. Explicitly requested changes may proceed; do not resume
+parked builds or host trials merely because an older status section once proposed them.
 
 ## Repository rules
 

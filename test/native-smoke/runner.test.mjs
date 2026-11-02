@@ -77,8 +77,8 @@ test('workflow verifier catches original bug and test tampering, then runs the a
       assert.doesNotMatch(fullScenario, /\{\{[A-Z_]+\}\}/);
       assert.match(fullScenario, /ZadLoop is on hold/);
       assert.match(fullScenario, /Open this exact workspace root/);
-      assert.match(fullScenario, /root session authored the plan, then dispatched a\s+separate configured plan reviewer/);
-      assert.match(fullScenario, /root author dispositions findings and revises the plan/);
+      assert.match(fullScenario, /assigned author wrote the plan and a separate reviewer critiqued it/);
+      assert.match(fullScenario, /author\s+dispositions findings and revises the plan/);
       assert.match(fullScenario, /inspect actual root tool\s+events and reviewer invocation\/results/);
       assert.match(fullScenario, /Debuggable caller report/);
       assert.match(fullScenario, /event IDs and timestamps/);

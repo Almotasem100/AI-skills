@@ -99,7 +99,7 @@ verification details supplement, rather than replace, the captured root/relay re
 - Confirm observed reads of the current profile and actual loader/resolver use. The retired execution.json and
   semantic catalog are not the live fleet. A claimed absent route needs actual discovery/invocation evidence;
   general feature authorization does not permit direct specialist work outside this profile's ownership rules.
-  Implementation-plan authorship is the orchestrator's default responsibility, not a missing-route exception.
+  Use the current profile's ownership assignment, not a reviewer-invented allocation or missing-route exception.
 - Feature-design responsibility covers requested FD and LLD together, before dependent planning/implementation.
   Check output content, assignment scope and chronology. A post-implementation design fix must remain identified
   as late; passing a structural checker or final behavioral consistency cannot establish earlier compliance.
@@ -107,8 +107,8 @@ verification details supplement, rather than replace, the captured root/relay re
   preselecting a technical solution. Narrow consequential observations remain sourced leads, not approvals.
   Design/QA/planning verify relevant originals; absence of a broad technical context summary is not itself a
   blocker. Reuse one record, not a mandatory second handoff, and check superseded decisions stay superseded.
-- QA scenarios precede dependent planning. Verify that the root session authored the plan, then dispatched a
-  separate configured plan reviewer; the root author dispositions findings and revises the plan, with affected
+- QA scenarios precede dependent planning. Verify that the assigned author wrote the plan and a separate reviewer critiqued it; the author
+  dispositions findings and revises the plan, with affected
   material revisions rechecked before implementation. An explicit user-assigned external author is an exception
   to record, not an automatic-routing pass for the default. Read question-tool answers as well as user messages.
   Do not infer authorship, review or chronology from file existence or later narration: inspect actual root tool
