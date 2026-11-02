@@ -1,80 +1,50 @@
 ---
 name: plan-debate
-description: Resolve a consequential technical finding disputed by the plan author through a focused evidence-backed author/reviewer debate, starting at the first reasoned disagreement, or when the user explicitly requests debate. Reuse existing review evidence; accepted corrections, minor preferences, missing-fact investigation and owner product decisions are not automatic debate triggers. Not for code/PR review.
+description: Resolve consequential technical plan findings at the author's first reasoned disagreement, or on explicit debate requests, through focused evidence-backed author/reviewer exchanges. Supports one or more caller-selected reviewers. Not for code/PR review, minor preferences, accepted corrections or owner product decisions.
 ---
 
 # Plan debate
 
-Start when the plan author first gives a reasoned objection to a consequential technical finding, or when the
-user explicitly requests debate. The author's objection is the first response: no second reviewer refusal or
-extra owner permission is needed. Continue with the existing plan, finding, evidence and participants; do not
-restart review or automatically recruit another agent. Accepted corrections and minor preferences remain ordinary
-review. Investigate missing facts, and ask the owner for material product preferences/approval instead of debating
-an answer into existence. A clean debate is not agreement manufactured by exhaustion.
+Start when the plan author first gives a reasoned objection to a consequential technical finding, or when debate
+is explicitly requested. The objection begins the exchange: no second refusal or extra permission is needed.
+Accepted corrections and minor preferences remain ordinary review. Investigate missing facts, and ask the owner
+for material owner-level choices; debate cannot invent requirements or authority.
 
-Debate a plan before implementation. The working output is one **temporary debate record** plus the resulting plan,
-not a second project-of-record document and not the project's compact execution scratchpad. A clean debate is not
-proof of safety. Material unresolved decisions are escalated; resolved findings inside an already authorized workflow
-do not create a new approval gate.
+## Participants and record
 
-## Set up
+Preserve the calling workflow's plan author and challenge reviewer distinct from the author. The caller supplies
+participants and execution mechanism; do not dispatch a replacement author or choose models/routes here.
+An explicit multi-reviewer request is supported: keep each reviewer's independent findings and attribution, then
+focus exchanges on disputed claims. Do not add reviewers automatically, count votes as evidence or let agreement
+hide a material unresolved objection. A shared chat is unnecessary; the caller can relay attributed messages and
+source/artifact pointers through its supported mechanism. Missing messaging capabilities remain a caller limitation.
 
-1. Read applicable project constraints and preserve the calling workflow's plan author and a challenge reviewer
-   distinct from the author. Do not dispatch a replacement author or select models/routes here; the caller supplies
-   participants and execution mechanism. Reuse an existing review's participants when continuing its disagreement.
-2. Gather the plan and authorized original sources needed to test disputed premises. Prior findings are leads,
-   not authority; record relevant evidence gaps and revision/state.
-3. Use one approved temporary debate record for attributed findings/responses. Keep normal execution state compact;
-   do not duplicate requirements or overwrite another participant's work. The author owns plan mutations and
-   reviewers own findings; return results to the caller for coordination.
-4. Give participants minimum useful context and original-source access. Use snapshots/worktrees only for a real
-   containment or concurrency need. A separate session alone does not guarantee independent reasoning.
+Use one approved temporary debate record (or an existing suitable review record), not another project-of-record
+document or full transcript in the scratchpad. Give participants minimum useful original-source access; summaries
+and earlier findings are leads, not authority. Use snapshots/worktrees only for a real containment/concurrency need.
+The author owns plan mutations; reviewers own findings. Separate sessions alone do not guarantee independent judgment.
 
-## Debate
+## Work the current disagreement
 
-### 1. Draft
-Reuse the existing plan if one is already under review; do not commission a second draft merely to start debate.
-The author states the outcome, scope/exclusions, proposed steps or delivery slices, dependencies, material decisions,
-assumptions, risks, verification strategy, conditional recovery/rollback needs and open questions. Consequential
-factual premises carry source locators where useful. Unknowns stay unknown.
+Continue from the existing review, reuse its finding as the initial challenge and the author's objection as the first
+response. Do not commission a new draft, repeat initial review or wait for another refusal to begin. For an explicit
+fresh-plan debate, first obtain a sufficient plan and source-grounded independent critique; then use this same exchange.
 
-### 2. Challenge
-When continuing an existing review, reuse its finding as the initial challenge and the author's reasoned objection
-as the first response. Continue at the unresolved claim; do not request another initial review or wait for another
-reviewer refusal just to satisfy this section's sequence.
-Give the reviewer the plan, requirements/scope, relevant design constraints and source access needed to verify
-material premises. Avoid persuasive author framing and collect the reviewer's initial evidence-grounded findings before sharing an author's defense or starting response rounds; this is a critique of the plan, not a request to redesign the feature independently. Ask for numbered findings with:
-- classification: **Observed contradiction**, **Concern**, or **Unsupported assertion**;
-- evidence locator/revision or explicit evidence gap;
-- impact;
-- recommended check/change.
+- Identify the disputed claim, source evidence or gap, impact, proposed remedy and alternatives. Distinguish observed
+  contradictions, concerns and unsupported assertions without inventing citations or requirements.
+- Give the author each attributed finding for accept/revise, reject with evidence, or open-with-needed-check disposition.
+  Keep material disagreements visible. When a material premise changes, recheck affected sections rather than restarting.
+- A further independent check may be requested or justified by unresolved risk; it is not a normal mandatory stage.
+  Preserve its conclusions separately and avoid persuasive framing that replaces direct source access.
 
-The reviewer should seek contradictory evidence for material claims when warranted and must not invent requirements,
-citations or test results.
+## Resolve or escalate
 
-### 3. Independent check when justified
-A separate reviewer may assess the plan and first review independently. Give it the plan and evidence, not a merged
-persuasive narrative. Preserve its findings/limits separately. Skip this stage when it adds little value.
+The author cannot unilaterally close a consequential finding that remains unresolved. Resolve with evidence, a
+verified correction or an applicable owner decision, not exhaustion or majority agreement. Stop cycling when another
+round is not changing a material issue. Pause affected work and return unresolved positions, evidence, alternatives,
+needed decision/check and recommendation to the owner; independent authorized work may continue.
 
-### 4. Author response
-Route each finding back to the same author role. For every finding: accept/revise, reject with evidence, or leave open
-with the missing check/decision. Preserve attribution and disagreement. If revision changes a material premise,
-re-check only the affected parts rather than restarting everything.
-
-### 5. Stop or escalate
-The author cannot unilaterally close a consequential finding while the reviewer still identifies an unresolved
-problem. If it remains disputed, pause affected work and return both positions, evidence, alternatives and a
-recommendation to the owner. Genuinely independent authorized work may continue. Resolution needs evidence or an
-applicable owner decision, not merely someone yielding. Stop cycling when another round is not changing a material issue. Repeated equivalent failure should revisit the
-diagnosis/evidence or change strategy rather than loop indefinitely. Escalate only material contested choices,
-unresolved requirements, consequential unsupported assumptions, or changes outside the current authorization.
-
-## Outputs and boundaries
-
-Return the settled plan, participant ledger, unresolved items and verification/evidence limits to the calling workflow.
-Update the project's compact scratchpad only with the resulting execution state that matters (for example plan ready,
-material decision pending, next action), not the full debate transcript.
-
-This skill does not implement code, approve design on someone's behalf, create a PR, perform durable write-backs or
-trigger closeout. `work-closeout` handles genuinely completed bounded work; `handoff` is only for real transfer
-friction. For one-shot plan feedback use `plan-review`; code/PR review remains separate.
+Return the settled plan or precise unresolved state, attributed dispositions and verification limits to the caller.
+Only resulting execution state belongs in the compact scratchpad. This skill does not implement code, approve design
+on another's behalf, publish, update durable project documents or trigger closeout. A resolved debate creates no
+new approval gate inside an already authorized workflow; one-shot feedback and code/PR review remain separate.

@@ -1,23 +1,19 @@
 # Task Context
 
-> Temporary intake-first record; original sources and approved decisions remain authoritative.
+> Temporary intake-first record. Original sources and approved decisions remain authoritative. Omit empty sections.
 
 ## Objective and approved scope
-<!-- Requested outcome, supplied rationale, explicit inclusions/exclusions and approved constraints with sources. -->
+<!-- Outcome, supplied rationale, inclusions/exclusions and approved constraints, with sources. -->
 
 ## Source inventory
-<!-- Original inputs/rules and existing artifacts, with relevant pages/sections/revision/state. Navigation, not a
-technical digest. Preserve meaningful visual constraints without copying whole attachments. -->
+<!-- Original inputs/rules and existing artifacts; useful page/section/revision pointers. -->
 
 ## Clarification Q&A and decisions
-<!-- Consequential original question and answer, source/owner and qualifiers. Mark corrections/supersession;
-do not leave old and new decisions simultaneously active. No invented approvals. -->
+<!-- Consequential original Q&A, owner/source and qualifiers. Identify the current decision and corrections. -->
 
 ## Open questions and conflicts
-<!-- Undecided behavior, contradictory sources and unverified premises, with source pointers. -->
+<!-- Undecided behavior, conflicting sources or unverified premises, with pointers. -->
 
 ## Consequential observations
-<!-- Optional: sourced observations or cross-source concerns that are consequential and easily lost. Distinguish
-fact from inference, record uncertainty and a verification question; no prescribed solution/reuse recommendation.
-Omit empty sections. Later working synthesis may be added here only for a real continuity need, clearly labeled
-as later synthesis with source/state; do not create a second mandatory artifact or duplicate existing plans. -->
+<!-- Optional sourced concerns: fact vs inference, uncertainty and verification question; no prescribed solution.
+Later working synthesis belongs here only when continuity needs it, labeled with source/state. -->

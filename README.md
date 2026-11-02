@@ -26,8 +26,8 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 
 1. **Same shape as the team repo:** `skills/<kebab-name>/SKILL.md`, plus `references/` for longer material.
 2. **Frontmatter: only `name` and `description`.** No agent-specific fields (`allowed-tools`, `model`,
-   `disable-model-invocation`, …). The description says *when* to use the skill, since that is what triggers it
-   automatically.
+   `disable-model-invocation`, …). The description says *when* to use the skill; supporting hosts use it for automatic
+   selection. Actual discovery/loading depends on the host and is not guaranteed by matching text alone.
 3. **No agent-specific tool names in the instructions.** Write "read the diff", "ask the user", not "use the
    Read tool" or "call AskUserQuestion".
 4. **No personal or project specifics inside the skill.** Team template, repo names, ticket IDs and paths come
@@ -55,6 +55,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
 | `docs/future-ideas.md` | Candidate enhancements and source references; read only for future-option review, not normal task startup |
+| `docs/next-session-prompt.md` | Optional thin starter; not a skill and does not update working state |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
 
 ## Installing on a new machine

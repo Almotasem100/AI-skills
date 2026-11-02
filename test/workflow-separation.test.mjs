@@ -127,7 +127,7 @@ test('debate starts at first material technical disagreement without restarting 
   assert.match(debate, /author cannot unilaterally close a consequential finding/);
   assert.match(debate, /Accepted corrections and minor preferences remain ordinary/);
   assert.match(debate, /Investigate missing facts, and ask the owner/);
-  assert.match(debate, /Stop cycling when another round is not changing a material issue/);
+  assert.match(debate, /Stop cycling when another\s+round is not changing a material issue/);
   assert.match(guide, /\$withPlanDebate = \$withDelegation -or/);
   assert.doesNotMatch(profile + lanes + debate + globalInstructions,
     /Require explicit debate selection|structured debate only when explicitly selected|run `plan-debate` only when explicitly selected/);
@@ -199,18 +199,41 @@ test('intake skill and template preserve decisions and narrow evidence without a
   assert.match(skill, /corrections and superseded decisions/);
   assert.match(skill, /sourced observation or cross-source concern/);
   assert.match(skill, /do not prescribe an implementation/);
-  assert.match(skill, /later working synthesis to this same artifact/);
+  assert.match(skill, /later\s+working synthesis to this same artifact/);
   assert.match(skill, /Older rich\s+task-context files remain usable/);
   for (const heading of ['Objective and approved scope', 'Source inventory', 'Clarification Q&A and decisions',
     'Open questions and conflicts', 'Consequential observations']) assert.ok(template.includes(`## ${heading}`));
   assert.doesNotMatch(template, /## Relevant current-system findings|reuse opportunities/);
 });
 
+test('standalone skill simplification preserves multi-reviewer debate and step-two closeout safeguards', () => {
+  const debate = read('skills/plan-debate/SKILL.md');
+  assert.match(debate, /explicit multi-reviewer request is supported/);
+  assert.match(debate, /keep each reviewer's independent findings and attribution/);
+  assert.match(debate, /do not add reviewers automatically, count votes as evidence/i);
+  assert.match(debate, /caller can relay attributed messages/);
+  assert.doesNotMatch(debate, /### 1\. Draft|### 3\. Independent check/);
+  const review = read('skills/plan-review/SKILL.md');
+  assert.match(review, /caller saves returned findings/);
+  assert.match(review, /sole write exception/);
+  const closeout = read('skills/work-closeout/SKILL.md');
+  assert.match(closeout, /Replace superseded guidance and affected\s+active references/);
+  assert.match(closeout, /explicit\s+completion\/removal condition/);
+  assert.match(closeout, /Closing this item does not retire unresolved work/);
+  assert.match(closeout, /consequential STALE citations or leave dependent closeout blocked/);
+  assert.match(closeout, /current explicit\s+project\/user authorization covers that inventory/);
+  const starter = read('docs/next-session-prompt.md');
+  assert.match(starter, /not a skill or state updater/);
+  assert.match(starter, /does not verify or update it/);
+  assert.match(starter, /follow its AGENTS.md/);
+  assert.doesNotMatch(starter, /config\.mjs|work-closeout|^\d+\./m);
+});
+
 test('intake consumers retain source authority and do not require an upstream technical solution', () => {
   assert.match(contract, /Optional intake-first working record/);
   assert.match(read('skills/create-lld/SKILL.md'), /absent technical summary is not a missing-input blocker/);
   assert.match(read('skills/qa-scenarios/SKILL.md'), /investigative leads, not expected results/);
-  assert.match(read('skills/plan-review/SKILL.md'), /do not treat a sourced\s+concern as an approved requirement/);
+  assert.match(read('skills/plan-review/SKILL.md'), /do not treat a sourced concern as an approved\s+requirement/);
   const pr = read('skills/describe-pr/SKILL.md');
   assert.doesNotMatch(pr, /authoritative task context|explicit user rationale -> task context/);
   assert.match(pr, /Task-context itself does not grant authority/);
