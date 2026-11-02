@@ -78,7 +78,7 @@ test('shared workflow retains nine outcomes, prerequisite order and independent 
   const outcomes = [...section.matchAll(/^\d+\. \*\*([^*]+)\*\*/gm)].map(match => match[1]);
   assert.deepEqual(outcomes, ['Intake and clarification:', 'Working context:', 'Feature design:',
     'QA scenarios:', 'Implementation plan:', 'Plan challenge/acceptance:', 'Implementation and checks:',
-    'Code review and corrections:', 'Publication and closeout:']);
+    'Code review and corrections:', 'Delivery reporting and PR preparation:']);
   assert.match(section, /QA scenarios:[\s\S]*?\*\*before implementation planning\*\*/);
   assert.match(section, /use a separate technical reviewer for substantive Full Feature code changes by default/);
   assert.match(contract, /accept\/revise, reject with\s+evidence, or leave open/);
@@ -90,12 +90,33 @@ test('operator boundaries retain evidence, stop plan-only work and batch verific
   assert.match(contract, /same planning task, not feature implementation/);
   assert.match(contract, /Preserve working inputs, design, plans and review\/verification evidence/);
   assert.match(contract, /does not automatically invoke work-closeout/);
-  assert.match(contract, /concise Markdown record of substantive review findings/);
+  assert.match(contract, /Concise Markdown record of substantive review findings/);
   assert.match(contract, /pause\s+only dependent work and continue genuinely independent work/);
   assert.match(contract, /cosmetic edit does not justify unrelated full-suite or API-regression runs/);
   assert.match(contract, /Do not deploy after every edit/);
   assert.match(read('skills/work-closeout/SKILL.md'), /request to finish implementation is not authorization/);
   assert.match(read('skills/plan-debate/SKILL.md'), /first gives a reasoned objection to a consequential technical finding/);
+});
+
+test('consolidated contract preserves early QA, decision boundaries and honest incomplete verification', () => {
+  const outcomes = contract.split('## Full Feature delivery contract')[1].split('## Work hierarchy')[0];
+  assert.match(outcomes, /before implementation planning\*\* and before implementation begins/);
+  assert.match(outcomes, /Do not wait for code review, deployment or final verification/);
+  assert.match(outcomes, /no completed implementation or final plan as input/);
+  for (const name of ['Early QA preparation', 'Technical authority versus owner decision', 'Verification prerequisite unavailable']) {
+    assert.ok(read('test/native-smoke/operator-scenarios.md').includes(name), name);
+  }
+  assert.doesNotMatch(contract, /before implementation when useful|## Pushback and approval|## QA scenarios and verification/);
+  assert.match(contract, /not nine mandatory files, model calls or a fixed execution order/);
+  assert.match(contract, /Honor explicit checkpoints, approved architectural constraints and project-specific gates/);
+  assert.match(contract, /diagnostic prompts, not mandatory classification paperwork/);
+  assert.match(contract, /Evidence unavailable\*\* means unverified/);
+  assert.match(contract, /Required\s+verification blocked by the environment leaves overall acceptance pending/);
+  assert.match(contract, /an unrelated existing\s+failure is reported separately/i);
+  assert.match(contract, /distinct purposes, not mandatory separate files/);
+  const qa = read('skills/qa-scenarios/SKILL.md');
+  assert.match(qa, /calling workflow owns scheduling/);
+  assert.doesNotMatch(qa, /before implementation is finished/);
 });
 
 test('debate starts at first material technical disagreement without restarting review or overriding owner choices', () => {
@@ -119,7 +140,9 @@ test('implementation evidence preserves discretion, plan ownership and focused r
   assert.match(section, /return the evidence and proposed\s+adjustment to the plan author before proceeding with dependent work/);
   assert.match(section, /reconcile\s+affected design\/QA artifacts with their owners/);
   assert.match(section, /focused review of material revisions/);
-  assert.match(section, /outside that authority requires the owner's decision/);
+  assert.match(section, /Apply\s+\*\*Authorization and checkpoints\*\*/);
+  assert.match(contract, /Technical plan revisions\s+inside existing authority/);
+  assert.match(contract, /Review agreement cannot authorize work outside that envelope/);
   assert.match(section, /Pause only dependent work/);
   assert.match(profile, /assigned author owns revisions and findings disposition/);
 });
@@ -184,7 +207,7 @@ test('intake skill and template preserve decisions and narrow evidence without a
 });
 
 test('intake consumers retain source authority and do not require an upstream technical solution', () => {
-  assert.match(contract, /optional intake-first working record/);
+  assert.match(contract, /Optional intake-first working record/);
   assert.match(read('skills/create-lld/SKILL.md'), /absent technical summary is not a missing-input blocker/);
   assert.match(read('skills/qa-scenarios/SKILL.md'), /investigative leads, not expected results/);
   assert.match(read('skills/plan-review/SKILL.md'), /do not treat a sourced\s+concern as an approved requirement/);

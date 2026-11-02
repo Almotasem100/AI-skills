@@ -5,7 +5,8 @@ description: Turn approved feature behavior into traceable QA scenarios that tes
 
 # QA scenarios
 
-Create behavior-focused QA scenarios early enough that QA can prepare before implementation is finished. This is a
+Create behavior-focused QA scenarios from sufficiently settled inputs so the testing team can prepare.
+The calling workflow owns scheduling; completed implementation is not an input prerequisite. This is a
 **specification/design role**, not an execution test runner.
 
 When the project has a Feature / Delivery Slice hierarchy, scenarios are normally feature-level and may be tagged with
