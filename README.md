@@ -54,6 +54,7 @@ Claude Code, Codex or any other agent that reads `SKILL.md`.
 | `templates/` | Per-project starters and personal instruction profiles. Built: `pre-commit-hook/` (warns about new files; install in its README), `global-user-instructions/AGENTS.md` (canonical personal collaboration rules). Copy the shared template to the instruction paths of selected hosts; install the shared contract and optional companion instructions using `GUIDE.md`, verify parity and confirm loading in each host. These files do not configure arbitrary other apps or guarantee model compliance. To come: general project `AGENTS.md` starter |
 | `docs/decisions.md` | Why each skill was kept or dropped |
 | `docs/roadmap.md` | **Status, next steps, open decisions: start here** |
+| `docs/future-ideas.md` | Candidate enhancements and source references; read only for future-option review, not normal task startup |
 | `AGENTS.md` / `CLAUDE.md` | Instructions for AI agents working on this repo. `CLAUDE.md` only imports `AGENTS.md`. For Gemini CLI, point its context file setting at `AGENTS.md` (check the setting name in the current Gemini CLI docs) |
 
 ## Installing on a new machine

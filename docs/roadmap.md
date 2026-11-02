@@ -28,7 +28,8 @@
 
 - ZadLoop integration/testing and general native-worker selection. Keep current CLI routing and approved bounded
   recovery; no provider/model/account or permission changes.
-- Team-workspace/dashboard exploration, extra integrations and other speculative builds: ideas, not active work.
+- Candidate enhancements are in [future-ideas.md](future-ideas.md), read only for future-option review.
+  Team-workspace, DeepSeek-inspired runtime ideas and extra integrations remain ideas, not active builds.
 - Gemini overlay remains separate from the vendor base. No upstream submission or publication without owner scope.
 - Standalone installer, portable secret-free fleet examples and additional tooling remain parked unless reopened.
 
