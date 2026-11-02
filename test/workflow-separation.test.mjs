@@ -122,6 +122,16 @@ test('implementation evidence preserves discretion, plan ownership and focused r
   assert.match(profile, /orchestrator as plan author \(or the explicitly assigned\s+external author\)/);
 });
 
+test('review corrections separate the finding, remedy and optional refactor', () => {
+  assert.match(contract, /reviewer confirms it resolves the underlying issue/);
+  assert.match(contract, /broader refactor to the owner as\s+follow-up feedback/);
+  assert.match(contract, /reviewer rejects\s+the author's smaller correction, start a focused evidence-backed debate/);
+  assert.match(contract, /Implement an agreed remedy within existing authority without extra permission/);
+  assert.match(contract, /unresolved consequential disputes or remedies outside existing\s+authority return to the owner/);
+  assert.match(contract, /Code-fix debate does not automatically invoke the\s+planning-only plan-debate skill/);
+  assert.match(profile, /same author\/reviewer; no additional reviewer or approval/);
+});
+
 test('recovery distinguishes transport, quota and unknown-worker status without new configuration', () => {
   assert.match(profile, /whether the owner is present or offline/);
   assert.match(profile, /same configured model\/effort and approved account\/environment/);

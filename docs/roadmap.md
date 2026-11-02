@@ -1,6 +1,16 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: implementation evidence and focused plan revisions — 2026-11-02
+## Current: smaller review corrections and bounded fix debate — 2026-11-02
+
+A reviewer's finding and proposed remedy are separate. Use a smaller correction if the reviewer confirms it fixes
+the issue; return unnecessary broader refactors as follow-up suggestions for the owner, not automatic work or gates.
+Reviewer rejection starts focused author/reviewer debate over the correction. Implement agreed remedies inside
+existing authority and verify/recheck them without another permission request; preserve and report the resolution.
+Unproductive or unresolved material disputes and remedies outside authority go to the owner. Code-fix discussion
+does not repurpose the planning-only debate skill. Shared contract/profile and operator probes are aligned.
+All 15 workflow source checks passed; no installed-host execution claimed. Setup Luna and FD/LLD/QA quality work remain deferred.
+
+## Historical: implementation evidence and focused plan revisions — 2026-11-02
 
 The owner approved implementer discretion for routine coding adjustments within approved behavior, scope and
 architecture. Evidence invalidating the approach returns to the actual plan author for affected-section revision,

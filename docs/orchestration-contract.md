@@ -165,6 +165,15 @@ workflow explicitly grants them authority.
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
 - Reviewers verify consequential claims rather than checking only that citations exist.
 - For plan reviews, apply the available plan-review capability and the selected workflow's author/reviewer ownership. Use a separate reviewer when requested, warranted or required; the author retains plan mutations and findings disposition. A plan debate is not an automatic second review. Route material findings to the plan author for reasoned disposition (accept/revise, reject with evidence, or leave open with the required check/decision). A reviewer recommends; it does not direct plan mutations. This need not create a separate debate or record.
+- Separate a valid review finding from the reviewer's proposed remedy. Prefer a smaller correction when the
+  reviewer confirms it resolves the underlying issue. Return an unnecessary broader refactor to the owner as
+  follow-up feedback; do not implement it automatically or make it a completion gate. If the reviewer rejects
+  the author's smaller correction, start a focused evidence-backed debate between those participants over the
+  fix. Implement an agreed remedy within existing authority without extra permission, then verify and recheck
+  affected work and report the agreement/correction. Preserve findings, rationale and disposition in working
+  evidence. Stop exchanges that add no evidence; unresolved consequential disputes or remedies outside existing
+  authority return to the owner, pausing dependent work only. Code-fix debate does not automatically invoke the
+  planning-only plan-debate skill; material plan changes also follow the planning revision/debate rules.
 - Inspect code diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction. This inspection complements rather than replaces required independent technical review. Commit ownership does not grant publication, merge or deployment permission; project authorization controls those effects.
 - The implementer owns its code, local tests/build checks and fixes. When independent code review is warranted or required, use a separate reviewer; implementer self-checks and outcome verification do not substitute for independent review. Coordinate responsibilities rather than repeating specialist judgment.
 - Routine review findings return to the implementer for fix/reverify without a new user gate. Material findings that

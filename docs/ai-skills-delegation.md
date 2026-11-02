@@ -98,6 +98,14 @@ reconciliation with their owners. Do not silently redesign, require approval for
 Material choices outside existing authority go to the user; pause dependent work only. Follow the shared contract's
 **New evidence during implementation** rule and existing debate trigger for disputed technical revisions.
 
+For code-review corrections, keep the fix with its implementation owner and use the separate reviewer to
+confirm that a proposed smaller remedy resolves the finding. Return unnecessary broader refactors as owner
+follow-up suggestions. If the reviewer rejects the smaller remedy, coordinate a focused evidence-backed debate
+with the same author/reviewer; no additional reviewer or approval is required to implement an agreed fix inside
+existing authority. Recheck affected work and report the resolution. Bound unproductive exchanges and escalate
+unresolved consequential disputes or out-of-authority remedies. This is code-fix discussion, not automatic use of
+planning-only `plan-debate`; consequential plan revisions retain their normal ownership and review rules.
+
 ### Recovery and approved default fallback
 
 This profile standing-authorizes automatic fallback to the owner's already-approved configured default route for
