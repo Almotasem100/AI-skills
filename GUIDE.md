@@ -346,7 +346,7 @@ Example lane ideas:
 | Role | Example route |
 |---|---|
 | Routine implementation | OpenCode / Luna, configured effort/variant |
-| Hard implementation or planning | a stronger configured lane |
+| Hard implementation, or explicitly assigned external planning | a stronger configured lane |
 | Test-scenario author | Gemini Auto |
 | Plan challenger | Gemini Auto |
 

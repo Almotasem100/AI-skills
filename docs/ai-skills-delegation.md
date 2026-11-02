@@ -45,7 +45,10 @@ commands and troubleshooting when needed. This profile does not read local execu
 leave existing preferences, host agents, accounts and permissions untouched.
 
 The catalog describes role meanings, not live models or routing. Local configuration chooses provider/model/effort;
-a host model inventory does not bind an assignment. Honor applicable source/privacy boundaries under every route.
+a host model inventory does not bind an assignment. Select an exact configured responsibility name or an alias/
+mapping already established for that responsibility; do not infer aliases or create configuration. Missing or
+ambiguous routes use the recovery/default policy below, otherwise remain blocked. Honor applicable source/privacy
+boundaries under every route.
 
 ## Assignment and acceptance
 

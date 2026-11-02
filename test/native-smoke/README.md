@@ -44,7 +44,7 @@ proof that the whole setup is dependable.
 | Check | Evidence / acceptance |
 | --- | --- |
 | Installed first-party skills | Every source skill file compared against the installed copy with line endings normalized. Missing and stale files are identified. This does not prove host discovery/activation. |
-| Installed instructions | Shared contract, optional profile/catalog, and optionally the selected host instruction file compared with the branch. A shared-only installation can legitimately report optional components unavailable. |
+| Installed instructions | Shared contract, optional profile/catalog/CLI dispatch reference, and optionally the selected host instruction file compared with the branch. A shared-only installation can legitimately report optional components unavailable. |
 | Actual configured lanes | Installed `delegate-setup` loads and resolves all configured lanes in `--project`. It validates configuration, not live provider availability. No mandatory role names are built into these checks. |
 | Gemini / OpenCode free route / OpenCode Luna | Installed relays read randomized fixture data and return a small JSON calculation. Check exit, result status, response, requested route metadata, independently computed answer and observed workspace changes. |
 | `task-context` | The driving session applies the installed intake-first skill to original Q&A, corrected scope, undecided behavior and an unapproved reuse suggestion; checks fidelity/supersession without accepting a preferred solution. |

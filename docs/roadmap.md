@@ -17,7 +17,10 @@
 - Continue FD/LLD/QA output-quality discussion with the owner's examples when they are available at the laptop.
 - After agreed changes settle, prepare one batched Setup Luna install and natural feature trial with raw event
   capture. Assess workflow routing/review separately from code acceptance; do not claim installed-host compliance
-  from source tests or explanation probes.
+  from source tests or explanation probes. Include diagnosis of the previously observed default-route failure
+  from captured errors; do not change live configuration as part of this cleanup.
+- Replace the stale project-attached instructions with the saved cleaned version, then verify the bytes supplied
+  to a fresh turn. The successful saved-file update did not refresh the original attachment reference.
 - Inspect the latest HDC instructions for contradictions only after the AI-skills separation is settled. No HDC
   content or installation is changed in this batch.
 
@@ -33,7 +36,7 @@
 
 - Prior feature trials demonstrated configured specialist work and corrections, but also model/tool-call failures,
   missing chronology evidence and one approved route substitution. They do not establish universal autonomy.
-- First-batch validation: 37 portable offline checks passed. Independent bounded probes exercised plan review
+- First-batch validation: 38 portable offline checks passed; the four-agent source review is resolved. Independent bounded probes exercised plan review
   and default/explicitly reassigned roles, identifying one allocation/execution ambiguity that was corrected.
   These probes are not live dispatch or host-compliance evidence. Earlier verification belongs to its revision; native loading,
   subscription availability and filesystem containment require their own evidence.

@@ -48,6 +48,8 @@ test('participant allocation is explicit and isolated from role meanings, skill 
   assert.match(ownership, /Plan reviewer \| A separate participant through `challenge-plan`/);
   assert.match(ownership, /Self-checks do not\s+replace required separate review/);
   assert.match(ownership, /missing review route is a blocker/);
+  assert.match(profile, /mapping already established for that responsibility; do not infer aliases/);
+  assert.match(guide, /explicitly assigned external planning/);
   assert.match(ownership, /role assigned to the orchestrator is\s+performed directly; externally assigned work uses/);
   assert.match(profile, /configured CLI delegation skills/);
   assert.match(profile, /user need not name a lane or choose a mechanism/);
@@ -229,8 +231,10 @@ test('companion file layout resolves the installed pointers with and without opt
     for (const [, pointer] of globalInstructions.matchAll(/`(~\/\.config\/ai-skills\/[^`]+)`/g)) {
       assert.ok(existsSync(pointer.replace('~', home)), pointer);
     }
-    for (const [, target] of profile.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]*)?\)/g)) {
-      assert.ok(existsSync(resolve(destination, target)), target);
+    for (const sourceText of [profile, dispatch]) {
+      for (const [, target] of sourceText.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]*)?\)/g)) {
+        assert.ok(existsSync(resolve(destination, target)), target);
+      }
     }
   } finally {
     rmSync(home, { recursive: true, force: true });

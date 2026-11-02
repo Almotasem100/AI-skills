@@ -47,6 +47,33 @@ test('missing binary is unavailable, runtime failures remain failures', () => {
   assert.equal(assess({ status: 'opencode_unavailable', exitCode: 127 }, 127).status, 'unavailable');
   assert.equal(assess({ status: 'failed', exitCode: 1 }, 1).status, 'failed');
 });
+test('CLI dispatch companion parity distinguishes matching, stale and absent installs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'smoke-dispatch-parity-'));
+  const env = { ...process.env }; delete env.NODE_TEST_CONTEXT;
+  const instructions = join(root, 'instructions');
+  const skills = join(root, 'missing-skills');
+  mkdirSync(instructions); mkdirSync(skills);
+  const installed = join(instructions, 'cli-dispatch.md');
+  const expected = readFileSync(join(repoRoot, 'docs/cli-dispatch.md'), 'utf8');
+  try {
+    for (const [status, content] of [['passed', expected], ['failed', '# stale reference\n'], ['unavailable', null]]) {
+      if (content === null) rmSync(installed);
+      else writeFileSync(installed, content);
+      const run = spawnSync(process.execPath, [join(repoRoot, 'test/native-smoke/run.mjs'),
+        '--skills-root', skills, '--instructions-root', instructions], { encoding: 'utf8', env });
+      assert.equal(run.status, status === 'failed' ? 1 : 2, run.stderr);
+      const path = run.stdout.match(/Run directory: (.+)/)?.[1]?.trim();
+      assert.ok(path, run.stdout + run.stderr);
+      try {
+        const summary = JSON.parse(readFileSync(join(path, 'summary.json'), 'utf8'));
+        assert.equal(summary.live, false);
+        const rows = summary.cases.filter(item => item.case === 'installed-cli-dispatch.md');
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].status, status);
+      } finally { rmSync(path, { recursive: true, force: true }); }
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
 test('workflow verifier catches original bug and test tampering, then runs the actual fix', () => {
   const root = mkdtempSync(join(tmpdir(), 'smoke-runner-test-'));
   const env = { ...process.env };
