@@ -110,6 +110,18 @@ test('debate starts at first material technical disagreement without restarting 
     /Require explicit debate selection|structured debate only when explicitly selected|run `plan-debate` only when explicitly selected/);
 });
 
+test('implementation evidence preserves discretion, plan ownership and focused revision boundaries', () => {
+  const section = contract.split('### New evidence during implementation')[1].split('## Evidence and authority')[0];
+  assert.match(section, /do not knowingly follow the invalid step/);
+  assert.match(section, /routine adjustments within the approved behavior, scope and architectural approach/);
+  assert.match(section, /return the evidence and proposed\s+adjustment to the plan author before proceeding with dependent work/);
+  assert.match(section, /reconcile\s+affected design\/QA artifacts with their owners/);
+  assert.match(section, /focused review of material revisions/);
+  assert.match(section, /outside that authority requires the owner's decision/);
+  assert.match(section, /Pause only dependent work/);
+  assert.match(profile, /orchestrator as plan author \(or the explicitly assigned\s+external author\)/);
+});
+
 test('recovery distinguishes transport, quota and unknown-worker status without new configuration', () => {
   assert.match(profile, /whether the owner is present or offline/);
   assert.match(profile, /same configured model\/effort and approved account\/environment/);

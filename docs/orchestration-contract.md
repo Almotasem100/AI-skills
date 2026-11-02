@@ -121,6 +121,20 @@ do not turn routine reversible coding choices into approval gates or duplicate w
 
 Distinguish **ready to implement** (a sufficient blueprint with required decisions settled and execution authorized), **decision pending** (a sufficient blueprint exists, but a material approval is still required), and **blocked** (missing consequential requirements, evidence or design decisions prevent a dependable blueprint). A plan may explicitly introduce justified new components or architecture; the implementer must not invent unapproved material decisions. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
 
+### New evidence during implementation
+
+When implementation disproves a plan assumption, do not knowingly follow the invalid step. The implementer may
+make routine adjustments within the approved behavior, scope and architectural approach, recording consequential
+reasoning in existing working evidence without seeking permission for every coding detail.
+
+If the evidence changes the plan's approach or architectural boundaries, return the evidence and proposed
+adjustment to the plan author before proceeding with dependent work. Revise only affected plan sections, reconcile
+affected design/QA artifacts with their owners when needed, and obtain focused review of material revisions.
+Apply the normal consequential-disagreement debate rule; do not restart the whole workflow. A technical revision
+inside existing authority needs no new owner approval. A material behavior, scope, security, persistence or public
+contract choice outside that authority requires the owner's decision. Pause only dependent work and continue
+genuinely independent authorized work; preserve the reason for the revision and its review disposition.
+
 ## Evidence and authority
 
 Keep these classes distinct:

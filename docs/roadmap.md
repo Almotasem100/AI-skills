@@ -1,6 +1,17 @@
 # Roadmap — status, next steps, open decisions
 
-## Current: first consequential technical dispute starts focused plan-debate — 2026-11-01
+## Current: implementation evidence and focused plan revisions — 2026-11-02
+
+The owner approved implementer discretion for routine coding adjustments within approved behavior, scope and
+architecture. Evidence invalidating the approach returns to the actual plan author for affected-section revision,
+focused review and necessary design/QA reconciliation with the responsible owners. New material choices outside
+existing authority require the owner; pause dependent work only. No automatic whole-workflow restart or approval
+for every coding detail. The existing consequential-disagreement debate trigger still applies.
+
+Shared contract, optional profile and explanation-only operator cases are aligned. All 14 workflow source checks passed;
+no installed-host/model execution is claimed. Setup Luna and FD/LLD/QA quality discussion remain deferred.
+
+## Historical: first consequential technical dispute starts focused plan-debate — 2026-11-01
 
 The owner approved the earlier trigger: when the plan author first gives a reasoned objection to a consequential
 technical review finding, continue immediately through focused plan-debate with the existing plan/finding and

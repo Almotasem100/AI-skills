@@ -90,6 +90,14 @@ If the user explicitly assigns an external plan author, that author must inspect
 
 In AI Skills delegation mode, the implementation plan is the orchestrator's deliverable; other specialist deliverables, including the separate plan review, are delegated. The orchestrator may inspect evidence, ask questions, reason, coordinate and perform authorized deterministic verification without transferring other deliverable ownership. When delegating, inspect the actual configured CLI routes and installed delegation skills, verifying provider compatibility before claiming a route is missing or unavailable; do not infer absence from memory. The orchestrator's own planning and explicitly authorized one-task direct work need not resolve an authoring lane; required review still needs a suitable separate route. A missing review route is a blocker, not permission to substitute self-review.
 
+During implementation, the specialist may adapt routine coding details inside the approved behavior, scope and
+architectural approach and record consequential reasoning. If new source evidence invalidates the plan's approach,
+return that evidence and a proposed adjustment to the orchestrator as plan author (or the explicitly assigned
+external author). The author revises affected sections and coordinates focused review and any necessary design/QA
+reconciliation with their owners. Do not silently redesign, require approval for every detail, or restart all stages.
+Material choices outside existing authority go to the user; pause dependent work only. Follow the shared contract's
+**New evidence during implementation** rule and existing debate trigger for disputed technical revisions.
+
 ### Recovery and approved default fallback
 
 This profile standing-authorizes automatic fallback to the owner's already-approved configured default route for
