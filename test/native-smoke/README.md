@@ -56,8 +56,12 @@ proof that the whole setup is dependable.
 
 Read each generated skill output and walkthrough: the verifier labels existing output `needs-review`, not passed. The skill trials
 are explicit-use tests; record observed file access/native activation and do not claim automatic discovery from them.
-`plan-debate` is still parked and is not behaviorally exercised. Other first-party skills receive file parity checks,
+This pack has no dedicated native `plan-debate` case. Source checks and bounded conversation probes do not
+establish installed-host debate behavior. Other first-party skills receive file parity checks,
 not native behavioral acceptance. These limits are intentional to keep the pack small.
+
+Optional manual selection/resume probes are in [selection-continuity.md](selection-continuity.md);
+authorization/recovery explanation probes are in [operator-scenarios.md](operator-scenarios.md).
 
 ## Full-scenario host trials
 

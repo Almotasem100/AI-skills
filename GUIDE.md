@@ -162,7 +162,7 @@ Nothing to install into a skills folder; run them from here, or ask your agent t
 | Before each commit | `templates/pre-commit-hook/` | **Warns** (never blocks) when a commit adds new files, so you check each was approved | Copy its two files into the repo's `.git/hooks/`: see "Any time" below. Once per clone |
 | After porting an endpoint | `tools/json-compare/` | Diffs a recorded legacy response against the new one; any difference is a finding | `node tools\json-compare\compare.mjs <legacy.json> <new.json> [--config rules.json]` |
 | After each ported slice | `tools/url-map/` | Maps every URL to its handler and callers, and lists the gaps | `node tools\url-map\url-map.mjs --config <project>.config.json` |
-| Setting up a repo | `docs/linters.md` | Checkstyle / ESLint / Prettier setup notes and the exact commands | Read it; the HDC commands are in its last sections |
+| Evaluating lint/format tools | `docs/linters.md` | Portable examples and tool-download caveats | Follow the project’s configured commands and quality gates |
 
 ---
 
@@ -355,51 +355,29 @@ You can override a route explicitly for a particular task. To inspect the config
 before depending on it.
 
 
-### Have another agent run one of your skills (e.g. Codex writes the LLD)
-Your main agent (e.g. Claude) can hand a whole skill run to another CLI through its delegate relay. The other
-CLI loads the skill from **its own** skills folder, so the skill must be installed there too (Codex:
-`~/.agents/skills`; §3 does that).
+### Have another agent run a skill
 
-**What to say** (to your main agent):
-> *"Create the forward LLD for CADE-1234 from this ticket and these slides. Use the configured planning/document
-> role, save it in C:\path\to\docs\folder, and list unresolved questions at the end."*
+After explicitly selecting AI Skills delegation mode, ask for the outcome naturally:
 
-If you specifically want Codex/Gemini/etc. for that run, say so as an override.
+> "Create the feature LLD and required Functional Design from these requirements and slides. Save them in the
+> project's approved design location and report unresolved material questions."
 
-**What happens:**
-1. Your agent writes a **brief**. Codex sees only the brief, no chat history, so every input goes in it:
-   ticket, description, slide path, designer, save folder, and *"use your create-lld skill"*.
-2. It resolves the requested role to the configured lane and runs the relay with `--cd` set to the **folder the
-   LLD goes in** (subject to the selected relay's actual access model).
-3. Codex loads `create-lld`, drafts the LLD, runs its checker, and ends with its questions (up to five).
-4. Your agent shows you the report and the questions. You answer; your agent sends the answers back to the
-   **same Codex session** (`--session <id>` from the result), and Codex finishes the LLD.
-5. Your agent reviews the LLD. Nothing is committed or published.
+The optional profile assigns participants and resolves the feature-design responsibility. Its
+[dispatch reference](docs/cli-dispatch.md) and the selected installed relay own invocation, working-directory/access
+requirements and continuation options. Use that relay's actual documented flags; do not copy another CLI's flags.
 
-**Shared-state rule:** the orchestrator is the sole writer of the shared session scratchpad because it owns
-coordination state. A delegated specialist owns its assigned artifact/change and returns or links that result
-without the orchestrator recreating it. Give the role minimum useful context and canonical source access. Use an
-immutable snapshot/worktree only when a real containment or concurrency boundary requires it.
+Provide objective, approved source/artifact paths, change/output boundaries and acceptance criteria. When accessible,
+files carry the inputs; do not paste entire documents into the brief. The receiving environment needs appropriate
+skills and authorized source access. Preserve actual returned session IDs and resume only when supported/current;
+a fresh continuation from artifacts must not be presented as the same session.
 
-The same pattern works for any skill that runs well on its own: *"delegate to codex with model gpt-6-luna,
-effort low: use your **describe-pr** skill for this branch; don't create the PR"*, or *"…use your
-**docs-guard** skill on these files, read-only"*. It doesn't fit the interview skills (`grill-me`,
-`grill-with-docs`): they need you answering round by round, so run those in your own session.
+A provider/model request is an explicit task override, not a persistent configuration change. Normal feature requests
+do not require per-assignment model or transport choices. Requested artifacts and real invocation/results must be
+checked; successful relay completion alone is not task acceptance. Follow the contract/profile rather than treating
+this example as another execution policy.
 
-**Tested 2026-09-26 (laptop, Claude → relay → Codex `gpt-6-luna`/low, read-only, throwaway repo):** Codex found
-and loaded `create-lld` from `~/.agents/skills` and correctly reported its inputs, save location and that it
-asks questions after drafting. **Not yet tested:** a full LLD written this way, and the answer-the-questions
-round trip.
-
-**Gemini delegation:** a `gemini-delegate` contribution is under owner review on the local, unpublished
-`feature/gemini-delegate` branch in a separate upstream clone; it has not been merged into the vendored pack.
-The relay was live-tested on 2026-10-01 with Gemini CLI 0.62.0 in a disposable Git repo, using the CLI's
-default Auto model selection and `auto_edit`. It added a bounded helper and tests; the diff was reviewed and
-the test command independently passed 5/5. This verifies one direct relay dispatch, not automatic skill
-selection or saved-lane dispatch. The full upstream smoke suite still has five existing non-Gemini
-`orphan-near-timeout` failures; their cause has not been investigated. `npx skills add . --list` has not been
-run. Decide whether to propose the branch
-upstream before adding it to the normal install instructions.
+For Gemini, use the repository's current [overlay procedure](overlays/gemini-delegate/README.md), not historical
+local-branch or installed-version notes. Setup/parity and live host acceptance remain distinct; see the test pack.
 
 ### Small ticket
 1. **`grill-me`** (by name): *"/grill-me — ticket 38939409: add the shared header"*. It asks questions in

@@ -83,14 +83,13 @@ recovery authorization. See `GUIDE.md` for installation choices; availability is
 
 When a project has a parent feature and internal delivery tickets:
 
-```text
-Feature
-  -> feature context / Functional Design / LLD / implementation plan / QA scenarios
-  -> Delivery Slice 1 -> branch / implementation / verification / review / PR
-  -> Delivery Slice 2 -> branch / implementation / verification / review / PR
-  -> ...
-  -> feature acceptance / work-closeout
-```
+| Scope | Typical artifacts / work |
+| --- | --- |
+| Feature | Shared requirements/intake, applicable design and QA, implementation plan and acceptance |
+| Delivery slice | Bounded changes, branch/diff, verification/review and applicable PR preparation |
+
+This is a hierarchy, not a fixed execution sequence. Use the shared contract for prerequisites and completion;
+closeout is an explicitly requested reconciliation action, not an automatic feature endpoint.
 
 The generic repo never hardcodes a tracker. A project may map Feature to Jira, Delivery Slice to CodeBeamer, or use
 different systems entirely.
@@ -112,16 +111,20 @@ Each skill gets an entry here once it exists: what it does, when to call it, its
 example call.
 
 ### My skills
-| Skill | Status | Use |
-|---|---|---|
-| `task-context` | **Intake-first refinement 2026-11-01; installed native re-test pending.** The earlier bounded Gemini smoke predates this change. | Original inputs/source pointers, approved scope, consequential Q&A/decisions and unresolved questions → one temporary intake record. Retains narrow sourced concerns without preselecting solutions; later synthesis only when continuity needs it. Adaptive, not a project-of-record document. |
-| `create-lld` | **Intake consumer refined 2026-11-01; native re-test pending after reinstall.** Earlier bounded smokes proved discovery and showed Gemini/OpenCode adherence differences, but they predate the adaptive template/checker changes on this branch. | Forward: task context/approved requirements → concise feature-level LLD before plan/implementation, plus Functional Design when required. Technical Design is optional and only produced when the active project/team explicitly requires an as-built design artifact. |
-| `qa-scenarios` | **Intake consumer refined 2026-11-01; native verification pending after reinstall.** | Feature-level QA behavior specification from approved requirements/Functional Design, with optional mapping to delivery slices. Produces observable scenarios for tester preparation; it does not run tests or require an implementation handoff. |
-| `plan-review` | **Intake consumer refined 2026-11-01; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic smoke; the current version separates planning records from the compact project scratchpad. | One-shot, read-only critique of a plan, dedicated planning record, or handoff → prioritized, evidence-linked findings, assumptions, risks, and questions; does not edit the input |
-| `plan-debate` | **Authorship preservation refined 2026-11-01; native re-test pending.** The predecessor version passed a bounded 2026-10-01 synthetic exchange; the current version uses a temporary debate record and keeps project scratchpad state compact. | Structured pre-implementation challenge/response in one temporary debate record; the normal project scratchpad remains compact execution state; does not apply the plan to project documents |
-| `security-audit` | **Smoke-tested 2026-10-01** in Gemini CLI 0.62.0 on a synthetic endpoint excerpt; installed in the user-level `.agents/skills` and `.claude/skills` folders. Broader native testing pending. | Read-only, evidence-citing security review of a scoped change → severity-ranked findings, requirement/evidence gaps, coverage and limits; not certification or penetration testing |
-| `work-closeout` | **Renamed/refined 2026-10-11; native verification pending after reinstall.** Citation checker retained. | Reconcile a genuinely completed feature/bounded work item using the project's working record. Not triggered by ending a chat or by completing one child delivery slice; durable write-backs/cleanup follow project policy. |
-| `describe-pr` | **Intake provenance refined 2026-11-01; native re-test pending.** Earlier evidence-flow smoke: 2026-10-11. A causal-inference rule was added after Gemini linked separately stated facts; one retry still produced the unsupported link. | Git/implementation → What changed; task context/approved requirements → Why; verified execution/user report → Testing. Asks only for missing evidence and preserves estimate/target qualifiers. |
+| Skill | Capability |
+| --- | --- |
+| `task-context` | Optional intake-first record of original inputs, consequential Q&A/decisions, open questions and sourced concerns; not a prescribed technical solution |
+| `create-lld` | Concise forward LLD and required Functional Design from approved inputs; as-built Technical Design only when explicitly required |
+| `qa-scenarios` | Observable tester-facing scenarios, not executable tests or QA execution |
+| `plan-review` | Read-only source-grounded plan critique; attributable findings, assumptions and verification limits |
+| `plan-debate` | Focused author/reviewer resolution of consequential technical disagreement; supports explicitly selected multiple reviewers |
+| `security-audit` | Read-only scoped security findings and evidence/requirement gaps; not certification or active penetration testing |
+| `work-closeout` | Explicit reconciliation of completed bounded work and changed durable facts; archival/removal needs its applicable authorization |
+| `describe-pr` | Evidence-grounded PR description separating actual changes, approved rationale and verification; publication follows its own authorization |
+
+Use the [roadmap](docs/roadmap.md) for current pending work and the [test pack](test/native-smoke/README.md) for
+verification methods/limits. Historical smokes apply only to their tested revisions and environments; the current
+sources are not claimed installed or behaviorally verified on every host. Git preserves prior execution history.
 
 ### `task-context`
 **Install:** copy `skills/task-context/` into the same skills folder as the other first-party skills.
