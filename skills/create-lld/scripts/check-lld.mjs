@@ -6,8 +6,8 @@
 import { readFileSync } from 'node:fs';
 
 // A project-approved identifier is useful when supplied, but absent metadata must not be invented.
-const HEADER = /^# LLD — \S(?:.*\S)?$/;
-const CORE = ['Context', 'Objectives & constraints', 'Design'];
+const HEADER = /^# (?:LLD|Technical Design(?: Document)?) — \S(?:.*\S)?$/;
+const CORE = ['Design'];
 const CONDITIONAL = ['Impact & risks', 'Verification intent', 'Rollout & rollback', 'Open questions'];
 const VAGUE = /\b(seamless(ly)?|robust|absolute|cleanly|leverag(e|es|ing)|best[- ]in[- ]class|state[- ]of[- ]the[- ]art|etc\.?)(?![\w-])/gi;
 
@@ -42,7 +42,7 @@ function main() {
 
   const first = md.split('\n').find(l => l.trim()) || '';
   if (!HEADER.test(first.trim()) || /:\s*$/.test(first)) {
-    errors.push('First line must be: # LLD — <Title> (or # LLD — <FEATURE-ID>: <Title> when an ID is supplied)');
+    errors.push('First line must be: # LLD — <Title> or # Technical Design — <Title> (optionally prefixed by a supplied feature ID)');
   }
   if (/<!--/.test(md)) errors.push('Template comments remain; remove every <!-- … --> block.');
   if (/^\s*(N\/A|n\/a|NA|None\.?)\s*$/m.test(md) || /\|\s*N\/A\s*\|/.test(md)) {

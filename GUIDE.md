@@ -26,7 +26,7 @@ Answer "agree" or "agree except Q3: …". Save its final summary: that's your sp
 it also builds a glossary as you answer. Choose the project-approved working location: this skill writes glossary and ADR working files where it runs.
 > `/grill-with-docs new approval workflow for checklists`
 
-**`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A separate as-built Technical Design is optional only when the active project/team explicitly requires one. Source materials and code are inspected internally; deliverables omit evidence inventories and source-code paths/lines.
+**`create-lld`: feature-level design artifacts.** After requirements are settled, it drafts a concise architect-facing LLD before the plan/implementation and can prepare a customer-facing Functional Design when required. A project may name the forward LLD Technical Design; a separate as-built record requires an explicit project need. Design coordinates such as proposed files/methods are useful to the architect; investigative source inventories stay internal.
 > "Write the LLD for APP-123, 'Navbar', from these requirements."
 
 ### 🧭 Planning before implementation
@@ -135,7 +135,7 @@ the old directories.
 | Start of a big ticket | `grill-with-docs` | Same interview, and maintains working `GLOSSARY.md` / `GLOSSARY-MAP.md` plus ADR drafts as domain terms and decisions emerge | Pocock (pinned) |
 | (used by the two above) | `grilling`, `domain-modeling` | The engines behind the grills. Install them; you don't call them yourself | Pocock (pinned) |
 | Intake record, when useful | `task-context` | Preserves original-source pointers, approved scope, consequential grilling Q&A/decisions and open questions; narrow sourced concerns remain leads, not approved solutions | Mine |
-| Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; optional Technical Design only when the project explicitly requires one | Mine |
+| Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; project naming may call the forward LLD Technical Design; separate as-built record only when required | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
 | Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one temporary debate record; compact project scratchpad records only resulting execution state | Mine |
@@ -420,7 +420,7 @@ For larger work, use the applicable Full Feature outcomes in the shared contract
   decisions/supersession and open questions with source pointers. Retain consequential sourced concerns as leads,
   not solutions; add later synthesis only for a genuine continuity need in the same artifact. Use the active
   project's approved working location; the generic skill does not choose a project-specific path.
-- **`create-lld`**, optional Technical Design mode: invoke only when the active project/team explicitly requires a separate as-built design artifact after implementation.
+- **`create-lld`**, optional as-built record: invoke only when the active project/team explicitly requires it after implementation. A forward LLD may already be delivered under the name Technical Design.
 
 - **`qa-scenarios`**, when QA needs behavior scenarios: *"Draft QA scenarios for this feature from the approved requirements and Functional Design, and map them to delivery slices where useful."* It specifies expected observable behavior; it does not run tests.
 

@@ -1,6 +1,7 @@
 <!-- The team's Example A, verbatim. Teach from it: problem-then-fix per concern; the mechanism explained rather
      than the file list; specific identifiers named; written for someone who wasn't in the author's head.
-     Its gaps: no ticket reference, no testing evidence, no risk or rollback, no screenshots, two unrelated
+     Historical source example, not the current title/heading contract. Its gaps: no ticket reference, no testing
+     evidence, no risk or rollback, two unrelated
      concerns in one PR. -->
 
 PR Title: Restrict Checklist Imports & Fix Project Vs eBBs KPI Data

@@ -7,12 +7,12 @@ body, so the agent never formats markdown headings itself.
 {
   "title": {
     "type": "feat",            // feat | fix | hotfix | refactor | perf | chore | test | docs | release
-    "scope": "kpi",            // a short area name; from the repo's scope list when one exists; omit if none fits
+    "scope": "kpi",            // optional area name for a project using the conventional title format; ignored in ticket-first titles
     "summary": "add project status and multi-code filtering",  // imperative, lowercase start, no period
     "ticketId": "14972296"     // internal ticket ID; omit to use the one parsed from the branch
   },
   "fields": {                  // values for {{placeholders}} in the template
-    "designDoc": "LLD section: [CADE-1421] Improve Projects List Page",  // or a link; omit for "none"
+    "designDoc": "[Notification preferences — Technical Design](<accessible-design-link>)", // actual document title; omit when unavailable
     "severity": "high",        // bugfix/hotfix only: low | medium | high
     "foundIn": "R2.21 / prod"  // bugfix/hotfix only
   },
@@ -60,3 +60,9 @@ The context's `requiredSections` says which keys must appear. A required key lef
 - `testing` / `regressionAndTesting` come from verified execution evidence or the user; never infer them from
   requirements or implementation alone.
 - `rollback` is asked for when the context has a `migration` signal, and always for a hotfix.
+
+Presentation keys remain stable for existing drafts: `why` renders under **Purpose**, `testing` under
+**Verification**, and optional `reviewerNotes` under **Review considerations** in the bundled story template.
+Screenshots are optional; absence is not a missing input just because UI files changed. `fields.designDoc` contains
+the actual Technical Design/LLD title/link without routine dates; omitted design evidence creates no “none” label.
+The context's `titleFormat` selects `ticket-first` (default) or the repository's explicit `conventional` format.

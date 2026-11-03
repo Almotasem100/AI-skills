@@ -47,8 +47,12 @@ function renderTitle(draft, context, warnings) {
     warnings.push(`Scope "${t.scope}" is not in the repo's scope list (${context.scopes.join(', ')}).`);
   }
   if (type === 'release') return `release: ${context.branch.releaseVersion || summary}`;
+  const format = context.titleFormat || 'ticket-first';
+  if (!['ticket-first', 'conventional'].includes(format)) throw new Error(`Unsupported titleFormat: ${format}`);
   const head = t.scope ? `${type}(${t.scope})` : type;
-  const title = `${head}: ${summary} [#${ticketId || NEEDS_INPUT}]`;
+  const title = format === 'conventional'
+    ? `${head}: ${summary} [#${ticketId || NEEDS_INPUT}]`
+    : `${type}[#${ticketId || NEEDS_INPUT}]: ${summary}`;
   if (title.length > TITLE_MAX) warnings.push(`Title is ${title.length} characters (max ${TITLE_MAX}).`);
   return title;
 }
@@ -70,6 +74,8 @@ function renderBody(template, draft, context) {
     designDoc: context.designDocUrl,
     ...(draft.fields || {}),
   };
+
+  values.designReference = values.designDoc ? `**Design:** ${values.designDoc}` : '';
 
   const blocks = template.replace(/\r\n/g, '\n').split(/\n(?=## )/);
   const out = [];

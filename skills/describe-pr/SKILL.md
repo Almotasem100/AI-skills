@@ -44,7 +44,10 @@ All optional. Use whatever the user gives; ask only for what's missing after che
    - Read relevant Functional Design / LLD / Technical Design when supplied: they ground terminology, intended
      behavior and design, but concise design documents are not expected to preserve every business rationale detail.
 
-3. **Write the draft** as JSON, following `references/draft-contract.md` and `references/writing-guide.md`,
+3. **Write for the PR reviewer**, using `references/writing-guide.md` for headings, title and optional evidence.
+   Link the actual forward Technical Design/LLD title when available; omit routine dates and duplicated ticket
+   metadata. Keep impact/risk as readable bullets and review considerations only when useful. UI changes alone
+   do not require screenshots or another question. **Write the draft** as JSON, following `references/draft-contract.md` and `references/writing-guide.md`,
    and save it to `<temp>/describe-pr-draft.json`. Look at `references/exemplars/` for the house style.
    - Fill only the sections for the context's `template`. Required sections must appear; leave optional ones
      empty when they don't apply.

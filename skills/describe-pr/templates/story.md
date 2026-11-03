@@ -1,26 +1,25 @@
-## Why
+## Purpose
 <!-- key: why -->
-<!-- The problem or request in business terms, 2-4 sentences. Who was affected and how. -->
+<!-- Brief reason for the change from approved task evidence. Do not repeat the whole ticket. -->
 
-**Ticket:** #{{ticketId}} · **Design doc:** {{designDoc|none}}
+{{designReference|}}
 
 ## What changed
 <!-- key: whatChanged -->
-<!-- Grouped by concern, not by file. Explain the mechanism, not the line count. -->
+<!-- Explain changes by concern, not a file inventory. -->
 
-## Impact & risk
+## Impact and risks
 <!-- key: impactAndRisk -->
-<!-- User-visible changes, breaking changes, DB migrations, new config/env vars, feature flags,
-     permissions/roles, performance. "None" is a valid answer. -->
+<!-- Separate material compatibility, migration/security and other risks into concise bullets. -->
 
-## How it was tested
+## Verification
 <!-- key: testing -->
-<!-- Concrete verifications, one observable outcome per line. -->
+<!-- Actual results, one useful outcome per bullet. Distinguish executed from reported or unavailable. -->
 
-## Reviewer notes
+## Review considerations
 <!-- key: reviewerNotes -->
-<!-- Where to focus, what's deliberately out of scope, alternatives considered, divergence from the design. -->
+<!-- OPTIONAL. Non-obvious dependencies, stacked base or design deviations. No generic review advice. -->
 
 ## Screenshots
 <!-- key: screenshots -->
-<!-- Required when UI files changed. -->
+<!-- OPTIONAL. Useful existing/authorized visual evidence; no routine request or missing-screenshot filler. -->

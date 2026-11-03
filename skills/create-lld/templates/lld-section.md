@@ -1,32 +1,28 @@
-<!-- Concise forward LLD for one feature/parent work item. Omit conditional sections that add no value.
-Use # LLD — <Title> when no project-approved feature identifier was supplied; do not invent one. -->
-# LLD — <FEATURE-ID>: <Title>
+<!-- Forward design, also named Technical Design by some projects. Use the supplied label and identifiers.
+Omit all notes and inapplicable sections in the deliverable. Context/objectives may be one brief introductory paragraph. -->
+# Technical Design — <FEATURE-ID>: <Descriptive title>
 
-<!-- Optional metadata when supplied: release/sprint, tech designer, status. -->
-
-## Context
-<!-- One short statement of the problem and intended change. -->
-
-## Objectives & constraints
-<!-- Concise outcomes and material constraints. Include out-of-scope only when it prevents ambiguity. -->
+<Brief purpose and material scope/constraints, only as needed.>
 
 ## Design
-<!-- Use only applicable subheadings: Backend / Frontend / API & data / Security. Essential boundaries only. -->
+
+### Frontend
+<!-- Applicable components/modules/files; important method signatures and state ownership. Explain interactions. -->
+
+### Backend
+<!-- Applicable resources/services, method responsibilities, inputs/outputs and meaningful failures. -->
+
+### API & data
+<!-- Relevant request/response shapes, persistence/schema changes and data integrity. Omit if unaffected. -->
+
+### Interaction
+<!-- Short call flow or diagram when it adds clarity; do not repeat previous sections. -->
 
 ## Material decisions
-<!-- OPTIONAL. Omit when there is no decision important enough for architect review. -->
-| Decision | Chosen approach | Important boundary / rationale |
-|---|---|---|
-| <!-- meaningful decisions only --> | | |
+<!-- OPTIONAL. Important tradeoffs/constraints in recipient-understandable terms; no private decision-log shorthand. -->
 
 ## Impact & risks
-<!-- OPTIONAL. Omit when none are worth calling out. -->
-
-## Verification intent
-<!-- OPTIONAL. Observable design-level checks only. -->
-
-## Rollout & rollback
-<!-- OPTIONAL. Include only for a genuine rollout/migration/recovery concern. -->
+<!-- OPTIONAL. Changed compatibility/security/migration concerns, not routine workstation or deployment instructions. -->
 
 ## Open questions
-<!-- OPTIONAL. Consequential unresolved decisions only. -->
+<!-- OPTIONAL. Consequential unresolved decisions; do not portray dependent design as settled. -->

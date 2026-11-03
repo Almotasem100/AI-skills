@@ -1,24 +1,11 @@
-<!-- Customer/business-facing functional behavior. Do not duplicate behavior across sections. Omit empty sections. -->
-# Functional Design — <FEATURE-ID>: <Title>
+<!-- Customer-facing solution content. Adapt to the delivery medium; do not reproduce the requirements deck.
+For slide content, normally one or two concise slides. Omit notes, placeholders and unused headings. -->
+# Functional Design — <FEATURE-ID>: <Descriptive title>
 
-<!-- Optional release/sprint metadata only when supplied. -->
+## Proposed experience
+<!-- What will appear/change; meaningful actions and their visible outcomes. A compact flow or annotated visual
+may replace bullets. Avoid internal implementation identifiers and exhaustive state/requirements catalogues. -->
 
-## Functional requirements
-| ID | User-visible requirement |
-|---|---|
-| FR-1 | |
-
-## User flows
-<!-- Meaningful interaction sequence and observable outcomes. -->
-
-## Business rules
-<!-- Approved conditions/permissions/rules affecting visible behavior. -->
-
-## User-visible states and actions
-<!-- Meaningful controls, permissions, loading/empty/error/disabled states only. -->
-
-## Acceptance criteria
-<!-- Externally testable completion outcomes; avoid repeating requirements verbatim. -->
-
-## Open questions
-<!-- OPTIONAL. Unresolved customer/business behavior only. -->
+## Important behavior and limits
+<!-- OPTIONAL second slide/section. Only conditions, unavailable actions or exceptions important to agreement.
+Do not restate the same behavior as requirements, flows, business rules and acceptance criteria. -->

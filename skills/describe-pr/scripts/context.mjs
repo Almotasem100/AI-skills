@@ -12,6 +12,7 @@ import { join, basename } from 'node:path';
 const DEFAULTS = {
   baseBranches: { story: 'develop', bugfix: 'develop', hotfix: 'master', release: 'master' },
   budget: 60000,
+  titleFormat: 'ticket-first',
   scopes: [],
   exclude: [],
   extraSignals: {},
@@ -183,7 +184,6 @@ function requiredSections(kind, signals, size) {
   if (kind === 'story') {
     const req = ['why', 'whatChanged', 'testing'];
     if (['migration', 'config', 'dependencies', 'apiContract', 'permissions'].some(has)) req.push('impactAndRisk');
-    if (has('ui')) req.push('screenshots');
     return req;
   }
   const req = ['problem', 'rootCause', 'fix', 'regressionAndTesting'];
@@ -308,6 +308,7 @@ function main() {
     scopes: config.scopes,
     designDocUrl: config.designDocUrl,
     templatesDir: config.templatesDir,
+    titleFormat: config.titleFormat,
     files,
     redactions,
     warnings,

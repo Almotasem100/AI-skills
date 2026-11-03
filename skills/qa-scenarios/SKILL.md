@@ -1,51 +1,43 @@
 ---
 name: qa-scenarios
-description: Turn approved feature behavior into traceable QA scenarios that testers can prepare and execute manually or automate later. Use when the user asks for QA scenarios, scenario test cases, acceptance scenarios, or tester-facing cases. This skill specifies observable behavior; it does not run tests or generate automation code unless separately requested.
+description: Prepare concise tester-facing QA scenarios from approved feature behavior. Use for QA scenarios, scenario test cases, acceptance scenarios or a testing-team handoff. Describe concrete actions and observable expected results; do not execute tests or choose the team's manual/automation method.
 ---
 
 # QA scenarios
 
-Create behavior-focused QA scenarios from sufficiently settled inputs so the testing team can prepare.
-The calling workflow owns scheduling; completed implementation is not an input prerequisite. This is a
-**specification/design role**, not an execution test runner.
+Produce a handoff the testing team can use without knowing the author's workflow. The calling workflow owns scheduling;
+completed implementation is not a prerequisite. Prepare from settled intended behavior early and
+reconcile affected cases when approved design/planning decisions change it, rather than waiting for code.
 
-When the project has a Feature / Delivery Slice hierarchy, scenarios are normally feature-level and may be tagged with
-the slice(s) that make each scenario testable.
+## Ground the behavior
 
-## Sources and authority
+Read approved requirements/acceptance criteria and applicable Functional Design first. Use intake Q&A and source
+pointers to locate authoritative decisions, not as an approved technical solution. Sourced concerns are investigative leads, not expected results.
+Consult the LLD only for constraints affecting testable behavior. Follow project testing conventions; do not infer expected behavior from
+current code unless characterization was requested. Conflicting or undecided behavior remains a separate question,
+not a guessed expected result.
 
-Use approved requirements/acceptance criteria and Functional Design/business rules first. Use feature task-context as
-a navigation map for original inputs and clarification decisions, not as an approved technical solution. Sourced
-concerns or later working synthesis are investigative leads, not expected results. Use the LLD only when a technical constraint materially affects observable behavior. Follow project
-testing conventions. Do not require an implementation handoff and do not derive expected behavior from current code
-unless characterization scenarios are explicitly requested.
+## Write for testers
 
-If sources conflict or behavior is undecided, record the gap separately. Never invent the expected result.
+Use the project's requested format, otherwise `references/scenario-template.md`:
 
-## Workflow
+- Identify the feature/ticket and relevant delivery slice when useful to the recipient. Follow supplied filename
+  conventions; a filename does not change feature scope or require one document per slice. Do not invent IDs.
+- Give each case a short behavior title, necessary starting conditions, concrete ordered actions and observable
+  expected results. Each case must support a clear pass/fail assessment; split unrelated checks rather than
+  compressing several journeys into one broad scenario. Use compact variants when they remain unambiguous.
+- Keep permissions, disabled actions, meaningful loading/empty/error states and negative cases when supported and
+  relevant. Include actual expected values/rules when established; do not replace precision with “works correctly.”
+- Leave execution method to the testing team. API or other non-UI cases are appropriate when part of their scope;
+  do not turn this handoff into an internal fault-injection, deployment or engineering verification plan.
+- Omit routine status/date/not-executed banners, source inventories, workflow paths, source abbreviations, scenario
+  type taxonomies and coverage matrices. No requirement/design citations in the default recipient text unless
+  the recipient/project explicitly needs traceability. Ground every expected result internally; keep necessary
+  source pointers in existing working/review evidence instead of creating a mandatory second report.
 
-1. Establish feature scope, authoritative sources and any approved delivery-slice mapping.
-2. Extract observable behaviors: happy paths plus meaningful alternate states, permissions, loading/empty/error and
-   negative cases where supported and useful.
-3. Write one independently verifiable behavior per scenario using the project format or
-   `references/scenario-template.md`.
-4. Preserve traceability: every expected outcome maps to approved evidence; never fabricate IDs or locators.
-5. Map scenarios to delivery slices when useful (for example `Enabled by: Slice B`). This is coordination metadata,
-   not a new requirement.
-6. Put unresolved behavior under `Clarifications needed`, never inside an executable expected result.
-7. Present/write scenarios only to the approved working or deliverable location.
+Check that steps actually trigger every stated result and that important agreed behaviors have not disappeared
+through summarization. Never invent selectors, waits, fixtures or browser setup. State material coverage gaps and
+unresolved decisions separately to the caller; do not claim exhaustive coverage from a short list of scenarios.
+Save only to the approved location. No execution results, automation code or approval of requirements are implied.
 
-## Quality rules
-
-- Given = observable starting state and necessary setup only.
-- When = concrete user action(s), in order.
-- Then/And = observable outcomes required by approved behavior.
-- Avoid duplicate combinations and implementation detail.
-- Never invent CSS selectors, waits, dimensions, test data or browser setup.
-- Do not claim full coverage unless every in-scope testable requirement is mapped.
-
-For a simple tester-facing handoff, when requested, provide only the requested actions and expected results and omit
-source/coverage metadata from the tester-facing text. Keep undecided behavior out and ask separately.
-
-This skill does not execute tests, replace unit/integration/API regression/build/guard verification, generate browser
-automation unless separately requested, approve requirements, or resolve conflicts by itself.
+See `references/example-scenarios.md` for a synthetic style example, not execution evidence.

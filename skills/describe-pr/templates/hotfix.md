@@ -2,7 +2,9 @@
 <!-- key: problem -->
 <!-- The user-visible symptom. -->
 
-**Ticket:** #{{ticketId}} · **Severity:** {{severity}} · **Found in:** {{foundIn}}
+**Severity:** {{severity}} · **Found in:** {{foundIn}}
+
+{{designReference|}}
 
 ## Root cause
 <!-- key: rootCause -->

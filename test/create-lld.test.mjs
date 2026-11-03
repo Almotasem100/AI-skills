@@ -20,7 +20,7 @@ function check(header, content = body) {
 }
 
 test('LLD accepts a supplied identifier or title-only heading without invented metadata', () => {
-  for (const title of ['# LLD — DRAFT-RENAME: Rename drafts', '# LLD — Access revocation']) {
+  for (const title of ['# LLD — DRAFT-RENAME: Rename drafts', '# LLD — Access revocation', '# Technical Design — APP-104: Notification preferences', '# Technical Design Document — Notification preferences']) {
     const result = check(title);
     assert.equal(result.status, 0, JSON.stringify(result.output));
     assert.deepEqual(result.output.errors, []);
@@ -40,4 +40,10 @@ test('title-only support does not bypass missing-core or empty-section validatio
   assert.equal(result.status, 1);
   assert.ok(result.output.errors.some(error => error.includes('Required core section missing: Design')));
   assert.ok(result.output.errors.some(error => error.includes('Section "Context" is empty')));
+});
+
+test('forward Technical Design omits context padding but still rejects an empty Design section', () => {
+  const result = check('# Technical Design — Notification preferences', '\n\n## Design\nThe resource validates and merges changed categories into account preferences.\n');
+  assert.equal(result.status, 0, JSON.stringify(result.output));
+  assert.equal(check('# Technical Design — Notification preferences', '\n\n## Design\n').status, 1);
 });

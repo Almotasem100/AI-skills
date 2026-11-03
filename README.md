@@ -114,7 +114,7 @@ example call.
 | Skill | Capability |
 | --- | --- |
 | `task-context` | Optional intake-first record of original inputs, consequential Q&A/decisions, open questions and sourced concerns; not a prescribed technical solution |
-| `create-lld` | Concise forward LLD and required Functional Design from approved inputs; as-built Technical Design only when explicitly required |
+| `create-lld` | Concise forward LLD and required Functional Design from approved inputs; a separate as-built record only when explicitly required |
 | `qa-scenarios` | Observable tester-facing scenarios, not executable tests or QA execution |
 | `plan-review` | Read-only source-grounded plan critique; attributable findings, assumptions and verification limits |
 | `plan-debate` | Focused author/reviewer resolution of consequential technical disagreement; supports explicitly selected multiple reviewers |
@@ -161,9 +161,11 @@ evidence already available. It still needs actual verification evidence or your 
 
 If the agent doesn't pick the skill up by itself, name it: *"use the describe-pr skill"* (Gemini:
 `activate_skill` with `describe-pr`). Add a `.describe-pr.json` at the repo root to set scopes, base branches
-or your own templates (example in `references/describe-pr.example.json`).
+or your own templates (example in `references/describe-pr.example.json`). The default title is
+`feat[#<ticket>]: <summary>`; an explicit project convention can select `titleFormat: "conventional"`.
+Screenshots and review considerations are included only when useful; missing screenshots do not trigger routine questions.
 
-**What it guarantees:** it never invents reasons, test results or rollback steps; it never derives business
+**Behavior rules:** it never invents reasons, test results or rollback steps; it never derives business
 rationale from the diff alone; it preserves qualifiers such as estimated/expected/target rather than presenting
 them as measured results; it never opens files flagged as sensitive; PR publication occurs only when the current
 workflow/user authorization explicitly covers it (otherwise it asks); and temporary draft files stay outside the repo.
@@ -182,11 +184,14 @@ node skills/describe-pr/scripts/render.mjs --context %TEMP%\ctx.json --draft %TE
 **Use:**
 - **Forward**, before the work:
   > write the LLD for APP-123, "Navbar", from the approved requirements. Save it in the project-approved design location.
-- **Technical Design (optional):** only when the active project/team explicitly requires a separate as-built design artifact. It is not part of the default lifecycle.
+- **Technical Design naming:** a project may use this label for its forward LLD. A separate as-built record is optional and only created when explicitly required.
 
 The design artifacts stay feature-level when a project uses parent features plus delivery slices. Functional Design
-describes observable behavior; the LLD describes intended technical boundaries; implementation planning owns slice
+describes observable behavior; the LLD describes concrete proposed components, methods/contracts, data changes and interactions; implementation planning owns slice
 decomposition and concrete verification sequencing.
+
+Project-owned naming/recipient conventions can be supplied as inputs or adapted from
+[`templates/project-deliverables.md`](templates/project-deliverables.md); they are not global workflow policy.
 
 ### `qa-scenarios`
 **Needs:** approved feature behavior: requirements/acceptance criteria and, when available, Functional Design.
@@ -197,8 +202,8 @@ behavior. It does not require an implementation handoff.
 Design, and map each scenario to the delivery slice that enables it where useful."* If the agent does not select it,
 invoke explicitly: *"Use `qa-scenarios` for this feature."*
 
-It produces observable Given/When/Then-style behavior for tester preparation, keeps unresolved behavior under
-`Clarifications needed`, and never claims the scenarios were executed. It does not generate browser automation
+It produces concise starting-condition/action/expected-result cases for testers, with meaningful gaps/questions
+reported separately to the caller. Source maps, workflow metadata and execution banners are not default handoff content. It does not generate browser automation
 unless separately requested.
 
 

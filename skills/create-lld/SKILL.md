@@ -1,73 +1,78 @@
 ---
 name: create-lld
-description: Create concise feature-level design artifacts: a forward architect-facing LLD before planning/implementation and, when required, a customer-facing Functional Design. Support an as-built Technical Design only when the active project explicitly requires one. Use task context and source evidence internally without leaking evidence inventories into the deliverable.
+description: Create recipient-focused feature design with a concrete forward LLD for architect review, also called Technical Design when the project uses that name, and a concise customer-facing Functional Design when requested. Use original evidence internally; keep workflow history and source inventories out of deliverables.
 ---
 
-# create-lld
+# Feature design
 
-Use this skill for one **feature / parent work item**. A project may map that to Jira or another tracker. If the
-feature is delivered through several internal delivery slices, keep one feature-level LLD rather than splitting the
-design by child ticket IDs unless the project explicitly requires otherwise.
+Design at feature/parent scope when the project uses delivery slices. Create only requested/applicable artifacts;
+child-ticket mechanics do not require splitting the design. Project instructions own identifiers, filenames,
+locations, delivery medium and approval gates. Follow supplied conventions without inventing metadata. The
+filename identifies the ticket/deliverable; the descriptive title belongs inside. If none is supplied, use a
+clear neutral filename and title rather than inventing a tracker ID.
 
-## Artifact roles
-- **Functional Design:** customer/business-facing observable behavior; create only when required/requested.
-- **LLD:** architect-facing forward design before the implementation plan.
-- **Implementation plan:** separate artifact; may decompose the feature into delivery slices.
-- **Technical Design:** optional as-built artifact only when the active project/team explicitly requires one.
+## Artifact purpose
 
-## Deliverable rules
-1. Use the project-approved parent feature identifier and terminology. Do not expose internal delivery-slice IDs in
-   customer/architect deliverables unless the project requires them.
-2. Use task-context as an intake/source map when available, preserving approved scope and clarification Q&A;
-   do not expect a technical survey or approved solution in it. Verify consequential observations and any older
-   working synthesis against original sources before using them as design premises. Do not dump task-context evidence classes, source maps, attachment names/pages or code-location
-   inventories into the deliverable.
-3. Inspect relevant source internally as needed; keep code file/line citations, source maps and investigation trails in working notes, not as routine citations in official deliverables. Apply audience-aware exceptions: Functional Design describes business-visible behavior without code identifiers; a forward LLD may name proposed components, services, APIs or logical paths when essential to communicate architecture, but must not become a file/line inventory; an as-built Technical Design may identify actual interfaces/files when necessary to explain the delivered design. Never invent identifiers or silently strip references explicitly required by the project's document standard.
-4. Be concise. Do not repeat the same requirement across sections merely to fill the template. Omit conditional
-   sections that add no value.
-5. Never invent requirements, components, endpoints, release/sprint metadata, decisions, measurements, rollout
-   mechanics, test results or questions merely because a template has a heading.
-6. Ask only about unresolved consequential behavior/design decisions. Omit nonessential metadata when absent.
-   Use `# LLD — <Title>` if no feature identifier was supplied, otherwise `# LLD — <FEATURE-ID>: <Title>`.
+- **Forward LLD / Technical Design:** the intended technical implementation, for the architect before planning.
+  “Technical Design” can be this artifact's delivery name; that label does not make it an as-built document.
+- **Functional Design:** the proposed customer-visible solution, supplementing the supplied business requirements.
+- **Implementation plan:** separate execution sequencing, work breakdown and concrete verification commands.
+- **As-built record:** create separately only when explicitly required by project/team practice, regardless of label.
 
-## Forward LLD
-Read feature requirements, project instructions and existing feature task-context when available. Inspect current
-architecture/source as needed to develop the design rather than asking intake to preselect architecture or reuse.
-An absent technical summary is not a missing-input blocker when authorized originals are available. Resolve only consequential ambiguity. Surface unresolved material owner-level behavior or design choices for targeted clarification before dependent design is treated as settled; routine implementation decisions do not create owner gates.
+## Ground and reconcile
 
-Draft one concise feature-level LLD. Core content is Context, Objectives & constraints, applicable design boundaries,
-and Material decisions. Impact/risks, verification intent, rollout/rollback and open questions are conditional and
-appear only when materially relevant. Verification stays at design-intent level; concrete commands belong in the
-implementation plan/workflow.
+Read relevant original requirements, approved decisions and project architecture; inspect current source as needed
+to develop a credible design. An absent technical summary is not a missing-input blocker when originals are
+available. Intake is navigation, not a required technical survey or approved solution. Verify
+consequential observations against originals. Resolve material owner-level ambiguities before treating dependent
+design as settled; routine design choices do not create new owner approval gates.
 
-## Functional Design
-Create only when required/requested.
-- Functional requirements state **what** behavior exists.
-- User flows explain meaningful interaction sequence, not a paraphrase of every requirement.
-- Business rules capture conditions/permissions that affect behavior.
-- States/actions include meaningful loading/empty/error/disabled/permission states only.
-- Acceptance criteria are externally testable completion conditions, not duplicates of requirements.
-- Omit empty sections and absent optional release/sprint metadata.
+Deliver one coherent current design. Replace superseded statements and reconcile affected companion artifacts;
+do not append an amendment telling the recipient how to combine contradictory versions. Preserve useful history
+in existing working evidence/Git, not in the current deliverable. Distinguish revised documents from companions
+checked and left unchanged; do not claim paired reconciliation from one file edit.
 
-## Optional as-built Technical Design
-Only when project instructions/team practice explicitly require it. Inspect approved design/plan, delivered change
-and real verification evidence; describe verified logical boundaries and material approved deviations; report only
-checks that actually ran. Do not create it merely because implementation finished.
+## Architect-facing forward design
 
-## Check and present
-- Run `node <skill-dir>/scripts/check-lld.mjs <lld.md> --size <small|normal>` for an LLD. A structural pass is not
-  a content-quality or architect-approval result.
-- Manually check Functional Design against approved feature behavior.
-- When both LLD and Functional Design are requested, check their material decisions and observable behavior
-  together. For a revision, inspect the affected companion document and update it when needed; distinguish
-  revised content from content checked and left unchanged. Do not claim both were reconciled from one file edit.
-- Present requested artifacts for the applicable project review/approval boundary.
+Use `templates/lld-section.md` adaptively. A brief purpose/objective can establish scope; Context and separate
+Objectives headings are optional, not paperwork requirements. Describe the actual proposed changes:
 
-## Files
-- `templates/lld-section.md`
-- `templates/functional-design.md`
-- `templates/technical-design.md` — optional/project-required only
-- `scripts/check-lld.mjs`
-- `scripts/slides.mjs`
-- `references/writing-guide.md`
-- `references/example-lld.md`
+- Frontend components/services and important methods, state ownership and interactions.
+- Backend resources/services and responsibilities, inputs/outputs, relevant API contracts and failures.
+- Data/entity/schema changes and persistence effects when applicable.
+- A short call flow, signatures or payload examples where they make the design assessable.
+
+Use concrete existing identifiers verified from source and clearly proposed names for new components. Relevant
+file/module paths are valid design coordinates, not a forbidden file inventory. Explain how pieces interact and
+why a consequential choice is needed; avoid full source listings or implementation-plan task lists. Include only
+applicable layers. Keep security, compatibility, deployment/migration and recovery details when the change actually
+affects them; local workstation instructions and routine temporary rollout operations belong in execution records.
+Do not hide material failure/data-integrity behavior merely to shorten the design.
+
+## Customer-facing Functional Design
+
+Use `templates/functional-design.md` as a starting point. Explain the proposed experience: what appears/changes,
+what important actions do, and meaningful limits or unavailable actions. Supplement rather than rewrite the
+requirements or explain the customer's unchanged business process back to them. Include only states/rules that
+help the customer understand and agree to the solution. No internal class/file names or workflow narration.
+
+When this is content for an existing requirements deck, provide slide-ready content, normally one or two slides
+for an ordinary feature: concise bullets and an annotated visual/compact flow when useful. Do not force complex
+scope into an unreadable slide or produce/edit a presentation unless requested. A standalone document can expand
+when its recipient needs it; do not force five sections that repeat the same behavior.
+
+## Delivery check
+
+Never invent requirements, identifiers, dates, release metadata, measurements or execution results. Keep source
+inventories, investigation citations, internal decision numbers and session history in working evidence unless the
+recipient expressly requires them. State an applicable constraint in understandable terms instead of citing a
+private conventions document. Preserve meaningful recipient-required references and public interface names.
+
+Run `node <skill-dir>/scripts/check-lld.mjs <design.md> --size <small|normal>` for the forward design, then review
+technical specificity, source grounding and recipient fit manually. A structural pass is not design approval.
+Check the requested designs together for consistent behavior, then present them at the applicable review boundary.
+An explicitly required as-built record uses `templates/technical-design.md` and verified implementation evidence;
+do not create it automatically or report intended checks as executed.
+
+Style examples: `references/example-lld.md` and `references/example-functional-design.md` use synthetic inputs;
+they demonstrate recipient fit, not verified implementation or approval.

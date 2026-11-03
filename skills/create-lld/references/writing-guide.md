@@ -1,20 +1,23 @@
-# Writing guide — concise design artifacts
+# Writing for the recipient
 
-- Functional Design: customer/business-facing observable behavior; create only when required/requested.
-- LLD: architect-facing forward design before implementation planning.
-- Technical Design: optional as-built artifact only when the project/team explicitly requires one.
-- Implementation plan: separate artifact that sequences delivery slices, dependencies, branch/order strategy,
-  implementation and concrete verification.
+A good deliverable lets its reader make the intended decision without knowing the author's tools or sessions.
 
-Rules:
-1. Design at the parent-feature scope when a project uses feature + delivery-slice tracking.
-2. Use project-approved identifiers; do not expose child-ticket mechanics unless the audience needs them.
-3. Evidence is required for internal grounding, not automatically for display. Keep investigative file/line citations, evidence maps and source inventories in working notes or task-context. Include technical identifiers only when the document's audience needs them: generally none in customer-facing Functional Design; selected planned APIs, classes or logical paths in forward LLD; verified implementation identifiers where essential in an explicitly required as-built Technical Design. Avoid brittle source line references in durable prose unless an authoritative document contract expressly requires them. Do not remove meaningful requirement IDs, decision references, public API names or approved traceability.
-4. Be concise. Do not repeat requirements in multiple sections or write alternatives essays/source inventories.
-5. Omit conditional sections rather than inventing rollout, risks, questions, components or metadata.
-6. Functional Design says **what** is observable; LLD says the intended **technical boundary**.
-7. Preserve estimates/targets/assumptions as such. Never present proposed verification as passed.
-8. Ask only about consequential ambiguity.
+- Forward LLD (project label may be **Technical Design**): a concrete technical blueprint for architect review.
+  Name relevant components, important methods/contracts, data changes and interactions; verify existing names
+  and distinguish proposed ones. Include only affected layers. A full code listing is not a design.
+- Functional Design: the proposed observable solution for the customer. When appended to a requirements deck,
+  use concise slide-ready content instead of repeating requirements and unchanged business process. One or two
+  slides is a useful ordinary-feature budget, not permission to hide material scope.
+- Implementation plan: sequencing and concrete work/verification; do not duplicate it into the design.
+- As-built record: separate and explicitly required only. A forward document named Technical Design is not one.
 
-Run the structural LLD checker, then manually check concision, grounding and audience fit. A checker pass is not
-approval or implementation evidence.
+Keep delivery labels, filename conventions, tracker prefixes and paths supplied by the active project. Do not
+invent IDs or force a single project's naming onto other projects. Describe meaningful constraints directly;
+private source inventories, file:line citations, decision numbers, status/history and local operations remain in
+existing working evidence unless the recipient explicitly needs them.
+
+Replace superseded content, check affected companion artifacts and return one current coherent design. Preserve
+history outside the recipient document. Keep meaningful security/failure/data-integrity behavior when affected,
+but omit unrelated environment operations and ritual sections. Proposed checks are not execution evidence.
+
+Run the structural checker and manually assess technical specificity, grounding, concision and audience fit.
