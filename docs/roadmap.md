@@ -2,7 +2,8 @@
 
 ## Active
 
-- Instruction trimming and layer separation are complete at source level. The final two-Luna consistency review
+- The reviewed `work/orchestrator-planner` changes were merged into `master` at `950c24e`.
+  Instruction trimming and layer separation are complete at source level. The final two-Luna consistency review
   found no consequential remaining issue after adjudication; it was not installed-host validation.
 - Recipient-focused QA, forward LLD/Technical Design, slide-ready Functional Design and PR presentation are now
   implemented, with matching templates, examples and checks. Project-owned filename conventions are supplied
@@ -12,11 +13,10 @@
 
 ## Next
 
-- Review the final small boundary/audience/setup corrections and branch diff, then decide whether to merge with
-  owner authorization. No further full feature trial is required solely for the demonstrated activation repair.
-- Reinstall changed source guidance when next adopting this branch; current host trial evidence belongs to
-  revision `73675e9` plus the reported installation repair, not these later wording corrections.
-- After accepted merge, replace the stale project attachment and verify the actual bytes supplied to a fresh
+- Refresh the existing installations from merged master and verify parity and a bounded startup check. No new full
+  feature trial is required solely for the activation repair or documentation updates. Preserve local fleet settings.
+  Host trial evidence belongs to `73675e9` plus the reported loading repair, not every later wording change.
+- Replace the stale project attachment and verify the actual bytes supplied to a fresh
   conversation. The earlier saved-file update did not refresh that attachment.
 - Inspect HDC instructions for contradictions and adopt the approved project-specific deliverable names in its
   canonical guidance after the portable workflow is settled; no HDC content is changed in this batch.
@@ -26,7 +26,8 @@
 - General native-worker routing and new ZadLoop integration code. Preserve current CLI routing and approved bounded
   recovery; host testing does not authorize provider/account/permission changes or a new integration.
 - Candidate enhancements remain in [future-ideas.md](future-ideas.md), outside normal startup: team workspace,
-  persistent coordination, watchdog and integrations are not active builds. Prefer existing evidence capture.
+  persistent coordination, watchdog and integrations are not active builds. The shared-discussion candidate includes
+  targeted participant/group/all-member notifications and awareness versus response-required messages. Prefer existing evidence capture.
 - Gemini overlay remains separate from the vendor base; no upstream publication without owner scope.
 - Standalone installer and portable secret-free fleet examples remain parked unless reopened.
 

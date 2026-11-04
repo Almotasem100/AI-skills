@@ -32,6 +32,30 @@ assuming existing subscriptions can power the system.
 work, or intervening in individual assignments remains a recurring cost. Start with a small evidence timeline/task
 view if that solves the problem; do not build a full team platform merely for visual appeal.
 
+### Shared discussion with targeted notifications
+
+**Source:** Owner discussion following the Sol-plus-three-Luna branch review. That review used coordinator-relayed
+exchanges; direct peer messaging and a shared discussion record were discussed, not exercised as a group-chat system.
+
+**Candidate:** Keep one attributable discussion record with independent initial reviews, then targeted peer exchanges
+on disputed findings. Notify one participant (`@Sol`), an explicit group (`@reviewers`), or all members of that
+particular discussion (`@all`). Store the message once and point recipients to the relevant entry and evidence;
+shared visibility need not broadcast every transcript to every context. These mentions are proposed interface
+semantics, not currently implemented commands.
+
+Distinguish **awareness-only** updates from **response-required** requests so an all-member notification does not
+provoke redundant replies. Membership must be explicit and scoped; mentions do not grant source access, reassign
+mutation ownership or authorize scope changes. Material owner changes must reach the coordinator and affected
+participants, while unrelated/private task context remains isolated.
+
+**Prerequisites/tradeoffs:** Demonstrate runtime delivery, waking/resuming idle recipients, attribution, artifact
+revision identity and an unambiguous current decision. Avoid concurrent overwrites of the shared record, duplicate
+requests and stale replies. Compare coordinator relay, direct exchange and a shared-record hybrid on finding quality,
+misses, elapsed time and total usage including coordination. Direct messaging is not inherently cheaper or better.
+
+**Revisit when:** Repeated paraphrasing loses nuance or coordination becomes a measurable burden. Start with a
+small shared record plus targeted notifications; a new dashboard or always-on runtime is not required by this idea.
+
 ## Persistent event-driven coordination — DeepSeek Super-agent
 
 **Sources:** [Exploring Super-agent Design: Towards a More Autonomous Agent System](https://x.com/DeepSeekHarness/status/2116857257245987236)
