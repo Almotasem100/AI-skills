@@ -35,6 +35,9 @@ Use the project's requested format, otherwise `references/scenario-template.md`:
   the recipient/project explicitly needs traceability. Ground every expected result internally; keep necessary
   source pointers in existing working/review evidence instead of creating a mandatory second report.
 
+For code/library cases, include all required call inputs or refer to a concrete input set defined once; illustrative
+values are examples, not claims that fixtures were created. Add identifiers only when they help reproduce the case.
+
 Check that steps actually trigger every stated result and that important agreed behaviors have not disappeared
 through summarization. Never invent selectors, waits, fixtures or browser setup. State material coverage gaps and
 unresolved decisions separately to the caller; do not claim exhaustive coverage from a short list of scenarios.

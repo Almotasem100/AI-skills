@@ -17,7 +17,10 @@ private source inventories, file:line citations, decision numbers, status/histor
 existing working evidence unless the recipient explicitly needs them.
 
 Replace superseded content, check affected companion artifacts and return one current coherent design. Preserve
-history outside the recipient document. Keep meaningful security/failure/data-integrity behavior when affected,
+history outside the recipient document. Label pre-change behavior as the preparation baseline; do not leave stale
+“currently” claims or imply delivered work is absent. A forward design need not become a separate as-built report.
+Promise persistence only when the approved behavior provides it; use recipient-understandable language.
+Keep meaningful security/failure/data-integrity behavior when affected,
 but omit unrelated environment operations and ritual sections. Proposed checks are not execution evidence.
 
 Run the structural checker and manually assess technical specificity, grounding, concision and audience fit.

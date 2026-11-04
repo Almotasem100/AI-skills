@@ -113,6 +113,12 @@ and loads the installed copy; a folder path alone is not proof of compatibility.
 | Claude Code | `~/.claude/skills/` |
 | Codex, Gemini CLI, OpenCode and compatible hosts | `~/.agents/skills/` |
 
+Skill folders and global instruction files are separate. For the tested ZadLoop desktop setup, the shared
+template at `~/.agents/AGENTS.md` was included in the retained instruction baseline after installation; the copy
+in OpenCode’s configuration directory alone was not sufficient. ZadLoop supports a `DSH_AGENTS_HOME` override,
+so verify the effective desktop launch configuration instead of assuming a path. Preserve existing personal
+instructions and check the retained baseline in a fresh session; file parity alone does not establish loading.
+
 If a host does not discover that location, follow its current documented configuration; do not duplicate or
 rewrite global settings blindly. Source checks, installed-file parity and observed host behavior are different
 claims. Use the [test pack](test/native-smoke/README.md) for verification and evidence limits, and the
@@ -260,7 +266,8 @@ if ($withDelegation) {
 }
 # Select the hosts you use; copying replaces those selected host instruction files.
 # Preserve/merge any existing personal instructions before running these lines.
-$instructionTargets = "$HOME/.config/opencode/AGENTS.md", "$HOME/.claude/CLAUDE.md", "$HOME/.gemini/GEMINI.md"
+# ZadLoop: use its effective DSH_AGENTS_HOME/AGENTS.md if overridden; the tested default is ~/.agents/AGENTS.md.
+$instructionTargets = "$HOME/.config/opencode/AGENTS.md", "$HOME/.agents/AGENTS.md", "$HOME/.claude/CLAUDE.md", "$HOME/.gemini/GEMINI.md"
 foreach ($destination in $instructionTargets) {
   if ((Read-Host "Install shared instructions at $destination ? [y/N]") -match '^(?i:y|yes)$') {
     New-Item -ItemType Directory -Force (Split-Path $destination) | Out-Null

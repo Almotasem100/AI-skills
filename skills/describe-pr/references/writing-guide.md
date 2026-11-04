@@ -58,6 +58,9 @@ Default: `<type>[#<ticketId>]: <imperative summary>`, at most 72 characters.
   under review considerations. Mention unchanged dependencies only when relevant.
 - **Review considerations** is optional: retain useful stacked-base/retargeting information, important design
   deviations and non-obvious focus. Omit generic “review carefully” text and inaccessible local-update claims.
+- Keep reviewer transport, shell permissions and session mechanics in working review evidence unless they materially
+  affect an applicable review gate. Still disclose a required review/check that is incomplete; do not hide a
+  readiness limitation merely to simplify PR text.
 - **Screenshots** is optional even for UI changes. Include useful existing/authorized images when available;
   otherwise omit without routinely asking. Capture/request only for a real evidence need or project requirement,
   under existing authority. A browser test pass does not show the UI to the reviewer. Do not fill the section with

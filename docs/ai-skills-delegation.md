@@ -61,9 +61,11 @@ session when supported/current; otherwise continue the semantic assignment from 
 session continuity. Use a fresh output directory for every invocation and copy continuation IDs from actual results.
 Inspect partial effects before retries. Neither a failed process nor a successful response establishes artifact quality.
 
-For review-only assignments, use the supported read-only execution boundary. Verify effective shell/process and edit
-permissions; a named plan agent or no observed writes does not prove filesystem containment. Report missing enforcement
-and apply the actual project gate rather than claiming containment or silently weakening it.
+For review-only assignments, prohibit mutations and use the supported reviewer restrictions. Check and report effective
+shell/process and edit permissions; a named plan agent, task instruction or no observed writes does not prove filesystem
+containment. Require filesystem/process isolation only when the applicable project or task explicitly requires it;
+otherwise disclose residual capabilities without inventing an additional containment gate. Missing enforcement of an
+explicit requirement blocks the affected review; do not silently weaken it.
 
 Verify expected outputs/content and applicable checks. Preserve actual invocation, session, failures, review/disposition
 and verification evidence in the approved working area. Keep **process/relay success**, **response success** and

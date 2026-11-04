@@ -12,16 +12,14 @@
 
 ## Next
 
-- Review the recipient-focused sample outputs and final diff, then prepare one batched Setup Luna installation,
-  parity check and fresh natural feature trial in **OpenCode and ZadLoop**. Keep their sessions/evidence separate;
-  ZadLoop standard host operation may explicitly select AI Skills delegation mode for the relevant trial.
-  Trials are planned, not executed or resumed during source editing. Diagnose captured default-route failures
-  without silently changing live configuration. Passing code does not establish routing/review chronology.
-- Correct demonstrated trial failures, review the tested branch and merge only with owner authorization.
-- After workflow testing/verification and accepted merge, replace the stale project attachment and verify the
-  actual bytes supplied to a fresh conversation. The earlier saved-file update did not refresh that attachment.
-- Inspect HDC instructions for contradictions after the portable workflow is settled; no HDC content or
-  installation is changed by this source batch.
+- Review the final small boundary/audience/setup corrections and branch diff, then decide whether to merge with
+  owner authorization. No further full feature trial is required solely for the demonstrated activation repair.
+- Reinstall changed source guidance when next adopting this branch; current host trial evidence belongs to
+  revision `73675e9` plus the reported installation repair, not these later wording corrections.
+- After accepted merge, replace the stale project attachment and verify the actual bytes supplied to a fresh
+  conversation. The earlier saved-file update did not refresh that attachment.
+- Inspect HDC instructions for contradictions and adopt the approved project-specific deliverable names in its
+  canonical guidance after the portable workflow is settled; no HDC content is changed in this batch.
 
 ## Deferred
 
@@ -34,14 +32,24 @@
 
 ## Evidence and limits
 
-- Prior feature trials demonstrated configured specialist work and corrections, but also model/tool-call failures,
-  missing chronology evidence and one approved route substitution. They do not establish universal autonomy.
-- Current portable suite: **47/47 passed** across workflow separation, native-smoke runner/fixture, design checker,
-  Gemini overlay and PR tests. Six new PR tests cover exact/default and explicit conventional titles, optional
-  design/screenshots/review sections, retained missing-input gates, bugfix/release behavior and real Git UI context.
-  The synthetic Technical Design passed its structural check; FD/QA/PR examples were manually checked for recipient
-  fit. They are demonstrations, not generated-host acceptance, application tests or architect approval.
-  Prior bounded probes covered early QA/authority, intake/closeout and multiple-reviewer debate. The current
-  closeout preserves master/step-two tuning. No source check proves host loading, provider availability or containment.
-- Historical status and superseded decisions are retained in Git, not appended here. Use `manifest.md` and each
-  vendor/overlay's metadata for provenance; `docs/decisions.md` is historical rationale, not current execution policy.
+- Local portable suite at the recipient-output revision: **47/47 passed**. Final wording/setup-guide corrections passed
+  **17/17 workflow source checks** and `git diff --check`. Source checks do not establish installed-host execution or containment.
+- Owner-relayed Setup Luna assessments: targeted Sol/medium-root A (OpenCode explicit profile), B (ZadLoop standard
+  explicit profile) and C (ZadLoop native Delegation without profile) each passed independent fixed acceptance 6/6
+  and recorded protected-input/final-scope checks. Focused checks passed A 4/4, B 6/6, C 5/5. Raw laptop records
+  were not available to this cloud checkout; these are attributed reports, not independent reinspection here.
+- A/B demonstrated configured CLI assignments and root plan authorship; A retained an unverified historical reviewer
+  permission check. B's material plan recheck was post-delivery and cannot retroactively establish the earlier gate.
+  B/C included user permission-preset interventions; C is a qualified native-orchestration result, not compliance
+  with the inactive optional profile. Passing code is not a universal workflow pass or unattended-operation proof.
+- The reported ZadLoop loading repair installed the canonical shared template at its supported global instruction
+  location. A fresh standard Sol/medium session's retained baseline included the activation pointer; it read the
+  contract/profile and loaded the fleet. This is a loading/explanation pass, not a post-repair full feature trial.
+- Fleet snapshots were mixed (Sol design, Gemini QA, DeepSeek challenge, Luna implementation/code review), not
+  all-Luna. Completed assignments, host/mode, permissions and interventions differed across trials; no controlled
+  root-model-only comparison or optimal-model conclusion follows.
+- Original records remain on the owner's machine in `targeted-validation-73675e9-20261104` and
+  `zadloop-activation-repair-20261104-evidence`. Preserve prior failures and trial artifacts; corrections here do not
+  rewrite those records. Synthetic document examples are demonstrations, not application/architect acceptance.
+- Historical status and superseded decisions are retained in Git; `docs/future-ideas.md` remains outside normal startup. Current closeout
+  preserves master/step-two tuning. General native routing and new infrastructure remain deferred.

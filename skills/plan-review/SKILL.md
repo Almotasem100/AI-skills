@@ -16,8 +16,9 @@ Read relevant authorized original requirements, project rules, approved constrai
 pointers are navigation, not a mandatory technical synthesis: do not treat a sourced concern as an approved
 requirement. If evidence is unavailable or contradictory, state the gap rather than guessing.
 
-Keep the plan, sources, code, durable documents and scratchpad read-only. Use a required supported execution boundary;
-a snapshot stabilizes inputs but does not enforce filesystem containment. Report missing required enforcement.
+Keep the plan, sources, code, durable documents and scratchpad read-only. Use supported reviewer restrictions and
+apply the calling workflow/project's actual boundary requirements. A snapshot stabilizes inputs but does not enforce
+filesystem containment; disclose enforcement limits without claiming isolation or inventing a stronger gate.
 
 ## Review
 
