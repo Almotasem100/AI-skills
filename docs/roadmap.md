@@ -10,6 +10,8 @@
   through task inputs or the optional `templates/project-deliverables.md` starter; no HDC policy was edited.
 - Shared workflow owns outcomes/authority; the optional profile assigns participants; semantic roles, skill process
   and transport remain separate. No new runtime or dashboard is being built.
+- Repository instruction maintenance is governed by `AGENTS.md`; roadmap updates describe current state rather
+  than chronological edit history.
 
 ## Next
 

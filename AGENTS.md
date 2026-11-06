@@ -38,8 +38,14 @@ parked builds or host trials merely because an older status section once propose
   change a project repository. A direct request authorizes the action it clearly names; ask only about
   additional actions outside that scope. Project-specific structural and environment gates live in that project's
   canonical instructions; do not duplicate superseded project rules here.
-- **Close out setup changes.** When work changes this setup, update `docs/roadmap.md` with the relevant
-  status, next step, or open decision. Do not change the roadmap just to record a read-only review.
+- **Maintain current instructions.** Edit the authoritative rule in place, remove superseded or conflicting wording,
+  and update other documents only where the change makes them inaccurate; do not append dated change notes,
+  decision histories, or "previously X, now Y" explanations to instruction files. Keep change history in Git and
+  necessary execution evidence or historical rationale in designated working records outside routinely loaded
+  instructions; retain dates or provenance where they are part of an actual requirement or explicitly required record.
+- **Close out setup changes.** When work changes this setup, update `docs/roadmap.md` in place with the relevant
+  current status, next step, or open decision, not a chronological edit log. Do not change the roadmap just to record
+  a read-only review.
 
 ## Working with the owner
 
