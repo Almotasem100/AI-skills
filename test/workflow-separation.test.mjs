@@ -43,13 +43,13 @@ test('optional instructions guard activation before routing and retain continuit
 
 test('participant allocation is explicit and isolated from role meanings, skill process and transport', () => {
   const ownership = profile.split('## Ownership and activation')[1].split('## Execution mechanism')[0];
-  assert.match(ownership, /Implementation-plan author \| The orchestrator by default/);
-  assert.match(ownership, /only an explicit user assignment selects an external author through `write-plan`/);
+  assert.match(ownership, /Implementation-plan author \| The orchestrator\. For a one-off external author, the user names/);
+  assert.doesNotMatch(ownership, /write-plan/);
   assert.match(ownership, /Plan reviewer \| A separate participant through `challenge-plan`/);
   assert.match(ownership, /Self-checks do not\s+replace required separate review/);
   assert.match(ownership, /missing review route is a blocker/);
   assert.match(profile, /mapping already established for that responsibility; do not infer aliases/);
-  assert.match(guide, /explicitly assigned external planning/);
+  assert.match(guide, /including a one-off external plan author/);
   assert.match(ownership, /role assigned to the orchestrator is\s+performed directly; externally assigned work uses/);
   assert.match(profile, /configured CLI delegation skills/);
   assert.match(profile, /user need not name a lane or choose a mechanism/);

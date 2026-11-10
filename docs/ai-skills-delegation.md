@@ -15,7 +15,7 @@ redefining their responsibilities.
 | Role | Current assignment |
 | --- | --- |
 | Coordination and shared execution state | The orchestrator |
-| Implementation-plan author | The orchestrator by default; only an explicit user assignment selects an external author through `write-plan` |
+| Implementation-plan author | The orchestrator. For a one-off external author, the user names the participant/model for that task; dispatch it through the matching delegate skill with that model, not a configured lane |
 | Plan reviewer | A separate participant through `challenge-plan` for substantive plans, unless explicitly omitted or inapplicable |
 | Other specialist deliverables | Separate participants through their matching configured responsibilities |
 

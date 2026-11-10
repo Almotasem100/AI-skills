@@ -348,11 +348,11 @@ Example lane ideas:
 | Role | Example route |
 |---|---|
 | Routine implementation | OpenCode / Luna, configured effort/variant |
-| Hard implementation, or explicitly assigned external planning | a stronger configured lane |
+| Hard implementation | a stronger configured lane |
 | Test-scenario author | Gemini Auto |
 | Plan challenger | Gemini Auto |
 
-You can override a route explicitly for a particular task. To inspect the configured/available implementers, use
+You can override a route explicitly for a particular task, including a one-off external plan author. To inspect the configured/available implementers, use
 `delegate-setup` discovery. A configured lane is not proof the CLI is installed/authenticated; verify real dispatch
 before depending on it.
 

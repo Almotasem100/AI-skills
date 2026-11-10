@@ -11,7 +11,6 @@ change its meaning or the project's engineering instructions. Do not dispatch a 
 | --- | --- |
 | `draft-feature-design` | Feature LLD and required Functional Design together using the applicable design capability; no duplicate functional-design assignment |
 | `draft-functional-docs` | Standalone/maintenance business-facing documentation, distinct from combined feature design |
-| `write-plan` | Author an actionable implementation plan from original requirements, applicable design, QA and conventions; includes revisions and findings disposition |
 | `challenge-plan` | Separate source-grounded plan critique and rechecks of material revisions; does not mutate the plan |
 | `challenge-complex-plan` | Alternative or supplementary high-stakes plan review when risk, uncertainty or an explicit request justifies it; not a mandatory extra reviewer |
 | `write-qa-scenarios` | Tester-facing observable feature scenarios; does not author or execute automated tests |
