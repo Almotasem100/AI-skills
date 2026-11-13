@@ -127,3 +127,82 @@ These remain unevaluated candidates, not current installations or an instruction
 | OpenCode plugin or command helpers | Improve route observability and guard material unintended substitutions | Preserve workflow authorization and approved automatic fallback; no new per-dispatch consent ceremony. No plugin build authorized | Concrete host integration failures recur after the current fixes |
 
 Historical tool/model snapshots and expired priorities remain in Git rather than being promoted into this list.
+
+
+## Future investment portfolio — new-project readiness and optional harness enjoyment
+
+**Status:** Research backlog, not a committed roadmap, a skill trigger, or authorization to install/build anything. This section separates work needed by a genuinely new/complex project from lightweight personal enjoyment. It deliberately does not promote HDC migration-specific practices to portable policy.
+
+**Decision rule:** Before a build, identify a concrete project/task and existing capability that does not already solve the problem. Prefer current skills, project-specific instructions, deterministic checks, and host features; only then evaluate a new skill/plugin. Treat model/harness capability claims as version-specific and unverified on the owner's machine until tried. For a corporate laptop, use local-only integrations and follow allowed software/data handling; remote/mobile and cloud-hosted coordination are not current selection criteria.
+
+### A. Future projects: practical startup and engineering investments
+
+These are **conditional modules in a new project's bootstrap**, not nine mandatory gates for every ticket. Existing \`task-context\`, feature design/LLD, QA scenarios, plan/review, security audit, API regression, test guard and closeout skills remain the starting point.
+
+| Candidate skill/tool | New-project use case / failure it prevents | Smallest sensible first step | Revisit trigger |
+| --- | --- | --- | --- |
+| **Project inception / bootstrap checklist (skill candidate)** | A greenfield app begins coding before users, nonfunctional constraints, team access, deployment environment, data handling, and acceptance boundaries are decided | Reuse \`task-context\` and project policy to produce one lean scope/decision list; only package as a skill if repeated projects expose an actual gap | Next new app/repo starts |
+| **Architecture and ADR starter** | Stack/database/auth hosting choices are made implicitly; later migration is expensive | Record consequential tradeoffs, trust boundaries and a few brief ADRs within existing design records; no mandatory architecture charter | New project has consequential technology or deployment choices |
+| **Thin vertical slice / executable skeleton** | Frontend/backend/db/CI are scaffolded separately, then fail to integrate | Implement one representative user journey through real API/persistence with basic error handling before multiplying modules | Greenfield first delivery milestone |
+| **API contract & compatibility checks** | UI and backend disagree about DTO shapes, error semantics, authorization or schema changes | Versioned OpenAPI or equivalent typed contract; targeted contract/smoke checks using existing frameworks | Multiple consumers or parallel FE/BE implementation |
+| **Test strategy and fixtures by risk** | Missing role accounts, sample data, seed/reset flow, invalid-state and skipped-test handling leave false-green coverage | Make a slim per-project verification matrix: fast unit/in-process API, selected integration, authenticated browser/roles where appropriate; distinguish skipped from passed | Complex business behavior, authorization, or shared environment testing |
+| **CI/CD and environment bootstrap** | Local checks pass but no reproducible build, secrets boundary, migration rehearsal or release path exists | Minimal CI for build/lint/unit plus project-approved deploy/release steps; keep real-environment acceptance separate | New repo is actively delivering, or PR traffic starts |
+| **Security/privacy baseline** | Unclear roles, secrets storage, untrusted uploads, audit obligations, exposed endpoints, or vendor data routing | Targeted threat-model questions using existing security-audit skill and owner-approved controls; avoid adding a parallel compliance system | Personal data, external accounts, permissions or public deployment |
+| **Observability and fault recovery baseline** | Debugging relies on screenshots and guesses when the first real user hits an error | Correlation IDs, safe structured errors, minimum health/diagnostic traces, rollback and backup responsibilities appropriate to stack | First production-like environment or complex async jobs |
+| **UX state coverage / accessibility** | Designs omit empty/loading/error/disabled/focus/narrow-viewport states, leaving implementation guesses | Add a scoped design-state checklist to existing design work; visual/browser checks only for affected surfaces | New interactive UI or design-driven feature |
+| **Dependency documentation lookup** | Framework versions or library APIs are guessed from stale training knowledge | Read version-matched official docs; evaluate Context7 only where retrieval is repeatedly useful and approved | New or frequently changing stack |
+
+**What to borrow from the HDC lessons, without importing HDC policy:** preserve reachable UI/API behavior, use real role/identity and data-boundary tests when relevant, report skipped checks, distinguish local checks from live acceptance, avoid unnecessary abstractions, and discover missing UI states before coding. HDC already has substantial local frontend checks, backend/in-process API testing, DEV regression and synthetic browser coverage; do not build a replacement testing framework for it.
+
+**External candidates to inspect, not install by default:**
+- [Context7](https://github.com/upstash/context7): version-aware documentation lookup; check allowed network/data paths.
+- [Agent Skills collection / project-scaffolding examples](https://github.com/arjunprabhulal/agent-skills): ideas for thin greenfield bootstrap, API design, test fixtures and deployment; do not wholesale import overlapping skills.
+- [OpenCode GUI plugin API](https://opencode.ai/docs/build/plugins/gui/): possible local interactive project-onboarding or visual-plan helper. Compatibility depends on installed OpenCode version.
+- [Plannotator](https://plannotator.ai/): interactive human review of substantial plans, only if markdown/chat review becomes an observed bottleneck.
+- Figma, source-host, ticket-tracker and quality-gate connectors remain conditional on project authority and real integration need; see existing candidates below.
+
+### B. Scoped workflow enhancements — defer until evidence warrants
+
+| Investment | Actual benefit to demonstrate | Why not automatic now / next proof |
+| --- | --- | --- |
+| **Orchestration control center / external-delegation viewer** | In one ticket view, distinguish current stage, assigned worker, brief, actual result, evidence, blocked decision and correction trail, especially CLI workers not registered as native subagents | OpenCode already exposes native subagent sessions and many CLI sessions. Verify recurring navigation or missing-session friction first; don't build a chatroom showing models talking merely for appearance. A local API+relay-evidence view is feasible in concept, but GUI integration on the installed version is not yet built |
+| **Focused multi-reviewer debate** | Resolve one consequential reviewer disagreement with attributed evidence and a final disposition without repeatedly paraphrasing to each reviewer | Existing \`plan-debate\` and review ownership semantics already support focused disagreement; same visible room does not mean shared model context or fewer tokens. Prototype only when actual back-and-forth consumes time or loses context |
+| **PR/CI supervisor** | Detect new PR reviews, CI failures, stale checks, actionable changes and route to original owner; avoid manual PR polling | Current HDC PR/CI traffic is insufficient; GitHub \`gh\` CLI may be blocked on corporate host. Prefer approved forge API/connector or read-only script; no auto merge/deploy |
+| **Acceptance evidence gap spotter** | Show one high-risk requirement with absent proof (e.g. server permission tested only by hidden UI button, or skipped role fixture mislabeled pass) | Existing unit/API/regression/browser checks are primary. Do not duplicate testing or impose universal additional gates. Revisit after a real missed requirement |
+| **Capability-aware lane routing** | Avoid dispatching screenshot/browser/tool tasks to an integration that lacks those modalities despite model support | First finish improvement of Gemini provider plugin in the separate AI-plugins workstream, then assess actual remaining misroutes. Do not silently swap models |
+| **Context/continuity diagnostics** | Expose stale references, missing approved decisions and repeated large event-log reads when it becomes a measurable issue | The portable contract already uses source-first, reference-oriented handoff and session continuation; no separate memory platform by default |
+| **Flight recorder / blocker notifications** | Explain a failed workflow or bring a real human-required decision to attention without rereading dozens of threads | Existing relay evidence and OpenCode notices generally suffice. Remote/mobile is disallowed on the current managed laptop. Revisit only if real misses recur |
+| **Creator Mode-style plugin developer experience** | Reduce time and effort from “I need a useful UI capability” to a supported, maintainable local plugin in OpenCode | ZadLoop creator experience is owner-proven; OpenCode GUI plugins exist but are experimental and version-dependent. Compare on a *needed* plugin, not a toy feature or speculative performance claim |
+
+### C. Fun, personalization and personal organization — explicitly optional
+
+Enjoyment and comfort are legitimate goals, even without measurable engineering throughput. Keep this lane separate from workflow correctness and from auto-loaded agent policy. Prefer low-risk, reversible visual changes. **OpenCode Desktop and TUI extension surfaces differ**; never label a terminal-only theme/HUD as Desktop-compatible without checking.
+
+| Candidate | Experience / organization benefit | Example / important limitation |
+| --- | --- | --- |
+| **Color/theme packs and accent presets** | Make long sessions visually pleasant or easier on the eyes; perhaps separate visual identity for work versus experimentation | [Official OpenCode Desktop GUI themes](https://opencode.ai/docs/build/plugins/gui/) are documented; theme contribution appeared in v2.2.6, so verify an installed 2.2.5 host before expecting it. [Theme collections](https://github.com/awesome-opencode/awesome-opencode) include Ayu Dark, Lavi, Moonlight, Charcoal and light sets; many are **TUI** themes |
+| **Small ambient sound packs** | Optional friendly tones on success, error, or waiting for user; different sounds per role if desired | [opencode-sfx](https://github.com/jimrubenstein/opencode-sfx) is an existing sound-pack concept, but its focus/OS/GUI behavior requires local verification. Keep muted by default, easy off, and compatible with office setting |
+| **Tiny progress/status HUD** | At a glance: active role, elapsed task time, current tool, failure/idle, project/branch, token/context if trustworthy | [opencode-hud](https://github.com/ndom91/opencode-hud) and [opencode-activity](https://github.com/enzorenz/opencode-activity) demonstrate **TUI** functionality, not proof of a Desktop GUI widget; use GUI slots only when supported |
+| **Session organizer / pinned workspaces** | Group sessions by current project/ticket, pin a few active sessions, quick-jump to worker and root; less scrolling and lost place | Prototype local-only when the built-in session list fails in daily use; preserve real project/session IDs, no automatic deletion of history |
+| **Lightweight celebration or completion microinteraction** | Pleasant success animation, small confetti/character cameo on completing a truly finished task | ZadLoop's locally created floating character establishes feasibility there; an OpenCode desktop overlay with equivalent behavior is unverified. Do not interrupt editing or imply acceptance merely from model self-report |
+| **Focus-friendly workspace preset** | Single-click compact layout: larger diff, hidden unused panels, calmer colors, less noise | Prefer native settings and saved workspace state first; custom plugin only if missing. No arbitrary split-screen feature race |
+| **Personal project switchboard** | See only the few repos/work items the owner is currently using and jump to their workspaces | Avoid replicating a Jira tracker or pushing private project metadata to external services |
+
+**Low-cost first experiments:** choose a theme/palette appropriate for the *actual installed Desktop version*, or a reversible sound/visual preset. For an organization feature, first check built-in pinned/session/project navigation. No installation is authorized by this backlog.
+
+### D. Harness choice and portfolio checkpoints
+
+- **OpenCode:** current practical baseline; the owner reports a satisfying real workflow and working AI Skills CLI relays, native subagent visibility, multiple model providers, free-model access and Claude login. A single-run Standard coding comparison showed a modest speed advantage over ZadLoop; not a universal causal result.
+- **ZadLoop:** retains legitimate optional value in Creator Mode, easy plugin iteration, pleasant UX and native delegation lifecycle. Theoretical workflow routing and one real native delegation test were promising, but that run failed a final test with different worker models and an ignored-fixture visibility issue; no causal conclusion about transport quality. Current choice need not migrate.
+- **T3 Code:** an interface/control layer over existing harnesses rather than a distinct model-execution harness. Revisit if local UX solves a concrete daily problem; unverified social-media claims of faster tokens/models do not justify a third benchmark. Remote/mobile value is blocked by present corporate-device restrictions.
+- **Practical evaluation:** retain the existing workflow baseline; choose one real user pain or one fun customization to evaluate at a time. For new greenfield work, revisit A before scaffolding; for more active PR/CI, revisit B; for calmer/more enjoyable daily use, revisit C. Do not promote experimental ideas into defaults just by listing them here.
+
+### Selected research pointers
+
+- [Awesome OpenCode](https://github.com/awesome-opencode/awesome-opencode): curated plugins, themes and agent references; inspect maintenance and actual app compatibility.
+- [OpenDock plugin index](https://www.opendock.net/): discovery directory, not a trust or compatibility certification.
+- [OpenCode GUI extensions](https://opencode.ai/docs/build/plugins/gui/): experimental panels/commands/themes and version requirements.
+- [OpenCode extensions changelog](https://opencode.ai/changelog?area=extensions%2Cdesktop): check whether a proposed Desktop feature exists in the installed version.
+- [OpenCode SFX](https://github.com/jimrubenstein/opencode-sfx): optional sound effects.
+- [OpenCode HUD](https://github.com/ndom91/opencode-hud) and [Activity](https://github.com/enzorenz/opencode-activity): reference TUI status interfaces, not automatic GUI compatibility.
+- [Context7](https://github.com/upstash/context7), [Plannotator](https://plannotator.ai/) and [project-scaffolding skill examples](https://github.com/arjunprabhulal/agent-skills): inspect for a bounded greenfield use case, not wholesale installation.
