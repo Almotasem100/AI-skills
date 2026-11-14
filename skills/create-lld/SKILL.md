@@ -26,6 +26,10 @@ to develop a credible design. An absent technical summary is not a missing-input
 available. Intake is navigation, not a required technical survey or approved solution. Verify
 consequential observations against originals. Resolve material owner-level ambiguities before treating dependent
 design as settled; routine design choices do not create new owner approval gates.
+Start with the smallest design that satisfies approved behavior and current project conventions; justify extra
+state, abstractions or duplicated business rules with a concrete requirement. For permission-sensitive flows,
+distinguish client visibility/interaction from authoritative server enforcement; do not copy server role policies
+into the client when the established capability contract already provides what the UI needs.
 
 Deliver one coherent current design. Replace superseded statements and reconcile affected companion artifacts;
 do not append an amendment telling the recipient how to combine contradictory versions. Preserve useful history

@@ -22,8 +22,11 @@ orchestrator**, pick one of them to fit the task in front of you.
   a cheap, fast model. A brief whose risk lives in judgment — a concurrency fix, a money or auth path,
   an ambiguous spec — wants a strong one, because the sweep's failure modes (plausible-but-wrong logic,
   swallowed errors) are exactly what a weaker model produces more of.
-- **A resumed run keeps the first run's model.** `--resume-last` / `--session` don't take `--model`; the
-  session already has one. Send only the delta brief.
+- **LOCAL CHANGE — resumed model/effort:** `--resume-last` / `--session` can inherit the session's model
+  when no model dial is supplied. They also accept `--model`; preserve the assignment's configured model/effort.
+  On OpenCode 2.x, a supplied `--variant` requires `--model` even on resume because the relay joins them as
+  `provider/model#variant`. Do not combine an already joined model value with a separate variant. Send only
+  the delta brief and use the recorded session ID for a known assignment.
 
 ## The shape that works
 
@@ -68,7 +71,8 @@ profile calls for them:
   first plausible fix) and `<missing_context_gating>` (don't guess missing repo facts; find them or
   state what's unknown).
 - **Review / diagnosis (read-only)** — add `<grounding_rules>` (ground every claim in evidence; label
-  inferences) and dispatch with `--read-only` so OpenCode runs as the `plan` agent and can't edit.
+  inferences) and dispatch with `--read-only` to request the `plan` agent. **LOCAL CHANGE:** this is not
+  an enforced sandbox; effective host permissions control tool access. See the autonomy model in `SKILL.md`.
 - **Research / recommendations** — add `<research_mode>` (separate observed facts, inferences, open
   questions).
 

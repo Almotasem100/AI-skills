@@ -112,7 +112,10 @@ For substantive work, grilling/clarification should settle consequential owner-l
 Ground the blueprint in relevant current source and approved design: identify actual or proposed modification
 surfaces, interfaces and reuse decisions as precisely as evidence permits, without inventing paths or signatures.
 Order independently reviewable slices by real prerequisites, with an actionable next slice, completion criteria and
-verification linked to applicable requirements and QA scenarios. Surface material assumptions and owner decisions;
+verification linked to applicable requirements and QA scenarios. Include affected maintained documentation and
+generated inventories when their owned facts change. Name concrete verification commands/options and their
+prerequisites; inspect wrapper defaults and distinguish read-only probes from fixture/data mutations rather than
+assuming a command is read-only from its name. Surface material assumptions and owner decisions;
 do not turn routine reversible coding choices into approval gates or duplicate whole upstream artifacts.
 
 Distinguish **ready to implement** (a sufficient blueprint with required decisions settled and execution authorized), **decision pending** (a sufficient blueprint exists, but a material approval is still required), and **blocked** (missing consequential requirements, evidence or design decisions prevent a dependable blueprint). A plan may explicitly introduce justified new components or architecture; the implementer must not invent unapproved material decisions. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
@@ -156,10 +159,14 @@ workflow explicitly grants them authority.
 ## Review and ownership
 
 - One mutation owner per bounded change. Parallelize independent analysis; avoid competing writers on unstable shared
-  surfaces unless competing proposals are explicitly desired.
+  surfaces unless competing proposals are explicitly desired. Implementation may overlap when inputs/contracts are
+  sufficiently settled, write scopes are disjoint and prerequisites permit it; verify the integrated boundary before
+  acceptance. A shared contract alone does not make dependent changes independent.
 - An independent reviewer receives requirements/scope, relevant design constraints, the actual diff, verification
   evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
-- Reviewers verify consequential claims rather than checking only that citations exist.
+- Reviewers verify consequential claims rather than checking only that citations exist. Include affected
+  documentation and payload examples in the relevant review; check implemented fields against actual serialized
+  contracts and label intended changes clearly rather than presenting them as existing behavior.
 - The actual plan author owns revisions and evidence-backed findings disposition: accept/revise, reject with
   evidence, or leave open with the needed check/decision. Reviewers return findings and recheck affected material
   revisions; they do not direct mutations. Preserve the record defined in **Context and continuity**.
@@ -245,6 +252,10 @@ batch proportionate tests/builds/review checks around coherent work. Earlier tar
 uncertainty; a cosmetic edit does not justify unrelated full-suite or API-regression runs. After a correction,
 recheck affected behavior; broaden for new risk, failures or a required project gate. Reuse current applicable
 evidence rather than repeating a check solely because another participant received it.
+Preserve existing line endings and formatting outside the intended change; investigate unexpected diff churn before
+accepting the patch. When a check is intermittent, retain failed attempts, investigate the cause and use bounded
+repeat runs targeted to that failure. Report run counts, failures/skips and remaining uncertainty; a later green run
+does not erase the earlier failure. Do not impose a fixed repeat count on every test or duplicate every worker run.
 
 For ordinary end-to-end delivery, complete local checks/review/corrections before consolidated authorized deployment
 and browser/API verification. Do not deploy after every edit or redeploy unaffected services by habit. Redeploy

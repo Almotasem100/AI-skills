@@ -2,9 +2,13 @@
 
 ## Active
 
-- The reviewed `work/orchestrator-planner` changes were merged into `master` at `950c24e`.
-  Instruction trimming and layer separation are complete at source level. The final two-Luna consistency review
-  found no consequential remaining issue after adjudication; it was not installed-host validation.
+- The friction-log follow-up branch contains a per-entry [audit](friction-log-review.md), original feedback,
+  targeted contract/skill improvements and corrected OpenCode guidance with vendor provenance. Owner review/merge
+  is pending; local source checks do not establish installed-host behavior. Optional test-author route reassignment
+  remains an owner choice; no fleet, plugin, permission or HDC changes are included.
+
+- Instruction trimming and layer separation are complete at source level. Prior source consistency review
+  was not installed-host validation.
 - Recipient-focused QA, forward LLD/Technical Design, slide-ready Functional Design and PR presentation are now
   implemented, with matching templates, examples and checks. Project-owned filename conventions are supplied
   through task inputs or the optional `templates/project-deliverables.md` starter; no HDC policy was edited.
@@ -18,10 +22,10 @@
 - Refresh the existing installations from merged master and verify parity and a bounded startup check. No new full
   feature trial is required solely for the activation repair or documentation updates. Preserve local fleet settings.
   Host trial evidence belongs to `73675e9` plus the reported loading repair, not every later wording change.
-- Replace the stale project attachment and verify the actual bytes supplied to a fresh
-  conversation. The earlier saved-file update did not refresh that attachment.
-- Inspect HDC instructions for contradictions and adopt the approved project-specific deliverable names in its
-  canonical guidance after the portable workflow is settled; no HDC content is changed in this batch.
+- Review the friction-log dispositions and decide whether to change the local executable-test author route.
+  Keep the current assignment unless explicitly changed; merge only after owner agreement.
+- HDC deliverable names are already in its canonical README. Keep project-specific policy there; refresh relevant
+  sources when HDC work resumes rather than treating the earlier adoption task as still pending.
 
 ## Deferred
 

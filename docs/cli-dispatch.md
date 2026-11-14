@@ -18,6 +18,12 @@ A relay using `--lane` may perform resolution internally; retain its invocation/
 redundant standalone resolve call. Read that installed skill and run its documented `scripts/relay.mjs` command.
 The loader/resolver is read-only; this is not an instruction to run a setup interview or rewrite configuration.
 
+Before relying on an assignment, check the selected route's actual input access and tool/permission capabilities.
+Keep approved briefs/findings within its readable scope or supply concise relevant text inline; a path alone does
+not establish access. Do not broaden workspace permissions to make a handoff readable. For executable test-writing,
+state who can run the gates: if the author cannot, assign execution/correction feedback within existing authority
+and report authored versus executed separately. Do not silently switch models or escalate approval modes.
+
 ## Diagnose actual evidence
 
 - A relay script runs through the terminal; it need not appear in the host's tool catalog.

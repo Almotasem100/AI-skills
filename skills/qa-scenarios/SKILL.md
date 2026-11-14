@@ -15,7 +15,10 @@ Read approved requirements/acceptance criteria and applicable Functional Design 
 pointers to locate authoritative decisions, not as an approved technical solution. Sourced concerns are investigative leads, not expected results.
 Consult the LLD only for constraints affecting testable behavior. Follow project testing conventions; do not infer expected behavior from
 current code unless characterization was requested. Conflicting or undecided behavior remains a separate question,
-not a guessed expected result.
+not a guessed expected result. Verify load-bearing UI facts used in steps or expectations (tool/page names,
+labels, column order, available controls and pagination) against approved design or current source as appropriate.
+Use a short source-linked facts block in the working brief when it prevents repeated mistakes; it supplements,
+not replaces, the original sources. Do not fill unspecified details from common UI conventions.
 
 ## Write for testers
 

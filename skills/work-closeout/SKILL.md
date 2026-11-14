@@ -54,3 +54,8 @@ Report actual completion/acceptance, changed durable documents, deferred follow-
 state, evidence limits and any proposed cleanup inventory. Perform archival/removal only when current explicit
 project/user authorization covers that inventory. Preserve owner-inspectable working files and active parent context;
 no automatic clearing, draft archiving or handoff generation. Handoff is for genuine transfer friction, not closure.
+Before approved cleanup, inspect the inventory for workflow feedback, unresolved findings and other unique content
+whose only copy would be removed. Preserve that content in an existing approved durable record and verify it is
+saved before clearing its source. Keep observations, proposed remedies and accepted policy distinct; never promote
+feedback into instructions automatically. If its destination needs separate authorization, retain the source and
+report the pending choice. Do not copy confidential project/customer content into a portable workflow repository.

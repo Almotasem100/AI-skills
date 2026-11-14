@@ -6,7 +6,7 @@
 | Full vendored baseline | `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` (upstream master checked 2026-10-14) |
 | Original copy | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
-| Local changes | Only repository-link corrections; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
+| Local changes | Repository-link corrections and OpenCode guidance corrections; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
 
 ## Full upstream snapshot — 2026-10-14
 
@@ -18,12 +18,21 @@ The complete file transfer was checked against upstream blob SHAs (except the tw
 
 ## LOCAL CHANGE — repository-link corrections
 
-The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records only these changes. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the two expected link edits. Do not add Gemini changes to this patch.
+The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records these and the OpenCode guidance corrections below. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the documented edits. Do not add Gemini changes to this patch.
+
+## LOCAL CHANGE — OpenCode continuation and effective permissions
+
+The OpenCode skill and its brief/dispatch references distinguish the requested plan-agent behavior from enforced
+containment: the relay omits `--auto` for plan runs but does not revoke host-configured tool permissions.
+The brief/dispatch references also match the existing relay's model/variant handling: resume can inherit a model,
+but an explicit variant on OpenCode 2.x needs an explicit or lane-resolved model. No relay runtime or host settings
+are changed. Inline `LOCAL CHANGE` markers identify the corrected guidance; the patch preserves all five changed
+upstream files (the two link files and these three OpenCode documents).
 
 ## Updating again
 
 1. Review commits and executable-script changes after the pinned upstream base before copying new files.
-2. Preserve the two repository-link corrections and regenerate `local-changes.patch` when necessary.
+2. Preserve the repository-link and OpenCode guidance corrections and regenerate `local-changes.patch` when necessary.
 3. Rebase `overlays/gemini-delegate/changes.patch` separately onto the new upstream base, update its base metadata, and validate config/lane behavior plus relay tests.
 4. Update the baseline in this file and `manifest.md` only after confirming the copied snapshot and intentional differences.
 5. Installing skills, changing lane configurations, and applying Gemini overlay are separate, explicitly reviewed actions.

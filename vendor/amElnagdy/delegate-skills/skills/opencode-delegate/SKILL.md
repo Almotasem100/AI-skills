@@ -152,16 +152,18 @@ OpenCode's autonomy is governed by the **agent**, not a sandbox enum:
 
 - **`build`** (the relay default) — write-capable; edits files in the working dir headlessly. The
   equivalent of "let it implement."
-- **`plan`** (via `--read-only`) — read-only; reviews and diagnoses without touching the tree. The
-  equivalent of "let it look but not edit."
+- **`plan`** (via `--read-only`) — requests review/diagnosis without edits. **LOCAL CHANGE:** this selects
+  an agent, not an enforced sandbox; effective host configuration determines which tools/actions are allowed.
 
 Permissions **auto-approve by default**: the relay passes `--auto` so a headless run never blocks on a
 prompt no one can answer. That is the point of unattended delegation — the orchestrator's diff review
 and the implementer sweep (step 4) are the safety net, not a per-action prompt. Pass `--no-auto` to
 honor the agent's own permission config instead (allow/ask/deny per action); pair it with an agent whose
 in-workspace permissions are set to *allow*, or a headless run can hang waiting on an `ask`.
-**Read-only (`plan`) runs never get `--auto`** — auto-approving would let the plan agent's ask-gated
-edit/bash permissions through and defeat "read-only," so a review can't be tricked into touching the tree.
+**Read-only (`plan`) runs never get `--auto`.** **LOCAL CHANGE:** omitting auto-approval does not remove
+write tools or override existing allows. Inspect effective permissions and report instruction-only isolation as
+such; no observed writes is not proof of containment. Use an already approved enforced boundary when required,
+or report the missing prerequisite rather than changing permission settings silently.
 
 ## Authorization model
 

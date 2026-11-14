@@ -1,14 +1,57 @@
 diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index dfdc3da..5d29e7c 100644
+index 60037d9..f3f9829 100644
 --- a/CONTRIBUTING.md
 +++ b/CONTRIBUTING.md
 @@ -6 +6 @@ wasted. So: **claim an implementer before you build it**, and check the open pul
 -[Open claims](../../issues?q=is%3Aissue+label%3Aimplementer) · [Open pull requests](../../pulls)
 +Open claims: https://github.com/amElnagdy/delegate-skills/issues | Open pull requests: https://github.com/amElnagdy/delegate-skills/pulls
 diff --git a/README.md b/README.md
-index 4d56df4..64d5517 100644
+index 18eedeb..8e144e1 100644
 --- a/README.md
 +++ b/README.md
-@@ -116 +116 @@ Each skill name links to its `SKILL.md`, which owns that implementer's prerequis
+@@ -122 +122 @@ Each skill name links to its `SKILL.md`, which owns that implementer's prerequis
 -caveats. Building one for another CLI? [Claim it first](../../issues?q=is%3Aissue+label%3Aimplementer),
 +caveats. Building one for another CLI? [Claim it first](https://github.com/amElnagdy/delegate-skills/issues),
+diff --git a/skills/opencode-delegate/SKILL.md b/skills/opencode-delegate/SKILL.md
+index 3273fcb..de9ae3b 100644
+--- a/skills/opencode-delegate/SKILL.md
++++ b/skills/opencode-delegate/SKILL.md
+@@ -155,2 +155,2 @@ OpenCode's autonomy is governed by the **agent**, not a sandbox enum:
+-- **`plan`** (via `--read-only`) — read-only; reviews and diagnoses without touching the tree. The
+-  equivalent of "let it look but not edit."
++- **`plan`** (via `--read-only`) — requests review/diagnosis without edits. **LOCAL CHANGE:** this selects
++  an agent, not an enforced sandbox; effective host configuration determines which tools/actions are allowed.
+@@ -163,2 +163,4 @@ in-workspace permissions are set to *allow*, or a headless run can hang waiting
+-**Read-only (`plan`) runs never get `--auto`** — auto-approving would let the plan agent's ask-gated
+-edit/bash permissions through and defeat "read-only," so a review can't be tricked into touching the tree.
++**Read-only (`plan`) runs never get `--auto`.** **LOCAL CHANGE:** omitting auto-approval does not remove
++write tools or override existing allows. Inspect effective permissions and report instruction-only isolation as
++such; no observed writes is not proof of containment. Use an already approved enforced boundary when required,
++or report the missing prerequisite rather than changing permission settings silently.
+diff --git a/skills/opencode-delegate/references/dispatch-and-poll.md b/skills/opencode-delegate/references/dispatch-and-poll.md
+index 99fed5c..dd8790b 100644
+--- a/skills/opencode-delegate/references/dispatch-and-poll.md
++++ b/skills/opencode-delegate/references/dispatch-and-poll.md
+@@ -37,3 +37,3 @@ Options:
+-| `--read-only` | Shortcut for `--agent plan` — review/diagnosis with no edits. |
+-| `--variant <name>` | Provider reasoning effort (e.g. `high`, `max`, `minimal`). Version-gated: opencode 2.x replaced the `--variant` flag with the `provider/model#variant` model value, so the relay joins the dials there (`2.0.11`'s `run --help` documents that format and ships no `--variant` flag); on 1.x the relay still passes `--variant`. The relay probes the version before every dispatch. |
+-| `--no-auto` | The relay passes `opencode`'s `--auto` (auto-approve permissions) **by default** so a headless run doesn't hang on a prompt; `--no-auto` drops it and honors the agent's own permission config instead. A `--read-only`/`plan` run never gets `--auto`, so it can't be auto-approved into edits. |
++| `--read-only` | **LOCAL CHANGE:** shortcut for `--agent plan`, requesting review/diagnosis without edits; effective host permissions apply, not an enforced sandbox. |
++| `--variant <name>` | Provider reasoning effort (e.g. `high`, `max`, `minimal`). Version-gated: opencode 2.x replaced the `--variant` flag with the `provider/model#variant` model value, so the relay joins the dials there (`2.0.11`'s `run --help` documents that format and ships no `--variant` flag); on 1.x the relay still passes `--variant`. The relay probes the version before every dispatch. **LOCAL CHANGE:** on 2.x a supplied variant requires an explicit or lane-resolved model even on resume; otherwise omit both to inherit the session model. |
++| `--no-auto` | The relay passes `opencode`'s `--auto` (auto-approve permissions) **by default** so a headless run doesn't hang on a prompt; `--no-auto` drops it and honors the agent's own permission config instead. A `--read-only`/`plan` run never gets `--auto`; **LOCAL CHANGE:** that does not revoke tool access already permitted by host configuration. |
+diff --git a/skills/opencode-delegate/references/writing-the-brief.md b/skills/opencode-delegate/references/writing-the-brief.md
+index d1ae519..73ba977 100644
+--- a/skills/opencode-delegate/references/writing-the-brief.md
++++ b/skills/opencode-delegate/references/writing-the-brief.md
+@@ -25,2 +25,5 @@ orchestrator**, pick one of them to fit the task in front of you.
+-- **A resumed run keeps the first run's model.** `--resume-last` / `--session` don't take `--model`; the
+-  session already has one. Send only the delta brief.
++- **LOCAL CHANGE — resumed model/effort:** `--resume-last` / `--session` can inherit the session's model
++  when no model dial is supplied. They also accept `--model`; preserve the assignment's configured model/effort.
++  On OpenCode 2.x, a supplied `--variant` requires `--model` even on resume because the relay joins them as
++  `provider/model#variant`. Do not combine an already joined model value with a separate variant. Send only
++  the delta brief and use the recorded session ID for a known assignment.
+@@ -71 +74,2 @@ profile calls for them:
+-  inferences) and dispatch with `--read-only` so OpenCode runs as the `plan` agent and can't edit.
++  inferences) and dispatch with `--read-only` to request the `plan` agent. **LOCAL CHANGE:** this is not
++  an enforced sandbox; effective host permissions control tool access. See the autonomy model in `SKILL.md`.

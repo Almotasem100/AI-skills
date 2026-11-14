@@ -45,7 +45,7 @@ patch and base metadata together.
 The ordinary vendor copy of `delegate-setup` has no Gemini support. Install **both** the overlay-applied
 `delegate-setup` and `gemini-delegate` together. Copying only the relay, or replacing enhanced setup with the plain
 vendor setup later, loses Gemini validation/normalization. Do not modify the vendor snapshot or apply its
-`local-changes.patch` a second time: the checked-in vendor tree already includes those documented link corrections.
+`local-changes.patch` a second time: the checked-in vendor tree already includes its documented link and OpenCode guidance corrections.
 
 The following creates a disposable source copy, checks the declared base, applies the overlay and runs offline gates.
 Set `$setup` to the AI-skills checkout. No CLI authentication, model calls or host installation happens in this block.
