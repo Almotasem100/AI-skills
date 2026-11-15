@@ -20,9 +20,8 @@
 
 ## Next
 
-- Refresh the existing installations from merged master and verify parity and a bounded startup check. No new full
-  feature trial is required solely for the activation repair or documentation updates. Preserve local fleet settings.
-  Host trial evidence belongs to `73675e9` plus the reported loading repair, not every later wording change.
+- Selective workstation refresh completed from 408d473; source/install parity and relay-help checks passed. 
+  Fresh-session loading remains unverified. Local fleet/provider settings were preserved.
 - Apply the owner's planned local Gemini lane change through OpenCode when ready, preserving the selected model
   and task permissions. The reported native-subagent test does not verify a later `opencode-delegate` lane; use a
   bounded first-use check rather than reopening the route decision or rerunning the full benchmark suite.
