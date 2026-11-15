@@ -19,11 +19,13 @@
  *
  * OpenCode autonomy is governed by the chosen agent, not a sandbox enum:
  *   build (default) — write-capable; edits files in the working dir headlessly.
- *   plan            — read-only; reviews/diagnoses without touching the tree.
+ *   plan            — requests review/diagnosis without edits.
+ * LOCAL CHANGE: plan selects an agent, not an enforced sandbox; effective host
+ * permissions control tool access, including any already allowed writes.
  * A build run passes `--auto` by default so OpenCode never blocks on a permission
  * prompt no one can answer in headless mode; the orchestrator's diff review is the
  * safety net. Pass --no-auto to instead honor the agent's own permission config.
- * A plan (read-only) run never gets --auto, so it can't be auto-approved into edits.
+ * LOCAL CHANGE: a plan run never gets --auto; this does not revoke tool permissions.
  *
  * Usage:
  *   node relay.mjs --brief <file> [options]
@@ -37,10 +39,12 @@
  *                           REQUIRED for a fresh run — OpenCode has no
  *                           safe default; a resumed run inherits its session's model.
  *   --agent <name>          OpenCode agent (default: build). Use plan for read-only review.
- *   --read-only             Shortcut for --agent plan (review/diagnosis, no edits).
+ *   --read-only             Shortcut for --agent plan; requests no edits, not containment.
  *   --variant <name>        Provider reasoning effort (e.g. high, max, minimal). Sent as
  *                           --variant on opencode 1.x; on 2.x it joins the model value
  *                           as provider/model#variant (2.x has no --variant flag).
+ *                           LOCAL CHANGE: 2.x needs an explicit or lane-resolved --model
+ *                           with a supplied --variant, including resumed runs.
  *   --no-auto               Don't pass --auto; honor the agent's own permission config (a headless
  *                           run may then hang if the agent is set to ask for a permission).
  *   --resume-last           Continue the most recent OpenCode session; send only the delta brief.
@@ -419,9 +423,8 @@ function buildArgv(opts, version) {
   if (opts.variant && !joinsVariant) argv.push("--variant", opts.variant);
   // --auto (on by default) auto-approves permissions so a headless build run doesn't
   // block on a prompt no one can answer; --no-auto honors the agent's own config.
-  // Never on a plan (read-only) run: --auto would approve the plan agent's ask-gated
-  // edit/bash permissions and let a "read-only" review modify the tree. A plan run
-  // only reads, so it doesn't need auto-approval anyway.
+  // LOCAL CHANGE: never auto-approve a plan run's ask-gated actions. This omission
+  // does not revoke tools or writes already allowed by the host configuration.
   if (opts.auto && opts.agent !== "plan") argv.push("--auto");
   // No message argument: the brief is piped on stdin (see dispatchToOpenCode),
   // which avoids all argv-quoting issues with multi-line, XML-tagged briefs.

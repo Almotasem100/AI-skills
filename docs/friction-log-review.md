@@ -5,7 +5,8 @@
 Review of `review/friction-log-notes` at `61a7215`, against `master` at `1d00fab`.
 The working branch is `improve/friction-log-followups`, based on master with the original notes
 copied unchanged from that source revision. This review is working evidence, not startup policy or an execution profile.
-Merge remains an owner decision. No workstation installation, lane/model change, plugin edit or HDC change is included.
+The owner authorizes merge after review findings are resolved and checks pass. No workstation installation,
+lane/model change, plugin edit or HDC change is included.
 
 The 16 new entries are the previous orchestrator's reports, partly recovered after scratchpad cleanup.
 They identify useful failure modes, but raw run logs and the deleted scratchpad are unavailable here.
@@ -84,10 +85,15 @@ only if the owner wants one for a named suite with a defined purpose and cost.
 It does not establish that all shell execution is universally impossible. Effective settings and installed versions matter.
 **Change:** The dispatch reference requires actual tool/input readiness and explicit execution ownership when a test
 author cannot run gates. Authored tests and executed results must be reported separately. No silent permission escalation.
-**Decision D1:** Keep the existing author route with execution/correction feedback performed by an authorized executor
-(recommended for this batch), or explicitly reassign executable test-writing to an existing approved shell-capable route?
-The latter needs the actual local lane/model selection and is not a repository-only fix. No fleet changes were made.
-The separate Gemini provider-plugin workstream remains separate from this CLI relay observation.
+**Decision D1 — settled by the owner:** use Gemini through the owner's OpenCode provider integration. The owner
+reports that a native Gemini subagent completed the requested read/edit/run/fix task without permission prompts or
+other problems; raw traces were not inspected here. The intended later local lane change is to `opencode-delegate`
+with a Gemini provider/model, replacing direct `gemini-delegate` CLI dispatch. That remains an OpenCode CLI relay,
+not the native-subagent route used in the reported test, so the exact configured lane still needs an ordinary first-use
+check of model, tools, inputs and gate results. The existing CLI routing policy already supports this direction.
+No further repository decision, provider-plugin work or general native-routing change is required for this batch.
+No fleet changes were made here; the owner will update local mappings separately. Direct Gemini CLI limitations
+are not declared repaired by the different provider route.
 
 ### 9. Gemini could not read findings outside its workspace
 
@@ -154,7 +160,7 @@ interactive refresh only when needed, and retain completed work. No credential h
 **Report:** No writes occurred, but the reviewer had tools capable of writing.
 **Source check:** The OpenCode relay selects `plan` and omits `--auto`; it does not install a sandbox or revoke
 host-configured permissions. The old skill/brief text overstated this as an inability to edit.
-**Change:** Three vendored OpenCode guidance files distinguish requested read-only behavior from enforced containment,
+**Change:** The vendored OpenCode skill, its two guidance references and comment-derived relay help distinguish requested read-only behavior from enforced containment,
 with LOCAL CHANGE markers, provenance and a regenerated patch. Effective installed permission behavior remains unverified.
 **Disposition:** No host-policy change. If a project requires enforced containment, a verified approved boundary is a
 prerequisite; otherwise disclose the limitation. No observed writes is not proof that writes were impossible.
@@ -192,14 +198,16 @@ For this authorized review, the original portable feedback is preserved in `docs
 material must stay in its approved project record rather than being copied to a portable/public workflow repository.
 No automatic cross-repository publication or mandatory new feedback document is introduced.
 
-## Proposed branch outcome
+## Reviewed outcome
 
 - Preserve all original observations unchanged; this audit records dispositions separately.
 - Edit the owning contract/skills/references rather than adding reminders to global startup instructions.
-- Correct OpenCode guidance and preserve reproducible vendor provenance; leave relay runtime and Gemini overlay unchanged.
-- Leave D1 route reassignment pending. Keep bounded repetition, conditional parallel work and effective-permission
-  disclosure as the default recommendations above; broader fixed policies need an explicit owner choice.
-- Review/merge this branch only after owner discussion. Source checks do not establish installed-host compliance.
+- Correct OpenCode guidance, including comment-derived help, and preserve reproducible vendor provenance;
+  leave relay execution logic and Gemini overlay code unchanged.
+- D1 is settled: Gemini through OpenCode, with the actual local lane update left to the owner. Keep bounded
+  repetition, conditional parallel work and effective-permission disclosure; no broader fixed policies are added.
+- The owner authorizes merge after the two requested independent reviews, focused debate/corrections and final checks.
+  Source checks do not establish installed-host compliance.
 
 ## Validation
 
@@ -209,8 +217,39 @@ No automatic cross-repository publication or mandatory new feedback document is 
   Covers model/variant argument mapping, requested plan-agent arguments, and existing rejection cases;
   it does not establish actual host permissions or native session behavior.
 - Reconstructed the vendored upstream file state by reversing the pre-existing local patch, applied the regenerated
-  zero-context patch with `git apply --check --unidiff-zero` / `git apply --unidiff-zero`, and compared all five
+  zero-context patch with `git apply --check --unidiff-zero` / `git apply --unidiff-zero`, and compared all six
   patched files byte-for-byte with this branch. This is local patch reproducibility, not a fresh upstream audit.
 - `git diff --check`: passed after patch formatting reconciliation.
 - No application, Windows, installed-harness, authenticated-environment or provider-session tests were run.
-  No relay runtime or Gemini overlay code changed; no live containment or performance claim follows.
+  No relay execution logic or Gemini overlay code changed; the relay correction is comment/help-only.
+  No live containment or performance claim follows.
+
+
+## Independent review and disposition
+
+At the owner's request, two independent `gpt-6.1-sol` reviewers at medium effort reviewed all 19 dispositions,
+the actual branch diff and relevant sources, then exchanged findings and rechecks with the author.
+
+- **Reviewer A (`review_decisions_a`):** agreed with the per-entry choices and their owning instruction layers;
+  confirmed original feedback preservation and the native-test versus future-relay distinction. Cross-checked
+  Reviewer B's help finding and agreed on a comment/help-only remedy. Final recheck: no consequential objection.
+- **Reviewer B (`review_decisions_b`):** found that the relay's leading comment is emitted by `--help` and still
+  overstated read-only containment. Also suggested the small permission-enforcement wording clarification for
+  non-client/server designs. Final recheck: no consequential objection.
+- **Author disposition:** accepted the help finding; corrected the owned help and explanatory comments, regenerated
+  the six-file local vendor patch and updated provenance. Accepted the permission wording clarification without
+  introducing a new architecture requirement. Both reviewers inspected the corrections; no substantive dispute
+  remains. Agreement concerns source correctness and scope, not uninspected host/runtime acceptance.
+- **Final checks:** the 47-test source suite and selected OpenCode fake-CLI suite passed again after corrections;
+  actual `--help`, vendor patch reproduction and whitespace checks passed. No force update or history rewrite is
+  needed: the source branch extends the current master. The final remote ancestry is verified at merge time.
+
+## Laptop refresh impact
+
+GUIDE installs copies, so pulling the source checkout does not refresh them. Refresh only installed copies of
+`create-lld`, `qa-scenarios`, `work-closeout` and `opencode-delegate`, plus `orchestration-contract.md` and optional
+`cli-dispatch.md` under the existing companion-instruction root. Preserve local modifications and verify parity;
+reload skills/start a fresh session using the host's normal mechanism. No new dependencies, full setup interview,
+Gemini overlay rebuild, global-template replacement or fleet rewrite is required by these changes. The owner's
+planned Gemini lane migration remains a separate local action. A symlink-based custom installation may already
+track source changes; inspect the actual installation instead of assuming the GUIDE's copy layout.

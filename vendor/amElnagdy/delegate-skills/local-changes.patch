@@ -55,3 +55,27 @@ index d1ae519..73ba977 100644
 -  inferences) and dispatch with `--read-only` so OpenCode runs as the `plan` agent and can't edit.
 +  inferences) and dispatch with `--read-only` to request the `plan` agent. **LOCAL CHANGE:** this is not
 +  an enforced sandbox; effective host permissions control tool access. See the autonomy model in `SKILL.md`.
+diff --git a/skills/opencode-delegate/scripts/relay.mjs b/skills/opencode-delegate/scripts/relay.mjs
+index 9189387..48b5cb7 100644
+--- a/skills/opencode-delegate/scripts/relay.mjs
++++ b/skills/opencode-delegate/scripts/relay.mjs
+@@ -22 +22,3 @@
+- *   plan            — read-only; reviews/diagnoses without touching the tree.
++ *   plan            — requests review/diagnosis without edits.
++ * LOCAL CHANGE: plan selects an agent, not an enforced sandbox; effective host
++ * permissions control tool access, including any already allowed writes.
+@@ -26 +28 @@
+- * A plan (read-only) run never gets --auto, so it can't be auto-approved into edits.
++ * LOCAL CHANGE: a plan run never gets --auto; this does not revoke tool permissions.
+@@ -40 +42 @@
+- *   --read-only             Shortcut for --agent plan (review/diagnosis, no edits).
++ *   --read-only             Shortcut for --agent plan; requests no edits, not containment.
+@@ -43,0 +46,2 @@
++ *                           LOCAL CHANGE: 2.x needs an explicit or lane-resolved --model
++ *                           with a supplied --variant, including resumed runs.
+@@ -422,3 +426,2 @@ function buildArgv(opts, version) {
+-  // Never on a plan (read-only) run: --auto would approve the plan agent's ask-gated
+-  // edit/bash permissions and let a "read-only" review modify the tree. A plan run
+-  // only reads, so it doesn't need auto-approval anyway.
++  // LOCAL CHANGE: never auto-approve a plan run's ask-gated actions. This omission
++  // does not revoke tools or writes already allowed by the host configuration.

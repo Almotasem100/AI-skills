@@ -22,12 +22,13 @@ The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/P
 
 ## LOCAL CHANGE — OpenCode continuation and effective permissions
 
-The OpenCode skill and its brief/dispatch references distinguish the requested plan-agent behavior from enforced
+The OpenCode skill, its brief/dispatch references and the relay's comment-derived `--help` distinguish requested plan-agent behavior from enforced
 containment: the relay omits `--auto` for plan runs but does not revoke host-configured tool permissions.
 The brief/dispatch references also match the existing relay's model/variant handling: resume can inherit a model,
-but an explicit variant on OpenCode 2.x needs an explicit or lane-resolved model. No relay runtime or host settings
-are changed. Inline `LOCAL CHANGE` markers identify the corrected guidance; the patch preserves all five changed
-upstream files (the two link files and these three OpenCode documents).
+but an explicit variant on OpenCode 2.x needs an explicit or lane-resolved model. No relay execution logic or host settings
+are changed; the relay script changes only comments and the help text derived from them. Inline `LOCAL CHANGE`
+markers identify the corrected guidance; the patch preserves all six changed upstream files (the two link files,
+three OpenCode documents and the relay's comment/help correction).
 
 ## Updating again
 

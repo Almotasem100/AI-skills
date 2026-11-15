@@ -2,10 +2,11 @@
 
 ## Active
 
-- The friction-log follow-up branch contains a per-entry [audit](friction-log-review.md), original feedback,
-  targeted contract/skill improvements and corrected OpenCode guidance with vendor provenance. Owner review/merge
-  is pending; local source checks do not establish installed-host behavior. Optional test-author route reassignment
-  remains an owner choice; no fleet, plugin, permission or HDC changes are included.
+- Friction-log refinements cover feedback preservation before cleanup, source-grounded QA/design, concrete
+  verification planning and corrected OpenCode guidance with vendor provenance. The per-entry [audit](friction-log-review.md)
+  retains original feedback, dispositions and evidence limits. Gemini through OpenCode is the owner's selected direction;
+  local lane migration is separate. No fleet, plugin, permission or HDC changes are included, and local source checks
+  do not establish installed-host behavior.
 
 - Instruction trimming and layer separation are complete at source level. Prior source consistency review
   was not installed-host validation.
@@ -22,8 +23,9 @@
 - Refresh the existing installations from merged master and verify parity and a bounded startup check. No new full
   feature trial is required solely for the activation repair or documentation updates. Preserve local fleet settings.
   Host trial evidence belongs to `73675e9` plus the reported loading repair, not every later wording change.
-- Review the friction-log dispositions and decide whether to change the local executable-test author route.
-  Keep the current assignment unless explicitly changed; merge only after owner agreement.
+- Apply the owner's planned local Gemini lane change through OpenCode when ready, preserving the selected model
+  and task permissions. The reported native-subagent test does not verify a later `opencode-delegate` lane; use a
+  bounded first-use check rather than reopening the route decision or rerunning the full benchmark suite.
 - HDC deliverable names are already in its canonical README. Keep project-specific policy there; refresh relevant
   sources when HDC work resumes rather than treating the earlier adoption task as still pending.
 
