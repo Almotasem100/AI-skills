@@ -2,6 +2,10 @@
 
 ## Active
 
+- The EGM mechanics branch contains a source-pinned overlap/modularity audit, focused technical-design/plan review
+  improvements and an optional scoped document-drift capability. It changes no host/provider configuration or
+  execution routing. Review and verification limits are recorded in [the audit](egm-mechanics-audit.md).
+
 - Friction-log refinements cover feedback preservation before cleanup, source-grounded QA/design, concrete
   verification planning and corrected OpenCode guidance with vendor provenance. The per-entry [audit](friction-log-review.md)
   retains original feedback, dispositions and evidence limits. Gemini through OpenCode is the owner's selected direction;
@@ -19,6 +23,9 @@
   than chronological edit history.
 
 ## Next
+
+- Review the EGM mechanics findings and source changes, complete the pending local source-suite checks, then
+  decide merge/install scope. Existing installed copies are not changed by this branch.
 
 - Selective workstation refresh completed from 408d473; source/install parity and relay-help checks passed. 
   Fresh-session loading remains unverified. Local fleet/provider settings were preserved.

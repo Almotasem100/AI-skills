@@ -1,6 +1,6 @@
 ---
 name: plan-review
-description: Read-only critique of a proposed plan or planning record before implementation. Use for review, challenge or sanity-check requests about contradictions, unsupported claims, missing decisions, dependencies, verification gaps and risks; not code/PR review or a multi-reviewer debate.
+description: Read-only critique of a proposed plan, forward technical design or planning record before implementation. Use for review, challenge, comprehension, simplicity or implementation-readiness checks. Return source-grounded contradictions, missing decisions and verification gaps; not code/PR review or a multi-reviewer debate.
 ---
 
 # Plan review
@@ -11,7 +11,9 @@ a clean review is not proof of safety or a new approval gate.
 
 ## Inputs and access
 
-Accept plan text, a file, planning record or existing handoff; no separate implementation brief is required.
+Accept a plan, forward technical design, planning record or existing handoff, plus any requested review focus;
+no separate implementation brief or merged design/plan document is required. Review only applicable aspects of the
+artifact: missing execution steps in a forward design are not automatically a defect.
 Read relevant authorized original requirements, project rules, approved constraints and sources. Intake Q&A/source
 pointers are navigation, not a mandatory technical synthesis: do not treat a sourced concern as an approved
 requirement. If evidence is unavailable or contradictory, state the gap rather than guessing.
@@ -20,10 +22,25 @@ Keep the plan, sources, code, durable documents and scratchpad read-only. Use su
 apply the calling workflow/project's actual boundary requirements. A snapshot stabilizes inputs but does not enforce
 filesystem containment; disclose enforcement limits without claiming isolation or inventing a stronger gate.
 
+## Establish understanding
+
+For a substantial artifact, first reconstruct the proposed behavior, relevant current behavior and important
+scope/constraints in a short paragraph from the target and its declared references. Mark what those materials do
+not explain before consulting separate requirements or decisions; do not silently repair the explanation from
+earlier conversation or a persuasive author summary. Then check the reconstruction against authorized primary
+sources and distinguish a document gap from a mistaken reading. A reconstruction is not approval of the proposal.
+For tiny reviews, the finding itself may demonstrate understanding without another summary.
+
+The caller supplies any fresh review session. Do not claim a blind comprehension check if prior conversation,
+memory or author explanations were available; disclose that limit. A specifically required fresh-context check
+remains incomplete when freshness cannot be established. Fresh conversation does not imply instruction-file or
+filesystem isolation.
+
 ## Review
 
 - Identify the outcome, scope/exclusions, approach, dependencies, sequence/slices, assumptions, open decisions and
-  verification/recovery strategy. Focus on consequential gaps; do not manufacture findings.
+  verification/recovery strategy. Focus on consequential gaps; do not manufacture findings. Use the requested focus
+  or applicable questions in `references/review-lenses.md`, without adding reviewers or a fixed stage sequence.
 - Verify material premises against current primary sources and look for contradictory evidence where warranted.
   A citation is navigation, not proof; distinguish owner-approved requirements from author recommendations.
 - Classify findings as **Observed contradiction**, **Concern**, or **Unsupported assertion**, with the affected
@@ -38,9 +55,18 @@ paths; a tested helper alone is not end-to-end evidence. Apply these questions o
 
 ## Findings and output
 
+Name the reviewed artifact revision or current state, inspected sources and any material unreadable/missing inputs.
+Use stable finding labels when issues carry across rounds; keep author responses and rechecks tied to the same issue.
+Re-read affected current sections before judging a revision instead of trusting old line ranges. Recheck whether
+material corrections introduced new complexity, scope or contradictions; reopen a rejected finding only with new
+evidence, and a supposedly fixed finding when its underlying issue remains or recurs.
+
 Return findings, separate assumptions/open decisions, and material source/runtime verification limits. If no blocker
 is found, say so within the inspected scope. Return findings through the caller to the actual plan author for
-reasoned disposition and any affected-material recheck; standalone review does not require a revision.
+reasoned disposition and any affected-material recheck; standalone review does not require a revision. A missing
+result or material required source makes the affected review incomplete, not clean; report useful partial findings
+without implying full coverage. Stop when material findings are resolved or explicitly dispositioned under the
+calling workflow; no required count of clean rounds and no automatic new approval checkpoint.
 
 Default to returning findings directly. If explicitly requested, write the same findings as Markdown to one designated
 temporary output path, including the reviewed plan path/revision when useful, only when output-only access is safely

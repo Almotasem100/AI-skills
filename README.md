@@ -116,7 +116,8 @@ example call.
 | `task-context` | Optional intake-first record of original inputs, consequential Q&A/decisions, open questions and sourced concerns; not a prescribed technical solution |
 | `create-lld` | Concise forward LLD and required Functional Design from approved inputs; a separate as-built record only when explicitly required |
 | `qa-scenarios` | Observable tester-facing scenarios, not executable tests or QA execution |
-| `plan-review` | Read-only source-grounded plan critique; attributable findings, assumptions and verification limits |
+| `plan-review` | Read-only technical design/plan critique with focused comprehension, simplicity and readiness questions; attributable findings and limits |
+| `document-drift-review` | Optional bounded document/code comparison against approved baselines; separates stale docs, implementation gaps, deferrals and unknowns |
 | `plan-debate` | Focused author/reviewer resolution of consequential technical disagreement; supports explicitly selected multiple reviewers |
 | `security-audit` | Read-only scoped security findings and evidence/requirement gaps; not certification or active penetration testing |
 | `work-closeout` | Explicit reconciliation of completed bounded work and changed durable facts; archival/removal needs its applicable authorization |
@@ -218,7 +219,9 @@ planning work and record resulting decisions/blockers/next action, but it should
 evidence excerpts or review transcripts. Preserve source locators and verify consequential claims against originals
 when available.
 
-- **`plan-review`:** one-shot, read-only critique. It returns prioritized findings with evidence, assumptions,
+- **`plan-review`:** one-shot, read-only critique of a plan or forward technical design. For substantial artifacts,
+  it records a brief reconstruction before checking separate sources; focuses can be selected without new stages.
+  It returns prioritized findings with evidence, assumptions,
   missing decisions, risks, and questions, distinguishing observed contradictions from concerns and unsupported
   assertions. It does not edit the plan or project scratchpad. Ask naturally, e.g. *"Review this plan for contradictions,
   unsupported claims, missing decisions, and risks."* Or invoke it explicitly: *"Use `plan-review` on this
@@ -228,6 +231,17 @@ when available.
   The skill does not choose role allocation, model or transport, implement code or create publication permission.
 
 Neither skill reviews code or PRs; use `two-axis-review`, `debate-review`, or `babysit-pr` for those workflows.
+
+### `document-drift-review`
+**Install:** copy `skills/document-drift-review/` to the selected host's existing skills location and verify discovery.
+For automatic selection, ask *"Check these API docs and this approved design for drift against the selected source."*
+For explicit invocation, say *"Use `document-drift-review` on these files at this revision; review only."*
+Host loading and invocation syntax vary; use its normal skill reload/fresh-session mechanism.
+
+Supply bounded documents/sections and source roots or revisions, plus relevant approved decisions. The skill
+reports claim/source discrepancies and coverage limits without editing either side. It distinguishes current
+behavior from proposals and deferrals; it does not duplicate the documentation-accuracy guard's full checklist.
+No new route, scheduled scan, mandatory report, closeout or publication is implied.
 
 ### `security-audit`
 **Use:** request a security audit of a ticket, plan, LLD, handoff, or scoped implementation. It uses approved project

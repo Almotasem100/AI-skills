@@ -163,7 +163,14 @@ workflow explicitly grants them authority.
   sufficiently settled, write scopes are disjoint and prerequisites permit it; verify the integrated boundary before
   acceptance. A shared contract alone does not make dependent changes independent.
 - An independent reviewer receives requirements/scope, relevant design constraints, the actual diff, verification
-  evidence and known open questions. Do not anchor the reviewer with persuasive author framing.
+  evidence and known open questions. Do not anchor the reviewer with persuasive author framing. For an initial
+  independent assessment, use fresh conversation context where supported and withhold parent transcripts, private
+  reasoning and earlier verdicts; record when that freshness is unverified. This does not exclude required project
+  rules or imply filesystem isolation. Focused rechecks may reuse the same reviewer for continuity.
+- Accept a required review only from an actually completed result with material required inputs inspected.
+  A failed/missing reviewer or unreadable material source leaves that review incomplete, not a clean pass.
+  Check available completion/read evidence, distinguishing observed traces from reported reads; unavailable
+  traces alone do not prove failure or justify changing host permissions. Preserve useful partial findings.
 - Reviewers verify consequential claims rather than checking only that citations exist. Include affected
   documentation and payload examples in the relevant review; check implemented fields against actual serialized
   contracts and label intended changes clearly rather than presenting them as existing behavior.
@@ -278,6 +285,17 @@ alone is insufficient. For response-only tasks, assess the response against the 
 Report implemented/delivered outcomes separately from verified acceptance and remaining blockers. Required
 verification blocked by the environment leaves overall acceptance pending, even if local work is complete; do not
 claim end-to-end success or discard completed work. Preserve evidence and apply **Failure and recovery**.
+
+## Replacing a capability
+
+Replace a skill or review method by its required outcome, not a matching name or philosophy. At the calling
+boundary, check its accepted inputs, output/findings shape, mutation scope, authority, prerequisites and evidence.
+Map compatible outputs into the existing working record; keep author ownership, required independent review
+and actual workflow prerequisites. The execution policy supplies participants and transport separately.
+A package's extra stages, files, approvals or installation requirements do not become project policy by import.
+Do not claim an unmodified package ran if its required stages or gates were omitted.
+If required behavior cannot be preserved through a small boundary adaptation, record the concrete incompatibility
+and pause only the dependent replacement rather than redesigning the whole workflow.
 
 ## Generic versus project-specific policy
 

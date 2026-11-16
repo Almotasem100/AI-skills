@@ -30,7 +30,9 @@ it also builds a glossary as you answer. Choose the project-approved working loc
 > "Write the LLD for APP-123, 'Navbar', from these requirements."
 
 ### 🧭 Planning before implementation
-**`plan-review`:** a one-shot, read-only critique of a plan, dedicated planning record, or existing handoff.
+**`plan-review`:** a one-shot, read-only critique of a forward technical design, plan, planning record or handoff.
+For substantial inputs it first reconstructs the written approach, then checks sources. Ask for a comprehension,
+simplicity or readiness focus when useful; these do not add mandatory phases.
 It returns prioritized findings with source evidence, assumptions, missing decisions, risks, and questions; it
 does not edit the input.
 > "Review this plan for contradictions, unsupported claims, missing decisions, and risks"
@@ -52,6 +54,11 @@ or perform active testing.
 
 **Guards: a second look** after the code is written, at the code, the tests or the docs.
 > "Run clean-code-guard on this change"
+
+**`document-drift-review`: an optional bounded document/code comparison.** Supply selected documents and source
+revisions. It separates stale current-behavior claims from approved future work, deferrals and missing evidence.
+It reports discrepancies without changing code/docs or triggering closeout.
+> "Use document-drift-review on these API docs and approved design against this source revision; review only."
 
 ### ✅ Before you push
 **`two-axis-review`: check your work two ways.** Against your coding standards *and* against the spec (LLD or
@@ -143,7 +150,8 @@ the old directories.
 | Intake record, when useful | `task-context` | Preserves original-source pointers, approved scope, consequential grilling Q&A/decisions and open questions; narrow sourced concerns remain leads, not approved solutions | Mine |
 | Design | `create-lld` | Writes concise feature-level Functional Design / forward LLD artifacts; project naming may call the forward LLD Technical Design; separate as-built record only when required | Mine |
 | QA scenario design | `qa-scenarios` | Turns approved feature behavior into traceable tester-facing scenarios before implementation; may map scenarios to delivery slices; does not execute tests | Mine |
-| Before implementation | `plan-review` | One-shot, read-only critique of a proposed plan, planning record, or handoff | Mine |
+| Before implementation | `plan-review` | Read-only technical design/plan critique with focused comprehension, simplicity and readiness checks | Mine |
+| When document drift is suspected | `document-drift-review` | Bounded approved-intent/current-source comparison; report-only, not an automatic stage | Mine |
 | Before implementation | `plan-debate` | Evidence-backed challenge/response in one temporary debate record; compact project scratchpad records only resulting execution state | Mine |
 | Before or during implementation | `security-audit` | Read-only, evidence-citing review of relevant security risks and gaps; not certification or penetration testing | Mine |
 | Implement | `delegate-setup` + `*-delegate` relays | Hands a coding task to another CLI (Codex, Antigravity, OpenCode…) and reviews its diff; never commits | Tech lead (copied) |
@@ -219,6 +227,7 @@ $folders = @(
   "skills\create-lld",
   "skills\qa-scenarios",
   "skills\plan-review",
+  "skills\document-drift-review",
   "skills\security-audit",
   "skills\work-closeout",
   "vendor\amElnagdy\review-skills\skills\babysit-pr",
