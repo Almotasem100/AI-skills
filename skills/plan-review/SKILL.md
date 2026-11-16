@@ -62,8 +62,8 @@ material corrections introduced new complexity, scope or contradictions; reopen 
 evidence, and a supposedly fixed finding when its underlying issue remains or recurs.
 
 Return findings, separate assumptions/open decisions, and material source/runtime verification limits. If no blocker
-is found, say so within the inspected scope. Return findings through the caller to the actual plan author for
-reasoned disposition and any affected-material recheck; standalone review does not require a revision. A missing
+is found, say so within the inspected scope. Return findings through the caller to the actual artifact author
+(the plan author for a plan) for reasoned disposition and any affected-material recheck; standalone review does not require a revision. A missing
 result or material required source makes the affected review incomplete, not clean; report useful partial findings
 without implying full coverage. Stop when material findings are resolved or explicitly dispositioned under the
 calling workflow; no required count of clean rounds and no automatic new approval checkpoint.

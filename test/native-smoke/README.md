@@ -193,6 +193,12 @@ and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.m
 The full-feature trial is separate from the small smoke cases above. Its fresh session avoids inheriting explicit
 routing guidance from a diagnostic or hypothetical walkthrough.
 
+## Focused review-method exercises
+
+Use [review-mechanics.md](review-mechanics.md) for bounded comprehension, drift, correction-continuity and
+capability-replacement cases. Keep its evaluator checks out of the worker's prompt. Hosted exercises do not
+establish installed-host loading, actual source-suite results or filesystem isolation.
+
 ## Checks for the runner itself
 
 ```sh

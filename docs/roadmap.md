@@ -4,7 +4,8 @@
 
 - The EGM mechanics branch contains a source-pinned overlap/modularity audit, focused technical-design/plan review
   improvements and an optional scoped document-drift capability. It changes no host/provider configuration or
-  execution routing. Review and verification limits are recorded in [the audit](egm-mechanics-audit.md).
+  execution routing. Two hosted synthetic instruction exercises returned the expected material findings; the
+  Node suites and installed-host checks are still unrun. Evidence and limits are in [the audit](egm-mechanics-audit.md).
 
 - Friction-log refinements cover feedback preservation before cleanup, source-grounded QA/design, concrete
   verification planning and corrected OpenCode guidance with vendor provenance. The per-entry [audit](friction-log-review.md)

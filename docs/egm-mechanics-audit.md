@@ -233,6 +233,39 @@ multi-stage review engine.
 
 ## Validation and remaining limits
 
-Source-content checks and hosted forward checks pending. Replace this paragraph with actual results before the
-branch is presented for review. Node source suites, native host execution and installed-file parity remain unrun
-because this session has no executor. Do not treat previous branch test totals as current validation.
+### Source-content checks actually performed
+
+In hosted JavaScript orchestration, checked candidate skill frontmatter/name-to-folder consistency, local
+Markdown link resolution against the candidate repository tree, the shared contract's execution-vocabulary
+separation, new-skill installation-list presence, no new trailing whitespace, preservation of all nine default
+outcomes and unchanged global/profile/catalog/vendor/overlay/pin surfaces. These are content checks, not Node
+repository tests or native skill-loading checks.
+
+### Hosted instruction exercises
+
+Two fresh-context workers were given only the exact candidate skill URL and natural task/raw synthetic materials,
+not this audit, evaluator rubric, intended findings or parent conversation. Candidate:
+`ad722bae7ef6a421ad982873542ceb72f2bed058`. Their results were inspected against
+[test/native-smoke/review-mechanics.md](../test/native-smoke/review-mechanics.md).
+
+- **Task A, plan/design review:** the worker reconstructed the proposed archive behavior, identified the unspecified
+  reference policy and unverified archive/restore contract, did not infer hard deletion from DELETE, and did not
+  demand an exhaustive implementation plan in a forward design. It distinguished concerns/unsupported assertions
+  from observed contradictions and returned incomplete readiness with source limits.
+- **Task B, document drift:** the worker identified stale pagination and client naming against the approved decision,
+  respected proposed/deferred export, and left server authorization incomplete without inferring enforcement or a
+  vulnerability from the client. It returned useful partial findings with overall incomplete comparison.
+- Workers reported reading the exact skills (and the plan-review lens reference) through GitHub. Parent-visible
+  results verify returned content, not a full independent trace of every child read. No child was asked to edit,
+  execute application tests, install anything or create another worker.
+- These are synthetic, hosted instruction applications, not two different harness installations or a comparative
+  quality benchmark against EGM. Cases C/D are retained evaluator tasks; no native execution is claimed.
+- Final wording corrects findings routing to the actual artifact author for designs and keeps any optional
+  documentation-accuracy guard within the read-only boundary. No executable code changed.
+
+### Still unrun
+
+The Node source suites (including `node --test test/workflow-separation.test.mjs`), native host execution,
+installed-file parity and complete EGM-versus-current-workflow feature comparison remain unrun because this
+session has no executor. No old 47/47 total is assigned to this branch. Keep these limits visible at review;
+this source branch is not a verified workstation installation or an authorized merge.
