@@ -4,8 +4,9 @@
 
 - The EGM mechanics branch contains a source-pinned overlap/modularity audit, focused technical-design/plan review
   improvements and an optional scoped document-drift capability. It changes no host/provider configuration or
-  execution routing. Two hosted synthetic instruction exercises returned the expected material findings; the
-  Node suites and installed-host checks are still unrun. Evidence and limits are in [the audit](egm-mechanics-audit.md).
+  execution routing. Four independent reviewers completed source review and debate without substantive blockers;
+  the current Node suites passed 47/47. Two hosted synthetic exercises returned the expected material findings.
+  Installed-host behavior remains unverified; evidence and limits are in [the audit](egm-mechanics-audit.md).
 
 - Friction-log refinements cover feedback preservation before cleanup, source-grounded QA/design, concrete
   verification planning and corrected OpenCode guidance with vendor provenance. The per-entry [audit](friction-log-review.md)
@@ -25,8 +26,9 @@
 
 ## Next
 
-- Review the EGM mechanics findings and source changes, complete the pending local source-suite checks, then
-  decide merge/install scope. Existing installed copies are not changed by this branch.
+- After pulling the EGM improvements, refresh copied `plan-review/` (including references), install the optional
+  `document-drift-review/` skill in active skill locations, and refresh the installed workflow contract. Use normal
+  reload/fresh sessions and verify discovery. No host/provider configuration change or EGM installation is needed.
 
 - Selective workstation refresh completed from 408d473; source/install parity and relay-help checks passed. 
   Fresh-session loading remains unverified. Local fleet/provider settings were preserved.

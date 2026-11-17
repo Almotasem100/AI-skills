@@ -3,8 +3,9 @@
 ## Scope, authority and evidence
 
 The owner authorized a new branch from current master, the proposed comprehension/scoped-drift additions, and a
-mechanism-level audit of overlapping behavior. This authorizes compatible source improvements, not installation,
-provider changes, a wholesale EGM migration, or merge. Branch: `improve/egm-review-mechanics`.
+mechanism-level audit of overlapping behavior. The owner also authorized a four-reviewer debate, compatible
+corrections and merge once ready. Installation, provider changes and a wholesale EGM migration remain outside
+this task. Branch: `improve/egm-review-mechanics`.
 
 Inspected baselines:
 - AI-skills: `a2d11db98cb0df40809ba7ac3c1b55413143a092`.
@@ -18,10 +19,9 @@ does not establish that every mechanism is better or that a claimed host behavio
 No third-party code, plugin or persona was installed or copied into vendor. The additions are first-party
 instructions informed by the compared mechanisms, not an EGM runtime port.
 
-The execution host is unavailable in this session. Node/Python/repository suites, filesystem install checks,
-native OpenCode trials and company-project acceptance cannot be executed here. Hosted source-content checks and
-bounded fresh-agent instruction exercises are recorded separately below. Earlier 47/47 results do not validate
-this branch.
+The execution host is available for final validation. The repository Node suites passed 47/47 on this branch;
+that is separate from hosted instruction exercises, installed-file checks, native OpenCode trials and
+company-project acceptance. Those evidence classes and remaining limits are recorded below.
 
 ## Sources inspected
 
@@ -72,6 +72,8 @@ participant/session alone is not evidence of blind review.
 
 EGM `docs/codex.md` explicitly requests fresh parent-turn context, selected source paths, no private reasoning,
 and actual required reads/completion. The guide separately notes inherited instructions, filesystem and memory.
+EGM requires a fresh subagent and stops when that capability is unavailable; our portable default uses supported
+fresh context and discloses limits, with a specifically required blind check incomplete without established freshness.
 **Decision:** make initial independent-review context selection explicit in the shared contract. Keep supported
 same-reviewer correction rechecks; do not recreate all reviewers on every minor edit. Report freshness as
 unverified when it cannot be established; a specifically required blind check remains incomplete.
@@ -263,9 +265,33 @@ not this audit, evaluator rubric, intended findings or parent conversation. Cand
 - Final wording corrects findings routing to the actual artifact author for designs and keeps any optional
   documentation-accuracy guard within the read-only boundary. No executable code changed.
 
-### Still unrun
+### Final source validation and independent debate
 
-The Node source suites (including `node --test test/workflow-separation.test.mjs`), native host execution,
-installed-file parity and complete EGM-versus-current-workflow feature comparison remain unrun because this
-session has no executor. No old 47/47 total is assigned to this branch. Keep these limits visible at review;
-this source branch is not a verified workstation installation or an authorized merge.
+Ran `node --test test/*.test.mjs test/native-smoke/*.test.mjs` in the branch checkout: **47 passed, 0 failed,
+0 skipped**. `git diff --check` passed. These are current source-suite results, not inherited historical totals.
+
+One SOL 6.1 and three Luna reviewers independently inspected the branch, repository rules, pinned EGM originals
+and original article before exchanging dispositions. All four returned completed reviews with no substantive
+source blocker. Their source access is supported by returned review evidence and reported reads, not a complete
+independent trace of every tool action. The following optional suggestions were explicitly dispositioned:
+
+| Question | Disposition and reason |
+| --- | --- |
+| Require finding IDs on every initial one-shot report? | Retain conditional stable labels and identity continuity across rounds; compulsory initial bookkeeping adds no demonstrated benefit for tiny reviews. Mechanics reviewer agreed. |
+| Add another rejected-alternatives instruction? | Existing consequential rationale, author dispositions and working-evidence rules cover it; SOL confirmed against current sources. No extra recipient-document section. |
+| Import combined FD/LLD/plan, zero-choice readiness, fixed clean rounds or section approval gates? | Preserve existing artifact audiences, routine coding discretion and evidence-backed convergence; reviewers confirmed these are intentional differences, not missing equivalent mechanics. |
+| Install the experimental EGM adapter? | No; its pinned V1 host/configuration boundary is separate from these portable method improvements. |
+
+Reviewers agreed the remaining correction was evidence/status wording; no additional process or runtime was
+warranted. The audit now explicitly distinguishes EGM's strict fresh-subagent requirement from our portable default.
+
+### Remaining limits and workstation refresh
+
+Native host execution, installed-file parity, manual cases C/D and a controlled complete EGM-versus-current-workflow
+feature comparison remain unrun. Source readiness does not establish installed behavior or comparative quality.
+
+The owner's previous installation uses copied skills. After pulling merged master, refresh the entire
+`skills/plan-review/` folder (including `references/`), add `skills/document-drift-review/` in the active skill
+locations, and refresh the installed `orchestration-contract.md` companion. Preserve local customizations and
+use normal skill reload/fresh-session mechanisms. No plugin, provider, permissions, fleet, relay, global template
+or execution-profile setting changed; no EGM installation or new runtime dependency is required.
