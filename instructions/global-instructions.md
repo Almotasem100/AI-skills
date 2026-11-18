@@ -15,3 +15,7 @@
 - Keep current decisions and resume state in the project's existing working records when useful. Replace superseded
   guidance rather than appending competing rules. Preserve working artifacts for owner inspection; completion alone
   is not permission to archive or delete them.
+- Prefer the smallest change that meets stated acceptance criteria; do not add caches, protocols, layers, interfaces,
+  wrappers or modes for hypothetical needs. Use framework/library capabilities before writing equivalents.
+- Every design or plan you propose includes the simplest alternative with estimated file/line counts; that is the default.
+- Delete code made obsolete by your change. Report files and abstractions added at completion.
