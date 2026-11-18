@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // Builds the git context for a PR description: branch, base, commits, per-file diffs, signals.
-// Deterministic: no model calls, no network, never writes inside the repository.
+// Deterministic: no model calls or network. Output goes to stdout or the requested path.
 //
 // Usage: node context.mjs [--base <branch>] [--budget <chars>] [--config <file>] [--out <file>]
 // Run it from anywhere inside the repository. Prints JSON (or writes it to --out).
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { join, basename } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, basename, dirname } from 'node:path';
 
 const DEFAULTS = {
   baseBranches: { story: 'develop', bugfix: 'develop', hotfix: 'master', release: 'master' },
@@ -315,7 +315,12 @@ function main() {
   };
 
   const json = JSON.stringify(context, null, 2);
-  if (args.out) writeFileSync(args.out, json); else process.stdout.write(json + '\n');
+  if (args.out) {
+    mkdirSync(dirname(args.out), { recursive: true });
+    writeFileSync(args.out, json);
+  } else {
+    process.stdout.write(json + '\n');
+  }
 }
 
 try {

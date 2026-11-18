@@ -2,6 +2,11 @@
 
 ## Active
 
+- The verification baseline update ties consequential acceptance evidence to approved inputs and the
+  tested candidate. Follow-up from [the friction log](friction-log.md) adds regression proof, realistic UI checks,
+  owner walkthrough planning and more visible progress on long runs. PR context output supports new directories
+  and blocked publication leaves a complete Markdown handoff.
+
 - The EGM mechanics branch contains a source-pinned overlap/modularity audit, focused technical-design/plan review
   improvements and an optional scoped document-drift capability. It changes no host/provider configuration or
   execution routing. Four independent reviewers completed source review and debate without substantive blockers;

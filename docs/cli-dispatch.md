@@ -34,6 +34,12 @@ and report authored versus executed separately. Do not silently switch models or
 - Route resolution is not dispatch. A configured route is not proof of live provider availability.
 - Copy continuation IDs from that assignment's result/events, not memory. Preserve old attempts by using a new
   output directory. A failed transport can leave usable outputs; process status and task acceptance are separate.
+- After a terminal launch timeout, inspect the existing process, session or output before starting another run.
+- In OpenCode, a model-provider connection banner such as `ECONNRESET … retrying` describes the host's
+  provider retry. Check terminal and test results separately. The session may lack access to UI-only banners.
+- With Windows PowerShell 5, read UTF-8 artifacts with `Get-Content -Encoding UTF8`. For native commands,
+  check `$LASTEXITCODE` immediately and confirm the expected side effect if the reported status and output conflict.
+  Native commands can write progress to stderr; confirm state before retrying a push or deployment.
 
 For quota, unknown worker status, fallback or equivalent native recovery, apply the profile's recovery policy.
 Do not change authentication, permission settings, fleet mappings or the retired execution.json as a diagnostic fix.

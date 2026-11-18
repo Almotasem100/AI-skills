@@ -57,6 +57,11 @@ test('real git context leaves UI screenshots optional and carries explicit proje
   git('add','.');git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-m','add panel');
   const invoke=()=>{const r=spawnSync(process.execPath,[join(skill,'scripts/context.mjs'),'--base','main'],{cwd:dir,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return JSON.parse(r.stdout);};
   const c=invoke();assert.ok(c.signals.includes('ui'));assert.ok(c.requiredSections.includes('testing'));assert.ok(!c.requiredSections.includes('screenshots'));assert.equal(c.titleFormat,'ticket-first');
+  const out = join(dir, 'new', 'nested', 'context.json');
+  const result = spawnSync(process.execPath, [join(skill, 'scripts/context.mjs'), '--base', 'main', '--out', out], { cwd: dir, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout, '');
+  assert.deepEqual(JSON.parse(readFileSync(out, 'utf8')), c);
   writeFileSync(join(dir,'.describe-pr.json'),JSON.stringify({titleFormat:'conventional'}));assert.equal(invoke().titleFormat,'conventional');
  } finally {rmSync(dir,{recursive:true,force:true});}
 });

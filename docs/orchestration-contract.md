@@ -95,6 +95,10 @@ Reuse existing project artifacts. These are distinct purposes, not mandatory sep
 | Review evidence | Concise Markdown record of substantive review findings, attributed author responses/dispositions and material rechecks. The caller saves returned findings if a reviewer's boundary prevents writes. |
 | Scratchpad / working state | Current objective/item, stage, completed work, material decisions, blockers, verification state and next action; links to detailed artifacts. |
 
+For long-running work, tell the owner what is underway and the next milestone. Give a rough duration when
+supported by past runs or a known bound. Update the owner during long waits and when work is delayed or
+blocked. Distinguish confirmed progress from waiting for a result.
+
 Original sources remain authoritative. Add a document only for a distinct audience, required project deliverable
 or genuine continuity need. One record may serve compatible purposes; keep substantive reviews/plans accessible
 without dumping full transcripts into compact resume state. Update state at meaningful transitions.
@@ -115,7 +119,9 @@ Order independently reviewable slices by real prerequisites, with an actionable 
 verification linked to applicable requirements and QA scenarios. Include affected maintained documentation and
 generated inventories when their owned facts change. Name concrete verification commands/options and their
 prerequisites; inspect wrapper defaults and distinguish read-only probes from fixture/data mutations rather than
-assuming a command is read-only from its name. Surface material assumptions and owner decisions;
+assuming a command is read-only from its name. For new or changed external service dependencies, identify the
+required capabilities and confirm their availability in each target environment using authorized evidence.
+Mark unverified environments and who can confirm them. Surface material assumptions and owner decisions;
 do not turn routine reversible coding choices into approval gates or duplicate whole upstream artifacts.
 
 Distinguish **ready to implement** (a sufficient blueprint with required decisions settled and execution authorized), **decision pending** (a sufficient blueprint exists, but a material approval is still required), and **blocked** (missing consequential requirements, evidence or design decisions prevent a dependable blueprint). A plan may explicitly introduce justified new components or architecture; the implementer must not invent unapproved material decisions. Optional refinements and ordinary implementation details are not blockers. When planning or review reveals a genuine material gap, return to targeted clarification/grilling, reconcile only affected context/design/plan artifacts, then resume. Do not automatically rerun the whole feature workflow or reopen settled choices without new material evidence.
@@ -175,7 +181,9 @@ workflow explicitly grants them authority.
   documentation and payload examples in the relevant review; check implemented fields against actual serialized
   contracts and label intended changes clearly rather than presenting them as existing behavior.
 - The actual plan author owns revisions and evidence-backed findings disposition: accept/revise, reject with
-  evidence, or leave open with the needed check/decision. Reviewers return findings and recheck affected material
+  evidence, or leave open with the needed check/decision. When a usability finding demonstrates a material
+  consequence of an approved behavior, bring the evidence, options and recommendation to the owner while
+  keeping the current decision in effect. Reviewers return findings and recheck affected material
   revisions; they do not direct mutations. Preserve the record defined in **Context and continuity**.
 - Start focused `plan-debate` at the plan author's first reasoned dispute of a consequential technical finding,
   or explicit request. Reuse the existing plan, finding and participants; no second reviewer refusal, extra
@@ -189,7 +197,10 @@ workflow explicitly grants them authority.
   follow-up feedback; do not implement it automatically or make it a completion gate. If the reviewer rejects
   the author's smaller correction, start a focused evidence-backed debate between those participants over the
   fix. Implement an agreed remedy within existing authority without extra permission, then verify and recheck
-  affected work and report the agreement/correction using the normal review record. Stop exchanges that add no evidence; unresolved consequential disputes or remedies outside existing
+  affected work and report the agreement/correction using the normal review record. Batch related corrections
+  when they share verification. For an agreed routine remedy, inspect the diff and targeted check before closing
+  the finding. Request a focused reviewer recheck for material revisions, uncertain fixes and applicable project
+  gates. Stop exchanges that add no evidence; unresolved consequential disputes or remedies outside existing
   authority return to the owner, pausing dependent work only. Code-fix debate does not automatically invoke the
   planning-only plan-debate skill; material plan changes also follow the planning revision/debate rules.
 - Inspect code diffs, task scope, verification evidence and review disposition, raising obvious issues for author correction. This inspection complements rather than replaces required independent technical review. Commit ownership does not grant publication, merge or deployment permission; project authorization controls those effects.
@@ -200,6 +211,11 @@ workflow explicitly grants them authority.
 ### Risk-based design and behavioral review
 
 For consequential changed behavior, reviewers inspect the *reachable* entry point and its path through the relevant owners, rather than inferring acceptance from a correctly behaving helper or a test that calls an unbound method. Select representative normal, failure, retry and navigation/identity-transition paths according to actual risk; trace UI control → handler → state/operation → transport/response where applicable, or HTTP/task entry → domain effect → persistence/side effects. Verify that tests exercise the claimed boundary; tests of an internal method alone do not establish that a visible control or registered endpoint reaches it.
+
+For material UI changes, compare the running layout and interactions with the approved design reference when
+available. Exercise representative state transitions: for changed multi-value behavior, use at least two distinct
+values and check duplicate handling where supported. For timing-sensitive open, close or reset behavior, run a
+representative case with normal transitions enabled. Record any runtime coverage gaps.
 
 Challenge responsibility boundaries using evidence of current change cost, implicit coupling or duplicated decisions: state what each boundary protects, compare a plausible smaller design and the costs of merging or splitting it. Separate useful complexity (e.g. integrity, authorization, lifetime) from avoidable indirection. A repeated implementation is a candidate for local simplification, not automatic proof that a generic framework is needed.
 
@@ -256,7 +272,8 @@ The feature plan should record slice dependencies so branch selection is mechani
 
 Choose checks according to changed behavior, risk and project requirements. Write relevant tests with the change;
 batch proportionate tests/builds/review checks around coherent work. Earlier targeted checks may resolve a concrete
-uncertainty; a cosmetic edit does not justify unrelated full-suite or API-regression runs. After a correction,
+uncertainty; a cosmetic edit does not justify unrelated full-suite or API-regression runs. When a full check is
+needed, schedule it after the last relevant edit and use targeted checks during iteration. After a correction,
 recheck affected behavior; broaden for new risk, failures or a required project gate. Reuse current applicable
 evidence rather than repeating a check solely because another participant received it.
 Preserve existing line endings and formatting outside the intended change; investigate unexpected diff churn before
@@ -264,11 +281,25 @@ accepting the patch. When a check is intermittent, retain failed attempts, inves
 repeat runs targeted to that failure. Report run counts, failures/skips and remaining uncertainty; a later green run
 does not erase the earlier failure. Do not impose a fixed repeat count on every test or duplicate every worker run.
 
+For a new or revised regression test, demonstrate that the same test fails for the expected behavior on the
+unfixed implementation and passes with the correction, where practical. Record the relevant failure and pass,
+or explain why the comparison was unavailable and what evidence supports the fix.
+
+For consequential acceptance checks, identify the approved requirements and applicable checks or review rules
+from a trusted baseline, such as the target branch or an approved specification. Review material changes to
+assertions, fixtures, expected results or review rules against that baseline before relying on them for acceptance.
+Record the baseline and tested commit, build or working-tree state in the existing verification evidence.
+Recheck affected claims when the candidate or acceptance inputs change materially. After a branch rewrite,
+reuse checks when the verified tree and relevant inputs are unchanged and the checks are independent of
+commit, branch and environment changes.
+
 For ordinary end-to-end delivery, complete local checks/review/corrections before consolidated authorized deployment
 and browser/API verification. Do not deploy after every edit or redeploy unaffected services by habit. Redeploy
 when a later fix changes deployed behavior that needs verification. An explicit deployment-only request follows its
 own scope. Report local, deployed browser, authenticated API and manual/QA results separately, including missing
-login/fixture prerequisites; none implies another.
+login/fixture prerequisites; none implies another. For substantial UI work where hands-on owner feedback can
+affect acceptance, plan a focused walkthrough on an authorized build before final PR preparation. Follow the
+project's policy for when that walkthrough is required.
 
 Use applicable available skills/quality guards and verify actual invocation; names and tools are replaceable
 capabilities, not fixed workflow stages. Review relevant production-code/test quality, project conventions and actual

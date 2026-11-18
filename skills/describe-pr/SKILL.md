@@ -82,7 +82,9 @@ All optional. Use whatever the user gives; ask only for what's missing after che
    - With `gh` installed and authenticated (for GitHub Enterprise, `GH_HOST` set):
      - new PR: `gh pr create --base <base> --head <branch> --title "<title>" --body-file <temp>/describe-pr-body.md`
      - existing PR: `gh pr edit <number> --title "<title>" --body-file <temp>/describe-pr-body.md`
-   - Without `gh`: give the user the title and body to paste.
+   - If authenticated publication is unavailable, give the user the title and the path to the full rendered
+     Markdown body for manual submission. If the project has an approved working area for handoff artifacts,
+     save the final body there. Use the PR form's body field for the full Markdown.
    - Never merge, enable auto-merge, or add reviewers/labels unless the current request/project authorization explicitly covers those separate effects.
 
 ## Updating an existing PR
