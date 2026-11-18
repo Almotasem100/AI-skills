@@ -5,7 +5,7 @@
 // Usage: node render.mjs --context <context.json> --draft <draft.json> [--body-out <file>] [--strict]
 // Prints JSON: { title, body, needsInput, warnings }. With --strict, exits 2 if anything is [NEEDS INPUT].
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -117,7 +117,11 @@ function main() {
   if (concerns.length > 2) warnings.push(`This PR appears to bundle ${concerns.length} unrelated concerns (${concerns.join(', ')}). Consider splitting it.`);
   const needsInput = (title + body).split(NEEDS_INPUT).length - 1;
 
-  if (args['body-out']) writeFileSync(args['body-out'], body);
+  const bodyOut = args['body-out'];
+  if (bodyOut) {
+    mkdirSync(dirname(bodyOut), { recursive: true });
+    writeFileSync(bodyOut, body);
+  }
   process.stdout.write(JSON.stringify({ title, body, needsInput, warnings }, null, 2) + '\n');
   if (args.strict && needsInput > 0) process.exit(2);
 }

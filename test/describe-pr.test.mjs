@@ -22,6 +22,23 @@ test('ticket-first title is exact and optional body metadata/evidence is absent 
  assert.match(r.result.body,/## Purpose/);assert.match(r.result.body,/## Verification/);
  assert.doesNotMatch(r.result.body,/\*\*Ticket:|\*\*Design:|## Screenshots|## Review considerations|none|\[NEEDS INPUT\]/);
 });
+test('renderer saves the exact Markdown body in a new nested directory', () => {
+ const dir = mkdtempSync(join(tmpdir(), 'pr-render-output-'));
+ try {
+  const contextPath = join(dir, 'context.json');
+  const draftPath = join(dir, 'draft.json');
+  const outputPath = join(dir, 'new', 'nested', 'body.md');
+  writeFileSync(contextPath, JSON.stringify(context));
+  writeFileSync(draftPath, JSON.stringify(draft));
+  const result = spawnSync(process.execPath, [
+   join(skill, 'scripts/render.mjs'), '--context', contextPath, '--draft', draftPath, '--body-out', outputPath,
+  ], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(readFileSync(outputPath, 'utf8'), JSON.parse(result.stdout).body);
+ } finally {
+  rmSync(dir, { recursive: true, force: true });
+ }
+});
 test('useful design reference, risk bullets and review considerations survive rendering',()=>{
  const doc=structuredClone(draft);doc.fields={designDoc:'[eBBs Table — Technical Design](https://example.invalid/design)'};
  doc.sections.impactAndRisk={text:'- Requires the companion backend.\n- Older clients use a different contract.'};

@@ -78,19 +78,22 @@ All optional. Use whatever the user gives; ask only for what's missing after che
 
 7. **Publish only when the current authorization explicitly covers PR publication.** If the user already asked to take the work through PR/open the PR, do not ask again merely because this stage was reached. Otherwise ask before the outward action.
    - If `needsInput` is above 0, say which parts are still missing and get explicit confirmation first.
-   - The branch must be on the remote. Push it only when the current authorization covers the push needed for the requested PR; otherwise ask before pushing.
-   - With `gh` installed and authenticated (for GitHub Enterprise, `GH_HOST` set):
+   - Check that `gh` can access the intended repository with authentication before any prerequisite push
+     (for GitHub Enterprise, set `GH_HOST`). If publication is available and authorized, push the branch only
+     if needed and covered by the current authorization, then use:
      - new PR: `gh pr create --base <base> --head <branch> --title "<title>" --body-file <temp>/describe-pr-body.md`
      - existing PR: `gh pr edit <number> --title "<title>" --body-file <temp>/describe-pr-body.md`
-   - If authenticated publication is unavailable, give the user the title and the path to the full rendered
-     Markdown body for manual submission. If the project has an approved working area for handoff artifacts,
-     save the final body there. Use the PR form's body field for the full Markdown.
+   - If authenticated publication is unavailable, hand off the title and exact rendered Markdown body shown
+     in step 5 for manual submission. Use the PR form's body field for the full Markdown. Optionally save a
+     copy in an approved handoff location. The manual handoff requires no push.
    - Never merge, enable auto-merge, or add reviewers/labels unless the current request/project authorization explicitly covers those separate effects.
 
 ## Updating an existing PR
-Run the same steps. First read the PR's current body (`gh pr view --json title,body`) and keep what the
-developer wrote (why, testing, rollback, reviewer notes) unless the new changes make it wrong; refresh the
-rest from the new context and ask only about what changed.
+Before drafting an update, obtain the current PR body from the user or an authorized readable source
+(`gh pr view --json title,body` when authenticated). Preserve the developer's rationale, testing, rollback
+and reviewer notes where accurate, then refresh the rest from the new context. Ask only about what changed.
+If the current body is unavailable, label the output a draft for manual reconciliation and leave the existing PR
+untouched until the current body can be checked.
 
 ## Files
 - `scripts/context.mjs`: deterministic git context — branch parsing, base branch, commits, stats, per-file

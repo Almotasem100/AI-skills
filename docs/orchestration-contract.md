@@ -215,7 +215,9 @@ For consequential changed behavior, reviewers inspect the *reachable* entry poin
 For material UI changes, compare the running layout and interactions with the approved design reference when
 available. Exercise representative state transitions: for changed multi-value behavior, use at least two distinct
 values and check duplicate handling where supported. For timing-sensitive open, close or reset behavior, run a
-representative case with normal transitions enabled. Record any runtime coverage gaps.
+representative case with normal transitions enabled. The authorized executor gathers evidence that requires
+mutation or elevated access. Reviewers inspect that evidence and may perform permitted read-only checks.
+Record any runtime coverage gaps.
 
 Challenge responsibility boundaries using evidence of current change cost, implicit coupling or duplicated decisions: state what each boundary protects, compare a plausible smaller design and the costs of merging or splitting it. Separate useful complexity (e.g. integrity, authorization, lifetime) from avoidable indirection. A repeated implementation is a candidate for local simplification, not automatic proof that a generic framework is needed.
 
@@ -281,14 +283,17 @@ accepting the patch. When a check is intermittent, retain failed attempts, inves
 repeat runs targeted to that failure. Report run counts, failures/skips and remaining uncertainty; a later green run
 does not erase the earlier failure. Do not impose a fixed repeat count on every test or duplicate every worker run.
 
-For a new or revised regression test, demonstrate that the same test fails for the expected behavior on the
-unfixed implementation and passes with the correction, where practical. Record the relevant failure and pass,
-or explain why the comparison was unavailable and what evidence supports the fix.
+For a new or revised regression test, where practical, run the same test with comparable inputs, fixtures
+and configuration on the unfixed and corrected implementations. Confirm the unfixed run reaches the behavior
+and fails for the expected reason, then confirm it passes with the correction. Build or setup failures leave
+this proof incomplete. Record the failure and pass, or explain the gap and what evidence supports the fix.
 
 For consequential acceptance checks, identify the approved requirements and applicable checks or review rules
-from a trusted baseline, such as the target branch or an approved specification. Review material changes to
-assertions, fixtures, expected results or review rules against that baseline before relying on them for acceptance.
-Record the baseline and tested commit, build or working-tree state in the existing verification evidence.
+from a separately identified baseline, such as the target commit or approved specification revision. Review
+material changes to assertions, fixtures, expected results or review rules against that baseline and preserve
+approved criteria and required coverage unless changed under **Authorization and checkpoints**.
+Record the baseline revision and tested commit or build, including relevant uncommitted changes when testing
+a working tree, in the existing verification evidence.
 Recheck affected claims when the candidate or acceptance inputs change materially. After a branch rewrite,
 reuse checks when the verified tree and relevant inputs are unchanged and the checks are independent of
 commit, branch and environment changes.
