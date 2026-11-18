@@ -7,6 +7,7 @@
 | Copied | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
 | Local changes | **None.** |
+| Installed subset | `clean-code-guard`, `test-guard`, `docs-guard` |
 
 ## Reviewed before copying (2026-09-25)
 Instructions only: no scripts, no hooks, nothing executed. The `agents/openai.yaml` files are metadata for
@@ -16,7 +17,7 @@ Codex.
 - `clean-code-guard`, `test-guard`, `docs-guard`: second-pass reviews after implementation.
 - Not used: `wp-guard`, `woo-guard` (WordPress / WooCommerce). They stay in the copy so upstream diffs apply
   cleanly, but are not installed.
-- **On ported legacy code** (e.g. the HDC migration): record the guard's findings, don't fix them in the same
+- **On ported legacy code** (e.g. a legacy migration): record the guard's findings, don't fix them in the same
   change. Moving code and fixing it are kept apart.
 
 ## Taking an upstream update

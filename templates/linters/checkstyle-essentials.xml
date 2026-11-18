@@ -5,7 +5,7 @@
 <!--
   Essentials only: checks that point at likely bugs or dead code, not formatting.
   No whitespace, indentation, tab, import-order or Javadoc-style rules, so it fits a legacy codebase's
-  existing style. Used from outside the repository (see docs/linters.md), so it adds no file to a project.
+  existing style. Used from outside the repository (see README.md in this folder), so it adds no file to a project.
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>

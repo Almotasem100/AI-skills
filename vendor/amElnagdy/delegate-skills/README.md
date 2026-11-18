@@ -119,7 +119,7 @@ capability can be subtracted, never enumerated. Where `zcode login` fails with `
 not valid JSON`, the key comes from `ZCODE_API_KEY` / `ANTHROPIC_API_KEY` / `ZAI_API_KEY` instead.
 
 Each skill name links to its `SKILL.md`, which owns that implementer's prerequisites, flags, and
-caveats. Building one for another CLI? [Claim it first](https://github.com/amElnagdy/delegate-skills/issues),
+caveats. Building one for another CLI? [Claim it first](https://github.com/amElnagdy/delegate-skills/issues), <!-- LOCAL CHANGE: absolute upstream issues link instead of the relative ../../issues path, which resolves into the parent repo. -->
 then see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Optional Codex waiting support

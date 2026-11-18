@@ -1,6 +1,6 @@
 ---
 name: plan-debate
-description: Resolve consequential technical plan findings at the author's first reasoned disagreement, or on explicit debate requests, through focused evidence-backed author/reviewer exchanges. Supports one or more caller-selected reviewers. Not for code/PR review, minor preferences, accepted corrections or owner product decisions.
+description: Use when a plan author first gives a reasoned objection to a technical plan finding, or when debate is explicitly requested. Runs a focused, evidence-backed author/reviewer exchange with one or more caller-selected reviewers. Not for code/PR review, minor preferences, accepted corrections or owner product decisions.
 ---
 
 # Plan debate
@@ -16,24 +16,24 @@ Preserve the calling workflow's plan author and challenge reviewer distinct from
 participants and execution mechanism; do not dispatch a replacement author or choose models/routes here.
 An explicit multi-reviewer request is supported: keep each reviewer's independent findings and attribution, then
 focus exchanges on disputed claims. Do not add reviewers automatically, count votes as evidence or let agreement
-hide a material unresolved objection. A shared chat is unnecessary; the caller can relay attributed messages and
-source/artifact pointers through its supported mechanism. Missing messaging capabilities remain a caller limitation.
+hide an unresolved objection. A shared chat is unnecessary; the caller can relay attributed messages and
+source/artifact pointers through its supported mechanism. If the caller cannot relay them, report the missing channel as a limitation of its setup.
 
 Use one approved temporary debate record (or an existing suitable review record), not another project-of-record
 document or full transcript in the scratchpad. Give participants minimum useful original-source access; summaries
 and earlier findings are leads, not authority. Use snapshots/worktrees only for a real containment/concurrency need.
-The author owns plan mutations; reviewers own findings. Separate sessions alone do not guarantee independent judgment.
+The author owns plan mutations; reviewers own findings. Separate sessions alone do not make judgment independent; note that limit in the record when independence matters.
 
 ## Work the current disagreement
 
 Continue from the existing review, reuse its finding as the initial challenge and the author's objection as the first
 response. Do not commission a new draft, repeat initial review or wait for another refusal to begin. For an explicit
-fresh-plan debate, first obtain a sufficient plan and source-grounded independent critique; then use this same exchange.
+fresh-plan debate, first obtain a plan complete enough to debate and an independent critique grounded in its sources; then use this same exchange.
 
 - Identify the disputed claim, source evidence or gap, impact, proposed remedy and alternatives. Distinguish observed
   contradictions, concerns and unsupported assertions without inventing citations or requirements.
 - Give the author each attributed finding for accept/revise, reject with evidence, or open-with-needed-check disposition.
-  Keep material disagreements visible. When a material premise changes, recheck affected sections rather than restarting.
+  Keep material disagreements visible. When a key premise changes, recheck the affected sections rather than restarting.
 - A further independent check may be requested or justified by unresolved risk; it is not a normal mandatory stage.
   Preserve its conclusions separately and avoid persuasive framing that replaces direct source access.
 

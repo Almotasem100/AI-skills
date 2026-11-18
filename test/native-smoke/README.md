@@ -179,7 +179,8 @@ Raw captures remain local in the run directory; summarize errors without copying
 > global lanes, install software, publish or deploy. Do not retry failing provider calls automatically.
 
 Installing or changing files is not part of the runner. Use the approved GUIDE setup first. For focused mode-selection
-and continuity trials beyond this general pack, see `docs/workflow-smoke-tests.md`.
+and continuity trials beyond this general pack, use [selection-continuity.md](selection-continuity.md) and
+[operator-scenarios.md](operator-scenarios.md); keep evaluator expectations out of prompts given to the tested agent.
 
 ## Full-scenario driving instruction
 
@@ -202,7 +203,7 @@ establish installed-host loading, actual source-suite results or filesystem isol
 ## Checks for the runner itself
 
 ```sh
-node --test test/native-smoke/runner.test.mjs test/native-smoke/full-scenario.test.mjs test/workflow-separation.test.mjs test/gemini-overlay.test.mjs
+npm test
 ```
 
 These are offline unit/integration checks, including a **synthetic** relay. They test the driver and rejection paths;

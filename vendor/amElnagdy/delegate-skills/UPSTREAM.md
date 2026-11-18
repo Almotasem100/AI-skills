@@ -7,6 +7,7 @@
 | Original copy | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
 | Local changes | Repository-link corrections and OpenCode guidance corrections; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
+| Installed subset | `delegate-setup`, `codex-delegate`, `agy-delegate`, `opencode-delegate`; plus `gemini-delegate` via `overlays/gemini-delegate/` |
 
 ## Full upstream snapshot — 2026-10-14
 

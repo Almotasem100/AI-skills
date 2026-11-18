@@ -1,6 +1,6 @@
 ---
 name: task-context
-description: Preserve fragmented task inputs, source references, approved scope, consequential clarification Q&A, decisions and open questions in one temporary intake-first record. Use when inputs or participants need a shared intake; skip simple tasks with clear inputs.
+description: Preserve fragmented task inputs, source references, approved scope, key clarification Q&A, decisions and open questions in one temporary intake-first record. Use when inputs or participants need a shared intake; skip simple tasks with clear inputs.
 ---
 
 # Task context
@@ -12,7 +12,7 @@ record across delivery slices when that hierarchy exists; the scratchpad holds e
 ## Gather and record
 
 Read authorized requirements, meaningful visual inputs, consequential answers and relevant project rules. Inspect
-additional code only to settle a consequential intake question, not to populate a broad technical survey.
+additional code only to settle an intake question that matters, not to populate a broad technical survey.
 Use `references/task-context-template.md` or the project's equivalent; omit empty sections:
 
 1. **Objective and approved scope:** outcome, supplied rationale, inclusions/exclusions and approved constraints,
@@ -21,9 +21,9 @@ Use `references/task-context-template.md` or the project's equivalent; omit empt
 3. **Clarification Q&A and decisions:** preserve consequential original questions and answers with their owner/source,
    qualifiers and conditions. Mark corrections and superseded decisions so old answers do not regain authority.
 4. **Open questions and conflicts:** undecided behavior, conflicting sources and unverified premises with pointers.
-5. **Consequential observations (optional):** retain an easily lost sourced observation or cross-source concern
-   that could affect a material decision. Separate fact from inference, state uncertainty and a verification
-   question; do not prescribe an implementation or present the concern as an approved requirement.
+5. **Consequential observations (optional):** keep a sourced observation or cross-source concern that is easy to lose
+   and could change a decision. Separate fact from inference, state the uncertainty, and name the question that would
+   verify it. Do not prescribe an implementation or present the concern as an approved requirement.
 
 State each item once. Preserve source terminology, meaningful visual constraints and approved technical constraints;
 concision must not erase them. Link to large inputs and existing design/plan/evidence instead of copying them.
@@ -34,7 +34,7 @@ Do not add routine architecture digests, reuse proposals or solution recommendat
 Keep approved decisions, observations, interpretation and open questions distinct. Preserve qualifiers such as
 estimated, expected, reported and observed; never invent rationale, approvals or results. Source pointers navigate
 to evidence, not proof of an interpretation. Original requirements and project rules remain authoritative;
-recipients verify consequential claims as needed rather than rereading every input automatically. Respect sharing
+recipients verify important claims against originals as needed, not by rereading every input. Respect sharing
 boundaries and do not copy secrets/credentials. Intake selection reduces inherited framing, not all bias.
 
 Return consequential gaps to the caller for targeted grilling/decision work; do not restart an interview or

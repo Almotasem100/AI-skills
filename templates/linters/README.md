@@ -1,4 +1,4 @@
-# Scoped linter reference
+# Optional linter templates
 
 Use the active project's configured lint/format commands, tool versions, style and quality gates. This document
 provides optional setup examples, not project policy or permission to install tools. Project-specific findings,

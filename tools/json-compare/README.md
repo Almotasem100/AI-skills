@@ -14,6 +14,4 @@ node compare.mjs <reference.json> <candidate.json> [--config rules.json] [--json
   reported as **TYPE-ONLY**.
 - Exit 0 = identical after the rules, 1 = differences, 2 = bad input.
 
-**Tested 2026-09-26** on sample data: changed / missing / added / type-only, ignore (incl. `[*]` and `**`),
-rename, unordered, identical files, invalid JSON. First user: HDC's B9 recordings (runbook in the HDC docs folder,
-`C:\Users\Mohamed\Downloads\HDC\HDC\documents\b9-recordings\README.md`).
+Validated on sample data covering each rule above; project-specific recording runbooks live in the project.

@@ -84,6 +84,10 @@ function slideOrder(zip) {
 
 function main() {
   const argv = process.argv.slice(2);
+  if (argv.includes('--help')) {
+    process.stdout.write('Usage: node slides.mjs <file.pptx> [--media-dir <dir>] [--out <file.md>]\n');
+    return;
+  }
   let file;
   for (let i = 0; i < argv.length; i++) {
     if (argv[i].startsWith('--')) i++; else file ??= argv[i];

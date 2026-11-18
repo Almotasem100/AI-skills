@@ -3,9 +3,10 @@
 | | |
 |---|---|
 | Source | https://github.com/mattpocock/skills (MIT, `LICENSE` copied alongside) |
-| Base commit | `49dd158d1076134a641b33efb035946536778336` (upstream main dated 2026-10-09) |
+| Base commit | `5863806dd4e15c63174bee4e7515a4256792ecfa` (upstream main dated 2026-11-12) |
 | Copied | 2026-09-25: only `skills/engineering/code-review/` → `skills/two-axis-review/`, plus `LICENSE` |
 | Local changes | **1**: renamed. Diff in `local-changes.patch` |
+| Installed subset | `two-axis-review` only |
 
 The other Pocock skills I use (`grill-me`, `grilling`, `grill-with-docs`, `domain-modeling`, `handoff`) are
 unchanged, so they stay pinned in `manifest.md` and are not copied here.
@@ -34,10 +35,16 @@ The upstream changes broaden standards-file discovery, loosen the issue-tracker 
 hard-coded path, and clarify that the two review sub-agents should be issued together in the foreground. The local
 rename remains the only local behavior change.
 
-The other Pocock skills are still installed from pinned source commits recorded in `manifest.md`; some now use the
-latest upstream pin, while `grill-with-docs` + `domain-modeling` deliberately remain on the older pin until the
-stable HDC documents snapshot is audited because upstream renamed the glossary contract from `CONTEXT.md` to
-`GLOSSARY.md`.
+The other pinned Pocock skills (`grill-me`, `grilling`, `grill-with-docs`, `domain-modeling`, `handoff`) are all
+installed from the same commit, `5863806d`, as recorded in `manifest.md` and `GUIDE.md`. Their glossary contract
+(`GLOSSARY.md`, which upstream renamed from `CONTEXT.md`) is described in `manifest.md`.
+
+## Upstream update — 2026-11-18
+
+Synced `49dd158d..5863806d`. In the skills used here, the only changes are one sentence each: `code-review`
+(`two-axis-review`) and `grilling` now say to start sub-agents with a fresh context window. `grill-me`,
+`grill-with-docs`, `domain-modeling` and `handoff` are unchanged. The pinned skills move to the same commit.
+`local-changes.patch` needed only its base blob hash updated; it applies cleanly to the new base.
 
 ## Taking an upstream update
 1. Clone upstream outside this repo and read what changed in `skills/engineering/code-review/` since the base.

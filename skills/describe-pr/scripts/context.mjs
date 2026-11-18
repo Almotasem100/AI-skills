@@ -193,6 +193,10 @@ function requiredSections(kind, signals, size) {
 }
 
 function main() {
+  if (process.argv.includes('--help')) {
+    process.stdout.write('Usage: node context.mjs [--base <branch>] [--budget <chars>] [--config <file>] [--out <file>]\n');
+    return;
+  }
   const args = parseArgs(process.argv.slice(2));
   const root = git(['rev-parse', '--show-toplevel']).trim();
   process.chdir(root);

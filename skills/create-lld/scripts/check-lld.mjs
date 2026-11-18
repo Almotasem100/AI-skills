@@ -9,12 +9,15 @@ import { readFileSync } from 'node:fs';
 const HEADER = /^# (?:LLD|Technical Design(?: Document)?) — \S(?:.*\S)?$/;
 const CORE = ['Design'];
 const CONDITIONAL = ['Impact & risks', 'Verification intent', 'Rollout & rollback', 'Open questions'];
+const USAGE = 'Usage: check-lld.mjs <lld.md> [--size small|normal]';
 const VAGUE = /\b(seamless(ly)?|robust|absolute|cleanly|leverag(e|es|ing)|best[- ]in[- ]class|state[- ]of[- ]the[- ]art|etc\.?)(?![\w-])/gi;
 
 function parseArgs(argv) {
   const args = { size: 'normal' };
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === '--size') args.size = argv[++i]; else args.file = argv[i];
+    if (argv[i] === '--size') args.size = argv[++i];
+    else if (argv[i] === '--help' || argv[i] === '-h') args.help = true;
+    else args.file = argv[i];
   }
   return args;
 }
@@ -34,10 +37,12 @@ function sections(md) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (!args.file || !['small', 'normal'].includes(args.size)) {
-    throw new Error('Usage: check-lld.mjs <lld.md> [--size small|normal]');
+  if (args.help) {
+    process.stdout.write(USAGE + '\n');
+    return;
   }
-  const md = readFileSync(args.file, 'utf8').replace(/^﻿/, '').replace(/\r\n/g, '\n');
+  if (!args.file || !['small', 'normal'].includes(args.size)) throw new Error(USAGE);
+  const md = readFileSync(args.file, 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
   const errors = [], warnings = [];
 
   const first = md.split('\n').find(l => l.trim()) || '';

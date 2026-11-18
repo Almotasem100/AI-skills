@@ -13,6 +13,7 @@ const SKILL_DIR = join(dirname(fileURLToPath(import.meta.url)), '..');
 const TYPES = ['feat', 'fix', 'hotfix', 'refactor', 'perf', 'chore', 'test', 'docs', 'release'];
 const NEEDS_INPUT = '[NEEDS INPUT]';
 const TITLE_MAX = 72;
+const USAGE = 'Usage: render.mjs --context <file> --draft <file> [--body-out <file>] [--strict]';
 
 function parseArgs(argv) {
   const args = {};
@@ -23,7 +24,7 @@ function parseArgs(argv) {
   return args;
 }
 
-const readJson = path => JSON.parse(readFileSync(path, 'utf8').replace(/^﻿/, ''));
+const readJson = path => JSON.parse(readFileSync(path, 'utf8').replace(/^\uFEFF/, ''));
 
 function templatePath(context) {
   const name = `${context.template}.md`;
@@ -91,16 +92,17 @@ function renderBody(template, draft, context) {
     const filled = block.replace(keyMatch[0], text || NEEDS_INPUT);
     out.push(filled);
   }
-  const body = out.join('\n')
-    .replace(/<!--[\s\S]*?-->\n?/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-  return fillPlaceholders(body, values) + '\n';
+  const body = out.join('\n').replace(/<!--[\s\S]*?-->\n?/g, '').trim();
+  return fillPlaceholders(body, values).replace(/\n{3,}/g, '\n\n') + '\n';
 }
 
 function main() {
+  if (process.argv.includes('--help')) {
+    process.stdout.write(USAGE + '\n');
+    return;
+  }
   const args = parseArgs(process.argv.slice(2));
-  if (!args.context || !args.draft) throw new Error('Usage: render.mjs --context <file> --draft <file> [--body-out <file>] [--strict]');
+  if (!args.context || !args.draft) throw new Error(USAGE);
   const context = readJson(args.context);
   const draft = readJson(args.draft);
   const warnings = [];

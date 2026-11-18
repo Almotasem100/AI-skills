@@ -10,8 +10,8 @@ workflow; these conventions describe names/audiences, not another execution mech
 | Functional Design slide content | `<feature-id>_Functional_Design.md` | Customer/business |
 | QA scenarios | `<slice-id>_QA_Scenarios.md` | Testing team |
 
-Supply actual identifiers and prefixes from the project's trackers (for example, a CodeBeamer slice can use
-`CB-<id>`). Do not invent IDs or include the descriptive title in the filename. Put the descriptive title inside
+Supply actual identifiers and prefixes from the project's trackers (for example, a tracker slice can use
+its own prefix, such as `PROJ-<id>`). Do not invent IDs or include the descriptive title in the filename. Put the descriptive title inside
 and use that actual Technical Design title for the PR's design link. A filename keyed by a slice does not imply
 splitting a feature-level scenario set into duplicate documents. Define shared/multiple-slice naming in the project
 when needed. “Technical Design” here is the forward LLD, not an automatically required as-built artifact.

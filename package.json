@@ -1,0 +1,9 @@
+{
+  "name": "ai-skills",
+  "private": true,
+  "description": "Personal model-agnostic AI workflow, skills and tools. No dependencies.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\" \"test/native-smoke/*.test.mjs\""
+  }
+}

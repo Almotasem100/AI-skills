@@ -1,20 +1,35 @@
 # AI-skills — agent instructions
 
-This repository contains the owner's model-agnostic setup for AI-assisted development: original skills in
-`skills/`, reviewed third-party copies in `vendor/`, unchanged pinned skills listed in `manifest.md`, tools,
-templates, and installation guidance.
+This repository contains the owner's model-agnostic setup for AI-assisted development: installable workflow
+instructions in `instructions/`, original skills in `skills/`, reviewed third-party copies in `vendor/`, unchanged
+pinned skills listed in `manifest.md`, tools, templates, and installation guidance.
 
 ## Start here
 
 Before planning or changing this repository, read:
 
-1. `docs/roadmap.md` for the current status, checkpoint, next steps, and open decisions.
-2. `docs/orchestration-contract.md` for the current portable workflow semantics.
-3. `README.md` for the skill authoring rules and repository layout.
-Read `docs/decisions.md` only when the reasoning/history is relevant; it is not current execution policy.
+1. `docs/roadmap.md` for the current state, next steps and deferred work.
+2. `instructions/orchestration-contract.md` for the portable workflow semantics.
+3. `README.md` for the layout and the skill authoring rules.
 
-Use the roadmap's current active/deferred scope. Explicitly requested changes may proceed; do not resume
-parked builds or host trials merely because an older status section once proposed them.
+Read `docs/records/` only when the history or reasoning is relevant; records are not current policy.
+Explicitly requested changes may proceed; do not resume deferred work merely because a record once proposed it.
+
+## Where things go
+
+| Change | Put it in |
+| --- | --- |
+| Workflow rule that applies to every project | `instructions/orchestration-contract.md`, stated once |
+| Rule for delegation mode only | `instructions/ai-skills-delegation.md` (roles: `delegation-lanes.md`; dispatch mechanics: `cli-dispatch.md`) |
+| How one capability works | That skill's `SKILL.md` or its `references/` |
+| Install or usage instructions | `GUIDE.md` |
+| Status, next step, deferred item | `docs/roadmap.md`, rewritten in place |
+| Feedback from real use | one line in `docs/friction-log.md` |
+| Audit, evidence or decision history | a new file in `docs/records/` |
+| Project-specific policy | that project's own instructions, never here |
+
+Before finishing a change, run `npm test`. Files in `instructions/` and `skills/` are installed as copies, so tell
+the owner which installed files need refreshing.
 
 ## Repository rules
 

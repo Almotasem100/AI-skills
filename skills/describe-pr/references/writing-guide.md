@@ -15,9 +15,8 @@ Default: `<type>[#<ticketId>]: <imperative summary>`, at most 72 characters.
   existing `release: <version>` format.
 
 ## Evidence split
-- **Purpose / problem:** explicit rationale and approved requirements are primary; task-context may preserve their
-  decisions and source pointers, but its inferences are not approval. Concise approved design docs are useful
-  secondary evidence; the diff is never enough to invent business rationale.
+- **Purpose / problem:** follow the evidence order in `draft-contract.md`. Concise approved design docs are useful
+  secondary evidence.
 - **What changed:** git/diff and implemented code are primary.
 - **Testing:** actual verification evidence or the developer's report is primary.
 - **Impact/risk:** combine approved requirements with the actual implementation; distinguish expected impact from
@@ -27,8 +26,8 @@ Default: `<type>[#<ticketId>]: <imperative summary>`, at most 72 characters.
 
 ## Body
 - **Problem, then fix, per concern.** State what was wrong or requested before what changed.
-- **Explain the mechanism, not the file list.** "The endpoint now builds rows from `activeChecklist.getRules()`
-  so it mirrors what the checklist UI shows" beats "updated ProjectVsEbbService.java".
+- **Explain the mechanism, not the file list.** "The endpoint now builds rows from `activeOrder.getLines()`
+  so it mirrors what the order screen shows" beats "updated OrderExportService.java".
 - **Name the real identifiers** — classes, endpoints, flags, components — so a reviewer can find them.
 - **Group by concern, not by file.** A file list is what the diff already shows.
 - **Write for someone who wasn't in your head.** No private shorthand; use the project's domain terms (from the
@@ -42,7 +41,7 @@ Default: `<type>[#<ticketId>]: <imperative summary>`, at most 72 characters.
 
 ## Examples
 - `exemplars/example-c-current.md` — current recipient presentation, with an illustrative design link.
-- `exemplars/example-a.md` — the team's best structure: problem-then-fix per concern, the mechanism explained,
+- `exemplars/example-a.md` — the default structure: problem-then-fix per concern, the mechanism explained,
   specific identifiers. (Missing: ticket, testing, risk, rollback; and it bundles two concerns.)
 - `exemplars/example-b-testing.md` — the testing discipline to copy.
 
@@ -54,7 +53,7 @@ Default: `<type>[#<ticketId>]: <imperative summary>`, at most 72 characters.
   destination. Omit routine authoring dates, private amendment labels and a missing-design placeholder. Do not
   invent a hyperlink or substitute Functional Design for the technical reference. Version identity matters only
   when needed to identify the reviewed design.
-- Use separate **Impact and risks** bullets by material concern. Do not repeat the same compatibility dependency
+- Use separate **Impact and risks** bullets for each concern. Do not repeat the same compatibility dependency
   under review considerations. Mention unchanged dependencies only when relevant.
 - **Review considerations** is optional: retain useful stacked-base/retargeting information, important design
   deviations and non-obvious focus. Omit generic “review carefully” text and inaccessible local-update claims.

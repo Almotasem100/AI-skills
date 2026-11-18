@@ -54,7 +54,7 @@ test('CLI dispatch companion parity distinguishes matching, stale and absent ins
   const skills = join(root, 'missing-skills');
   mkdirSync(instructions); mkdirSync(skills);
   const installed = join(instructions, 'cli-dispatch.md');
-  const expected = readFileSync(join(repoRoot, 'docs/cli-dispatch.md'), 'utf8');
+  const expected = readFileSync(join(repoRoot, 'instructions/cli-dispatch.md'), 'utf8');
   try {
     for (const [status, content] of [['passed', expected], ['failed', '# stale reference\n'], ['unavailable', null]]) {
       if (content === null) rmSync(installed);

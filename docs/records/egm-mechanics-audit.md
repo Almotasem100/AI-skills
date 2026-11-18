@@ -25,7 +25,7 @@ company-project acceptance. Those evidence classes and remaining limits are reco
 
 ## Sources inspected
 
-AI-skills owns workflow policy in [the contract](orchestration-contract.md), participant/transport selection in
+AI-skills owns workflow policy in [the contract](../../instructions/orchestration-contract.md), participant/transport selection in
 the optional profile, semantic responsibilities in its catalog, and process in individual skills. Relevant sources:
 - `skills/plan-review/SKILL.md`, `skills/plan-debate/SKILL.md`, `skills/create-lld/SKILL.md`,
   `skills/task-context/SKILL.md`, `skills/work-closeout/SKILL.md`.
@@ -248,7 +248,7 @@ repository tests or native skill-loading checks.
 Two fresh-context workers were given only the exact candidate skill URL and natural task/raw synthetic materials,
 not this audit, evaluator rubric, intended findings or parent conversation. Candidate:
 `ad722bae7ef6a421ad982873542ceb72f2bed058`. Their results were inspected against
-[test/native-smoke/review-mechanics.md](../test/native-smoke/review-mechanics.md).
+[test/native-smoke/review-mechanics.md](../../test/native-smoke/review-mechanics.md).
 
 - **Task A, plan/design review:** the worker reconstructed the proposed archive behavior, identified the unspecified
   reference policy and unverified archive/restore contract, did not infer hard deletion from DELETE, and did not

@@ -1,35 +1,33 @@
-<!-- The team's Example A, verbatim. Teach from it: problem-then-fix per concern; the mechanism explained rather
-     than the file list; specific identifiers named; written for someone who wasn't in the author's head.
-     Historical source example, not the current title/heading contract. Its gaps: no ticket reference, no testing
-     evidence, no risk or rollback, two unrelated
-     concerns in one PR. -->
+<!-- Synthetic example of the default style: problem-then-fix per concern, the mechanism explained rather than the
+     file list, specific identifiers named, written for someone who was not in the author's head.
+     Deliberate gaps, not a template for them: no ticket reference, no testing evidence, no risk or rollback, and two
+     unrelated concerns in one PR. -->
 
-PR Title: Restrict Checklist Imports & Fix Project Vs eBBs KPI Data
+PR Title: Restrict Export Re-runs & Fix Order Totals in Export Preview
 
 Overview
-This PR addresses multiple issues: preventing accidental data loss when importing
-checklists, and fixing massively inflated rule counts in the KPI dashboard.
+This PR addresses two issues: preventing duplicate order exports when a batch is re-run, and fixing inflated totals
+in the export preview.
 
-Restrict Category/eBB Import (Data Loss Prevention)
-The Problem: Users could accidentally overwrite active checklist answers and
-assignments by importing a template over them.
-The Fix: The IMPORT button is now only available for completely empty checklists.
+Restrict Re-run Export (Duplicate Prevention)
+The Problem: Users could accidentally export the same orders twice by re-running an export on a batch that had
+already been exported.
+The Fix: The EXPORT button is now only available for batches that have not been exported.
 Technical Changes:
 
-* `categoryModalController.js`: Introduced a `$scope.canImport` flag. It evaluates
-  to true only if the checklist is completely empty (verifying that the details
-  array and rule count are empty).
-* `categoriesTreeModal.html`: Bound the IMPORT button's disabled state and
-  visibility to `$scope.canImport`.
+* `exportModalController.js`: Introduced a `$scope.canExport` flag. It evaluates
+  to true only if the batch has no exported records (verifying that the record list
+  and exported count are empty).
+* `exportModalView.html`: Bound the EXPORT button's disabled state and
+  visibility to `$scope.canExport`.
 
-Fix "Project Vs eBBs" KPI Data Discrepancies
-The Problem: The Project Vs eBBs table was showing duplicated rules, highly
-inflated counts, and stale auto-assessor answers.
+Fix "Order Export Preview" Total Discrepancies
+The Problem: The preview showed duplicated line items, highly inflated totals and stale payment statuses.
 The Fix: The backend was pulling raw, unfiltered database rows instead of matching
-what the user actually sees on the checklist UI.
+what the user actually sees on the order screen.
 Technical Changes:
 
-* Updated the Project Vs eBB endpoint to act as a true mirror of the UI.
-* Switched the data source to use `activeChecklist.getRules()` to build project rows.
-* Switched to `rule.getAnswer()` to fetch accurate, current answers instead of
-  pulling stale `CheckListContent` data.
+* Updated the export preview endpoint to act as a true mirror of the order screen.
+* Switched the data source to use `activeOrder.getLines()` to build preview rows.
+* Switched to `line.getPaymentStatus()` to fetch current statuses instead of
+  pulling stale `OrderPaymentSnapshot` data.

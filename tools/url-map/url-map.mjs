@@ -15,13 +15,17 @@
 //     "outTsv": "<path>", "outMd": "<path>"
 //   }
 
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from "node:fs";
 import { join, resolve, relative, dirname, basename, sep } from "node:path";
 import { execFileSync } from "node:child_process";
 
 // ---------- config ----------
 function fail(msg) { console.error(`url-map: ${msg}`); process.exit(2); }
 const argv = process.argv.slice(2);
+if (argv.includes("--help")) {
+  console.log("usage: node url-map.mjs --config <url-map.config.json> [--stdout] [--help]\n\nConfig shape and outputs: see the header of url-map.mjs and SPEC.md.");
+  process.exit(0);
+}
 const cfgPath = argv[argv.indexOf("--config") + 1];
 if (!argv.includes("--config") || !cfgPath) fail("usage: node url-map.mjs --config <url-map.config.json> [--stdout]");
 let cfg;
@@ -163,7 +167,7 @@ for (const file of javaFiles) {
       const block = braceIdx >= 0 && braceIdx - cond.end < 5 ? balanced(text, braceIdx, "{", "}").inner : "";
       const bypass = /\bdoFilter\s*\(/.test(block) && /\breturn\b/.test(block);
       for (const c of cond.inner.matchAll(/(!?)\s*\w+\s*\.\s*contains\s*\(\s*"([^"]*)"\s*\)/g)) {
-        filterRules.push({ substr: c[2], at: at(m.index + m[0].length + c.index), bypass: bypass && !c[1], cls });
+        filterRules.push({ substr: c[2], at: at(m.index + m[0].length + c.index), bypass: bypass && !c[1] });
       }
     }
   }
@@ -248,7 +252,7 @@ if (existsSync(webXml)) {
       // A class with no source here (e.g. from a library) keeps the spec's statuses: "legacy", and it's listed as
       // unresolved so nobody reads it as checked.
       if (!f) unresolved.push(`web.xml maps ${p[1]} to ${klass}, whose source isn't under ${rel(repoRoot, javaRoot)}`);
-      handlers.push({ url: p[1], kind: "servlet", http: "", handler: klass.split(".").pop(), file: f ?? webXml, line: f ? 1 : line, status: f ? statusOf(f) : "legacy", fromWebXml: true });
+      handlers.push({ url: p[1], kind: "servlet", http: "", handler: klass.split(".").pop(), file: f ?? webXml, line: f ? 1 : line, status: f ? statusOf(f) : "legacy" });
     }
   }
 }
@@ -300,10 +304,10 @@ function handlerMatches(h, url) {
   if (h.kind === "servlet" || h.kind === "filter") return servletMatch(h.url, url);
   return templateRe(h.url).test(url);
 }
+// A dispatch glob such as "host/path/*" is matched on its path part only.
 const dispatchRe = (glob) => {
-  const [host, ...rest] = glob.split("/");
-  const path = "/" + rest.join("/");
-  return { host, re: new RegExp("^" + escapeRe(path).replace(/\*/g, ".*") + "$") };
+  const path = "/" + glob.split("/").slice(1).join("/");
+  return new RegExp("^" + escapeRe(path).replace(/\*/g, ".*") + "$");
 };
 const routable = handlers.filter((h) => h.kind !== "filter");
 const rows = routable.map((h) => ({ ...h, called_by: [], scheduled_by: [], routed_to: [], auth_note: [], problems: new Set(h.extraProblems ?? []) }));
@@ -319,7 +323,7 @@ function attach(target, fill, orphanKind) {
 for (const c of callers) attach(c, (r) => r.called_by.push(c.kind === "task" ? `${c.at} (queue ${c.queue})` : c.at), c.kind);
 for (const c of cron) attach(c, (r) => r.scheduled_by.push(`cron "${c.schedule}" (cron.yaml:${c.line})`), "cron");
 for (const d of dispatch) {
-  const { re } = dispatchRe(d.url);
+  const re = dispatchRe(d.url);
   const hits = rows.filter((r) => re.test(r.url.replace(/\{[^}]+\}/g, "x")) || (r.url.endsWith("/*") && re.test(r.url.slice(0, -1) + "x")));
   for (const r of hits) r.routed_to.push(`${d.service} (dispatch.yaml:${d.line})`);
   if (!hits.length) orphanRows.push({ url: d.url, kind: "dispatch", http: "", handler: "", handler_at: "", status: "", called_by: [], scheduled_by: [], routed_to: [`${d.service} (dispatch.yaml:${d.line})`], auth_note: [], problems: new Set(["NO_HANDLER"]) });
@@ -344,13 +348,14 @@ for (const r of rows) for (const c of r.called_by) {
 }
 
 // ---------- output ----------
+const git = (...args) => execFileSync("git", ["-C", repoRoot, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
 let commit = "unknown";
 try {
-  commit = execFileSync("git", ["-C", repoRoot, "rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
-  const dirty = execFileSync("git", ["-C", repoRoot, "status", "--porcelain"], { encoding: "utf8" }).trim();
-  const branch = execFileSync("git", ["-C", repoRoot, "rev-parse", "--abbrev-ref", "HEAD"], { encoding: "utf8" }).trim();
-  commit = `${branch} @ ${commit}${dirty ? " + uncommitted changes" : ""}`;
-} catch { /* not a git repo: keep "unknown" */ }
+  const sha = git("rev-parse", "--short", "HEAD");
+  const dirty = git("status", "--porcelain");
+  const branch = git("rev-parse", "--abbrev-ref", "HEAD");
+  commit = `${branch} @ ${sha}${dirty ? " + uncommitted changes" : ""}`;
+} catch { /* not a git repo (git's stderr is suppressed): keep "unknown" */ }
 const now = new Date();
 const pad = (n) => String(n).padStart(2, "0");
 const generated = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())} (local time)`;
@@ -407,6 +412,8 @@ ${unresolved.length ? unresolved.map((u) => `- ${u}`).join("\n") : "Nothing."}
 if (argv.includes("--stdout")) { process.stdout.write(tsv); process.exit(0); }
 const outTsv = abs(cfg.outTsv) ?? fail("config needs outTsv");
 const outMd = abs(cfg.outMd) ?? outTsv.replace(/\.tsv$/, ".md");
+mkdirSync(dirname(outTsv), { recursive: true });
+mkdirSync(dirname(outMd), { recursive: true });
 writeFileSync(outTsv, tsv);
 writeFileSync(outMd, md);
 console.log(`url-map: ${all.length} rows (${rows.length} handler URLs, ${orphanRows.length} targets with no handler) -> ${outTsv}`);

@@ -46,7 +46,7 @@ without exposing such data, stop that inspection and report the limitation.
    relevant boundary rather than relying on its name or a design claim. Treat an absent test, file, or requirement
    as a coverage gap, not proof of a vulnerability or of compliance. Do not infer exploitability solely from a
    suspicious pattern; spell out the conditions needed and mark them unverified when not established.
-4. Support every consequential finding with exact file and line locator(s) for inspected sources, or the supplied
+4. Support every finding with exact file and line locator(s) for inspected sources, or the supplied
    source's actual section, paragraph, page, or other locator. Distinguish inspected primary evidence from a
    user-provided summary or excerpt whose original was not inspected. Never invent a locator. When no precise
    locator is available, say so and request it for verification instead of presenting the claim as confirmed.

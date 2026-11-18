@@ -2,7 +2,7 @@
 
 Candidates for discussion, not approved implementation, installed capabilities or execution policy. Read only when
 reviewing future options; this document is not part of normal task startup. Current work belongs in the
-[roadmap](roadmap.md), and current workflow rules remain in their canonical contract/profile/skills.
+[roadmap](../roadmap.md), and current workflow rules remain in their canonical contract/profile/skills.
 
 For each candidate, require a concrete source of friction and a bounded evaluation before adopting it. Compare
 benefit with human attention, usage cost, maintenance, permissions and data exposure. Prefer a smaller existing

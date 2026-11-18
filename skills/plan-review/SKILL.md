@@ -18,9 +18,9 @@ Read relevant authorized original requirements, project rules, approved constrai
 pointers are navigation, not a mandatory technical synthesis: do not treat a sourced concern as an approved
 requirement. If evidence is unavailable or contradictory, state the gap rather than guessing.
 
-Keep the plan, sources, code, durable documents and scratchpad read-only. Use supported reviewer restrictions and
-apply the calling workflow/project's actual boundary requirements. A snapshot stabilizes inputs but does not enforce
-filesystem containment; disclose enforcement limits without claiming isolation or inventing a stronger gate.
+Keep the plan, sources, code, durable documents and scratchpad read-only. Enforce this with the reviewer's
+supported restrictions and any boundary the calling workflow or project states. A snapshot stabilizes inputs but does
+not enforce filesystem containment; state enforcement limits rather than claiming isolation.
 
 ## Establish understanding
 
@@ -39,13 +39,13 @@ filesystem isolation.
 ## Review
 
 - Identify the outcome, scope/exclusions, approach, dependencies, sequence/slices, assumptions, open decisions and
-  verification/recovery strategy. Focus on consequential gaps; do not manufacture findings. Use the requested focus
+  verification/recovery strategy. Focus on gaps that would change the outcome; do not manufacture findings. Use the requested focus
   or applicable questions in `references/review-lenses.md`, without adding reviewers or a fixed stage sequence.
 - Verify material premises against current primary sources and look for contradictory evidence where warranted.
   A citation is navigation, not proof; distinguish owner-approved requirements from author recommendations.
 - Classify findings as **Observed contradiction**, **Concern**, or **Unsupported assertion**, with the affected
   claim, severity/impact, source locator or evidence gap, and the smallest useful correction/check.
-- Prioritize blockers and material risks before minor issues. New evidence can challenge a settled choice but
+- Prioritize blockers and significant risks before minor issues. New evidence can challenge a settled choice but
   does not authorize the reviewer to execute a deviation or demand unrelated documentation.
 
 For architectural/transition plans, inspect actual owners and callers, whether a smaller design meets the need,
@@ -62,13 +62,12 @@ material corrections introduced new complexity, scope or contradictions; reopen 
 evidence, and a supposedly fixed finding when its underlying issue remains or recurs.
 
 Return findings, separate assumptions/open decisions, and material source/runtime verification limits. If no blocker
-is found, say so within the inspected scope. Return findings through the caller to the actual artifact author
-(the plan author for a plan) for reasoned disposition and any affected-material recheck; standalone review does not require a revision. A missing
-result or material required source makes the affected review incomplete, not clean; report useful partial findings
+is found, say so within the inspected scope. Return findings through the caller to the artifact's author (the plan author for a plan) for a reasoned disposition and
+a recheck of affected sections; a standalone review does not require a revision. A missing result or a required source
+that cannot be read makes the affected review incomplete, not clean; report useful partial findings
 without implying full coverage. Stop when material findings are resolved or explicitly dispositioned under the
 calling workflow; no required count of clean rounds and no automatic new approval checkpoint.
 
 Default to returning findings directly. If explicitly requested, write the same findings as Markdown to one designated
-temporary output path, including the reviewed plan path/revision when useful, only when output-only access is safely
-permitted. That file is the sole write exception; do not relax permissions or overwrite another reviewer's work.
+temporary output path, including the reviewed plan path/revision when useful, only when the reviewer has output-only access. That file is the sole write exception; do not relax permissions or overwrite another reviewer's work.
 Otherwise the caller saves returned findings. Keep normal resume state compact, with links rather than full reviews.

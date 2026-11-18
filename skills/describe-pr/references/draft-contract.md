@@ -7,14 +7,14 @@ body, so the agent never formats markdown headings itself.
 {
   "title": {
     "type": "feat",            // feat | fix | hotfix | refactor | perf | chore | test | docs | release
-    "scope": "kpi",            // optional area name for a project using the conventional title format; ignored in ticket-first titles
-    "summary": "add project status and multi-code filtering",  // imperative, lowercase start, no period
-    "ticketId": "14972296"     // internal ticket ID; omit to use the one parsed from the branch
+    "scope": "api",            // optional area name for a project using the conventional title format; ignored in ticket-first titles
+    "summary": "add order status and multi-code filtering",  // imperative, lowercase start, no period
+    "ticketId": "APP-123"      // internal ticket ID; omit to use the one parsed from the branch
   },
   "fields": {                  // values for {{placeholders}} in the template
     "designDoc": "[Notification preferences — Technical Design](<accessible-design-link>)", // actual document title; omit when unavailable
     "severity": "high",        // bugfix/hotfix only: low | medium | high
-    "foundIn": "R2.21 / prod"  // bugfix/hotfix only
+    "foundIn": "1.4 / production"  // bugfix/hotfix only
   },
   "sections": {                // keys depend on the template (see below)
     "why":         { "text": "...", "confidence": "high", "source": "taskContext" },
@@ -22,12 +22,12 @@ body, so the agent never formats markdown headings itself.
     "testing":     { "text": "[NEEDS INPUT]", "confidence": "low", "source": "none" }
   },
   "detected": {
-    "unrelatedConcerns": ["kpi filters", "PG rules validation"],   // distinct concerns in this PR
+    "unrelatedConcerns": ["report filters", "rule validation"],   // distinct concerns in this PR
     "designDocDivergence": ["Guard placed in the component; the LLD specifies a route guard"]
   },
-  "questions": [               // at most 4, confirmation-shaped where possible
+  "questions": [               // confirmation-shaped where possible; the question limit is in SKILL.md step 5
     { "id": "testing", "prompt": "How did you verify this?", "guess": null },
-    { "id": "why", "prompt": "Was this to stop users overwriting active checklist answers?", "guess": "yes" }
+    { "id": "why", "prompt": "Was this to stop users overwriting saved answers?", "guess": "yes" }
   ]
 }
 ```
@@ -56,7 +56,8 @@ The context's `requiredSections` says which keys must appear. A required key lef
   synthesis are not a higher authority. `taskContext` records the carrier, not approval. Never derive business rationale from the diff.
 - Do not infer causal links between separately stated objectives, rationale, estimates, benefits, or outcomes unless
   authoritative evidence explicitly connects them.
-- Preserve qualifiers on value/measurement claims. `estimated 20%` cannot become `improved by 20%`.
+- Preserve qualifiers on value and measurement claims. `estimated`, `expected`, `target`, `projected`, `reported`
+  and `observed` are not interchangeable: `estimated 20%` cannot become `improved by 20%`.
 - `testing` / `regressionAndTesting` come from verified execution evidence or the user; never infer them from
   requirements or implementation alone.
 - `rollback` is asked for when the context has a `migration` signal, and always for a hotfix.

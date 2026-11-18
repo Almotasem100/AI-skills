@@ -21,11 +21,13 @@
 import { readFileSync } from "node:fs";
 
 function fail(msg) { console.error(msg); process.exit(2); }
+const USAGE = "Usage: node compare.mjs <reference.json> <candidate.json> [--config <rules.json>] [--json] [--help]\nSee the header of compare.mjs for the rules file format. Exit: 0 identical, 1 differences, 2 usage/input error.";
 
 function parseArgs(argv) {
   const o = { files: [], config: null, json: false };
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i] === "--config") o.config = argv[++i];
+    if (argv[i] === "--help") { console.log(USAGE); process.exit(0); }
+  else if (argv[i] === "--config") o.config = argv[++i];
     else if (argv[i] === "--json") o.json = true;
     else if (argv[i].startsWith("--")) fail(`unknown option ${argv[i]}`);
     else o.files.push(argv[i]);

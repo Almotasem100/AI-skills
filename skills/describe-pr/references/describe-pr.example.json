@@ -1,7 +1,7 @@
 {
   "titleFormat": "ticket-first",
   "baseBranches": { "story": "develop", "bugfix": "develop", "hotfix": "master", "release": "master" },
-  "scopes": ["auth", "header", "sidebar", "checklist", "kpi", "projects", "ebb", "import", "api", "build"],
+  "scopes": ["auth", "header", "sidebar", "orders", "reports", "export", "api", "ui", "build"],
   "budget": 60000,
   "exclude": ["**/*.generated.ts"],
   "extraSignals": { "migration": ["**/db/changelog/**"] },

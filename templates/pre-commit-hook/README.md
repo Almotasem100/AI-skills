@@ -20,12 +20,13 @@ If Node isn't installed, the wrapper does nothing, so a commit is never stopped 
 Copy both files into that repository's `.git/hooks/` folder. From PowerShell, in the repository:
 
 ```powershell
-$hook = "C:\Users\Mohamed\Downloads\WorkSpace\AI-skills\templates\pre-commit-hook"
+$setup   = "<path-to-AI-skills>"
+$hook    = "$setup\templates\pre-commit-hook"
 Copy-Item "$hook\pre-commit", "$hook\warn-new-files.cjs" (git rev-parse --git-path hooks)
 ```
 
 `.git/hooks/` is not tracked by git, so this adds **no file to the repository** and nothing is pushed. It still
-changes how that repository behaves on your machine, so for a project with a "no new files" rule (HDC), get
+changes how that repository behaves on your machine, so for a project with a "no new files" rule, get
 approval first like any other change. Each clone needs its own install.
 
 **Remove:** delete `pre-commit` and `warn-new-files.cjs` from `.git/hooks/`.

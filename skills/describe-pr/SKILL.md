@@ -5,7 +5,7 @@ description: Write a pull request title and description for the current branch f
 
 # describe-pr
 
-Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* comes from explicit rationale or approved task sources, which task-context may preserve or locate. Task-context itself does not grant authority to its author's inferences. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
+Writes the PR title and body for the current branch/delivery slice. The *what* comes primarily from current git/implementation evidence. The *why* comes from explicit rationale or approved task sources, which task-context may preserve or locate. Task-context itself does not grant authority, and its author's inferences are not approved rationale. Testing comes only from verification that actually ran or an explicit developer report; never infer it from code or requirements.
 Normally rebuild context from git on every run, whether or not an AI wrote the code. When that context cannot
 be established, a limited local draft is a separate outcome, not a validated branch comparison.
 
@@ -13,7 +13,7 @@ be established, a limited local draft is a separate outcome, not a validated bra
 folder, **never inside the repository**.
 
 ## Inputs
-All optional. Use whatever the user gives; ask only for what's missing after checking available task evidence (step 5).
+All optional. Use whatever the user gives; ask only for what is still missing after checking available task evidence (step 2).
 - A task-context artifact for this task (navigation to sourced rationale and approved decisions when available).
 - The internal ticket: ID, title, description / acceptance criteria.
 - Approved requirements or other authoritative task inputs already available to the session.
@@ -46,18 +46,15 @@ All optional. Use whatever the user gives; ask only for what's missing after che
 
 3. **Write for the PR reviewer**, using `references/writing-guide.md` for headings, title and optional evidence.
    Link the actual forward Technical Design/LLD title when available; omit routine dates and duplicated ticket
-   metadata. Keep impact/risk as readable bullets and review considerations only when useful. UI changes alone
-   do not require screenshots or another question. **Write the draft** as JSON, following `references/draft-contract.md` and `references/writing-guide.md`,
-   and save it to `<temp>/describe-pr-draft.json`. Look at `references/exemplars/` for the house style.
+   metadata. Keep impact/risk as readable bullets, and review considerations only when useful. Screenshots are
+   optional, so do not ask for them just because UI files changed.
+
+   **Write the draft** as JSON following `references/draft-contract.md` and `references/writing-guide.md`, and save
+   it to `<temp>/describe-pr-draft.json`. Look at `references/exemplars/` for the house style.
    - Fill only the sections for the context's `template`. Required sections must appear; leave optional ones
      empty when they don't apply.
-   - **Never invent** reasons, test results, measurements, severity, business impact or rollback steps. Use
-     `[NEEDS INPUT]` and add a question.
-   - Preserve evidence qualifiers exactly: `estimated`, `expected`, `target`, `projected`, `reported`,
-     and `observed` are not interchangeable. Never turn a target/estimate into a measured result.
-   - For Why/Problem, use explicit user rationale, then approved ticket/requirements, then relevant approved design,
-     then ask the developer. Task-context may preserve those statements and their provenance; it is not a separate
-     higher authority. Never derive business rationale from the diff alone.
+   - Apply the hard rules in `references/draft-contract.md`: the evidence order for Why/Problem, no invented
+     content, preserved qualifiers, and `[NEEDS INPUT]` for gaps.
    - List the distinct concerns in `detected.unrelatedConcerns`, and any difference between the code and the
      LLD in `detected.designDocDivergence` (also mention it in reviewer notes).
 

@@ -27,8 +27,8 @@ is automatically a defect.
 - Separate changed documentation from unimplemented approved behavior, authorized deviations, stale references
   and intentionally future/deferred work. If authority is unclear, report the question instead of choosing whether
   the code or the document must change.
-- Use an available documentation-accuracy guard within this read-only boundary for detailed current API/example checks;
-  do not duplicate its whole checklist or make that skill an installation dependency.
+- Use a documentation-accuracy guard such as docs-guard, if one is available, within this read-only boundary for
+  detailed checks of current API and examples. Do not duplicate its checklist or make it an installation dependency.
 - Carry precise claim/source locators and observed differences. Code inspection is source evidence, not a live
   acceptance test. Never claim runtime behavior, fixture creation or production verification that was not observed.
 

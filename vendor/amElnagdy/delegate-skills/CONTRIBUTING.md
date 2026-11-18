@@ -3,7 +3,7 @@
 Two people have independently built the same delegate skill twice now. Both times someone's work was
 wasted. So: **claim an implementer before you build it**, and check the open pull requests first.
 
-Open claims: https://github.com/amElnagdy/delegate-skills/issues | Open pull requests: https://github.com/amElnagdy/delegate-skills/pulls
+Open claims: https://github.com/amElnagdy/delegate-skills/issues | Open pull requests: https://github.com/amElnagdy/delegate-skills/pulls <!-- LOCAL CHANGE: absolute upstream links instead of relative ../../ paths, which resolve into the parent repo. -->
 
 ## What counts as a delegate skill
 

@@ -14,7 +14,7 @@ Steps:
 Expected result: The changed category retains its new value; untouched categories retain their previous values.
 
 ## 3. Keep edits after an unsuccessful save
-Starting condition: The save request cannot complete successfully in the team's controlled test setup.
+Starting condition: The save request cannot complete successfully in the controlled test setup.
 Steps:
 1. Change a preference and save.
 Expected result: A save error is visible and the edited value remains available for correction or retry.

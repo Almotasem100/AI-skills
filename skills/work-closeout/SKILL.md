@@ -1,6 +1,6 @@
 ---
 name: work-closeout
-description: Reconcile genuinely completed bounded work when the user explicitly requests closeout, durable reconciliation or project-record updates. Capture actual outcomes, unresolved follow-ups and relevant durable changes; validate consequential citations. Not automatic at implementation completion, chat ending or child-slice completion. Archival/removal needs separate applicable authorization.
+description: Reconcile a completed bounded item when the user explicitly requests closeout, durable reconciliation or project-record updates. Capture outcomes, follow-ups and durable changes; check citations. Not triggered by implementation completion, a new chat or a finished child slice. Archiving or removal needs separate authorization.
 ---
 
 # Work closeout
@@ -14,16 +14,16 @@ A request to finish implementation is not authorization to archive or clear work
 Read the canonical project/closeout policy, existing working record and the affected repositories/documents of record.
 Identify the bounded item and applicable completion conditions; ask only for a missing decision that matters.
 Inspect actual artifacts, changes, review/disposition and execution evidence, not just a completion summary.
-Distinguish authored/revised, checked unchanged and independently verified. Final consistency does not prove earlier
-prerequisite order or companion reconciliation; preserve late corrections and unmet gates accurately. Report code,
-deployment and acceptance separately; preserve estimates/assumptions as such, not verified outcomes. One passing
-check is not completion of all outcomes.
+Distinguish artifacts that were authored or revised, checked but unchanged, and independently verified. A final
+consistency check does not prove that earlier prerequisites were ordered correctly or that companion documents were
+reconciled; keep late corrections and unmet gates visible. Report code, deployment and acceptance separately. Keep
+estimates and assumptions labeled as such, not as verified outcomes. One passing check does not complete every outcome.
 
 ## Reconcile current working state
 
 Use final requirements, design, plan, review and verification artifacts to establish approved intent, implemented
 behavior and verified results. Correct unsupported working-state claims before propagating them. Keep the existing
-scratchpad compact: objective/item, final stage, decisions, blockers/follow-ups, verification state and next/closed
+scratchpad compact (shape: [templates/scratchpad.md](templates/scratchpad.md)): objective/item, final stage, decisions, blockers/follow-ups, verification state and next/closed
 state. Link detailed evidence and proposed durable updates instead of duplicating them or creating a competing report.
 
 ## Update only changed durable facts
@@ -58,4 +58,4 @@ Before approved cleanup, inspect the inventory for workflow feedback, unresolved
 whose only copy would be removed. Preserve that content in an existing approved durable record and verify it is
 saved before clearing its source. Keep observations, proposed remedies and accepted policy distinct; never promote
 feedback into instructions automatically. If its destination needs separate authorization, retain the source and
-report the pending choice. Do not copy confidential project/customer content into a portable workflow repository.
+report the pending choice. Do not copy confidential project or customer content into shared repositories.
