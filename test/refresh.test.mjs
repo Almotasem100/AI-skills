@@ -140,6 +140,7 @@ test('an interrupted run is reported during planning and blocks applying', () =>
     assert.equal(result.status, 1);
     assert.match(result.stdout, /plan-review\.refresh-old is the previous copy; rename it back to plan-review/);
     assert.match(result.stdout, /Not applying/);
+    assert.doesNotMatch(result.stdout, /unmanaged .*refresh-old/);
     assert.ok(!existsSync(join(home, '.config/ai-skills/refresh-backups')));
   } finally { rmSync(home, { recursive: true, force: true }); }
 });

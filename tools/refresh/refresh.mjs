@@ -179,7 +179,7 @@ function planWith(opts, skills, problems, cleanup) {
     const geminiInstalled = existsSync(join(target, 'gemini-delegate'));
     for (const name of readdirSync(target).sort()) {
       const installed = join(target, name);
-      if (linked(installed) || !isDir(installed)) continue;
+      if (/\.refresh-(new|old)$/.test(name) || linked(installed) || !isDir(installed)) continue;
       if (!opts.gemini && geminiInstalled && (name === 'delegate-setup' || name === 'gemini-delegate')) {
         notes.push(`kept ${installed}: Gemini relay installed; pass --gemini to refresh it`);
         continue;
