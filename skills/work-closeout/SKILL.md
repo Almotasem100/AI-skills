@@ -29,7 +29,9 @@ state. Link detailed evidence and proposed durable updates instead of duplicatin
 ## Update only changed durable facts
 
 Update/propose only canonical documents whose owned facts changed, under existing project authorization. Do not
-promote temporary task-context into permanent documentation automatically. Replace superseded guidance and affected
+promote temporary task-context into permanent documentation automatically. Write only the durable delta into
+policy/reference documents; dated test/deployment results, session permissions, model/tool provenance and
+implementation chronology belong in the project's designated evidence/history records, not active guidance. Replace superseded guidance and affected
 active references instead of appending a competing amendment; retain displaced rationale in on-demand history/Git
 when useful or required, while preserving applicable technical constraints.
 

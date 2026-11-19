@@ -8,6 +8,8 @@ Keep project-specific names out of entries; describe the pattern, not the projec
 
 Format: `YYYY-MM-DD | skill/tool | what happened | (optional) idea`
 
+2026-11-19 | work-closeout, url-map | HDC docs drifted: dated reports mixed into policy, a website page kept a stale copy of a deployment rule, and url-map called excluded handlers "404s" | closeout now keeps chronology out of active guidance; url-map header states what the parse does not prove
+
 <!-- Example:
 2026-10-01 | describe-pr | asked me for the ticket title although it was in the branch name | read it from the branch
 -->

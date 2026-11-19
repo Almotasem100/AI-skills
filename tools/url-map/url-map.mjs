@@ -373,17 +373,21 @@ for (const r of rows) statuses[r.status] = (statuses[r.status] ?? 0) + 1;
 const listRows = (rs, max = 40) => rs.slice(0, max).map((r) => `- \`${r.url}\` (${r.kind}${r.handler ? `, ${r.handler}` : ""}${r.handler_at ? `, \`${r.handler_at}\`` : ""})`).join("\n") + (rs.length > max ? `\n- … and ${rs.length - max} more (see the TSV)` : "");
 const explain = {
   NO_HANDLER: "Something calls, schedules or routes to this URL, but no handler in the code serves it.",
-  EXCLUDED_FROM_BUILD: "The handler's class is excluded from compilation (pom.xml), so the URL 404s on the current build.",
+  EXCLUDED_FROM_BUILD: "The handler's class is excluded from compilation (pom.xml), so this handler is not in the current build. Another registered handler may still serve the URL; check registration before calling it dead.",
   NO_CALLER: "A servlet that nothing in the code calls or schedules (it may still be called by a browser or an external system).",
   QUEUE_NOT_DECLARED: "Added to a queue that queue.yaml doesn't declare.",
   DEFAULT_PATH_GUESSED: "Endpoints method with no explicit path: URL assumed to be its name; confirm before relying on it.",
-  AMBIGUOUS: "Several handlers match the same target.",
+  AMBIGUOUS: "Several handlers match the same target. This includes excluded legacy copies and a literal path beside a {param} template, so it does not by itself prove duplicate deployed handlers.",
   AUTH_BYPASS_SUBSTRING: "A filter lets this URL skip the login check by a substring test, which can match more URLs than intended.",
 };
 const md = `# URL map — summary
 
 Generated ${generated} from **${commit}** by \`AI-skills/tools/url-map\`. Do not edit: regenerate. Full table:
 \`${basename(abs(cfg.outTsv) ?? "url-map.tsv")}\` (one row per handler URL, plus one per target nothing serves).
+
+This is a source parse, not runtime evidence. Before relying on a routing or security finding (for example a login
+bypass or a dead URL), check the build exclusions and the actual servlet/filter registration. Frontend extraction
+covers URL constants only, not router routes.
 
 ## Counts
 Counts are of live code. "In comments" is what a plain grep also finds but the map ignores (commented-out code),

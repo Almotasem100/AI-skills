@@ -18,7 +18,7 @@ a question with a recommendation; the owner accepted all recommendations (rounds
    unresolved, never guessed.
 6. **Problems reported:** `NO_HANDLER` (a cron/dispatch/withUrl/frontend target no handler serves), `NO_CALLER`
    (a servlet/task handler nothing calls or schedules), `QUEUE_NOT_DECLARED` (a queue used in code but missing
-   from `queue.yaml`), `EXCLUDED_FROM_BUILD` (handler class excluded from compilation → 404 today),
+   from `queue.yaml`), `EXCLUDED_FROM_BUILD` (handler class excluded from compilation; the URL may still be served by another registered handler),
    `DEFAULT_PATH_GUESSED`, `AMBIGUOUS`, `AUTH_BYPASS_SUBSTRING`.
 7. **Status per handler:** `new` / `legacy` / `excluded`, from the compiler excludes in `pom.xml` and the
    package of the new code (a CLI option).
