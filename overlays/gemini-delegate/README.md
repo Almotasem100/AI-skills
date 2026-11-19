@@ -9,9 +9,10 @@ This directory preserves the owner's local Gemini CLI contribution to Ahmed Nagd
   delegate-setup/lane integration, shared fake-CLI support, and relay tests.
 - `base-commit.txt` pins the exact upstream revision against which the patch was rebased.
 
-The contribution was reconciled onto upstream `3aa72d681a79e2a9d09bd9a316353003ae1cb4a7` on
-2026-10-14. It preserves Gemini approval-mode validation and the `permissionMode` to
-`approvalMode` lane conversion, alongside upstream's Muse and Codex-background additions. The
+The contribution was reconciled onto upstream `48b53d33b53ef260de76c3d2c1313e2c62a24820` on
+2026-11-19 (previously `3aa72d68`). Conflicts were only shared implementer lists, where upstream added `mcode`;
+both entries are kept. It preserves Gemini approval-mode validation and the `permissionMode` to `approvalMode`
+lane conversion. The
 overlay is separate from the vendored `delegate-setup` patch: do not duplicate Gemini behavior in
 `vendor/amElnagdy/delegate-skills/local-changes.patch`. It does not install skills, modify host
 settings, launch a real Gemini session, or publish upstream.
@@ -31,7 +32,7 @@ create a local branch. Then check and apply the patch:
 
 ```powershell
 $overlay = 'C:\path\to\AI-skills\overlays\gemini-delegate'
-git switch -c feature/gemini-delegate 3aa72d681a79e2a9d09bd9a316353003ae1cb4a7
+git switch -c feature/gemini-delegate 48b53d33b53ef260de76c3d2c1313e2c62a24820
 git apply --check "$overlay\changes.patch"
 git apply "$overlay\changes.patch"
 ```

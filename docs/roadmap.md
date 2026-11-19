@@ -22,11 +22,7 @@ Current state and next steps only. History lives in Git and [docs/records/](reco
    `instructions/global-instructions.md`.
 2. When ready, switch the local Gemini lane to run through OpenCode, keeping the selected model and permissions.
    Check the first real dispatch; the route decision itself is settled.
-3. Update `delegate-skills` from `3aa72d68` to upstream (`48b53d3` as of 2026-11-18): OpenCode token validation,
-   OpenCode stored-credential discovery, Codex `--no-project-doc`, new `mcode-delegate`, `codex-background` removed.
-   Our `local-changes.patch` applies cleanly; the Gemini overlay conflicts in 14 shared files (mostly implementer
-   registries) and must be rebased, then the overlay and relay tests rerun.
-4. Collect new friction in [friction-log.md](friction-log.md) and review it after a few real tickets.
+3. Collect new friction in [friction-log.md](friction-log.md) and review it after a few real tickets.
 
 ## Deferred
 
