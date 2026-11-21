@@ -1,5 +1,7 @@
 # V4 improvement register — AI-skills (planning only)
 
+See [harness-engineering and skills/testing follow-up](HARNESS-RESEARCH-FOLLOWUP.md) for researched incremental enhancements, source limits, and deferred MCP/plugin choices. No implementation or installations are authorized by that log.
+
 See [five-article audit and executor queue](FIVE-ARTICLE-AUDIT.md) for source-based recommendations, concrete candidate deltas, non-duplicates, reviewer pushback rules, and new external discovery. This register preserves the broader V3 baseline; the linked audit is the actionable research handoff.
 
 > **Authority / safety:** This is a research decision register, **not** a live workflow rule, approved implementation plan, or instruction to install/execute anything. The canonical source remains `instructions/orchestration-contract.md`; project-specific rules stay in their project. Keep V3 production files unchanged pending an explicit owner decision. Do not activate the optional AI Skills delegation profile by reading this record.
