@@ -55,4 +55,4 @@ One Gemini native subagent call classified only synthetic cases without being gi
 - Existing ignored benchmark reports/runs and AI-plugins' original untracked `.opencode/`, `active-work/`, and `docs/future-work.md` were preserved.
 - **Recommendation:** retain V3 unchanged. Use current project/ticket policy and working records for scoped cases. Do not add a global composition framework or implement a tool bridge from synthetic evidence. Simplest alternative: zero production files/lines; if repeated real ambiguity arises, add one local example at the owning project boundary.
 
-No merge was performed. Branch commit IDs will be recorded after publication.
+No merge was performed. All four research branches have been pushed; the branch links above point to the published results.
