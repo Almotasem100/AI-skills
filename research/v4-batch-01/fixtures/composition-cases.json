@@ -1,0 +1,87 @@
+{
+  "schema": "v4-batch-01-synthetic-composition-cases-v1",
+  "scope": {
+    "project": "SYN-HDC",
+    "ticketCapabilities": [
+      {
+        "id": "visual-check-FE-SYN-01",
+        "scope": { "kind": "ticket", "project": "SYN-HDC", "ticket": "FE-SYN-01" },
+        "trigger": "frontend interaction acceptance criteria",
+        "baseline": "ui-acceptance-v1",
+        "runConditions": ["synthetic browser fixture", "local only", "read-only browser access"],
+        "requiredEvidence": ["two interaction outcomes", "screenshots", "run identity", "baseline"],
+        "expires": "ticket-completion"
+      }
+    ],
+    "tickets": [
+      { "project": "SYN-HDC", "id": "FE-SYN-01", "kind": "frontend", "completed": false },
+      { "project": "SYN-HDC", "id": "BE-SYN-02", "kind": "backend", "completed": false },
+      { "project": "SYN-HDC", "id": "FE-SYN-03", "kind": "frontend", "completed": false }
+    ],
+    "omissions": [
+      { "outcome": "visual-check", "reason": "not-applicable", "ownerDecision": false },
+      { "outcome": "independent-review", "reason": "owner-explicitly-omitted", "ownerDecision": true },
+      { "outcome": "approval-gate", "reason": "unspecified", "ownerDecision": false }
+    ]
+  },
+  "securityReplacement": {
+    "requiredScope": ["synthetic-package-A"],
+    "requiredRevision": "fixture-rev-7",
+    "requiredFields": [
+      "assessedScope",
+      "inputRevision",
+      "evidenceRefs",
+      "limitations",
+      "findings",
+      "disposition"
+    ],
+    "originalOutcome": {
+      "independent": true,
+      "readOnly": true,
+      "requiredFields": [
+        "assessedScope",
+        "inputRevision",
+        "evidenceRefs",
+        "limitations",
+        "findings",
+        "disposition"
+      ]
+    },
+    "candidates": [
+      {
+        "id": "R1-compatible",
+        "independent": true,
+        "readOnly": true,
+        "assessedScope": ["synthetic-package-A"],
+        "inputRevision": "fixture-rev-7",
+        "evidenceRefs": ["synthetic://package-A/manifest"],
+        "limitations": ["does not inspect runtime deployment"],
+        "findings": [],
+        "disposition": "reviewed-no-findings"
+      },
+      {
+        "id": "R2-incompatible",
+        "independent": false,
+        "readOnly": false,
+        "assessedScope": [],
+        "inputRevision": "",
+        "evidenceRefs": [],
+        "limitations": [],
+        "findings": ["scan summary: clean"],
+        "disposition": "auto-fix-in-same-run"
+      }
+    ]
+  },
+  "projectGate": {
+    "project": "SYN-HDC",
+    "appliesOnlyTo": ["SYN-HDC"],
+    "scope": "project",
+    "capability": "CI gate after applicable implementation edits",
+    "toolSpecific": false,
+    "localCheck": "passed",
+    "corporateCi": "unavailable",
+    "requiredCiStatus": "passed",
+    "prDescription": "prepared",
+    "prPublication": "unavailable"
+  }
+}
