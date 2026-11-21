@@ -65,3 +65,24 @@ For each proposed item, the implementation reviewer must answer:
 - Live V3 feedback and reconciled fixes: `docs/friction-log.md`, `docs/records/`.
 - Related records in sibling research branches: `HDC-documents/research/v4-batch-01/planning/IMPROVEMENT-REGISTER.md` and `AI-plugins/research/v4-batch-01/planning/IMPROVEMENT-REGISTER.md`.
 - Benchmark fixtures are evidence tooling, not a fourth workflow/policy owner.
+
+
+## Owner decision — closeout feedback capture (approved design; implementation not yet authorized)
+
+**Decision:** At every **explicitly requested** `work-closeout`, capture **meaningful** workflow/interaction observations that arose during the task, including useful positive behavior; do **not** invent feedback or create a blank entry when nothing noteworthy occurred. This is a capture step, **not** a requirement to review, classify, fix or commit the instructions at closeout.
+
+**Reuse V3, do not build parallel machinery:** Existing `skills/work-closeout/SKILL.md` already protects unique feedback from cleanup; `docs/friction-log.md` is the portable observation inbox and `docs/records/` holds reviewed dispositions. The smallest later implementation would make the capture expectation explicit in the existing closeout skill while retaining the current explicit closeout trigger, owner authorization, source preservation, and repo write boundaries. Preserve original observation separately from later interpretations; prefer a short timestamped, non-confidential incident and actual context/evidence reference where available.
+
+**Separate second stage (not coupled to ticket closeout):** When the owner requests or authorizes a feedback-triage pass, review evidence and distinguish (a) actionable portable workflow/skill issue; (b) confusing question or user-agent communication; (c) isolated human mistake; (d) project/environment/tool limitation; (e) positive pattern to preserve; (f) unknown/needs evidence. A single event does not imply any instruction modification. Preserve original feedback, record disposition and rationale, and create a change candidate **only** for a grounded repeated or consequential issue in its owning location. The user may correct the account of what they intended without overwriting the raw event.
+
+**Safety and authorization:** `AI-skills/docs/friction-log.md` may receive only generic sanitized, non-sensitive portable observations when the destination is authorized and writable; project/customer details must stay within their authorized project record. Don't automatically cross-repo push/commit or copy confidential content. If write permission is absent, retain feedback in approved current working state and report the destination as pending. No new `issues.md`, lifecycle stage, approval gate or mandatory extra artifact. **Status:** DECISION RECORDED — implementer may independently challenge the proposed minimal diff in a subsequent separately authorized implementation pass; no changes to production skills now.
+
+## Browser verification — preliminary tool proposal (discussion only)
+
+**Owner preference:** research BOTH browser verification and static review; initial visual tool should be a **small read-only Test Evidence Viewer**, not an autonomous dashboard. This tool comparison is informative, **not** approval to install or configure an MCP server.
+
+- [Microsoft Playwright MCP](https://github.com/microsoft/playwright-mcp) uses structured accessibility snapshots to interact with web applications and supports screenshots and repeatable user journeys; its separate [Playwright CLI](https://github.com/microsoft/playwright-cli) can be lower-context for scripted workflows. Best first candidate when the gap is **checking an actual user journey**.
+- [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp) exposes console/network/performance diagnostics, screenshots and page inspection. Best when the gap is **diagnosing a frontend runtime failure**, not an assumed replacement for the test runner.
+- **Fit/gap check first:** inspect what the selected host already provides, approved browser access, authenticated session policy, screenshot/log support, data exposure and local resources. Compare one authorized representative ticket against an existing approach and show unique capability, setup/maintenance cost and evidence reproducibility. Browser access may reveal sensitive data; do not connect to company systems or share sessions without authorization. Avoid installing both by default, extra browser agents, or mandatory frontend stages on backend-only tasks.
+
+**Preliminary recommendation:** Start by assessing Playwright MCP/CLI for reproducible user journeys; reserve Chrome DevTools MCP for actual network/console/performance diagnostic gaps. If existing browser capabilities suffice, make **no tool change**. Later tooling research remains separate from the present closeout-feedback design decision.
