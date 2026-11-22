@@ -58,9 +58,9 @@ when nothing noteworthy occurred.
 
 - Keep raw observations separate from later triage, root-cause diagnosis or instruction edits; closeout is capture
   only, never automatic policy modification.
-- Record sanitized, non-confidential portable workflow patterns in the authorized shared friction log (for example
-  `docs/friction-log.md`) when writable; keep project- or customer-specific observations in the project's own
-  authorized record. Never copy confidential content into a shared repository.
+- Record sanitized, non-confidential portable workflow patterns in the authorized shared feedback log when writable;
+  keep project- or customer-specific observations in the project's own authorized record. Never copy confidential
+  content into a shared repository.
 - If the target record is not writable under current authorization, retain the observation in the existing working
   state and report the destination as pending.
 
