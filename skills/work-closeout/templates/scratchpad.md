@@ -9,13 +9,13 @@ review transcripts, evidence dumps and closeout reports belong elsewhere. Keep t
 **Repos/state:** <repo branch @ short sha, when relevant>
 
 ## Completed / current state
-- <material completed step and verification state>
+- <material completed step and verification state; for multi-request Change/Bug tasks, list each requested item and its verified status>
 
 ## Material decisions
 - <decision that affects continuing work; include owner/source when useful>
 
 ## Blockers / open questions
-- <only consequential unresolved items>
+- <consequential unresolved item: decision/question needed, why blocked / affected dependency, recommended option, resume pointer>
 
 ## Verification state
 - <what passed, failed, was skipped or remains pending; do not infer>

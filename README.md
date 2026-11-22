@@ -90,6 +90,9 @@ Every skill in `skills/` must drop as-is into a team repo's `skills/` folder and
 7. State the workflow policy once, in the contract. A skill does its own job and refers to the contract instead of
    restating it.
 8. Try a new skill on at least two agents before proposing it to the team repo.
+9. For substantive changes to a skill or rule, check at least one realistic failure-inspired trigger case and one
+   non-trigger control against the pre-change baseline, keeping deterministic source checks separate from live agent
+   outcomes.
 
 ## Tests
 

@@ -50,6 +50,20 @@ node <skill-dir>/scripts/check-citations.mjs <working-record.md> --root <repo1> 
 Fix/reverify consequential STALE citations or leave dependent closeout blocked. A checker pass validates locators,
 not interpretation, implementation or acceptance. Never invent verification, review, deployment or publication results.
 
+## Capture workflow observations
+
+At every explicitly requested closeout, capture **meaningful** workflow or interaction observations that arose during
+the work—both friction and positive patterns worth preserving. Do **not** invent observations or write blank entries
+when nothing noteworthy occurred.
+
+- Keep raw observations separate from later triage, root-cause diagnosis or instruction edits; closeout is capture
+  only, never automatic policy modification.
+- Record sanitized, non-confidential portable workflow patterns in the authorized shared friction log (for example
+  `docs/friction-log.md`) when writable; keep project- or customer-specific observations in the project's own
+  authorized record. Never copy confidential content into a shared repository.
+- If the target record is not writable under current authorization, retain the observation in the existing working
+  state and report the destination as pending.
+
 ## Report and separately authorized cleanup
 
 Report actual completion/acceptance, changed durable documents, deferred follow-ups, repository/publication/deployment

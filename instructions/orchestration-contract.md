@@ -264,7 +264,10 @@ When a project uses delivery slices:
 
 ### Choosing and batching checks
 
-- Choose checks by changed behavior, risk and project requirements; write relevant tests with the change.
+- Choose checks by changed behavior, risk and project requirements; write relevant tests with the change. When input
+  spaces, parsers, serializers, state transitions or behavior-preserving migrations warrant it, consider
+  property/invariant or differential checks against a known baseline and retain a minimized failing case as a
+  regression test, without adding unnecessary dependencies or blanket generated suites.
 - Batch tests/builds/review checks around coherent work. Use targeted checks during iteration and schedule a needed
   full check after the last relevant edit; earlier targeted checks may resolve a concrete uncertainty. A cosmetic edit does not justify unrelated full-suite or API-regression runs.
 - After a correction, recheck affected behavior; broaden only for new risk, failures or a project gate. Reuse current
