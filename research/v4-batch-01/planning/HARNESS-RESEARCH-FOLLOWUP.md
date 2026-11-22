@@ -1,6 +1,6 @@
 # V4 follow-up research — harness engineering, skills effectiveness and testing techniques
 
-**Status:** Research and independent-executor challenge only. The user's decision is to improve **both** runtime/browser verification and static code review, start with a **small evidence viewer** rather than a full inspector, and keep newly proposed historical-bug checks **advisory**. MCP server selection, plugin design and installation are a **separate later workstream**, not part of this handoff.
+**Status:** Research and independent-executor challenge only. The user's decision is to improve **both** runtime/browser verification and static code review (comparing existing tools to Playwright MCP/CLI and ast-grep before any install), keep newly proposed historical-bug checks **advisory**, and pursue a **read-only, milestone-based Workflow Dashboard inside the harness with zero additional AI/model calls** (superseding the earlier Test Evidence Viewer-only preference; see `AI-plugins/research/v4-batch-01/planning/WORKFLOW-DASHBOARD-DESIGN.md`). MCP server selection and tool installation remain separate from this handoff.
 
 **Authority:** `AGENTS.md`, `instructions/orchestration-contract.md`, the relevant existing skills and HDC project policy remain authoritative. This document is not an installed instruction, new workflow mode, skill, mandatory gate or permission to change master/install software. Review `FIVE-ARTICLE-AUDIT.md` and `IMPROVEMENT-REGISTER.md` for R-01..R-05 / I-01..I-12; entries below extend that queue without re-proposing already settled behavior. User chose only two workflow paths, explicit delegation-mode activation, and in-place skill improvement.
 
@@ -36,7 +36,7 @@
 
 ## What should not be changed
 - No auto-choice between Full Feature and Change/Bug, no unasked extra reviewers, no new delegation/fallback decisions, no universal `features.json`, no architecture layer catalog, no always-on garbage collector, no duplicate `review` or `test` skill, no relaxed HDC deployment/PR policy.
-- The **Test Evidence Viewer** remains an approved research **preference** (small local viewer first), **not** an implementation request. Its potential consumers are real JUnit/JSON/test reports and screenshot paths; do not add UI files in this pass.
+- The earlier **Test Evidence Viewer** preference was superseded by the approved **read-only, milestone-based Workflow Dashboard** design (`AI-plugins/research/v4-batch-01/planning/WORKFLOW-DASHBOARD-DESIGN.md`), which remains design-only until separately authorized after host feasibility verification. Do not add UI files in this pass.
 - Historical review checks remain **advisory**, not blocking, per owner decision.
 
 ## Independent executor challenge / integration

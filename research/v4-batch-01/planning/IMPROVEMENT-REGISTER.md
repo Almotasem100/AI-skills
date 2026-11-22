@@ -79,7 +79,7 @@ For each proposed item, the implementation reviewer must answer:
 
 ## Browser verification — preliminary tool proposal (discussion only)
 
-**Owner preference:** research BOTH browser verification and static review; initial visual tool should be a **small read-only Test Evidence Viewer**, not an autonomous dashboard. This tool comparison is informative, **not** approval to install or configure an MCP server.
+**Owner preference:** research BOTH browser verification and static review before considering tool installs (initial visual tool preference was expanded below to the read-only, milestone-based Workflow Dashboard with zero additional model calls). This tool comparison is informative, **not** approval to install or configure an MCP server.
 
 - [Microsoft Playwright MCP](https://github.com/microsoft/playwright-mcp) uses structured accessibility snapshots to interact with web applications and supports screenshots and repeatable user journeys; its separate [Playwright CLI](https://github.com/microsoft/playwright-cli) can be lower-context for scripted workflows. Best first candidate when the gap is **checking an actual user journey**.
 - [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp) exposes console/network/performance diagnostics, screenshots and page inspection. Best when the gap is **diagnosing a frontend runtime failure**, not an assumed replacement for the test runner.

@@ -36,10 +36,10 @@ The executor must **inspect, challenge and decide**: (a) already covered → mar
 | I-11 | Across repos: instructions/skill description quality | INVESTIGATE | Improve a **specific ambiguous invocation, error or duplicated guidance** after evidence, not broad new ACI layer; repair owning existing skill/CLI tool. | Link real wrong-tool/failure case; make error/action clearer and demonstrate no regression. |
 | I-12 | HDC: its project-specific README/Conventions | PRESERVE | One HDC active feature and CB slice mapping, QA pre-planning, authorized DEV and authenticated API regression remain project-defined. | No global HDC policy, parallel multi-project scratchpad or corporate change during V4 research. |
 
-## Three decisions that genuinely require the owner's input
-1. **Q-01 — Review checks beyond advisory**: Keep new incident-derived review checks **advisory in existing review skill** (recommended), or authorize a project-specific automated/blocking gate after an observe-only period? A blocker changes developer controls and belongs to the owner/project.
-2. **Q-02 — Task status visibility**: Keep blockers and owner questions **inside the existing scratchpad with a concise end-of-turn summary** (recommended), or is a separate dashboard/notification layer a desired future investment? Don't infer demand from factory article.
-3. **Q-03 — Broader autonomous operations**: Continue **session-based V3/V4 only** (previously selected and recommended), or explicitly reopen a daemon/automatic PR monitoring investigation? This is already answered for the present cycle: **session-based**. Do not ask again unless the owner raises a new constraint.
+## Owner decisions (settled after initial audit)
+1. **Q-01 — Review checks beyond advisory (SETTLED):** Owner selected **advisory-first** in existing review capability; do not promote to a blocking gate without explicit new authorization.
+2. **Q-02 — Task status visibility (SETTLED):** Owner expanded the earlier Test Evidence Viewer preference into a **read-only, milestone-based Workflow Dashboard inside the harness** with **zero additional AI/model calls** and no duplicate state (canonical design: `AI-plugins/research/v4-batch-01/planning/WORKFLOW-DASHBOARD-DESIGN.md`). Keep blockers/owner questions in the existing scratchpad; the dashboard reads them deterministically.
+3. **Q-03 — Broader autonomous operations (SETTLED):** Continue **session-based V3/V4 only**. Do not ask again unless the owner raises a new constraint.
 
 Everything else is **executor challenge then smallest compatible research-branch implementation**, or no-op if already addressed. Never ask the owner again about provider-specific examples, fallback defaults, reviewer doing the implementer's tests, or workflow-mode auto-selection.
 
