@@ -1,5 +1,7 @@
 # Review and land
 
+**LOCAL CHANGE:** Delegation alone does not authorize commits or discarding work; require explicit user authorization and preserve user/partial changes.
+
 ZCode's `result.json` contains its own summary and its own claims about gates. Treat all of it as a
 hypothesis. You are the reviewer; the commit is yours.
 
@@ -57,8 +59,7 @@ node "<skill-dir>/scripts/relay.mjs" --brief delta-brief.txt --cd /path/to/repo 
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have — "run this queue", "proceed" —
-committing verified, gate-passing work is the agreed contract. Two limits on that mandate:
+Delegation alone does not authorize committing or discarding work. Commit only when the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert without explicit user authorization. Two limits on that mandate:
 
 **Surface, don't absorb.** Report ZCode's design decisions, its defensible-but-unasked turns, and
 non-blocking nitpicks. Your reviewer's summary should let the human disagree with a choice they

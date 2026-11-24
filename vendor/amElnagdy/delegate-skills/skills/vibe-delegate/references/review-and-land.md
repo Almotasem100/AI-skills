@@ -49,14 +49,12 @@ to the human. Run relevant guard skills if installed.
 
 ## The commit boundary
 
-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer. Write a
-clear message describing what landed.
+**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
 
 From dispatch until that commit, the uncommitted working tree is the authoritative copy of Vibe's
 work. Never reflexively run `git checkout`, `reset`, `clean`, or switch branches after an interrupted
 run. Inspect `git status`, `git diff`, `git diff --cached` for staged changes, and open every untracked
-file (`??`) directly because no diff shows its contents. After inspection, discarding a bad or
-premise-contaminated change can be correct; the rule is to preserve the evidence until it is reviewed.
+file (`??`) directly because no diff shows its contents. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report bad or premise-contaminated changes; discard or revert only with explicit user authorization.
 
 ## Rework: send the delta
 
@@ -76,8 +74,7 @@ Default `accept-edits` runs cannot execute most gates headlessly; the orchestrat
 
 ## Surface, do not absorb
 
-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep them
-in the loop when the work changes shape:
+Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
 
 - Report design decisions and defensible-but-unrequested turns.
 - Note non-blocking nitpicks you did not block on.

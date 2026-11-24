@@ -57,11 +57,11 @@ Things worth checking specifically after a delegated run:
 **Aider edits the working tree; you commit.** The relay disables Aider's auto-commit and dirty-commit
 defaults precisely so this boundary exists, and it never runs `git commit` itself.
 
-Commit only when:
+**LOCAL CHANGE:** Commit only when the user explicitly authorized it, and all of these hold:
 
 1. The gates pass in the tree you are looking at.
 2. The diff matches the brief.
-3. Anything unasked-for has been surfaced to the human or reverted.
+3. Anything unasked-for has been surfaced to the human; preserve it unless the user explicitly authorized reverting it.
 
 Write the commit message yourself, describing the change as it landed. Aider's report describes what
 it believed it did.
@@ -89,8 +89,7 @@ Review the rework the same way. A second run is not more trustworthy than the fi
 
 ## Surface, do not absorb
 
-Once the human has opted into delegation, committing verified, gate-passing work is the agreed
-contract - you do not need to ask again for each task. Two things still go back to them:
+**LOCAL CHANGE:** Delegation alone does not authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified work intact and uncommitted. Two things still go back to them:
 
 - **Design decisions the brief did not specify.** Aider chose a name, a structure, an approach. Say
   so, briefly, in your report.

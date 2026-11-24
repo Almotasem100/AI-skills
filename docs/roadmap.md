@@ -11,14 +11,15 @@ Current state and next steps only. History lives in Git and [docs/records/](reco
   [manifest.md](../manifest.md).
 - **Repository layout** (2026-11 cleanup): installable instructions are in `instructions/`, historical audits and logs
   are in `docs/records/`, and the tests check behavior and structure, not exact wording.
+- **Delegation reliability:** all 19 vendored relay skills now require explicit user authorization for commits or discards and preserve user/partial work in their skill and review guidance. Recovery also requires process/session evidence before another writer and limits fallback to existing approved policy. All 19 skill folders are refresh-supported; Gemini-enabled installations need the overlay-based refresh path.
 - **Verification:** `npm test` passes locally. Behavior in installed hosts is checked with the
   [native-smoke pack](../test/native-smoke/README.md) and has not been rerun since the cleanup.
 
 ## Next
 
-1. Refresh the installed copies from this revision with `node tools/refresh/refresh.mjs` (see
-   [GUIDE.md §6](../GUIDE.md#6-keeping-them-up-to-date)), then confirm in a fresh session that the skills load and that
-   the contract is read. Decide whether the three extra rules in the OpenCode host `AGENTS.md` belong in
+1. Refresh the selected installed copies from this revision with `node tools/refresh/refresh.mjs` (see
+   [GUIDE.md §6](../GUIDE.md#6-keeping-them-up-to-date)); all 19 relay folders are refresh-supported, and Gemini-enabled
+   installations need the overlay path. Then confirm in a fresh session that the skills load and that the contract is read. Decide whether the three extra rules in the OpenCode host `AGENTS.md` belong in
    `instructions/global-instructions.md`.
 2. When ready, switch the local Gemini lane to run through OpenCode, keeping the selected model and permissions.
    Check the first real dispatch; the route decision itself is settled.

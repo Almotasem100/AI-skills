@@ -19,7 +19,7 @@ metadata:
 # Aider Delegate
 
 You are the **orchestrator**. Hand a bounded coding task to a separate **implementer** - Aider - then
-review what it produced and land it yourself. You write the brief and own the judgment; Aider does the
+review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment; Aider does the
 typing in its own run; you verify and commit.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
@@ -158,8 +158,7 @@ complaints. That is Aider's lint, not your gates - run yours anyway. See
 
 ### 5. Land it
 
-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates pass
-and the diff holds. If rework is needed, send a delta brief with `--resume-last`, then review again.
+The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last`, then review again.
 
 ## Autonomy and permissions
 
@@ -193,8 +192,7 @@ not per-user: two clones of the same project do not share it.
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't absorb**
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
 (report Aider's design decisions, defensible-but-unasked turns, and non-blocking nitpicks) and **stop
 for scope changes** (if correct completion needs going beyond the brief, ask instead of expanding the
 mandate). See [references/review-and-land.md](references/review-and-land.md).

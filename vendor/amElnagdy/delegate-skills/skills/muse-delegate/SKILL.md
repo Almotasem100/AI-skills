@@ -2,7 +2,7 @@
 name: muse-delegate
 description: >-
   Delegate a coding task to Muse Code (`muse`) as a background implementer, then review its diff and
-  land it yourself. Use this whenever the user wants to hand implementation work to Muse — phrasings
+  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Muse — phrasings
   like "have Muse do X", "delegate this to Muse", "run it through Muse", or "use Muse to
   implement/fix/refactor" — or wants to run a queue of coding tasks through Muse while staying the
   reviewer. Prefer it when the user will review the diff and commit it themselves. It applies only
@@ -18,7 +18,7 @@ metadata:
 # Muse Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — Muse Code (`muse`) — then review what it produced and land it yourself. You write
+**implementer** — Muse Code (`muse`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
 the brief and own the judgment; Muse does the typing in its own `exec` run; you verify and commit.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
@@ -134,17 +134,14 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits the working tree; **the orchestrator commits.** Committing should be the act of
-the party that verified the work. Only after the gates pass and the diff holds:
-
-- Commit the verified work yourself, with a clear message.
-- If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task) and
-  review again. There is no headless `--resume-last`.
+The implementer edits the working tree. The orchestrator may commit only when the user explicitly
+authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and
+uncommitted. If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task)
+and review again. There is no headless `--resume-last`.
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract — that is the whole point. Two limits on that
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
 mandate: **surface, don't absorb** (report Muse's design decisions, defensible-but-unasked turns,
 and non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if correct
 completion needs going beyond the brief, ask — don't expand the mandate yourself). The full treatment

@@ -2,7 +2,7 @@
 name: grok-delegate
 description: >-
   Delegate a coding task to the Grok Build CLI as a background implementer, then review its diff and
-  land it yourself. Use this whenever the user wants to hand implementation work to Grok — phrasings
+  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Grok — phrasings
   like "have Grok do X", "delegate this to Grok", "run it through Grok", "use Grok Build to
   implement/fix/refactor", or "have grok CLI do this" — or to run a queue of coding tasks through
   Grok while staying the reviewer. Prefer it when the user will review the diff and commit it
@@ -21,7 +21,7 @@ For a trusted repository rejected by Git's ownership check, the relay supports
 Git config or Grok permission changes. See [dispatch and poll](references/dispatch-and-poll.md#git-ownership-errors-on-shared-or-remounted-drives).
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the Grok Build CLI (`grok`) — then review what it produced and land it yourself. You
+**implementer** — the Grok Build CLI (`grok`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You
 write the brief and own the judgment; Grok does the typing under an explicit autonomy profile; you
 verify and commit.
 
@@ -114,11 +114,7 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-**The orchestrator commits.** Only after the gates pass and the diff holds:
-
-- Commit the verified work yourself, with a clear message.
-- If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task) and
-  review again.
+The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task) and review again.
 
 ## Autonomy model
 
@@ -150,8 +146,7 @@ review stays the guarantee.
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract — that is the whole point. Two limits on that
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
 mandate: **surface, don't absorb** (report Grok's design decisions, defensible-but-unasked turns, and
 non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if correct
 completion needs going beyond the brief, ask — don't expand the mandate yourself). The full treatment

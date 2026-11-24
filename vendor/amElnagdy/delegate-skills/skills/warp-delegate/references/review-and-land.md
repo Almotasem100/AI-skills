@@ -1,7 +1,6 @@
 # Review and land
 
-Warp edits the working tree. **You commit.** That boundary is the point of the skill: the
-implementer produces a diff, and a reviewer who did not write it decides whether it ships.
+Warp edits the working tree. The reviewer verifies the work; **commit only when the user explicitly authorized it** and the gates and diff pass. Otherwise preserve the work intact and uncommitted.
 
 ## Why the review is not optional here
 
@@ -11,15 +10,14 @@ could touch while it worked. The diff is not a courtesy record — it is the onl
 
 ## The checklist
 
-Work through these in order. Stop at the first one that fails and decide whether to rework or
-discard.
+Work through these in order. Stop at the first one that fails. Preserve the result and working tree; rework within authority or report the issue. Do not discard or revert without explicit user authorization.
 
 1. **Read `result.json` first.** If there is no `result.json`, stop: a usage error exits 2 before
    Warp is ever dispatched and writes none, so an absent file means the run did not happen — read the
    relay's stderr, not the tree. Otherwise require `status: "completed"` and `exitCode: 0` before
    going further. `failed`, `timeout`, `aborted`, and `warp_unavailable` all mean the run did not
    finish on its own terms, and `timeout` and `aborted` additionally mean the tree may be mid-edit
-   and incoherent. Rework or discard from the baseline rather than reviewing a partial run.
+   and incoherent. Preserve the partial result and report the state; do not discard or revert without explicit user authorization.
 2. **Start from `touchedFiles`.** It is `git status --porcelain` taken after the run: post-run,
    git-visible worktree state, not a log of what the agent did. It cannot show an ignored file, an
    edit the run made and then reverted, or a write outside the repository, and it includes anything
@@ -34,7 +32,7 @@ discard.
 4. **Read the whole diff against the brief.** `git diff` and `git diff --staged` — then open every
    `??` path in `touchedFiles` directly, including everything inside an untracked directory. Neither
    diff command shows the contents of an untracked file, so a file Warp created is invisible to both
-   and would otherwise reach your commit unread. Ask of each hunk and each new file: did the brief
+   and would otherwise be invisible during review. Ask of each hunk and each new file: did the brief
    ask for this? Changes outside the brief's stated scope are the thing to catch.
 5. **Check what should NOT have changed.** Lockfiles, CI config, formatter config, unrelated
    modules, and anything the brief listed under "leave untouched".
@@ -71,41 +69,15 @@ to leave alone. See [writing-the-brief.md](writing-the-brief.md#delta-briefs).
 If `conversationId` is `null`, the stream did not carry one; dispatch a fresh run with a brief that
 restates the corrected requirements.
 
-Discard rather than rework when the diff misunderstood the goal, wanders far outside the brief, or
-would take longer to correct than to redo.
-
-Discard against a known baseline, never with a blanket revert. `git checkout -- .` is the wrong
-reach: it leaves staged and untracked files behind, so the tree stays dirty for the next dispatch,
-and it destroys any uncommitted work of your own that predates the run. Dispatch from a clean tree —
-commit your own changes, or `git stash push --include-untracked` them. A bare `git stash` leaves
-untracked files in place, and those resurface as `??` entries in `touchedFiles`, where the cleanup
-below would delete work the run never made. Confirm `git status --porcelain` prints nothing before
-dispatching, so that everything dirty afterward is Warp's, then drop exactly what the run
-introduced, reading the paths off `touchedFiles`:
-
-```bash
-git restore --staged --worktree -- <tracked paths>   # the ' M' / 'M ' entries
-git clean -f -- <untracked paths>                    # the '??' entries
-```
-
-A `??` entry can name a whole directory rather than each file under it; passing that path removes
-the directory and its contents, since `-d` only governs the no-pathspec case. The exception is a
-nested git repository — if the run scaffolded one, `git clean -f` skips it and `-ff` is required.
-
-If dispatching from a clean tree is not an option, give Warp its own `git worktree` instead: then
-discarding is `git worktree remove --force`, and your work was never in reach. Either way, rewrite
-the brief before dispatching again.
+**LOCAL CHANGE:** Do not discard/revert result files or remove a worktree as routine recovery. Preserve the working tree, including untracked and pre-existing files, inspect `git status`, the staged and unstaged diffs, and untracked contents, then report out-of-scope or premise-invalid changes. Rework only within the authorized scope. `git restore`, `git clean`, stash, and forced worktree removal can destroy user work; use none of them without explicit user authorization. Rewrite the brief before any authorized re-dispatch.
 
 ## Landing
 
-Commit once the gates pass and the diff holds. Write the commit message yourself: it should describe
-the change, not the delegation. Do not credit the tool in the message unless the project's own
-convention asks for it.
+**LOCAL CHANGE:** Commit only when the user explicitly authorized it and the gates pass and the diff holds; otherwise leave all work intact and uncommitted. If authorized, write a message describing the change, not the delegation, and follow project co-authorship conventions.
 
 ## Surface, don't absorb
 
-Delegation is something the human opted into, and committing verified, gate-passing work is the
-agreed contract. Two limits stay with you:
+Delegation alone does not authorize committing or discarding work. Preserve user and partial changes; do not discard or revert without explicit user authorization. Two limits stay with you:
 
 - **Surface, don't absorb.** Report Warp's design decisions, its defensible-but-unasked turns, and
   the non-blocking nitpicks you chose not to fix. Silently smoothing them over hides the

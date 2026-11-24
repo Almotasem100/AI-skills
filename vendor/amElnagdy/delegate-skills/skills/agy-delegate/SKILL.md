@@ -2,7 +2,7 @@
 name: agy-delegate
 description: >-
   Delegate a coding task to the Google Antigravity CLI (`agy`) as a background implementer, then review
-  its diff and land it yourself. Use this whenever the user wants to hand implementation work to
+  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to
   Antigravity or agy - phrasings like "have Antigravity do X", "delegate this to agy", "run it through
   agy", or "use Antigravity to implement/fix/refactor" - or wants to run a queue of coding tasks
   through agy while staying the reviewer. DO NOT USE for tasks small enough to do inline, or when the
@@ -108,11 +108,7 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits the working tree; **the orchestrator commits.** Only after the gates pass and the
-diff holds:
-
-- Commit the verified work yourself, with a clear message.
-- If it needs changes, send a delta brief with `--resume-last` and review again.
+The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--resume-last` and review again.
 
 ## Permission model
 
@@ -149,8 +145,7 @@ the bypass flag without explicit human approval.
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract. Two limits on that mandate: **surface, don't
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that mandate: **surface, don't
 absorb** (report Antigravity's design decisions, defensible-but-unasked turns, and non-blocking
 nitpicks rather than silently keeping them) and **stop for scope changes** (if correct completion needs
 going beyond the brief, ask - don't expand the mandate yourself). The full treatment is in

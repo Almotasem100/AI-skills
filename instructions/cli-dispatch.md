@@ -34,7 +34,7 @@ and report authored versus executed separately. Do not silently switch models or
 - Route resolution is not dispatch. A configured route is not proof of live provider availability.
 - Copy continuation IDs from that assignment's result/events, not memory. Preserve old attempts by using a new
   output directory. A failed transport can leave usable outputs; process status and task acceptance are separate.
-- After a terminal launch timeout, inspect the existing process, session or output before starting another run.
+- A timeout, disconnect, or early abort is not proof that the implementer stopped. Before another dispatch, inspect actual process/session evidence to establish that it never started or has stopped; a stop request alone is not confirmation. If status remains unknown, do not start a duplicate writer. Preserve and review partial work and outputs, then follow the selected profile's existing approved fallback policy. A confirmed stop or never-started dispatch may use that policy's fallback only when authorized; keep existing changes intact.
 - In OpenCode, a model-provider connection banner such as `ECONNRESET … retrying` describes the host's
   provider retry. Check terminal and test results separately. The session may lack access to UI-only banners.
 - With Windows PowerShell 5, read UTF-8 artifacts with `Get-Content -Encoding UTF8`. For native commands,

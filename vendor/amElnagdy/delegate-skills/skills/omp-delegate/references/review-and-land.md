@@ -49,8 +49,7 @@ choice to the human. Run relevant guard skills if installed.
 
 ## The commit boundary
 
-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer.
-Write a clear message describing what landed.
+**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
 
 From dispatch until that commit, the uncommitted working tree is the authoritative copy of the
 implementer's work — the only one you can commit from, and often the only copy at all. Never run
@@ -59,9 +58,7 @@ however messy an interrupted run looks, inspect it first: `git status`, `git dif
 `git diff --cached` for anything the implementer staged (plain `git diff` is blind to the index),
 and open any untracked files (`??` in `git status`) directly — they are the implementer's new
 files, and no diff shows their contents. The tree is evidence, not clutter. After that inspection
-the verdict can legitimately be to discard — work built on a premise you have since corrected,
-for example — and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
-before anyone has looked.
+**LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
 
 ## Rework: send the delta
 
@@ -84,8 +81,7 @@ and the tree after every run.
 
 ## Surface, do not absorb
 
-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep
-them in the loop when the work changes shape:
+Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
 
 - Report design decisions and defensible-but-unrequested turns.
 - Note non-blocking nitpicks you did not block on.

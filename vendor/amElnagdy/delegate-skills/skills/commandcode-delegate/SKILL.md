@@ -2,7 +2,7 @@
 name: commandcode-delegate
 description: >-
   Delegate a coding task to the Command Code CLI (`cmd`) as a background implementer, then review its
-  diff and land it yourself. Use this whenever the user wants to hand implementation work to Command
+  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Command
   Code — phrasings like "have Command Code do X", "delegate this to commandcode", "run it through
   cmd", or "use Command Code to implement/fix/refactor" — or to run a queue of coding tasks through
   Command Code while staying the reviewer. DO NOT USE for tasks small enough to do inline, or when the
@@ -16,7 +16,7 @@ metadata:
 # Command Code Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the Command Code CLI (`cmd`) — then review what it produced and land it yourself.
+**implementer** — the Command Code CLI (`cmd`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted.
 You write the brief and own the judgment; Command Code does the typing in your working tree; you
 verify and commit.
 
@@ -133,11 +133,10 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 The relay never commits, but it cannot stop Command Code under `--yolo` from writing `.git`. The brief
 forbids implementer commits, and the reviewer compares `HEAD` with the recorded pre-dispatch baseline
-before landing anything. **The orchestrator commits.** Only after the gates pass and the diff holds:
-
-- Commit the verified work yourself, with a clear message.
-- If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`
-  (use `--continue-last` only when no session id is available), and review again.
+before any authorized landing. The orchestrator may commit only when the user explicitly authorized it
+and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it
+needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json` (use
+`--continue-last` only when no session id is available), and review again.
 
 ## Read-only second opinions
 
@@ -150,8 +149,7 @@ or outside-repository paths are not covered); `true` means it saw one; `null` me
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract — that is the whole point. Two limits on that
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
 mandate: **surface, don't absorb** (report Command Code's design decisions, defensible-but-unasked
 turns, and non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if
 correct completion needs going beyond the brief, ask — don't expand the mandate yourself). The full

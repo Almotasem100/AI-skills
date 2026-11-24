@@ -80,7 +80,7 @@ fixed in the tree, and either choice is reported to the human.
 From dispatch until a reviewed commit, the uncommitted tree is the authoritative copy. Do not
 reflexively run `git checkout`, `git reset`, `git clean`, or switch branches after a timeout, abort, or
 failed result. First inspect status, unstaged and staged diffs, untracked files, `events.jsonl`, and
-`stderr.txt`. After inspection, discarding premise-invalid work can be the correct decision.
+`stderr.txt`. **LOCAL CHANGE:** Preserve premise-invalid work and report it; discard or revert only with explicit user authorization.
 
 ## Rework in the same session
 
@@ -101,13 +101,11 @@ holds.
 
 ## Commit boundary
 
-When the gates pass and the diff satisfies the brief, **the orchestrator commits**, never the
-implementer. Write a clear message describing what landed.
+**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff satisfies the brief; otherwise leave the work intact and uncommitted. The implementer never commits.
 
 ## Surface, do not absorb
 
-The human opted into delegation, so landing verified work is the contract. Keep them informed when
-the work changes shape:
+Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
 
 - report design decisions and defensible-but-unrequested turns;
 - note non-blocking concerns you chose not to block on;

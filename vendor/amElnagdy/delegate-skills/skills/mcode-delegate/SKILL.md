@@ -2,7 +2,7 @@
 name: mcode-delegate
 description: >-
   Delegate a coding task to the MiniMax Code CLI (`mcode`) as a background implementer, then review
-  its diff and land it yourself. Use this whenever the user wants to hand implementation work to
+  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to
   MiniMax Code or a MiniMax model — phrasings like "have MiniMax do X", "delegate this to mcode", "run
   it through MiniMax Code", or "use MiniMax to implement/fix/refactor" — or to run a queue of coding
   tasks through MiniMax Code while staying the reviewer. DO NOT USE for tasks small enough to do
@@ -16,7 +16,7 @@ metadata:
 # MiniMax Code Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the MiniMax Code CLI (`mcode`) — then review what it produced and land it yourself.
+**implementer** — the MiniMax Code CLI (`mcode`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted.
 You write the brief and own the judgment; MiniMax Code does the typing in your working tree; you
 verify and commit.
 
@@ -132,11 +132,9 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 The relay never commits, but nothing stops MiniMax Code from writing `.git`. The brief forbids
 implementer commits, and the reviewer compares `HEAD` with the recorded pre-dispatch baseline before
-landing anything. **The orchestrator commits.** Only after the gates pass and the diff holds:
-
-- Commit the verified work yourself, with a clear message.
-- If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`,
-  and review again.
+any authorized landing. The orchestrator may commit only when the user explicitly authorized it and only
+after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs
+changes, send a delta brief with `--session <sessionId>` from the prior `result.json`, and review again.
 
 ## Read-only second opinions
 
@@ -150,8 +148,7 @@ restore.
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
-verified, gate-passing work is the agreed contract — that is the whole point. Two limits on that
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
 mandate: **surface, don't absorb** (report MiniMax Code's design decisions, defensible-but-unasked
 turns, and non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if
 correct completion needs going beyond the brief, ask — don't expand the mandate yourself). The full

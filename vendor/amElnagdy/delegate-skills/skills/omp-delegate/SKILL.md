@@ -2,7 +2,7 @@
 name: omp-delegate
 description: >-
   Delegate a coding task to Oh My Pi (`omp`) as a background implementer, then review its
-  diff and land it yourself. Use this whenever the user wants to delegate implementation work to
+  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation work to
   Oh My Pi / omp - phrasings like "have omp implement X", "delegate this to oh my pi", "run it
   through omp", "use oh-my-pi to implement/fix/refactor" - or wants to run a queue of coding
   tasks through omp while staying the reviewer. DO NOT USE for tasks small enough to do inline,
@@ -17,7 +17,7 @@ metadata:
 # Oh My Pi Delegate
 
 You are the **orchestrator**. Delegate a bounded coding task to a separate **implementer** - Oh My
-Pi (`omp`) - then review what it produced and land it yourself. You write the brief and own the
+Pi (`omp`) - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
 judgment; the implementer makes changes in its own session; you verify and commit.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
@@ -132,9 +132,7 @@ See [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates
-pass and the diff holds. If rework is needed, send a delta brief with `--resume-last` or
-`--session <id>`, then review again.
+The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
 
 ## Autonomy and permissions
 
@@ -152,8 +150,7 @@ would stall until the watchdog. The other controls are:
 
 ## Authorization model
 
-Delegation is something the human opts into. Once they have ("run this queue", "proceed"),
-committing verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't
+**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't
 absorb** (report omp's design decisions, defensible-but-unasked turns, and non-blocking nitpicks)
 and **stop for scope changes** (if correct completion needs going beyond the brief, ask instead of
 expanding the mandate). See [references/review-and-land.md](references/review-and-land.md).

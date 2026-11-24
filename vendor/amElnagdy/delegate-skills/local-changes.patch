@@ -79,3 +79,768 @@ index ae0d30a..0384e95 100644
 -  // only reads, so it doesn't need auto-approval anyway.
 +  // LOCAL CHANGE: never auto-approve a plan run's ask-gated actions. This omission
 +  // does not revoke tools or writes already allowed by the host configuration.
+diff --git a/skills/agy-delegate/SKILL.md b/skills/agy-delegate/SKILL.md
+index 3176c9b..7dbb822 100644
+--- a/skills/agy-delegate/SKILL.md
++++ b/skills/agy-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  its diff and land it yourself. Use this whenever the user wants to hand implementation work to
++  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to
+@@ -111,5 +111 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Only after the gates pass and the
+-diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--resume-last` and review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--resume-last` and review again.
+@@ -152,2 +148 @@ the bypass flag without explicit human approval.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract. Two limits on that mandate: **surface, don't
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that mandate: **surface, don't
+diff --git a/skills/agy-delegate/references/review-and-land.md b/skills/agy-delegate/references/review-and-land.md
+index 3372a09..e3ef15d 100644
+--- a/skills/agy-delegate/references/review-and-land.md
++++ b/skills/agy-delegate/references/review-and-land.md
+@@ -64,2 +64 @@ If the `guard-skills` package is installed, run the relevant guard on the diff f
+-When the gates pass and the diff holds, **you commit** - the orchestrator, never the implementer. Write
+-a clear message describing what landed. If your project attributes co-authorship, that is the place for
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits. If your project attributes co-authorship, that is the place for
+@@ -74,4 +73 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -95,2 +91 @@ no shortcuts.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract. But
+-keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/aider-delegate/SKILL.md b/skills/aider-delegate/SKILL.md
+index c5abcfb..128354e 100644
+--- a/skills/aider-delegate/SKILL.md
++++ b/skills/aider-delegate/SKILL.md
+@@ -22 +22 @@ You are the **orchestrator**. Hand a bounded coding task to a separate **impleme
+-review what it produced and land it yourself. You write the brief and own the judgment; Aider does the
++review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment; Aider does the
+@@ -161,2 +161 @@ complaints. That is Aider's lint, not your gates - run yours anyway. See
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates pass
+-and the diff holds. If rework is needed, send a delta brief with `--resume-last`, then review again.
++The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last`, then review again.
+@@ -196,2 +195 @@ not per-user: two clones of the same project do not share it.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't absorb**
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+diff --git a/skills/aider-delegate/references/review-and-land.md b/skills/aider-delegate/references/review-and-land.md
+index 5b3c3c6..3a4a3ba 100644
+--- a/skills/aider-delegate/references/review-and-land.md
++++ b/skills/aider-delegate/references/review-and-land.md
+@@ -60 +60 @@ defaults precisely so this boundary exists, and it never runs `git commit` itsel
+-Commit only when:
++**LOCAL CHANGE:** Commit only when the user explicitly authorized it, and all of these hold:
+@@ -64 +64 @@ Commit only when:
+-3. Anything unasked-for has been surfaced to the human or reverted.
++3. Anything unasked-for has been surfaced to the human; preserve it unless the user explicitly authorized reverting it.
+@@ -92,2 +92 @@ Review the rework the same way. A second run is not more trustworthy than the fi
+-Once the human has opted into delegation, committing verified, gate-passing work is the agreed
+-contract - you do not need to ask again for each task. Two things still go back to them:
++**LOCAL CHANGE:** Delegation alone does not authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified work intact and uncommitted. Two things still go back to them:
+diff --git a/skills/claude-delegate/SKILL.md b/skills/claude-delegate/SKILL.md
+index 78ebe22..a95d72f 100644
+--- a/skills/claude-delegate/SKILL.md
++++ b/skills/claude-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  implementer, then review its diff and land it yourself. Use only when the user explicitly asks to
++  implementer, then review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use only when the user explicitly asks to
+@@ -19 +19 @@ You are the **orchestrator**. Delegate one bounded coding task to a separate **i
+-Code CLI session â€” then review what it produced and land it yourself. You write the brief and own the
++Code CLI session â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
+@@ -107,2 +107 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-The **orchestrator commits** only after the gates pass and the diff holds. For rework, resume the same
+-Claude session with a delta brief:
++**LOCAL CHANGE:** The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. For rework, resume the same Claude session with a delta brief:
+diff --git a/skills/claude-delegate/references/review-and-land.md b/skills/claude-delegate/references/review-and-land.md
+index ce3b9eb..d40712b 100644
+--- a/skills/claude-delegate/references/review-and-land.md
++++ b/skills/claude-delegate/references/review-and-land.md
+@@ -83 +83 @@ failed result. First inspect status, unstaged and staged diffs, untracked files,
+-`stderr.txt`. After inspection, discarding premise-invalid work can be the correct decision.
++`stderr.txt`. **LOCAL CHANGE:** Preserve premise-invalid work and report it; discard or revert only with explicit user authorization.
+@@ -104,2 +104 @@ holds.
+-When the gates pass and the diff satisfies the brief, **the orchestrator commits**, never the
+-implementer. Write a clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff satisfies the brief; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -109,2 +108 @@ implementer. Write a clear message describing what landed.
+-The human opted into delegation, so landing verified work is the contract. Keep them informed when
+-the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/cline-delegate/SKILL.md b/skills/cline-delegate/SKILL.md
+index ba0cd5c..bc752c2 100644
+--- a/skills/cline-delegate/SKILL.md
++++ b/skills/cline-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  review its diff and land it yourself. Use this whenever the user wants to delegate implementation
++  review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation
+@@ -19 +19 @@ You are the **orchestrator**. Delegate a bounded coding task to a separate **imp
+-coding agent CLI - then review what it produced and land it yourself. You write the brief and own
++coding agent CLI - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own
+@@ -94,4 +94 @@ See [references/review-and-land.md](references/review-and-land.md).
+-If the work is good, commit it. The relay never commits - the diff and `result.json` are the
+-record; run `git status` and `git diff` first to confirm exactly what changed. If the group has a
+-PR flow, make the commit and push a branch; let human review happen. If the diff is wrong or
+-incomplete, re-dispatch a corrected brief in a fresh run and review again.
++If the work is good, commit it only when the user explicitly authorized a commit; otherwise leave it intact and uncommitted. The relay never commits - the diff and `result.json` are the record; run `git status` and `git diff` first to confirm exactly what changed. Push only when separately authorized. If the diff is wrong or incomplete, preserve it and report or rework within the approved scope; do not discard or revert it without explicit user authorization.
+@@ -110,4 +107 @@ briefs remain dangerous in act mode because commands run as the current user.
+-Delegation is something the human opts into. Once briefed, cline works as a tool you approved use
+-of. The boundary is: **do not accept conclusions from the self-report**; verify everything on
+-disk. For anything touching credentials, production data, or irreversible operations, stop and ask
+-the human first instead of encoding it in a brief.
++**LOCAL CHANGE:** Delegation is something the human opts into, but it does not by itself authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. **Do not accept conclusions from the self-report**; verify everything on disk. For anything touching credentials, production data, or irreversible operations, stop and ask the human first instead of encoding it in a brief.
+diff --git a/skills/cline-delegate/references/review-and-land.md b/skills/cline-delegate/references/review-and-land.md
+index d60506a..d03ac0e 100644
+--- a/skills/cline-delegate/references/review-and-land.md
++++ b/skills/cline-delegate/references/review-and-land.md
+@@ -47,2 +47 @@ choice to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer.
+-Write a clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -72,2 +71 @@ and implementer sweep.
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep
+-them in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/codex-delegate/SKILL.md b/skills/codex-delegate/SKILL.md
+index e5e566a..4cabb48 100644
+--- a/skills/codex-delegate/SKILL.md
++++ b/skills/codex-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  land it yourself. Use this whenever the user wants to hand implementation work to Codex â€” phrasings
++  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Codex â€” phrasings
+@@ -20 +20 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the OpenAI Codex CLI â€” then review what it produced and land it yourself. You write
++**implementer** â€” the OpenAI Codex CLI â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
+@@ -115,6 +115,5 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-Because Codex's sandbox cannot reliably write `.git` (it varies by version, OS, and path), **the
+-orchestrator commits.** Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--session <threadId>` from the prior `result.json`
+-  (use `--resume-last` only when no thread id is available), and review again.
++Because Codex's sandbox cannot reliably write `.git` (it varies by version, OS, and path), the
++orchestrator owns any authorized commit. Commit only if the user explicitly authorized it, and only
++after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs
++changes, send a delta brief with `--session <threadId>` from the prior `result.json` (use
++`--resume-last` only when no thread id is available), and review again.
+@@ -134,2 +133 @@ verify `touchedFiles` came back empty instead of assuming no edits.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/codex-delegate/references/review-and-land.md b/skills/codex-delegate/references/review-and-land.md
+index bf64373..404cfac 100644
+--- a/skills/codex-delegate/references/review-and-land.md
++++ b/skills/codex-delegate/references/review-and-land.md
+@@ -82,5 +82 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never Codex. This isn't a
+-workaround for a missing feature; it's the deliberate boundary. Codex's sandbox can't reliably write
+-`.git`, and more importantly, committing should be the act of the party that verified the work. Write
+-a clear message describing what landed. If your project attributes co-authorship, that's the place
+-for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. Codex must not commit. If authorized, write a clear message. If the project attributes co-authorship, record it there.
+@@ -94,4 +90 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -113 +106 @@ again â€” rework gets the same gate-rerun, test check, diff-read, and sweep as t
+-shortcuts. Repeat until it's right, then commit.
++shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -117,2 +110 @@ shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/commandcode-delegate/SKILL.md b/skills/commandcode-delegate/SKILL.md
+index b908b70..fb62dac 100644
+--- a/skills/commandcode-delegate/SKILL.md
++++ b/skills/commandcode-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user wants to hand implementation work to Command
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Command
+@@ -19 +19 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the Command Code CLI (`cmd`) â€” then review what it produced and land it yourself.
++**implementer** â€” the Command Code CLI (`cmd`) â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted.
+@@ -136,5 +136,4 @@ forbids implementer commits, and the reviewer compares `HEAD` with the recorded
+-before landing anything. **The orchestrator commits.** Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`
+-  (use `--continue-last` only when no session id is available), and review again.
++before any authorized landing. The orchestrator may commit only when the user explicitly authorized it
++and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it
++needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json` (use
++`--continue-last` only when no session id is available), and review again.
+@@ -153,2 +152 @@ or outside-repository paths are not covered); `true` means it saw one; `null` me
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/commandcode-delegate/references/review-and-land.md b/skills/commandcode-delegate/references/review-and-land.md
+index 5c35dc6..6672101 100644
+--- a/skills/commandcode-delegate/references/review-and-land.md
++++ b/skills/commandcode-delegate/references/review-and-land.md
+@@ -95,6 +95 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never Command Code. This
+-isn't a workaround for a missing feature; it's the deliberate boundary. Under `--yolo` Command Code is
+-perfectly capable of committing, and that is precisely the problem: committing should be the act of the
+-party that verified the work, and a self-committed run has to be unpicked before it can be reviewed.
+-Write a clear message describing what landed. If your project attributes co-authorship, that's the place
+-for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. Command Code must not commit. Under `--yolo` it can write `.git`, so inspect the recorded baseline and report any unexpected Git changes. If authorized, write a clear message; record project co-authorship as usual.
+@@ -108,3 +103 @@ files (`??` in `git status`) directly â€” they are the implementer's new files,
+-contents. The tree is evidence, not clutter. After that inspection the verdict can legitimately be to
+-discard â€” work built on a premise you have since corrected, for example â€” and then `git checkout`/`clean`
+-is the right tool. The ban is on reflexive cleanup before anyone has looked.
++contents. The tree is evidence, not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The ban on reflexive cleanup remains.
+@@ -128 +121 @@ steal it. Then review again â€” rework gets the same gate-rerun, test check, dif
+-original, no shortcuts. Repeat until it's right, then commit.
++original, no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -132,2 +125 @@ original, no shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/copilot-delegate/SKILL.md b/skills/copilot-delegate/SKILL.md
+index 5a3cecd..bba546a 100644
+--- a/skills/copilot-delegate/SKILL.md
++++ b/skills/copilot-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  review its diff and land it yourself. Use this whenever the user wants to delegate implementation
++  review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation
+@@ -19 +19 @@ You are the **orchestrator**. Delegate a bounded coding task to a separate **imp
+-GitHub Copilot CLI â€” then review what it produced and land it yourself. You write the brief and own
++GitHub Copilot CLI â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own
+@@ -104,4 +104 @@ See [references/review-and-land.md](references/review-and-land.md).
+-If the work is good, commit it. The relay never commits â€” the diff and `result.json` are the
+-record; run `git status` and `git diff` first to confirm exactly what changed. If the group has a
+-PR flow, make the commit and push a branch; let human review happen. If the diff is wrong or
+-incomplete, re-dispatch a corrected brief in a fresh run and review again.
++If the work is good, commit it only when the user explicitly authorized a commit; otherwise leave it intact and uncommitted. The relay never commits â€” the diff and `result.json` are the record; run `git status` and `git diff` first to confirm exactly what changed. Push only when separately authorized. If the diff is wrong or incomplete, preserve it and report or rework within the approved scope; do not discard or revert it without explicit user authorization.
+@@ -126,4 +123 @@ via the `/sandbox` command and settings, disabled by default). This relay does n
+-Delegation is something the human opts into. Once briefed, copilot works as a tool you approved use
+-of. The boundary is: **do not accept conclusions from the self-report**; verify everything on
+-disk. For anything touching credentials, production data, or irreversible operations, stop and ask
+-the human first instead of encoding it in a brief.
++**LOCAL CHANGE:** Delegation is something the human opts into, but it does not by itself authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. **Do not accept conclusions from the self-report**; verify everything on disk. For anything touching credentials, production data, or irreversible operations, stop and ask the human first instead of encoding it in a brief.
+diff --git a/skills/copilot-delegate/references/review-and-land.md b/skills/copilot-delegate/references/review-and-land.md
+index 638335b..29a35c3 100644
+--- a/skills/copilot-delegate/references/review-and-land.md
++++ b/skills/copilot-delegate/references/review-and-land.md
+@@ -47,2 +47 @@ choice to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer.
+-Write a clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -72,2 +71 @@ implementer sweep.
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep
+-them in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/cursor-delegate/SKILL.md b/skills/cursor-delegate/SKILL.md
+index 055dd0a..02b8c42 100644
+--- a/skills/cursor-delegate/SKILL.md
++++ b/skills/cursor-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  review its diff and land it yourself. Use this whenever the user wants to hand implementation work
++  review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work
+@@ -17,0 +18,2 @@ metadata:
++**LOCAL CHANGE:** Delegation alone does not authorize commits or discarding work; require explicit user authorization and preserve user/partial changes.
++
+@@ -19 +21 @@ You are the **orchestrator**. Hand a bounded coding task to a separate **impleme
+-Agent CLI â€” then review what it produced and land it yourself. You write the brief and own the
++Agent CLI â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
+@@ -112,3 +114 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates
+-pass and the diff holds. If rework is needed, send a delta brief with `--resume-last` or
+-`--session <id>`, then review again.
++The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+@@ -138,2 +138 @@ Cursor to defend or concede each â€” deliverable in its final message, touching
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't absorb**
++Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+diff --git a/skills/cursor-delegate/references/review-and-land.md b/skills/cursor-delegate/references/review-and-land.md
+index 89c9e40..66fcced 100644
+--- a/skills/cursor-delegate/references/review-and-land.md
++++ b/skills/cursor-delegate/references/review-and-land.md
+@@ -52,2 +52 @@ choice to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer. Write a
+-clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -61,4 +60 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -85,2 +81 @@ default, write-capable without automatic command approval under `--no-force`, or
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep them
+-in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/grok-delegate/SKILL.md b/skills/grok-delegate/SKILL.md
+index b265260..73b65bd 100644
+--- a/skills/grok-delegate/SKILL.md
++++ b/skills/grok-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  land it yourself. Use this whenever the user wants to hand implementation work to Grok â€” phrasings
++  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Grok â€” phrasings
+@@ -24 +24 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the Grok Build CLI (`grok`) â€” then review what it produced and land it yourself. You
++**implementer** â€” the Grok Build CLI (`grok`) â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You
+@@ -117,5 +117 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-**The orchestrator commits.** Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task) and
+-  review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task) and review again.
+@@ -153,2 +149 @@ review stays the guarantee.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/grok-delegate/references/review-and-land.md b/skills/grok-delegate/references/review-and-land.md
+index 3ce8cf4..4ff2b49 100644
+--- a/skills/grok-delegate/references/review-and-land.md
++++ b/skills/grok-delegate/references/review-and-land.md
+@@ -86,4 +86 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never Grok. This isn't a
+-workaround for a missing feature; it's the deliberate boundary. Committing should be the act of the
+-party that verified the work. Write a clear message describing what landed. If your project attributes
+-co-authorship, that's the place for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. Grok must not commit. If authorized, write a clear message and record project co-authorship as usual.
+@@ -97,4 +94 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -117 +111 @@ Then review again â€” rework gets the same gate-rerun, test check, diff-read, an
+-no shortcuts. Repeat until it's right, then commit.
++no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -121,2 +115 @@ no shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/kimi-delegate/SKILL.md b/skills/kimi-delegate/SKILL.md
+index 83067ac..490d5d1 100644
+--- a/skills/kimi-delegate/SKILL.md
++++ b/skills/kimi-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user wants to hand implementation work to Kimi -
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Kimi -
+@@ -18 +18 @@ You are the **orchestrator**. Hand a bounded coding task to a separate **impleme
+-CLI - then review what it produced and land it yourself. You write the brief and own the judgment;
++CLI - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment;
+@@ -95,3 +95 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates pass
+-and the diff holds. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`,
+-then review again.
++The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+@@ -108,2 +106 @@ offers no `--read-only` or `--full-access` option. There is no CLI-enforced read
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't absorb**
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+diff --git a/skills/kimi-delegate/references/review-and-land.md b/skills/kimi-delegate/references/review-and-land.md
+index 2c5bd80..f889f7b 100644
+--- a/skills/kimi-delegate/references/review-and-land.md
++++ b/skills/kimi-delegate/references/review-and-land.md
+@@ -52,2 +52 @@ to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer. Write a
+-clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -61,4 +60 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -84,2 +80 @@ Headless Kimi always uses auto permission mode and has no CLI-enforced read-only
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep them
+-in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/mcode-delegate/SKILL.md b/skills/mcode-delegate/SKILL.md
+index 383557d..ef02dfd 100644
+--- a/skills/mcode-delegate/SKILL.md
++++ b/skills/mcode-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  its diff and land it yourself. Use this whenever the user wants to hand implementation work to
++  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to
+@@ -19 +19 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the MiniMax Code CLI (`mcode`) â€” then review what it produced and land it yourself.
++**implementer** â€” the MiniMax Code CLI (`mcode`) â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted.
+@@ -135,5 +135,3 @@ implementer commits, and the reviewer compares `HEAD` with the recorded pre-disp
+-landing anything. **The orchestrator commits.** Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`,
+-  and review again.
++any authorized landing. The orchestrator may commit only when the user explicitly authorized it and only
++after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs
++changes, send a delta brief with `--session <sessionId>` from the prior `result.json`, and review again.
+@@ -153,2 +151 @@ restore.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/mcode-delegate/references/review-and-land.md b/skills/mcode-delegate/references/review-and-land.md
+index 24261b9..2218b8e 100644
+--- a/skills/mcode-delegate/references/review-and-land.md
++++ b/skills/mcode-delegate/references/review-and-land.md
+@@ -96,6 +96 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never MiniMax Code. This
+-isn't a workaround for a missing feature; it's the deliberate boundary. With no sandbox MiniMax Code is
+-perfectly capable of committing, and that is precisely the problem: committing should be the act of the
+-party that verified the work, and a self-committed run has to be unpicked before it can be reviewed.
+-Write a clear message describing what landed. If your project attributes co-authorship, that's the place
+-for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. MiniMax Code must not commit. With no sandbox it can write `.git`, so inspect the baseline and report unexpected Git changes. If authorized, write a clear message and record project co-authorship as usual.
+@@ -109,3 +104 @@ files (`??` in `git status`) directly â€” they are the implementer's new files,
+-contents. The tree is evidence, not clutter. After that inspection the verdict can legitimately be to
+-discard â€” work built on a premise you have since corrected, for example â€” and then `git checkout`/`clean`
+-is the right tool. The ban is on reflexive cleanup before anyone has looked.
++contents. The tree is evidence, not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The ban on reflexive cleanup remains.
+@@ -129 +122 @@ other run in that workspace. Then review again â€” rework gets the same gate-rer
+-original, no shortcuts. Repeat until it's right, then commit.
++original, no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -133,2 +126 @@ original, no shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/muse-delegate/SKILL.md b/skills/muse-delegate/SKILL.md
+index 5e580e1..67aba20 100644
+--- a/skills/muse-delegate/SKILL.md
++++ b/skills/muse-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  land it yourself. Use this whenever the user wants to hand implementation work to Muse â€” phrasings
++  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Muse â€” phrasings
+@@ -21 +21 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” Muse Code (`muse`) â€” then review what it produced and land it yourself. You write
++**implementer** â€” Muse Code (`muse`) â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
+@@ -137,6 +137,4 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Committing should be the act of
+-the party that verified the work. Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task) and
+-  review again. There is no headless `--resume-last`.
++The implementer edits the working tree. The orchestrator may commit only when the user explicitly
++authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and
++uncommitted. If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task)
++and review again. There is no headless `--resume-last`.
+@@ -146,2 +144 @@ the party that verified the work. Only after the gates pass and the diff holds:
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/muse-delegate/references/review-and-land.md b/skills/muse-delegate/references/review-and-land.md
+index d4bc3f3..04b2fde 100644
+--- a/skills/muse-delegate/references/review-and-land.md
++++ b/skills/muse-delegate/references/review-and-land.md
+@@ -82,4 +82 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never the implementer. A
+-write `exec` *can* write the working tree, but committing should be the act of the party that verified
+-the work, not the one that produced it. Write a clear message describing what landed. If your project
+-attributes co-authorship, that's the place for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer must not commit. If authorized, write a clear message and record project co-authorship as usual.
+@@ -92,5 +89 @@ workspace between those two points â€” however messy an interrupted run looks, i
+-they are the implementer's new files, and no diff shows their contents. The tree is evidence,
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++they are the implementer's new files, and no diff shows their contents. The tree is evidence, not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -112 +105 @@ enough. Then review again â€” rework gets the same gate-rerun, test check, diff-
+-original, no shortcuts. Repeat until it's right, then commit.
++original, no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -116,2 +109 @@ original, no shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/omp-delegate/SKILL.md b/skills/omp-delegate/SKILL.md
+index 6036bf0..ebd640d 100644
+--- a/skills/omp-delegate/SKILL.md
++++ b/skills/omp-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user wants to delegate implementation work to
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation work to
+@@ -20 +20 @@ You are the **orchestrator**. Delegate a bounded coding task to a separate **imp
+-Pi (`omp`) - then review what it produced and land it yourself. You write the brief and own the
++Pi (`omp`) - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
+@@ -135,3 +135 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates
+-pass and the diff holds. If rework is needed, send a delta brief with `--resume-last` or
+-`--session <id>`, then review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+@@ -155,2 +153 @@ would stall until the watchdog. The other controls are:
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"),
+-committing verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't
+diff --git a/skills/omp-delegate/references/review-and-land.md b/skills/omp-delegate/references/review-and-land.md
+index 9f1616e..a534836 100644
+--- a/skills/omp-delegate/references/review-and-land.md
++++ b/skills/omp-delegate/references/review-and-land.md
+@@ -52,2 +52 @@ choice to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer.
+-Write a clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -62,3 +61 @@ files, and no diff shows their contents. The tree is evidence, not clutter. Afte
+-the verdict can legitimately be to discard â€” work built on a premise you have since corrected,
+-for example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++**LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -87,2 +84 @@ and the tree after every run.
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep
+-them in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/opencode-delegate/SKILL.md b/skills/opencode-delegate/SKILL.md
+index 2caaf76..65ccd2b 100644
+--- a/skills/opencode-delegate/SKILL.md
++++ b/skills/opencode-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  land it yourself. Use this whenever the user wants to hand implementation work to OpenCode â€” phrasings
++  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to OpenCode â€” phrasings
+@@ -19 +19 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the OpenCode CLI â€” then review what it produced and land it yourself. You write
++**implementer** â€” the OpenCode CLI â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
+@@ -131,6 +131,4 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Committing should be the act of
+-the party that verified the work. Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task) and
+-  review again.
++The implementer edits the working tree. The orchestrator may commit only when the user explicitly
++authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and
++uncommitted. If it needs changes, send a delta brief with `--resume-last` (don't restate the whole task)
++and review again.
+@@ -159,2 +157 @@ or report the missing prerequisite rather than changing permission settings sile
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract â€” that is the whole point. Two limits on that
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+diff --git a/skills/opencode-delegate/references/review-and-land.md b/skills/opencode-delegate/references/review-and-land.md
+index e09f9c8..cf643e3 100644
+--- a/skills/opencode-delegate/references/review-and-land.md
++++ b/skills/opencode-delegate/references/review-and-land.md
+@@ -82,4 +82 @@ above is the built-in floor; the guards go deeper.
+-When the gates pass and the diff holds, **you commit** â€” the orchestrator, never the implementer. The
+-`build` agent *can* write the working tree, but committing should be the act of the party that verified
+-the work, not the one that produced it. Write a clear message describing what landed. If your project
+-attributes co-authorship, that's the place for it.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The `build` agent must not commit. If authorized, write a clear message and record project co-authorship as usual.
+@@ -93,4 +90 @@ they are the implementer's new files, and no diff shows their contents. The tree
+-not clutter. After that inspection the
+-verdict can legitimately be to discard â€” work built on a premise you have since corrected, for
+-example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -112 +106 @@ enough. Then review again â€” rework gets the same gate-rerun, test check, diff-
+-original, no shortcuts. Repeat until it's right, then commit.
++original, no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+@@ -116,2 +110 @@ original, no shortcuts. Repeat until it's right, then commit.
+-The human opted into delegation, so committing verified, gate-passing work is the agreed contract.
+-But keep them in the loop on anything that changes the shape of the work:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+diff --git a/skills/pi-delegate/SKILL.md b/skills/pi-delegate/SKILL.md
+index 9f2046b..3b0d512 100644
+--- a/skills/pi-delegate/SKILL.md
++++ b/skills/pi-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  its diff and land it yourself. Use this whenever the user wants to delegate implementation work to Pi -
++  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation work to Pi -
+@@ -18 +18 @@ You are the **orchestrator**. Delegate a bounded coding task to a separate **imp
+-coding agent CLI - then review what it produced and land it yourself. You write the brief and own
++coding agent CLI - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own
+@@ -102,3 +102 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates
+-pass and the diff holds. If rework is needed, send a delta brief with `--resume-last` or
+-`--session <id>`, then review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+@@ -119,2 +117 @@ executes shell commands with no prompts - the controls are:
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"),
+-committing verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't
+diff --git a/skills/pi-delegate/references/review-and-land.md b/skills/pi-delegate/references/review-and-land.md
+index 0b43be6..b11d5eb 100644
+--- a/skills/pi-delegate/references/review-and-land.md
++++ b/skills/pi-delegate/references/review-and-land.md
+@@ -52,2 +52 @@ choice to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer.
+-Write a clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -62,3 +61 @@ files, and no diff shows their contents. The tree is evidence, not clutter. Afte
+-the verdict can legitimately be to discard â€” work built on a premise you have since corrected,
+-for example â€” and then `git checkout`/`clean` is the right tool. The ban is on reflexive cleanup
+-before anyone has looked.
++**LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+@@ -87,2 +84 @@ user's host permissions, so inspect `touchedFiles` and the tree after every run.
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep
+-them in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/qoder-delegate/SKILL.md b/skills/qoder-delegate/SKILL.md
+index ef07ddc..c3eae11 100644
+--- a/skills/qoder-delegate/SKILL.md
++++ b/skills/qoder-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user asks to have Qoder implement, fix, refactor,
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user asks to have Qoder implement, fix, refactor,
+@@ -16 +16 @@ You are the **orchestrator**. Delegate one bounded coding task to a separate **i
+-then review what it produced and land it yourself. You write the brief and own the judgment; Qoder
++then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment; Qoder
+@@ -104 +104 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits; **the orchestrator commits**. Commit only after the gates pass and the diff
++The implementer edits; **the orchestrator commits only if the user explicitly authorized it**. Commit only after the gates pass and the diff
+@@ -121,2 +121 @@ Qoder falls back to `default` when a non-default mode is requested outside a tru
+-Delegation is something the human opts into. Once they ask for it, landing verified, gate-passing work
+-is the contract. Two limits remain: **surface, do not absorb** (report Qoder's design decisions and
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, do not absorb** (report Qoder's design decisions and
+diff --git a/skills/qoder-delegate/references/review-and-land.md b/skills/qoder-delegate/references/review-and-land.md
+index 98bf6e3..9c51dea 100644
+--- a/skills/qoder-delegate/references/review-and-land.md
++++ b/skills/qoder-delegate/references/review-and-land.md
+@@ -51,2 +51 @@ gate and diff review.
+-When the gates pass and the diff holds, **the orchestrator commits**. Qoder must never run `git add` or
+-`git commit` for this workflow.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. Qoder must never run `git add` or `git commit` for this workflow.
+@@ -56,2 +55 @@ or branch switch, inspect `git status`, `git diff`, `git diff --cached`, and eve
+-Staged and untracked work is invisible to a plain `git diff`; preserve it until the review decides
+-what to keep.
++Staged and untracked work is invisible to a plain `git diff`; preserve it through review. **LOCAL CHANGE:** Do not discard or revert user/partial work without explicit user authorization.
+diff --git a/skills/vibe-delegate/SKILL.md b/skills/vibe-delegate/SKILL.md
+index f75e50d..d3fcfe2 100644
+--- a/skills/vibe-delegate/SKILL.md
++++ b/skills/vibe-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user wants to hand implementation work to Vibe â€”
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Vibe â€”
+@@ -18 +18 @@ You are the **orchestrator**. Hand a bounded coding task to a separate **impleme
+-Vibe CLI (`vibe`) â€” then review what it produced and land it yourself. You write the brief and own
++Vibe CLI (`vibe`) â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own
+@@ -93,3 +93 @@ See [references/review-and-land.md](references/review-and-land.md).
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates pass
+-and the diff holds. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`,
+-then review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+@@ -118,2 +116 @@ not a sandbox and does not grant tool permissions.
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"), committing
+-verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't absorb**
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+diff --git a/skills/vibe-delegate/references/review-and-land.md b/skills/vibe-delegate/references/review-and-land.md
+index 9dcbf8e..1bfa193 100644
+--- a/skills/vibe-delegate/references/review-and-land.md
++++ b/skills/vibe-delegate/references/review-and-land.md
+@@ -52,2 +52 @@ to the human. Run relevant guard skills if installed.
+-When the gates pass and the diff holds, **the orchestrator commits**, never the implementer. Write a
+-clear message describing what landed.
++**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+@@ -58,2 +57 @@ run. Inspect `git status`, `git diff`, `git diff --cached` for staged changes, a
+-file (`??`) directly because no diff shows its contents. After inspection, discarding a bad or
+-premise-contaminated change can be correct; the rule is to preserve the evidence until it is reviewed.
++file (`??`) directly because no diff shows its contents. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report bad or premise-contaminated changes; discard or revert only with explicit user authorization.
+@@ -79,2 +77 @@ Default `accept-edits` runs cannot execute most gates headlessly; the orchestrat
+-The human opted into delegation, so committing verified, gate-passing work is the contract. Keep them
+-in the loop when the work changes shape:
++Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+diff --git a/skills/warp-delegate/SKILL.md b/skills/warp-delegate/SKILL.md
+index d5c3d6c..ca6fd1a 100644
+--- a/skills/warp-delegate/SKILL.md
++++ b/skills/warp-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  diff and land it yourself. Use this whenever the user wants to hand implementation work to Warp -
++  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Warp -
+@@ -20 +20 @@ You are the **orchestrator**. Delegate a bounded coding task to a separate **imp
+-Warp Agent CLI - then review what it produced and land it yourself. You write the brief and own the
++Warp Agent CLI - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
+@@ -133,3 +133 @@ clean tree so the two are as close as they can be. See
+-The implementer edits the working tree; **the orchestrator commits.** Commit only after the gates
+-pass and the diff holds. If rework is needed, send a delta brief with `--conversation <id>` using the
+-`conversationId` from `result.json`, then review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--conversation <id>` using the `conversationId` from `result.json`, then review again.
+@@ -160,2 +158 @@ would imply an enforcement that does not exist. The controls you actually have a
+-Delegation is something the human opts into. Once they have ("run this queue", "proceed"),
+-committing verified, gate-passing work is the agreed contract. Two limits remain: **surface, don't
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't
+diff --git a/skills/warp-delegate/references/review-and-land.md b/skills/warp-delegate/references/review-and-land.md
+index 187be66..7633728 100644
+--- a/skills/warp-delegate/references/review-and-land.md
++++ b/skills/warp-delegate/references/review-and-land.md
+@@ -3,2 +3 @@
+-Warp edits the working tree. **You commit.** That boundary is the point of the skill: the
+-implementer produces a diff, and a reviewer who did not write it decides whether it ships.
++Warp edits the working tree. The reviewer verifies the work; **commit only when the user explicitly authorized it** and the gates and diff pass. Otherwise preserve the work intact and uncommitted.
+@@ -14,2 +13 @@ could touch while it worked. The diff is not a courtesy record â€” it is the onl
+-Work through these in order. Stop at the first one that fails and decide whether to rework or
+-discard.
++Work through these in order. Stop at the first one that fails. Preserve the result and working tree; rework within authority or report the issue. Do not discard or revert without explicit user authorization.
+@@ -22 +20 @@ discard.
+-   and incoherent. Rework or discard from the baseline rather than reviewing a partial run.
++   and incoherent. Preserve the partial result and report the state; do not discard or revert without explicit user authorization.
+@@ -37 +35 @@ discard.
+-   and would otherwise reach your commit unread. Ask of each hunk and each new file: did the brief
++   and would otherwise be invisible during review. Ask of each hunk and each new file: did the brief
+@@ -74,24 +72 @@ restates the corrected requirements.
+-Discard rather than rework when the diff misunderstood the goal, wanders far outside the brief, or
+-would take longer to correct than to redo.
+-
+-Discard against a known baseline, never with a blanket revert. `git checkout -- .` is the wrong
+-reach: it leaves staged and untracked files behind, so the tree stays dirty for the next dispatch,
+-and it destroys any uncommitted work of your own that predates the run. Dispatch from a clean tree â€”
+-commit your own changes, or `git stash push --include-untracked` them. A bare `git stash` leaves
+-untracked files in place, and those resurface as `??` entries in `touchedFiles`, where the cleanup
+-below would delete work the run never made. Confirm `git status --porcelain` prints nothing before
+-dispatching, so that everything dirty afterward is Warp's, then drop exactly what the run
+-introduced, reading the paths off `touchedFiles`:
+-
+-```bash
+-git restore --staged --worktree -- <tracked paths>   # the ' M' / 'M ' entries
+-git clean -f -- <untracked paths>                    # the '??' entries
+-```
+-
+-A `??` entry can name a whole directory rather than each file under it; passing that path removes
+-the directory and its contents, since `-d` only governs the no-pathspec case. The exception is a
+-nested git repository â€” if the run scaffolded one, `git clean -f` skips it and `-ff` is required.
+-
+-If dispatching from a clean tree is not an option, give Warp its own `git worktree` instead: then
+-discarding is `git worktree remove --force`, and your work was never in reach. Either way, rewrite
+-the brief before dispatching again.
++**LOCAL CHANGE:** Do not discard/revert result files or remove a worktree as routine recovery. Preserve the working tree, including untracked and pre-existing files, inspect `git status`, the staged and unstaged diffs, and untracked contents, then report out-of-scope or premise-invalid changes. Rework only within the authorized scope. `git restore`, `git clean`, stash, and forced worktree removal can destroy user work; use none of them without explicit user authorization. Rewrite the brief before any authorized re-dispatch.
+@@ -101,3 +76 @@ the brief before dispatching again.
+-Commit once the gates pass and the diff holds. Write the commit message yourself: it should describe
+-the change, not the delegation. Do not credit the tool in the message unless the project's own
+-convention asks for it.
++**LOCAL CHANGE:** Commit only when the user explicitly authorized it and the gates pass and the diff holds; otherwise leave all work intact and uncommitted. If authorized, write a message describing the change, not the delegation, and follow project co-authorship conventions.
+@@ -107,2 +80 @@ convention asks for it.
+-Delegation is something the human opted into, and committing verified, gate-passing work is the
+-agreed contract. Two limits stay with you:
++Delegation alone does not authorize committing or discarding work. Preserve user and partial changes; do not discard or revert without explicit user authorization. Two limits stay with you:
+diff --git a/skills/zcode-delegate/SKILL.md b/skills/zcode-delegate/SKILL.md
+index ae082be..5122d3c 100644
+--- a/skills/zcode-delegate/SKILL.md
++++ b/skills/zcode-delegate/SKILL.md
+@@ -5 +5 @@ description: >-
+-  land it yourself. Use this whenever the user wants to hand implementation work to ZCode â€” phrasings
++  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to ZCode â€” phrasings
+@@ -19 +19 @@ You are the **orchestrator**. This skill lets you hand a bounded coding task to
+-**implementer** â€” the Z.AI ZCode CLI â€” then review what it produced and land it yourself. You write
++**implementer** â€” the Z.AI ZCode CLI â€” then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
+@@ -154,5 +154 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
+-**The orchestrator commits.** Only after the gates pass and the diff holds:
+-
+-- Commit the verified work yourself, with a clear message.
+-- If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`,
+-  and review again.
++The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`, and review again.
+@@ -169,2 +165 @@ enforced here, verify `touchedFiles` came back empty instead of assuming no edit
+-Delegation is something the human opts into. Once they have, committing verified, gate-passing work
+-is the agreed contract. Two limits: **surface, don't absorb** (report ZCode's design decisions and
++**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits: **surface, don't absorb** (report ZCode's design decisions and
+diff --git a/skills/zcode-delegate/references/review-and-land.md b/skills/zcode-delegate/references/review-and-land.md
+index 6379f2d..e5c9c3a 100644
+--- a/skills/zcode-delegate/references/review-and-land.md
++++ b/skills/zcode-delegate/references/review-and-land.md
+@@ -2,0 +3,2 @@
++**LOCAL CHANGE:** Delegation alone does not authorize commits or discarding work; require explicit user authorization and preserve user/partial changes.
++
+@@ -60,2 +62 @@ node "<skill-dir>/scripts/relay.mjs" --brief delta-brief.txt --cd /path/to/repo
+-Delegation is something the human opts into. Once they have â€” "run this queue", "proceed" â€”
+-committing verified, gate-passing work is the agreed contract. Two limits on that mandate:
++Delegation alone does not authorize committing or discarding work. Commit only when the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert without explicit user authorization. Two limits on that mandate:

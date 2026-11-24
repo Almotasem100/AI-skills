@@ -33,6 +33,10 @@ The complete file transfer was checked against upstream blob SHAs (except the tw
 
 The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records these and the OpenCode guidance corrections below. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the documented edits. Do not add Gemini changes to this patch.
 
+## LOCAL CHANGE — delegation authority
+
+Installable relay skill entrypoints and review references distinguish delegation from authorization to commit or discard work. The cumulative patch records these documentation edits separately from the Gemini overlay.
+
 ## LOCAL CHANGE — OpenCode continuation and effective permissions
 
 The OpenCode skill, its brief/dispatch references and the relay's comment-derived `--help` distinguish requested plan-agent behavior from enforced
