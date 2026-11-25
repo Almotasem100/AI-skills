@@ -165,6 +165,9 @@ process has exited and `result.json` is written — not when a status line says 
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: codex_unavailable` (exit 127):** `codex` isn't on PATH or isn't found. Install
   (`npm i -g @openai/codex`) and `codex login`, then re-dispatch.
 - **an `error` mentioning `version preflight` (`failed`, or `timeout` at exit 124):** the bounded
@@ -231,5 +234,7 @@ Two alternatives exist if you ever want them, but the helper is the recommended 
 ## The commit boundary
 
 The helper never commits — by design, not omission. Whether Codex's sandbox can write `.git` varies by
-version, OS, and execution path, so relying on it is a coin flip. The robust contract is: Codex edits
-the working tree, the orchestrator reviews and commits. See [review-and-land.md](review-and-land.md).
+version, OS, and execution path, so relying on it is a coin flip. Codex edits without committing.
+The orchestrator reviews and commits only if already authorized and applicable gates are satisfied.
+<!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

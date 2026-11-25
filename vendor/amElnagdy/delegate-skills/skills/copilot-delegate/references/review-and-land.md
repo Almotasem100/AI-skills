@@ -44,14 +44,17 @@ choice to the human. Run relevant guard skills if installed.
 
 ## The commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+**LOCAL CHANGE:** The orchestrator may commit only under existing applicable authority and
+after the gates pass and the diff holds; otherwise preserve verified work uncommitted.
+Reuse applicable standing authority without asking again. The implementer never commits.
 
-From dispatch until that commit, the uncommitted working tree is the authoritative copy of the
-implementer's work — the only one you can commit from, and often the only copy at all. Never run
-`git checkout`, `reset`, `clean`, or a branch switch in the workspace between those two points —
+After dispatch, the uncommitted working tree is the authoritative copy of the
+implementer's work — the only one you can commit from, and often the only copy at all. Do not reflexively run
+`git checkout`, `reset`, `clean`, or a branch switch in the workspace after dispatch —
 however messy an interrupted run looks, inspect it first: `git status`, `git diff`,
 `git diff --cached` for anything the implementer staged (plain `git diff` is blind to the index),
-and commit the intended files explicitly.
+and inspect untracked files directly. Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Rework: re-dispatch a corrected brief
 
@@ -68,7 +71,7 @@ implementer sweep.
 
 ## Surface, do not absorb
 
-Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+Keep the human informed when the work changes shape:
 
 - Report design decisions and defensible-but-unrequested turns.
 - Note non-blocking nitpicks you did not block on.

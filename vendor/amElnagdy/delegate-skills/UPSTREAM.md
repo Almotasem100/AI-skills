@@ -6,7 +6,7 @@
 | Full vendored baseline | `48b53d33b53ef260de76c3d2c1313e2c62a24820` (upstream master dated 2026-11-14, synced 2026-11-19) |
 | Original copy | 2026-09-25, whole repository via `git archive` (no `.git`) |
 | Owner | My tech lead. Approved for my use, modification and keeping. |
-| Local changes | Repository-link corrections and OpenCode guidance corrections; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
+| Local changes | Repository links, OpenCode guidance, and delegation authority; recorded in `local-changes.patch`. The Gemini delegate contribution remains separate in `overlays/gemini-delegate/`. |
 | Installed subset | `delegate-setup`, `codex-delegate`, `agy-delegate`, `opencode-delegate`; plus `gemini-delegate` via `overlays/gemini-delegate/` |
 
 ## Full upstream snapshot — 2026-11-19
@@ -31,11 +31,12 @@ The complete file transfer was checked against upstream blob SHAs (except the tw
 
 ## LOCAL CHANGE — repository-link corrections
 
-The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. `local-changes.patch` records these and the OpenCode guidance corrections below. On a clean checkout of the pinned upstream base, run `git apply --check --unidiff-zero local-changes.patch` before applying the patch, then verify the documented edits. Do not add Gemini changes to this patch.
+The vendored README and CONTRIBUTING guide use absolute upstream GitHub issues/PR links rather than relative links which resolve into the parent repo. On a clean checkout of the pinned upstream base, use the LF copy of `local-changes.patch`: run `git apply --check --unidiff-zero <patch>` before `git apply --unidiff-zero <patch>`, then compare the reconstructed files to the vendor snapshot. Do not add Gemini changes to this patch.
 
 ## LOCAL CHANGE — delegation authority
 
-Installable relay skill entrypoints and review references distinguish delegation from authorization to commit or discard work. The cumulative patch records these documentation edits separately from the Gemini overlay.
+Delegation guidance distinguishes commit and destructive-discard authority from routine in-scope corrections.
+Existing authorization still applies. The cumulative patch includes these edits separately from the Gemini overlay.
 
 ## LOCAL CHANGE — OpenCode continuation and effective permissions
 
@@ -50,7 +51,8 @@ three OpenCode documents and the relay's comment/help correction).
 ## Updating again
 
 1. Review commits and executable-script changes after the pinned upstream base before copying new files.
-2. Preserve the repository-link and OpenCode guidance corrections and regenerate `local-changes.patch` when necessary.
+2. Preserve the repository-link, OpenCode and delegation authority corrections. Regenerate `local-changes.patch`
+   as one LF diff from the pinned upstream tree, retaining upstream file modes.
 3. Rebase `overlays/gemini-delegate/changes.patch` separately onto the new upstream base, update its base metadata, and validate config/lane behavior plus relay tests.
 4. Update the baseline in this file and `manifest.md` only after confirming the copied snapshot and intentional differences.
 5. Installing skills, changing lane configurations, and applying Gemini overlay are separate, explicitly reviewed actions.

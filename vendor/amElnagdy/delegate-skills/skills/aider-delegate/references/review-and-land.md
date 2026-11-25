@@ -22,7 +22,7 @@ yours, and read the lint-driven edits as part of the diff.
 
 Run the project's real commands in the working tree, yourself, and read the output. Not because the
 implementer lies, but because "I ran the tests" and "the tests pass in this tree right now" are
-different statements, and only the second one is what you are about to commit.
+different statements, and only the second one is what you are verifying.
 
 If a gate fails, that is a rework loop (below), not a reason to commit and fix forward.
 
@@ -54,20 +54,24 @@ Things worth checking specifically after a delegated run:
 
 ## The commit boundary
 
-**Aider edits the working tree; you commit.** The relay disables Aider's auto-commit and dirty-commit
+**Aider edits the working tree; the orchestrator reviews it.** The relay disables Aider's auto-commit and dirty-commit
 defaults precisely so this boundary exists, and it never runs `git commit` itself.
 
-**LOCAL CHANGE:** Commit only when the user explicitly authorized it, and all of these hold:
+**LOCAL CHANGE:** The implementer never commits. Without existing commit authority, preserve the verified work uncommitted. Reuse applicable standing authority without asking again. Commit only when that authority exists and all of these hold:
 
 1. The gates pass in the tree you are looking at.
 2. The diff matches the brief.
-3. Anything unasked-for has been surfaced to the human; preserve it unless the user explicitly authorized reverting it.
+3. Anything unasked-for has been surfaced to the human; preserve user and pre-existing work and partial evidence.
 
-Write the commit message yourself, describing the change as it landed. Aider's report describes what
+If authorized, write the commit message yourself, describing the change as it landed. Aider's report describes what
 it believed it did.
 
-If the working tree was dirty before the run, separate your commit from the pre-existing changes -
-`git add -p` or explicit paths, never `git add -A` on a tree you did not start clean.
+If the working tree was dirty before the run, compare staged, unstaged, and untracked changes with
+the pre-dispatch state. Include only the reviewed task delta in any authorized commit, not the whole
+index; if you cannot isolate it without disturbing pre-existing staging, leave it uncommitted.
+
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Rework: send the delta
 
@@ -89,7 +93,7 @@ Review the rework the same way. A second run is not more trustworthy than the fi
 
 ## Surface, do not absorb
 
-**LOCAL CHANGE:** Delegation alone does not authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified work intact and uncommitted. Two things still go back to them:
+Delegation alone does not authorize committing or discarding work. Two things still go back to the human:
 
 - **Design decisions the brief did not specify.** Aider chose a name, a structure, an approach. Say
   so, briefly, in your report.

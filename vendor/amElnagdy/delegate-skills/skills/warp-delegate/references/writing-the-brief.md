@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 The brief is the whole contract. Warp sees only the text you send plus whatever it can inspect in
 the workspace — no chat history, no shared context, none of the reasoning that led you here.
 
@@ -33,13 +35,15 @@ Cover these in order. Skip a heading only when it genuinely does not apply.
    read as `/Users/<you>/src/strings.js`. The agent recovered by running `pwd` and retrying, but it
    burned a turn, and in a home directory that happened to hold a matching path it would have read
    the wrong file. There is no sandbox to catch that.
-3. **What to change** — the specific edits, in the order they make sense.
+3. **What to change** — the specific edits, in the order they make sense. Allow routine in-scope
+   corrections without waiting for approval.
 4. **What to leave untouched** — files, patterns, and public interfaces that must not move. Warp has
    no sandbox, so this is a written boundary, not an enforced one.
+   Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 5. **Gates** — the project's *actual* commands. Read them out of `package.json`, `Makefile`, or the
    CI config; do not invent `npm test` because it is conventional.
 6. **Report contract** — what the final message must state (below).
-7. **Do not commit** — say it explicitly. Committing is the orchestrator's job.
+7. **Do not commit** — say it explicitly. Leave changes uncommitted for review.
 
 ## The report contract
 

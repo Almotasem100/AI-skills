@@ -8,7 +8,7 @@
 
 Discover the implementer CLIs already installed on your machine, organize them into lanes like
 `feature`, `tests`, and `ui`, then delegate by lane — or choose one implementer directly. Either way,
-you keep the review and the commit.
+you keep the review and own any authorized commit.
 
 ```bash
 npx skills add amElnagdy/delegate-skills
@@ -36,7 +36,7 @@ flowchart LR
   A --> R["Review the diff<br/>Run the gates"]
   B --> R
   C --> R
-  R --> L["You land the commit"]
+  R --> L["Commit if authorized; otherwise preserve the diff"]
 ```
 
 ## Choose how you delegate
@@ -167,7 +167,13 @@ review-first loop:
 2. **Dispatch** it with the bundled `relay.mjs`.
 3. **Wait** for completion — the relay writes a structured `result.json`.
 4. **Review** the diff — re-run the project's gates yourself; pair with [guard skills](https://github.com/amElnagdy/guard-skills).
-5. **Land** it — *you* commit, because committing belongs to the reviewer.
+5. **Finish** — if the gates pass and the diff holds, commit only under existing applicable
+   authority; otherwise preserve verified work uncommitted.
+
+**LOCAL CHANGE:** Delegation alone authorizes neither committing nor destructive abandonment.
+Reuse applicable standing authority without asking again. Continue ordinary scoped corrections,
+including removing verified task-created files when needed, and preserve user and pre-existing
+work and partial evidence. A safe scoped stash that preserves recoverability is not abandonment.
 
 ```text
 Use $claude-delegate to have a separate Claude Code session implement the parser fix, then review and commit it.
@@ -181,7 +187,7 @@ Every relay speaks the same `delegate-relay.result.v1` contract: `status`, `exit
 freely.
 
 You feel it when a bounded task — a migration, a mechanical refactor, a removal sweep — comes back as
-a clean diff with a structured report, and you land it after re-running the gates yourself instead of
+a clean diff with a structured report, and you verify it instead of
 typing it all by hand.
 
 ## What counts as an implementer skill
@@ -190,7 +196,7 @@ Four invariants hold for every `*-delegate` skill. They are also the bar for a n
 
 - **A separate CLI edits a real working tree, and the diff is the deliverable.** Not an API wrapper,
   not a gateway — an implementer whose work you can read with `git diff`.
-- **The relay never commits.** Committing belongs to the reviewer, always.
+- **The relay never commits, and the implementer must not commit.** Only the orchestrator may make an authorized commit.
 - **Node built-ins only.** No dependencies, no network calls of its own, no credentials, no telemetry.
   The relay launches its implementer CLI and `git`, plus the platform process launcher where a Windows
   shim or a process-tree kill needs one.
@@ -198,9 +204,9 @@ Four invariants hold for every `*-delegate` skill. They are also the bar for a n
   the two footnotes above.
 
 This is a loop, not a forwarder: a forwarder hands over one task and returns the output. Here you
-dispatch, poll, review, and land, across one task or a queue. It stays complementary to a vendor's own
+dispatch, poll, and review across one task or a queue; landing is conditional. It stays complementary to a vendor's own
 plugin or subagents — those coordinate inside one agent; this keeps the contract portable across
-orchestrators, with the commit on the reviewer.
+orchestrators, with any authorized commit on the orchestrator.
 
 `delegate-setup` is the setup-skill exception: it discovers CLIs and writes an approved fleet map, but
 never dispatches coding work.
@@ -228,7 +234,7 @@ This package is intentionally inspectable:
   platform process launcher/termination utility where a Windows shim or process-tree kill requires one.
   Discover may invoke installed CLIs for `--version` / model list probes (those CLIs may contact their
   own services). Read the script before you run it.
-- None of the relays ever commit — committing is always the orchestrator's job, after review.
+- None of the relays ever commit — only the orchestrator may commit, after review and when authorized.
 
 **Verification status** — claims here are backed by runs, not assumptions.
 

@@ -1,6 +1,6 @@
 # Review and land
 
-Warp edits the working tree. The reviewer verifies the work; **commit only when the user explicitly authorized it** and the gates and diff pass. Otherwise preserve the work intact and uncommitted.
+Warp edits the working tree. The reviewer verifies the work; **commit only when existing authorization covers the commit** and the gates and diff pass. Otherwise preserve the work intact and uncommitted.
 
 ## Why the review is not optional here
 
@@ -10,14 +10,13 @@ could touch while it worked. The diff is not a courtesy record — it is the onl
 
 ## The checklist
 
-Work through these in order. Stop at the first one that fails. Preserve the result and working tree; rework within authority or report the issue. Do not discard or revert without explicit user authorization.
+Work through these in order. Stop at the first one that fails. Preserve the result and working tree; rework within authority or report the issue. Do not destructively abandon work without applicable authority.
 
-1. **Read `result.json` first.** If there is no `result.json`, stop: a usage error exits 2 before
-   Warp is ever dispatched and writes none, so an absent file means the run did not happen — read the
-   relay's stderr, not the tree. Otherwise require `status: "completed"` and `exitCode: 0` before
-   going further. `failed`, `timeout`, `aborted`, and `warp_unavailable` all mean the run did not
-   finish on its own terms, and `timeout` and `aborted` additionally mean the tree may be mid-edit
-   and incoherent. Preserve the partial result and report the state; do not discard or revert without explicit user authorization.
+1. **Read `result.json` first.** Require `status: "completed"` and `exitCode: 0` for normal review.
+   If the result is missing or unsuccessful, inspect stderr and the working tree, preserve partial
+   evidence, and report the state. Do not retry or resume writes until process or session evidence
+   confirms the previous implementer stopped or never started. A missing result or an early
+   `aborted` result is not that evidence.
 2. **Start from `touchedFiles`.** It is `git status --porcelain` taken after the run: post-run,
    git-visible worktree state, not a log of what the agent did. It cannot show an ignored file, an
    edit the run made and then reverted, or a write outside the repository, and it includes anything
@@ -29,11 +28,10 @@ Work through these in order. Stop at the first one that fails. Preserve the resu
    `CONTRIBUTING.md`, the CI config, or `package.json`: a project's gate set often includes a
    packaging, manifest, or schema validation step that lint and test do not cover, and that is
    exactly the gate a run can break without any test going red.
-4. **Read the whole diff against the brief.** `git diff` and `git diff --staged` — then open every
-   `??` path in `touchedFiles` directly, including everything inside an untracked directory. Neither
-   diff command shows the contents of an untracked file, so a file Warp created is invisible to both
-   and would otherwise be invisible during review. Ask of each hunk and each new file: did the brief
-   ask for this? Changes outside the brief's stated scope are the thing to catch.
+4. **Read the task delta against the brief.** Compare `git diff`, `git diff --staged`, and untracked
+   contents with the pre-dispatch state. Open untracked files directly, including files inside an
+   untracked directory. Do not treat the whole index or every untracked file as Warp's work. Ask of
+   each task hunk and each new file: did the brief ask for this?
 5. **Check what should NOT have changed.** Lockfiles, CI config, formatter config, unrelated
    modules, and anything the brief listed under "leave untouched".
 6. **Grep for dangling references** after any removal or rename — imports, string keys, docs.
@@ -69,15 +67,15 @@ to leave alone. See [writing-the-brief.md](writing-the-brief.md#delta-briefs).
 If `conversationId` is `null`, the stream did not carry one; dispatch a fresh run with a brief that
 restates the corrected requirements.
 
-**LOCAL CHANGE:** Do not discard/revert result files or remove a worktree as routine recovery. Preserve the working tree, including untracked and pre-existing files, inspect `git status`, the staged and unstaged diffs, and untracked contents, then report out-of-scope or premise-invalid changes. Rework only within the authorized scope. `git restore`, `git clean`, stash, and forced worktree removal can destroy user work; use none of them without explicit user authorization. Rewrite the brief before any authorized re-dispatch.
+Do not discard/revert result files or remove a worktree as routine recovery. Preserve the working tree, including untracked and pre-existing files, inspect `git status`, the staged and unstaged diffs, and untracked contents, then report out-of-scope or premise-invalid changes. Continue ordinary scoped corrections, including removing verified task-created files when needed. Preserve partial evidence. Destructive abandonment requires applicable authority. A safe scoped stash that preserves the affected work and keeps it recoverable is not abandonment. Rewrite the brief before any authorized re-dispatch.
 
 ## Landing
 
-**LOCAL CHANGE:** Commit only when the user explicitly authorized it and the gates pass and the diff holds; otherwise leave all work intact and uncommitted. If authorized, write a message describing the change, not the delegation, and follow project co-authorship conventions.
+**LOCAL CHANGE:** The implementer never commits. The orchestrator may commit only when existing authorization covers the commit and the gates pass and the diff holds; otherwise leave all work intact and uncommitted. Reuse applicable standing authority without asking again. If authorized, write a message describing the change, not the delegation, and follow project co-authorship conventions.
 
 ## Surface, don't absorb
 
-Delegation alone does not authorize committing or discarding work. Preserve user and partial changes; do not discard or revert without explicit user authorization. Two limits stay with you:
+Delegation alone authorizes neither commits nor destructive abandonment. Two limits stay with you:
 
 - **Surface, don't absorb.** Report Warp's design decisions, its defensible-but-unasked turns, and
   the non-blocking nitpicks you chose not to fix. Silently smoothing them over hides the

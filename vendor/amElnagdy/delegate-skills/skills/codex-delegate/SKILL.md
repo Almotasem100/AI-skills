@@ -1,8 +1,7 @@
 ---
 name: codex-delegate
 description: >-
-  Delegate a coding task to the OpenAI Codex CLI as a background implementer, then review its diff and
-  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Codex — phrasings
+  Delegate a coding task to the OpenAI Codex CLI as a background implementer, then review its diff. Use this whenever the user wants to hand implementation work to Codex — phrasings
   like "have Codex do X", "delegate this to Codex", "run it through Codex", or "use Codex to
   implement/fix/refactor" — or to run a queue of coding tasks through Codex while staying the reviewer.
   Prefer it over a one-shot Codex forwarder (such as the codex-rescue agent) when the user will review
@@ -17,8 +16,8 @@ metadata:
 # Codex Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the OpenAI Codex CLI — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
-the brief and own the judgment; Codex does the typing in its own sandbox; you verify and commit.
+**implementer** — the OpenAI Codex CLI — then review what it produced. You write
+the brief and own the judgment; Codex does the typing in its own sandbox; you verify the result.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
 command and read a file, so it works the same whether you are Claude Code, OpenCode with a selected
@@ -49,7 +48,7 @@ Run these five steps per task. Steps 1, 4, and 5 are your judgment; 2 and 3 are 
 Codex sees **only** the text you send — no repo memory, no chat history, no shared context. Everything the
 task needs goes in the brief: the goal, the current state, what to change, what to leave untouched,
 the project's **actual** gate commands (discover them from the repo's CLAUDE.md/AGENTS.md/Makefile —
-do not assume), and a report contract. Tell Codex it will **not** commit (you will). Keep one task per
+do not assume), and a report contract. Tell Codex it will **not** commit. Keep one task per
 brief. Full guidance and a template: [references/writing-the-brief.md](references/writing-the-brief.md).
 
 ### 2. Dispatch
@@ -113,7 +112,7 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 ### 5. Land it
 
 Because Codex's sandbox cannot reliably write `.git` (it varies by version, OS, and path), the
-orchestrator owns any authorized commit. Commit only if the user explicitly authorized it, and only
+orchestrator owns any authorized commit. Commit only under existing applicable authority, and only
 after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs
 changes, send a delta brief with `--session <threadId>` from the prior `result.json` (use
 `--resume-last` only when no thread id is available), and review again.
@@ -130,7 +129,10 @@ verify `touchedFiles` came back empty instead of assuming no edits.
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits on that
 mandate: **surface, don't absorb** (report Codex's design decisions, defensible-but-unasked turns, and
 non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if correct
 completion needs going beyond the brief, ask — don't expand the mandate yourself). The full treatment
@@ -145,8 +147,8 @@ builds on the same `codex` CLI, it doesn't replace the plugin. They point in dif
   the output. It deliberately does not poll, review, or commit.
 - The plugin's review command and stop-review gate run the **inverse** direction: **Codex reviews your work**.
 - `codex-delegate` is the **orchestration loop in the other direction**: *you* drive Codex to
-  implement across one task or a queue, and *you* review and land each result. That loop — brief →
-  dispatch → poll → review → commit, with the orchestrator owning the commit — is what the plugin
+  implement across one task or a queue, and *you* review each result and land it only when authorized. That loop — brief →
+  dispatch → poll → review → authorized landing, with the orchestrator owning any commit — is what the plugin
   leaves to you, and what this skill encodes.
 
 If you have the plugin installed, its companion CLI is an optional alternative dispatch backend; the

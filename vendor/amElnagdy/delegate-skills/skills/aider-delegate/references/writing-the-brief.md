@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 The brief is the whole contract. Aider sees the text you send plus the files in its editing scope -
 nothing else. No chat history, no shared context, none of the reasoning that led you here. Anything
 you leave implicit, Aider will decide for itself.
@@ -29,6 +31,9 @@ Point at the files that matter. Name the ones you already ruled out.
 CHANGE
 The specific edits you want, in order. Be concrete about names and
 signatures you have already decided; say "your call" where you have not.
+
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
+Do not run git add or git commit; leave your changes uncommitted for review.
 
 DO NOT TOUCH
 Files, modules, behaviors, and public interfaces that must not move.
@@ -99,8 +104,8 @@ half strands the other. Queue them instead - see
 
 Everything you assert in the brief is frozen the moment you dispatch. If you learn something that
 changes the premises while the run is in flight - a gate command was wrong, an interface moved - do
-not let the run land on a false basis. Stop it, or discard the result and re-dispatch with the
-corrected brief.
+not accept the run on a false basis. Stop it, confirm it has stopped, then inspect partial edits before re-dispatch.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## A worked example
 

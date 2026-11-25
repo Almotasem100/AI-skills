@@ -6,7 +6,10 @@ task.
 
 ## Run them sequentially
 
-Dispatch one brief, review it, land it, then dispatch the next. Parallel runs against the same
+**LOCAL CHANGE:** After review and passing gates, only the orchestrator commits, and only with existing applicable authority; otherwise leave the work intact and uncommitted.
+Record the pre-dispatch state and review each task's own delta, including staged and untracked changes. Preserve partial and user work; routine in-scope corrections may continue.
+
+Dispatch one brief, review it and run its gates, then dispatch the next. Parallel runs against the same
 working tree interleave edits into a diff nobody can review — and because `oz agent run` has no
 sandbox, there is nothing to keep two runs out of each other's files.
 
@@ -43,8 +46,8 @@ recoverable after the queue has moved on.
 ## Track progress where the user can see it
 
 Maintain a visible checklist — the orchestrator's task list, or a scratch file — with one line per
-task and its state: pending, dispatched, under review, landed, or abandoned. Record the commit sha
-as each task lands, and the reason whenever one is abandoned.
+task and its state: pending, dispatched, under review, reviewed (uncommitted or with a commit hash),
+or skipped. Record why a task was skipped.
 
 ## When a task fails
 
@@ -52,11 +55,10 @@ Do not roll straight into the next brief. Decide first:
 
 - **Rework** — the diff is close. Continue the conversation with `--conversation <id>` and a delta
   brief.
-- **Re-scope** — the task was too big or the brief was wrong. Split it and requeue the parts.
-- **Abandon** — it depends on something that is not true yet. Record why and move on.
+- **Re-scope** — if the task was too big or the brief was wrong, split and requeue within existing authority.
+- **Skip** — record the unmet prerequisite, preserve the changes, and continue only independent work; skipping is not authorization to discard or revert.
 
-A failed task that leaves a dirty tree must be cleaned up before the next dispatch. `git status`
-should be clean, or clean except for work you have deliberately kept.
+Inspect and record the retained changes before another dispatch so the next task has a distinguishable delta.
 
 ## Stop the queue when
 
@@ -69,7 +71,7 @@ should be clean, or clean except for work you have deliberately kept.
 ## Final coherence pass
 
 Ten individually correct diffs can still add up to an incoherent whole. When the queue is done,
-review the aggregate — `git diff <first-commit>~1..HEAD`:
+review the aggregate task changes against the recorded pre-queue state, including uncommitted work:
 
 - Duplicated helpers that separate tasks each introduced.
 - Naming that drifted between early and late tasks.

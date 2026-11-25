@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 A brief carries the task-specific context from the orchestrator to the separate Claude Code session.
 The implementer has **no orchestrator chat history or other shared context**. It receives the brief on
 stdin, can inspect the target working tree, and loads Claude Code's usual local context as described
@@ -47,13 +49,14 @@ Run these exact project gates, fix failures caused by the change, and report the
   <actual test command>
   <actual lint/format command>
   <actual build/typecheck command>
-Confirm the working tree contains only intended changes.
+Confirm your edits are limited to the intended changes.
 </verification_loop>
 
 <action_safety>
 Keep changes within the task. Do not perform unrelated cleanup. Do not run git add, git commit, or git
 push. Do not invoke another Claude session or delegation skill. Leave all work uncommitted for the
-orchestrator to review and land.
+orchestrator to review.
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
 </action_safety>
 
 <structured_output_contract>
@@ -89,7 +92,7 @@ PowerShell without that sandbox; see [dispatch-and-poll.md](dispatch-and-poll.md
 
 ## One task per brief
 
-One brief → one separate Claude session → one reviewed commit keeps scope and rollback clear. Split a
+Keep each brief bounded. Split a
 mixed request such as "fix the bug, redesign the API, update unrelated docs, and propose a roadmap"
 into separate dispatches.
 
@@ -98,8 +101,9 @@ Use a resumed session only for rework on the same task. Start unrelated queue it
 ## Premises freeze at dispatch
 
 There is no steering channel while the relay is running. Audit ownership, scope, branch, constraints,
-and expected behavior before dispatch. If a premise changes during the run, stop it and inspect the
-working tree before sending a corrected brief. Do not discard partial edits before reviewing them.
+and expected behavior before dispatch. If a premise changes during the run, stop it, confirm it has stopped, then inspect the
+working tree before sending a corrected brief.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## Delta briefs for resumed sessions
 
@@ -141,7 +145,7 @@ identifiers to source comments. Do not add dependencies.
 Run and make green:
   pytest tests/billing/ -q
   ruff check services/billing/ tests/billing/
-Confirm git status contains only the intended refund implementation and tests.
+Confirm your changes are limited to the intended refund implementation and tests.
 </verification_loop>
 
 <action_safety>
@@ -154,5 +158,5 @@ open or needing a decision.
 </structured_output_contract>
 ```
 
-Dispatch with [dispatch-and-poll.md](dispatch-and-poll.md), then review and land with
+Dispatch with [dispatch-and-poll.md](dispatch-and-poll.md), then review the result. Commit only if authorized; see
 [review-and-land.md](review-and-land.md).

@@ -41,8 +41,8 @@ Options:
 | `--read-only` | Run under agy's sandbox with tool approval auto-granted inside it (`--sandbox --dangerously-skip-permissions`); reads and writes are both confined to the workspace — a write appears to succeed to the agent but is overlaid and discarded. Mutually exclusive with `--dangerously-skip-permissions` as a flag (that flag alone, without the sandbox, is full access). |
 | `--dangerously-skip-permissions` | Pass Antigravity's permission-bypass flag; mutually exclusive with `--read-only`. Never use this unless the human explicitly accepts it. |
 | `--print-timeout <duration>` | Timeout agy itself applies to print mode (default: `30m`). |
-| `--timeout <dur>` | Relay-side watchdog (e.g. `30m`); overrides the default of `--print-timeout` plus a 60s grace. On expiry the agy process tree is killed and `result.json` gets `status: "timeout"`. Set it explicitly when agy may hang past its own print timeout. Malformed, zero, and out-of-range durations are rejected; the maximum is `596h31m23s`. |
-| `--stall-timeout <dur>` | Opt-in stall watchdog (e.g. `5m`; off by default). If `agy.log` gains no new `streamGenerateContent` line for this long, the agy process tree is killed and `result.json` gets `status: "stalled"`. The clock starts at launch and restarts on every generation call, so it catches a run that lost its stream and only re-runs auth and model-discovery handshakes while the log keeps growing. Set it above the longest tool step you expect: a long test run makes no generation calls. It keys on agy's log format, which agy does not document as stable. Validated like `--timeout`. |
+| `--timeout <dur>` | Relay-side watchdog (e.g. `30m`); overrides the default of `--print-timeout` plus a 60s grace. On expiry the relay attempts to stop the agy process tree and `result.json` gets `status: "timeout"`. Set it explicitly when agy may hang past its own print timeout. Malformed, zero, and out-of-range durations are rejected; the maximum is `596h31m23s`. |
+| `--stall-timeout <dur>` | Opt-in stall watchdog (e.g. `5m`; off by default). If `agy.log` gains no new `streamGenerateContent` line for this long, the relay attempts to stop the agy process tree and `result.json` gets `status: "stalled"`. The clock starts at launch and restarts on every generation call, so it catches a run that lost its stream and only re-runs auth and model-discovery handshakes while the log keeps growing. Set it above the longest tool step you expect: a long test run makes no generation calls. It keys on agy's log format, which agy does not document as stable. Validated like `--timeout`. |
 | `--add-dir <dir>` | Add an extra workspace directory. Repeatable; relative paths resolve against `--cd`. Fresh runs always add the `--cd` repo (absolute path) as a workspace dir. Edits inside extra workspaces are not reported in `touchedFiles`. |
 | `--out-dir <dir>` | Where artifacts go (default: a fresh dir under the system temp dir). |
 
@@ -50,6 +50,9 @@ Artifacts default to the system temp dir on purpose: the repo under review stays
 touched-files report shows only Antigravity's edits and nothing of the helper's own.
 
 ## The result
+
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
 
 `<out-dir>/result.json` is the contract. Fields:
 
@@ -148,8 +151,10 @@ caps a single argument), so have `agy` read large context from the workspace ins
 
 ## The commit boundary
 
-The helper never commits - by design, not omission. The robust contract is: Antigravity edits the
-working tree, the orchestrator reviews and commits. See [review-and-land.md](review-and-land.md).
+The helper never commits - by design, not omission. Antigravity edits without committing. The
+orchestrator reviews and commits only if already authorized and applicable gates are satisfied.
+<!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).
 
 ## Permission engine traps
 

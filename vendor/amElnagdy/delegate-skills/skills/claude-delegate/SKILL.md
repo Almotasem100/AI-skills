@@ -2,7 +2,7 @@
 name: claude-delegate
 description: >-
   Delegate a coding task to a separate Claude Code CLI process or another Claude session as an
-  implementer, then review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use only when the user explicitly asks to
+  implementer, then review its diff. Use only when the user explicitly asks to
   delegate implementation to Claude Code, another Claude session, or the `claude` CLI — for example,
   "have another Claude implement this", "delegate this to Claude Code", or "run this queue through a
   separate Claude session." Do not trigger merely because the current orchestrator is Claude, and do
@@ -16,8 +16,8 @@ metadata:
 # Claude Delegate
 
 You are the **orchestrator**. Delegate one bounded coding task to a separate **implementer** — a Claude
-Code CLI session — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
-judgment; the separate Claude session edits the working tree; you verify and commit.
+Code CLI session — then review what it produced. You write the brief and own the
+judgment; the separate Claude session edits the working tree; you verify the result.
 
 This skill is not a signal for the current Claude to implement directly. Use it only after the human
 explicitly asks for delegation to another Claude Code process or session.
@@ -104,7 +104,9 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land
 
-**LOCAL CHANGE:** The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. For rework, resume the same Claude session with a delta brief:
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment. Continue ordinary scoped corrections, including removing verified task-created files when needed; preserve user and pre-existing work and partial evidence.
+The implementer never commits. The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. Reuse applicable standing authority without asking again. For rework, resume the same Claude session with a delta brief:
 
 ```bash
 echo "Keep the implementation, replace the mocked DB test with the migrated fixture, and remove the
@@ -153,8 +155,8 @@ acceptance.
 
 Claude subagents, agent teams, and background sessions are useful when the current Claude environment
 is already the orchestrator and native coordination is the goal. This skill is complementary: it
-provides a cross-orchestrator contract — self-contained brief → dispatch → artifacts → review → land
-— and keeps the commit with the orchestrator.
+provides a cross-orchestrator contract — self-contained brief → dispatch → artifacts → review → authorized landing
+— and keeps any commit with the orchestrator.
 
 ## References
 

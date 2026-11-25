@@ -2,7 +2,7 @@
 name: agy-delegate
 description: >-
   Delegate a coding task to the Google Antigravity CLI (`agy`) as a background implementer, then review
-  its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to
+  its diff. Use this whenever the user wants to hand implementation work to
   Antigravity or agy - phrasings like "have Antigravity do X", "delegate this to agy", "run it through
   agy", or "use Antigravity to implement/fix/refactor" - or wants to run a queue of coding tasks
   through agy while staying the reviewer. DO NOT USE for tasks small enough to do inline, or when the
@@ -16,9 +16,8 @@ metadata:
 # Antigravity Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** - the Google Antigravity CLI (`agy`) - then review what it produced and land it
-yourself. You write the brief and own the judgment; Antigravity does the typing in its own
-conversation; you verify and commit.
+**implementer** - the Google Antigravity CLI (`agy`) - then review what it produced. You write the brief and own the judgment; Antigravity does the typing in its own
+conversation; you verify the result.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
 command and read a file, so any comparable agent can drive it. It is designed for and run on Claude
@@ -57,7 +56,7 @@ Run these five steps per task. Steps 1, 4, and 5 are your judgment; 2 and 3 are 
 Antigravity sees only the text you send plus what it can inspect in the workspace - no chat history, no
 shared context. Everything the task needs goes in the brief: the goal, the current state, what to
 change, what to leave untouched, the project's **actual** gate commands, and a report contract. Tell
-Antigravity it will **not** commit (you will). Keep one task per brief. Full guidance and a template:
+Antigravity it will **not** commit. Keep one task per brief. Full guidance and a template:
 [references/writing-the-brief.md](references/writing-the-brief.md).
 
 ### 2. Dispatch
@@ -108,7 +107,8 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--resume-last` and review again.
+The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If it needs changes, send a delta brief with `--resume-last` and review again.
 
 ## Permission model
 
@@ -145,7 +145,10 @@ the bypass flag without explicit human approval.
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that mandate: **surface, don't
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits on that mandate: **surface, don't
 absorb** (report Antigravity's design decisions, defensible-but-unasked turns, and non-blocking
 nitpicks rather than silently keeping them) and **stop for scope changes** (if correct completion needs
 going beyond the brief, ask - don't expand the mandate yourself). The full treatment is in

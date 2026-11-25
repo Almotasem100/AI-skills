@@ -129,6 +129,9 @@ The helper blocks until MiniMax Code finishes. Back it with whatever your orches
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: mcode_unavailable` (exit 127):** the binary wasn't found. Install MiniMax Code, or pass
   `--mcode-path` / set `MCODE_CLI` when it is installed but off the relay's PATH, then re-dispatch.
 - **an `error` mentioning `version preflight` (`failed`, or `timeout` at exit 124):** the bounded
@@ -169,6 +172,6 @@ the run read or wrote, so treat it as sensitive as the repo itself.
 ## The commit boundary
 
 The helper never commits — by design, not omission. With no sandbox, MiniMax Code *can* write `.git`,
-which is the reason: a run that commits itself is a run you must unpick before you can review it. The
-robust contract is: MiniMax Code edits the working tree, the orchestrator reviews and commits. See
-[review-and-land.md](review-and-land.md).
+but it must edit without committing. The orchestrator reviews and commits only if already authorized
+and applicable gates are satisfied. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

@@ -1,8 +1,7 @@
 ---
 name: zcode-delegate
 description: >-
-  Delegate a coding task to the Z.AI ZCode CLI as a background implementer, then review its diff and
-  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to ZCode — phrasings
+  Delegate a coding task to the Z.AI ZCode CLI as a background implementer, then review its diff. Use this whenever the user wants to hand implementation work to ZCode — phrasings
   like "have ZCode do X", "delegate this to ZCode", "run it through ZCode", or "use ZCode to
   implement/fix/refactor" — or to run a queue of coding tasks through ZCode while staying the
   reviewer. DO NOT USE for tasks small enough to do inline, or when the user wants the code written
@@ -16,8 +15,8 @@ metadata:
 # ZCode Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the Z.AI ZCode CLI — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
-the brief and own the judgment; ZCode does the typing; you verify and commit.
+**implementer** — the Z.AI ZCode CLI — then review what it produced. You write
+the brief and own the judgment; ZCode does the typing; you verify the result.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
 command and read a file. (It is designed for and run on Claude Code; treat other orchestrators as
@@ -151,7 +150,8 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`, and review again.
+The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If it needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json`, and review again.
 
 ## Read-only second opinions
 
@@ -162,7 +162,10 @@ enforced here, verify `touchedFiles` came back empty instead of assuming no edit
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits: **surface, don't absorb** (report ZCode's design decisions and
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits: **surface, don't absorb** (report ZCode's design decisions and
 defensible-but-unasked turns rather than silently keeping them) and **stop for scope changes** (if
 correct completion needs going beyond the brief, ask). The full treatment is in
 [references/review-and-land.md](references/review-and-land.md).

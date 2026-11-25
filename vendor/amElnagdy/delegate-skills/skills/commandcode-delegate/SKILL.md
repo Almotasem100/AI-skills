@@ -2,7 +2,7 @@
 name: commandcode-delegate
 description: >-
   Delegate a coding task to the Command Code CLI (`cmd`) as a background implementer, then review its
-  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Command
+  diff. Use this whenever the user wants to hand implementation work to Command
   Code — phrasings like "have Command Code do X", "delegate this to commandcode", "run it through
   cmd", or "use Command Code to implement/fix/refactor" — or to run a queue of coding tasks through
   Command Code while staying the reviewer. DO NOT USE for tasks small enough to do inline, or when the
@@ -16,9 +16,8 @@ metadata:
 # Command Code Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — the Command Code CLI (`cmd`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted.
-You write the brief and own the judgment; Command Code does the typing in your working tree; you
-verify and commit.
+**implementer** — the Command Code CLI (`cmd`) — then review what it produced.
+You write the brief and own the judgment; Command Code does the typing in your working tree; you verify the result.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
 command and read a file, so it works the same whether you are Claude Code, OpenCode with a selected
@@ -72,7 +71,7 @@ Command Code sees **only** the text you send — no repo memory, no chat history
 (beyond the repo's own `AGENTS.md`, which it reads automatically). Everything the task needs goes in
 the brief: the goal, the current state, what to change, what to leave untouched, the project's
 **actual** gate commands (discover them from the repo's AGENTS.md/CLAUDE.md/Makefile — do not assume),
-and a report contract. Tell it that it will **not** commit (you will). Keep one task per brief. Full
+and a report contract. Tell it that it will **not** commit. Keep one task per brief. Full
 guidance and a template: [references/writing-the-brief.md](references/writing-the-brief.md).
 
 ### 2. Dispatch
@@ -133,7 +132,7 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 The relay never commits, but it cannot stop Command Code under `--yolo` from writing `.git`. The brief
 forbids implementer commits, and the reviewer compares `HEAD` with the recorded pre-dispatch baseline
-before any authorized landing. The orchestrator may commit only when the user explicitly authorized it
+before any authorized landing. The orchestrator may commit only under existing applicable authority
 and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If it
 needs changes, send a delta brief with `--session <sessionId>` from the prior `result.json` (use
 `--continue-last` only when no session id is available), and review again.
@@ -149,7 +148,10 @@ or outside-repository paths are not covered); `true` means it saw one; `null` me
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits on that
 mandate: **surface, don't absorb** (report Command Code's design decisions, defensible-but-unasked
 turns, and non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if
 correct completion needs going beyond the brief, ask — don't expand the mandate yourself). The full

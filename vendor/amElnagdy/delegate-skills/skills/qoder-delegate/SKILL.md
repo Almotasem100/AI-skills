@@ -2,7 +2,7 @@
 name: qoder-delegate
 description: >-
   Delegate a coding task to the Qoder CLI (`qodercli`) as a background implementer, then review its
-  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user asks to have Qoder implement, fix, refactor,
+  diff. Use this whenever the user asks to have Qoder implement, fix, refactor,
   or run a queue of coding tasks while the orchestrator remains the reviewer. DO NOT USE for tasks
   small enough to do inline, or when the user wants code written directly without delegation.
 license: MIT
@@ -13,8 +13,8 @@ metadata:
 # Qoder Delegate
 
 You are the **orchestrator**. Delegate one bounded coding task to a separate **implementer** - Qoder CLI -
-then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment; Qoder
-edits the working tree in its session; you verify and commit.
+then review what it produced. You write the brief and own the judgment; Qoder
+edits the working tree in its session; you verify the result.
 
 The loop needs only shell and file access, so any comparable orchestrator can drive it.
 
@@ -101,8 +101,8 @@ See [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits; **the orchestrator commits only if the user explicitly authorized it**. Commit only after the gates pass and the diff
-holds. If rework is needed, send a delta brief with `--resume-last` or `--resume <id>`, then review
+The implementer edits but never commits. The orchestrator may commit only under existing applicable
+authority and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--resume <id>`, then review
 again.
 
 ## Permission model
@@ -118,7 +118,10 @@ Qoder falls back to `default` when a non-default mode is requested outside a tru
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, do not absorb** (report Qoder's design decisions and
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits remain: **surface, do not absorb** (report Qoder's design decisions and
 non-blocking deviations) and **stop for scope changes** (ask before expanding beyond the brief). See
 [references/review-and-land.md](references/review-and-land.md).
 

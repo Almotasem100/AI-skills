@@ -56,12 +56,14 @@ for:
   anticipate. Don't just accept it because it looks reasonable; understand it and decide.
 - **A commit it made itself** — the brief forbids it, but nothing enforced that. Compare `HEAD` with
   the pre-dispatch baseline, then inspect status, staged and unstaged diffs, and the intervening log.
-  If the whole range belongs to the run, `git reset --soft <recorded-baseline>` and review it as a diff.
+  Review the committed range with `git diff <recorded-baseline>..HEAD` without moving `HEAD`.
+  Report the unexpected commits and preserve their IDs, the index, and the working tree. Do not
+  rewrite history automatically; any authorized recovery must retain a recoverable copy first.
 
 ## The implementer sweep
 
 Generated code fails in systematic ways that gates are structurally blind to — each of these can sit in
-a diff whose tests are all green. Walk them against every diff before you commit:
+a diff whose tests are all green. Walk them against every diff during review:
 
 - **Hardcoded success or fixture data** on a path the brief says does real work — a canned
   `{status: "ok"}` or default return passes tests *by design*. If MiniMax Code couldn't implement
@@ -85,7 +87,7 @@ a diff whose tests are all green. Walk them against every diff before you commit
   excludes. Noise that buries the validation that matters at real trust boundaries.
 
 Anything the sweep catches goes back to MiniMax Code as a delta brief (below) or gets fixed in the tree
-before commit — and either way is reported to the user (see "Surface, don't absorb").
+before verification — and either way is reported to the user (see "Surface, don't absorb").
 
 If the `guard-skills` package is installed, run the relevant guard on the diff for the full treatment —
 `clean-code-guard` on production code, `test-guard` on tests, `docs-guard` on documentation. The sweep
@@ -93,15 +95,20 @@ above is the built-in floor; the guards go deeper.
 
 ## The commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. MiniMax Code must not commit. With no sandbox it can write `.git`, so inspect the baseline and report unexpected Git changes. If authorized, write a clear message and record project co-authorship as usual.
+**LOCAL CHANGE:** The orchestrator may commit only under existing applicable authority and
+after the gates pass and the diff holds; otherwise preserve verified work uncommitted.
+Reuse applicable standing authority without asking again. MiniMax Code must not commit. With no sandbox it can write `.git`, so inspect the baseline and report unexpected Git changes. If authorized, write a clear message and record project co-authorship as usual.
 
-From dispatch until that commit, the uncommitted working tree is the authoritative copy of the
-implementer's work — the only one you can commit from, and often the only copy at all. Never run
-`git checkout`, `reset`, `clean`, or a branch switch in the workspace between those two points —
+After dispatch, the uncommitted working tree is the authoritative copy of the
+implementer's work — the only one you can commit from, and often the only copy at all. Do not reflexively run
+`git checkout`, `reset`, `clean`, or a branch switch in the workspace after dispatch —
 however messy an interrupted run looks, inspect it first: `git status`, `git diff`, `git diff --cached`
 for anything the implementer staged (plain `git diff` is blind to the index), and open any untracked
-files (`??` in `git status`) directly — they are the implementer's new files, and no diff shows their
-contents. The tree is evidence, not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The ban on reflexive cleanup remains.
+files (`??` in `git status`) directly — Git diffs do not show untracked contents. Compare with pre-dispatch status, staged and
+unstaged diffs, and untracked contents to isolate the task delta; do not treat the whole index
+or every untracked file as task work. The tree is evidence, not clutter.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Reworking: send the delta, not the whole task
 
@@ -119,11 +126,11 @@ drop the now-unused import." | node "<skill-dir>/scripts/relay.mjs" --session <s
 `--session <sessionId>` keeps the context from the first run, so a short delta is enough. The relay
 offers no "continue the latest session" fallback: MiniMax Code's latest session is shared with every
 other run in that workspace. Then review again — rework gets the same gate-rerun, test check, diff-read, and sweep as the
-original, no shortcuts. Repeat until it's right; commit only if the user explicitly authorized it, otherwise leave the work intact and uncommitted.
+original, no shortcuts. Repeat until the work holds.
 
 ## Surface, don't absorb
 
-Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+Keep the human informed about anything that changes the shape of the work:
 
 - **Report design decisions** MiniMax Code made, and any defensible-but-unrequested turns it took.
 - **Note non-blocking nitpicks** you chose not to block on, so the human can overrule you.

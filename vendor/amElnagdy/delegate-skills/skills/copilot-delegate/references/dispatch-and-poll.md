@@ -82,6 +82,9 @@ A pre-run usage error exits 2 and writes no result. A missing `copilot` exits 12
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: "copilot_unavailable"` (exit 127):** copilot is not on PATH. Install it, authenticate,
   and re-dispatch.
 - **`status: "failed"` with a denial error:** copilot auto-denied a tool call in headless mode.
@@ -139,5 +142,6 @@ skips, `assistant.message` events whose `data.content` becomes `finalMessage`, a
 
 ## The commit boundary
 
-The relay never commits. Copilot edits the working tree; the orchestrator reviews, re-runs the
-gates, and commits. See [review-and-land.md](review-and-land.md).
+The relay never commits. Copilot edits without committing; the orchestrator reviews, re-runs
+applicable gates, and commits only if already authorized and those gates pass. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

@@ -1,6 +1,6 @@
 # Multi-task queues
 
-A queue is a sequence of bounded tasks dispatched one at a time, each reviewed and landed before the
+A queue is a sequence of bounded tasks dispatched one at a time, each reviewed and gated before the
 next begins. It is the shape that makes delegation worth the overhead: a migration, a mechanical
 refactor across many files, a removal sweep.
 
@@ -9,17 +9,17 @@ that no reviewer can untangle, and `touchedFiles` stops meaning anything.
 
 ## The loop
 
+**LOCAL CHANGE:** After review and passing gates, only the orchestrator commits, and only with existing applicable authority; otherwise leave the work intact and uncommitted.
+Record the pre-dispatch state and review each task's own delta, including staged and untracked changes. Preserve partial and user work; routine in-scope corrections may continue.
+
 For each task in the queue:
 
 1. Write the brief for **this task only**.
 2. Dispatch.
 3. Wait for `result.json`.
 4. Review: re-run the gates, read the diff, check scope.
-5. Land it — a commit per task, not one commit at the end.
+5. Record the reviewed delta and whether it remains uncommitted or was committed.
 6. Note anything learned that the next brief needs.
-
-A commit per task is what makes a queue recoverable. When task 6 of 9 goes wrong, you revert one
-commit instead of unpicking a nine-task blob.
 
 ## Carrying constraints forward
 
@@ -48,21 +48,16 @@ context that a cold brief would have to restate.
 
 ## Tracking progress
 
-Keep a visible checklist — the queue, one line each, marked as landed. Update it after the commit,
-not after the dispatch. A task is done when it is committed and the gates passed, not when ZCode
-said it finished.
+Keep a visible checklist, one line per task: queued, dispatched, or reviewed with gates passed.
+Record whether reviewed work is uncommitted or has a commit hash.
 
-Record the `sessionId` of each task next to its line. If a landed task later turns out to be wrong,
+Record the `sessionId` of each task next to its line. If a reviewed task later turns out to be wrong,
 that id is the cheapest way back into its context.
 
 ## The end-of-run coherence check
 
 Individually correct changes can be collectively wrong. When the queue is done, review the whole
-range as one diff:
-
-```bash
-git diff <commit-before-the-queue>..HEAD
-```
+set of task changes against the recorded pre-queue state, including uncommitted work.
 
 Look for what per-task review structurally cannot catch:
 

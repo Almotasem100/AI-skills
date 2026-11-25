@@ -3,16 +3,19 @@
 A queue is several bounded tasks run through the same loop, one after another, with you reviewing
 between them. It is not a way to dispatch a large task in parallel pieces.
 
-## Run sequentially, one commit per task
+## Run sequentially
 
-Dispatch task N, review it, commit it, then dispatch task N+1. The reasons are practical:
+**LOCAL CHANGE:** After review and passing gates, only the orchestrator commits, and only with existing applicable authority; otherwise leave the work intact and uncommitted.
+Record the pre-dispatch state and review each task's own delta, including staged and untracked changes. Preserve partial and user work; routine in-scope corrections may continue.
 
-- **A clean base per task.** Reviewing a diff means reading what this task changed. If two runs edit
+Dispatch task N, review it and run its gates, then dispatch task N+1. The reasons are practical:
+
+- **A recorded base per task.** Reviewing a diff means reading what this task changed. If two runs edit
   the tree at once, `touchedFiles` stops telling you who did what.
 - **Aider's chat history is per-repository.** `--resume-last` restores the history file in the repo,
   so concurrent runs in one worktree share and clobber it. Genuine parallelism needs separate
   worktrees, each with its own history.
-- **Failure stays contained.** A bad task N is one commit to inspect, not a tangle.
+- **Failure stays contained.** A bad task N is one task delta to inspect, not a tangle.
 
 If you truly need parallelism, use `git worktree` so each run gets its own tree, its own
 `.aider.chat.history.md`, and its own reviewable diff.
@@ -32,11 +35,11 @@ agree with each other.
 ## Keep a progress file
 
 For anything longer than three tasks, keep a small file outside the repo tracking: task, status,
-commit sha, and any decision that later tasks depend on.
+commit hash if committed, and any decision that later tasks depend on.
 
 ```
-1. reject negative windows       done    a1b2c3d   ValueError, not clamp
-2. propagate through scheduler   done    e4f5g6h   callers let it raise
+1. reject negative windows       reviewed   a1b2c3d   ValueError, not clamp
+2. propagate through scheduler   reviewed   uncommitted   callers let it raise
 3. document the new behavior     pending           follow decision from 1
 ```
 
@@ -45,11 +48,7 @@ It survives a lost session, and it is what you carry forward into each brief.
 ## Close with a coherence check
 
 Individually-correct tasks can still add up to something incoherent. After the last one, review the
-whole range as one diff:
-
-```bash
-git diff <sha-before-queue>..HEAD
-```
+aggregate task changes against the recorded pre-queue state, including uncommitted work.
 
 Look for interfaces that drifted between tasks, duplicated helpers introduced independently, docs that
 describe an earlier iteration, and dead code left by a later task. Fix the seams before calling the

@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 A brief is the entire task as Vibe will see it. It runs in a separate session with **no memory of your
 conversation, no access to prior notes, and no shared context** — only the text you send and whatever
 it can inspect in the workspace. If a constraint is not in the brief or discoverable in the repo, it
@@ -26,14 +28,14 @@ These are the real project gates the orchestrator will run after dispatch:
   <the project's real test command>
   <the project's real lint/format command>
   <the project's real build/typecheck command>
-If shell execution was explicitly authorized for this run, run them and fix what they surface.
+If shell execution was explicitly authorized for this run, run them and fix failures caused by your changes.
 Otherwise do not claim they ran; perform the inspections available to you and report the gates as not run.
 </verification_loop>
 
 <action_safety>
 Keep changes scoped to the task. No unrelated refactors, renames, or cleanup unless required for
-correctness. Do NOT run git add or git commit — the orchestrator commits after reviewing. Leave the
-work uncommitted in the working tree.
+correctness. Do NOT run git add or git commit. Leave your changes uncommitted for review.
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
 </action_safety>
 
 <structured_output_contract>
@@ -73,16 +75,15 @@ constraints should be directly in front of it.
 
 ## One task per brief
 
-Keep each brief bounded. One brief → one Vibe run → one reviewed commit keeps the diff and rollback
-clean. Split mixed implementation, review, documentation, and roadmap requests into separate
+Keep each brief bounded.
 dispatches.
 
 ## Premises freeze at dispatch
 
 Vibe starts from the brief's facts and there is no steering channel mid-run. Audit ownership, target
 branch, constraints, and other judgment-bearing premises before dispatch. If one proves wrong while
-the run is live, stop it and inspect the working tree before sending a corrected brief; reconcile any
-partial or premise-contaminated edits rather than discounting them after the fact.
+the run is live, stop it, confirm it has stopped, then inspect any partial edits before sending a corrected brief.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## A worked example
 
@@ -98,8 +99,8 @@ path, API routes, and data models untouched.
 The orchestrator will run:
   pytest tests/billing/ -q
   ruff check services/billing/
-If shell execution is authorized for this run, run them and fix failures. Otherwise report them as
-not run and confirm only refund.py and its test file changed.
+If shell execution is authorized for this run, run them and fix failures caused by your changes. Otherwise report them as
+not run and confirm your changes are limited to refund.py and its test file.
 </verification_loop>
 
 <action_safety>
@@ -127,5 +128,5 @@ This has two consequences:
 - A brief over 120 KB on POSIX or 12 KB on Windows is rejected before launch because the platforms
   cap command arguments. Put large context in the workspace and tell Vibe which file to read.
 
-Dispatch with [dispatch-and-poll.md](dispatch-and-poll.md), then review and commit with
+Dispatch with [dispatch-and-poll.md](dispatch-and-poll.md), then review the result. Commit only if authorized; see
 [review-and-land.md](review-and-land.md).

@@ -77,10 +77,11 @@ fixed in the tree, and either choice is reported to the human.
 
 ## Preserve interrupted work
 
-From dispatch until a reviewed commit, the uncommitted tree is the authoritative copy. Do not
+After dispatch, the uncommitted tree is the authoritative copy. Do not
 reflexively run `git checkout`, `git reset`, `git clean`, or switch branches after a timeout, abort, or
 failed result. First inspect status, unstaged and staged diffs, untracked files, `events.jsonl`, and
-`stderr.txt`. **LOCAL CHANGE:** Preserve premise-invalid work and report it; discard or revert only with explicit user authorization.
+`stderr.txt`. Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority. Report premise-invalid work.
 
 ## Rework in the same session
 
@@ -101,11 +102,11 @@ holds.
 
 ## Commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff satisfies the brief; otherwise leave the work intact and uncommitted. The implementer never commits.
+**LOCAL CHANGE:** The orchestrator commits only when existing authorization covers the commit and only after the gates pass and the diff satisfies the brief; otherwise leave the work intact and uncommitted. Reuse applicable standing authority without asking again. The implementer never commits.
 
 ## Surface, do not absorb
 
-Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+Keep the human informed when the work changes shape:
 
 - report design decisions and defensible-but-unrequested turns;
 - note non-blocking concerns you chose not to block on;

@@ -1,8 +1,7 @@
 ---
 name: aider-delegate
 description: >-
-  Delegate a coding task to Aider (`aider`) as a background implementer, then review its diff and land
-  it yourself. Use this whenever the user wants to hand implementation work to Aider - phrasings like
+  Delegate a coding task to Aider (`aider`) as a background implementer, then review its diff. Use this whenever the user wants to hand implementation work to Aider - phrasings like
   "have Aider do X", "delegate this to aider", "run it through Aider", or "use Aider to
   implement/fix/refactor" - or wants to run a queue of coding tasks through Aider while staying the
   reviewer. This includes asking Aider to drive a local or self-hosted OpenAI-compatible endpoint
@@ -19,8 +18,8 @@ metadata:
 # Aider Delegate
 
 You are the **orchestrator**. Hand a bounded coding task to a separate **implementer** - Aider - then
-review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment; Aider does the
-typing in its own run; you verify and commit.
+review what it produced. You write the brief and own the judgment; Aider does the
+typing in its own run; you verify the result.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
 
@@ -158,7 +157,8 @@ complaints. That is Aider's lint, not your gates - run yours anyway. See
 
 ### 5. Land it
 
-The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last`, then review again.
+The implementer edits the working tree. The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If rework is needed, send a delta brief with `--resume-last`, then review again.
 
 ## Autonomy and permissions
 
@@ -192,7 +192,10 @@ not per-user: two clones of the same project do not share it.
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits remain: **surface, don't absorb**
 (report Aider's design decisions, defensible-but-unasked turns, and non-blocking nitpicks) and **stop
 for scope changes** (if correct completion needs going beyond the brief, ask instead of expanding the
 mandate). See [references/review-and-land.md](references/review-and-land.md).

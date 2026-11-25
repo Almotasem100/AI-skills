@@ -1,8 +1,7 @@
 ---
 name: muse-delegate
 description: >-
-  Delegate a coding task to Muse Code (`muse`) as a background implementer, then review its diff and
-  commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Muse — phrasings
+  Delegate a coding task to Muse Code (`muse`) as a background implementer, then review its diff. Use this whenever the user wants to hand implementation work to Muse — phrasings
   like "have Muse do X", "delegate this to Muse", "run it through Muse", or "use Muse to
   implement/fix/refactor" — or wants to run a queue of coding tasks through Muse while staying the
   reviewer. Prefer it when the user will review the diff and commit it themselves. It applies only
@@ -18,8 +17,8 @@ metadata:
 # Muse Delegate
 
 You are the **orchestrator**. This skill lets you hand a bounded coding task to a separate
-**implementer** — Muse Code (`muse`) — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write
-the brief and own the judgment; Muse does the typing in its own `exec` run; you verify and commit.
+**implementer** — Muse Code (`muse`) — then review what it produced. You write
+the brief and own the judgment; Muse does the typing in its own `exec` run; you verify the result.
 
 Nothing here is specific to one orchestrating agent. The loop needs only the ability to run a shell
 command and read a file, so any agent with those two capabilities can drive it. The full delegate →
@@ -77,7 +76,7 @@ Muse sees **only** the text you send plus what it can read from the working tree
 no shared context. Everything the task needs goes in the brief: the goal, the current state, what to
 change, what to leave untouched, the project's **actual** gate commands (discover them from the repo's
 AGENTS.md/CLAUDE.md/Makefile — do not assume), and a report contract. Tell Muse it will **not**
-commit (you will). Keep one task per brief. Full guidance and a template:
+commit. Keep one task per brief. Full guidance and a template:
 [references/writing-the-brief.md](references/writing-the-brief.md).
 
 ### 2. Dispatch
@@ -134,14 +133,16 @@ Full checklist: [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits the working tree. The orchestrator may commit only when the user explicitly
-authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and
-uncommitted. If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task)
+The implementer edits the working tree. The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If it needs changes, send a delta brief with `--session <id>` (don't restate the whole task)
 and review again. There is no headless `--resume-last`.
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits on that
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits on that
 mandate: **surface, don't absorb** (report Muse's design decisions, defensible-but-unasked turns,
 and non-blocking nitpicks rather than silently keeping them) and **stop for scope changes** (if correct
 completion needs going beyond the brief, ask — don't expand the mandate yourself). The full treatment

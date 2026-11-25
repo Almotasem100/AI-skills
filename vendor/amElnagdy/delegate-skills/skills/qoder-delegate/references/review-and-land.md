@@ -48,11 +48,14 @@ gate and diff review.
 
 ## Commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. Qoder must never run `git add` or `git commit` for this workflow.
+**LOCAL CHANGE:** The orchestrator may commit only under existing applicable authority and
+after the gates pass and the diff holds; otherwise preserve verified work uncommitted.
+Reuse applicable standing authority without asking again. Qoder must never run `git add` or `git commit` for this workflow.
 
-Until then, the working tree is the authoritative copy of the implementer's work. Before any cleanup
+After dispatch, the working tree is the authoritative copy of the implementer's work. Before any cleanup
 or branch switch, inspect `git status`, `git diff`, `git diff --cached`, and every untracked file.
-Staged and untracked work is invisible to a plain `git diff`; preserve it through review. **LOCAL CHANGE:** Do not discard or revert user/partial work without explicit user authorization.
+Staged and untracked work is invisible to a plain `git diff`; preserve it through review. Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Surface, do not absorb
 

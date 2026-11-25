@@ -98,9 +98,12 @@ If the document cannot be parsed at all:
 
 ## When a run misbehaves
 
-- **`status: "timeout"`** — the watchdog fired. The whole ZCode process tree was killed. Inspect the
-  working tree before re-dispatching; a killed run can leave partial edits.
-- **`status: "aborted"`** — the relay itself was killed and forwarded the kill. Same advice.
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
+- **`status: "timeout"`** — the watchdog attempted to stop the ZCode process tree. Preserve and
+  inspect partial edits and artifacts before retrying.
+- **`status: "aborted"`** — a stop was requested, not confirmed. Same advice.
 - **`status: "zcode_unavailable"`** — no CLI found. Check the three resolution routes above.
 - **Exit 1 with `Session not found`** — the `--session` id does not exist. Session ids are
   `sess_`-prefixed; copy them from a prior `result.json`, not from memory.

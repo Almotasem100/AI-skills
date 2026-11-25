@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 A brief is the entire task as Antigravity will see it. It runs in a separate conversation with **no
 memory of your conversation, no access to your prior notes, and no shared context** - only the text you
 send and whatever it can inspect in the workspace. If a constraint is not in the brief or discoverable
@@ -27,17 +29,17 @@ from wandering into unrelated refactors.
 </task>
 
 <verification_loop>
-Run these before finishing and fix anything they surface, don't just report it:
+Run these before finishing and fix failures caused by your changes:
   <the project's real test command>
   <the project's real lint/format command>
   <the project's real build/typecheck command>
-Confirm the working tree shows only the intended changes afterward.
+Confirm your edits are limited to the intended changes.
 </verification_loop>
 
 <action_safety>
 Keep changes scoped to the task. No unrelated refactors, renames, or cleanup unless required for
-correctness. Do NOT run git add or git commit - the orchestrator commits after reviewing. Leave the
-work uncommitted in the working tree.
+correctness. Do NOT run git add or git commit. Leave your changes uncommitted for review.
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
 </action_safety>
 
 <structured_output_contract>
@@ -85,17 +87,15 @@ important rules are directly in front of it.
 ## One task per brief
 
 Keep each brief to a single, bounded job. "Review this, fix what you find, update the docs, and suggest
-a roadmap" produces a muddled run; split it into separate dispatches. One brief -> one Antigravity run
--> one commit keeps review and rollback clean.
+a roadmap" produces a muddled run; split it into separate dispatches.
 
 ## Premises freeze at dispatch
 
 The implementer starts from the brief's facts and there is no steering channel mid-run. Audit the
 fact block before sending — ownership, target branch, constraints, anything a judgment call rests
-on. If a premise turns out wrong while the run is live, stop the run and re-dispatch a corrected
-brief rather than discounting the output afterward; for a write-capable run, inspect the working
-tree and reconcile any partial or premise-contaminated edits — keep or revert them — before the
-re-dispatch.
+on. If a premise turns out wrong while the run is live, stop it, confirm it has stopped, then inspect any partial edits before
+sending a corrected brief.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## A worked example
 
@@ -111,7 +111,7 @@ path, API routes, and data models untouched.
 Run and make green before finishing:
   pytest tests/billing/ -q
   ruff check services/billing/
-Confirm git status shows only refund.py and its test file changed.
+Confirm your changes are limited to refund.py and its test file.
 </verification_loop>
 
 <action_safety>
@@ -126,4 +126,4 @@ Report: (1) the root cause and your fix, (2) files touched, (3) pytest + ruff ou
 ```
 
 Send this with `relay.mjs` (see [dispatch-and-poll.md](dispatch-and-poll.md)); review the result and
-commit it yourself (see [review-and-land.md](review-and-land.md)).
+commit only if authorized (see [review-and-land.md](review-and-land.md)).

@@ -121,6 +121,9 @@ Completion means the process exited and `result.json` exists. Trust that over an
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **Exit 2, no result file.** A usage error - bad flag, missing value, empty brief, unparseable
   `--timeout`. Nothing was dispatched. Fix the command.
 - **Exit 127, `status: "aider_unavailable"`.** `aider` is not on PATH. Install it, or check that the
@@ -128,10 +131,9 @@ Completion means the process exited and `result.json` exists. Trust that over an
 - **`status: "failed"` with an endpoint or authentication `error`.** Aider exits 0 even when it never
   reached a model, so the relay scans the run for Aider's own errors and reports this rather than a
   false success. It is a configuration problem: check the model name, `--api-base`, and provider key.
-- **`status: "timeout"`.** The watchdog fired and the process tree was killed, possibly mid-edit.
-  Inspect `touchedFiles` before re-dispatching; re-run with a longer `--timeout`.
-- **`status: "aborted"`.** The relay itself was killed and forwarded the kill to Aider. Same caution:
-  the tree may be partial.
+- **`status: "timeout"`.** The watchdog attempted to stop the process tree. Keep the partial tree
+  and artifacts; consider a longer `--timeout` only after confirming Aider stopped.
+- **`status: "aborted"`.** A stop was requested; the result alone does not confirm Aider stopped.
 - **`--read-only` run that changed something.** Aider's `--dry-run` is Aider's promise, not the
   relay's measurement, so the relay warns when a read-only run leaves changed paths behind. Only the
   files Aider *generates* are excluded from that check - `.aider.chat.history.md`,
@@ -150,5 +152,6 @@ committed, so the working tree is exactly as Aider left it - `git diff` is the s
 ## The commit boundary
 
 The relay never runs `git commit`, `git add`, or `git push`, and it disables Aider's own committing.
-Reviewing and committing are the orchestrator's job, after the gates pass. See
-[review-and-land.md](review-and-land.md).
+The orchestrator reviews and commits only if already authorized and applicable gates are satisfied.
+<!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

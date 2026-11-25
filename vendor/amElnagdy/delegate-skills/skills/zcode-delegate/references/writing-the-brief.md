@@ -1,8 +1,10 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 ZCode starts every dispatch cold. It has no orchestrator chat history, no memory of the last task,
 and no idea what you already ruled out. The brief is the entire context, and a vague brief is the
-single most common cause of a diff you have to throw away.
+single most common cause of unnecessary rework.
 
 ## How the brief reaches ZCode
 
@@ -44,7 +46,8 @@ Do not invent these.
 
 # Constraints
 Anything non-negotiable: dependency limits, style rules, files that must not be touched,
-platforms that must keep working.
+platforms that must keep working. Make routine in-scope corrections without waiting for approval.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 # Report contract
 End your final message with:
@@ -55,7 +58,7 @@ End your final message with:
 
 # You will not commit
 Do not run `git commit`, `git push`, or any command that writes to `.git`.
-The orchestrator reviews the diff and commits.
+Leave your changes uncommitted for review.
 ```
 
 ## The rules that actually matter
@@ -73,7 +76,7 @@ see [multi-task-queues.md](multi-task-queues.md).
 
 **Ask for a report contract.** You are going to re-verify everything anyway, but a structured report
 tells you where to look first, and the DECISIONS section is how you catch defensible-but-unasked
-turns before they reach your commit.
+turns before you accept the diff.
 
 **Say it will not commit.** The relay never commits, and ZCode running under `--mode yolo` has a
 Bash tool. Being explicit costs one line.

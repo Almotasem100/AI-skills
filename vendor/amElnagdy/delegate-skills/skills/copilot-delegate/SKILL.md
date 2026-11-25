@@ -2,7 +2,7 @@
 name: copilot-delegate
 description: >-
   Delegate a coding task to the GitHub Copilot CLI (`copilot`) as a background implementer, then
-  review its diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation
+  review its diff. Use this whenever the user wants to delegate implementation
   work to Copilot - phrasings like "have Copilot implement X", "delegate this to copilot", "run it
   through Copilot CLI", or "use copilot to implement/fix/refactor" - or wants to run a queue of
   coding tasks through Copilot while staying the reviewer. DO NOT USE for tasks small enough to do
@@ -16,9 +16,8 @@ metadata:
 # Copilot Delegate
 
 You are the **orchestrator**. Delegate a bounded coding task to a separate **implementer** — the
-GitHub Copilot CLI — then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own
-the judgment; the implementer makes changes in its own session in a clean working tree; you verify
-and commit.
+GitHub Copilot CLI — then review what it produced. You write the brief and own
+the judgment; the implementer makes changes in its own session in a clean working tree; you verify the result.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
 
@@ -101,7 +100,7 @@ See [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-If the work is good, commit it only when the user explicitly authorized a commit; otherwise leave it intact and uncommitted. The relay never commits — the diff and `result.json` are the record; run `git status` and `git diff` first to confirm exactly what changed. Push only when separately authorized. If the diff is wrong or incomplete, preserve it and report or rework within the approved scope; do not discard or revert it without explicit user authorization.
+If the work is good, commit it only under existing applicable authority; otherwise leave it intact and uncommitted. The relay never commits — the diff and `result.json` are the record; run `git status` and `git diff` first to confirm exactly what changed. Push only when separately authorized. If the diff is wrong or incomplete, preserve it and report or rework within the approved scope; destructive abandonment requires applicable authority.
 
 ## Autonomy and permissions
 
@@ -120,7 +119,10 @@ via the `/sandbox` command and settings, disabled by default). This relay does n
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but it does not by itself authorize committing or discarding work. Commit only if the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. **Do not accept conclusions from the self-report**; verify everything on disk. For anything touching credentials, production data, or irreversible operations, stop and ask the human first instead of encoding it in a brief.
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. **Do not accept conclusions from the self-report**; verify everything on disk. For anything touching credentials, production data, or irreversible operations, stop and ask the human first instead of encoding it in a brief.
 
 ## References
 

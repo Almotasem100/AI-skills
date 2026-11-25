@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 A brief is the complete task Qoder receives. It has no memory of this chat; it sees only the brief,
 its resumed session when applicable, and workspace context it can inspect. A constraint not in the
 brief or repository does not exist for the implementer.
@@ -22,16 +24,17 @@ untouched. Keep it to one bounded task.
 </task>
 
 <verification_loop>
-Run these before finishing and fix what they surface:
+Run these before finishing and fix failures caused by your changes:
   <the project's real test command>
   <the project's real lint/format command>
   <the project's real build/typecheck command>
-Confirm the working tree contains only intended changes.
+Confirm your edits are limited to the intended changes.
 </verification_loop>
 
 <action_safety>
 Keep changes scoped. Do not perform unrelated refactors, renames, or cleanup. Do NOT run git add or git
-commit; the orchestrator reviews and commits. Leave work uncommitted.
+commit. Leave your changes uncommitted for review.
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
 </action_safety>
 
 <structured_output_contract>
@@ -65,14 +68,15 @@ An explicit output contract makes the result reviewable even when the edits are 
 
 ## One task per brief
 
-One brief -> one Qoder run -> one reviewed commit. Split mixed implementation, review, documentation,
+Keep each brief bounded. Split mixed implementation, review, documentation,
 and roadmap requests. Resume only for rework on that same task.
 
 ## Premises freeze at dispatch
 
 Audit the brief's facts before dispatch: ownership, target branch, constraints, and any premise a
-judgment call depends on. If one proves wrong during a run, stop Qoder, inspect and reconcile any
+judgment call depends on. If one proves wrong during a run, stop Qoder, confirm it has stopped, then inspect and reconcile any
 partial edits, then dispatch a corrected brief.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## Keep secrets out of argv
 

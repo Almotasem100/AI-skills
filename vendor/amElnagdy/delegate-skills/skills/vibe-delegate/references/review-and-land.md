@@ -49,12 +49,15 @@ to the human. Run relevant guard skills if installed.
 
 ## The commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits.
+**LOCAL CHANGE:** The orchestrator may commit only under existing applicable authority and
+after the gates pass and the diff holds; otherwise preserve verified work uncommitted.
+Reuse applicable standing authority without asking again. The implementer never commits.
 
-From dispatch until that commit, the uncommitted working tree is the authoritative copy of Vibe's
+After dispatch, the uncommitted working tree is the authoritative copy of Vibe's
 work. Never reflexively run `git checkout`, `reset`, `clean`, or switch branches after an interrupted
 run. Inspect `git status`, `git diff`, `git diff --cached` for staged changes, and open every untracked
-file (`??`) directly because no diff shows its contents. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report bad or premise-contaminated changes; discard or revert only with explicit user authorization.
+file (`??`) directly because no diff shows its contents. Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Rework: send the delta
 
@@ -74,7 +77,7 @@ Default `accept-edits` runs cannot execute most gates headlessly; the orchestrat
 
 ## Surface, do not absorb
 
-Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed when the work changes shape:
+Keep the human informed when the work changes shape:
 
 - Report design decisions and defensible-but-unrequested turns.
 - Note non-blocking nitpicks you did not block on.

@@ -95,6 +95,9 @@ A pre-run usage error exits 2 and writes no result. A missing `cursor-agent` exi
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: "cursor_agent_unavailable"` (exit 127):** install the Cursor CLI, authenticate with
   `cursor-agent login`, and re-dispatch.
 - **`status: "failed"`:** read `stderrTail`, `stderrPath`, and the tail of `events.jsonl`. If the
@@ -168,5 +171,6 @@ values are quoted.
 
 ## The commit boundary
 
-The relay never commits. Cursor edits the working tree; the orchestrator reviews, re-runs the gates,
-and commits. See [review-and-land.md](review-and-land.md).
+The relay never commits. Cursor edits without committing; the orchestrator reviews, re-runs
+applicable gates, and commits only if already authorized and those gates pass. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

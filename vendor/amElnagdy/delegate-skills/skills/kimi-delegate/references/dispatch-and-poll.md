@@ -83,6 +83,9 @@ A pre-run usage error exits 2 and writes no result. A missing `kimi` exits 127 a
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: "kimi_unavailable"` (exit 127):** install the native Kimi Code CLI, authenticate with
   `kimi login`, and re-dispatch.
 - **an `error` mentioning `version preflight` (`failed`, or `timeout` at exit 124):** the bounded
@@ -130,5 +133,6 @@ the selected `--cd` as cwd; no shell or Kimi timeout flag is involved.
 
 ## The commit boundary
 
-The relay never commits. Kimi edits the working tree; the orchestrator reviews, re-runs the gates, and
-commits. See [review-and-land.md](review-and-land.md).
+The relay never commits. Kimi edits without committing; the orchestrator reviews, re-runs
+applicable gates, and commits only if already authorized and those gates pass. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

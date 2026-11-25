@@ -1,9 +1,7 @@
 # Review and land
 
-**LOCAL CHANGE:** Delegation alone does not authorize commits or discarding work; require explicit user authorization and preserve user/partial changes.
-
 ZCode's `result.json` contains its own summary and its own claims about gates. Treat all of it as a
-hypothesis. You are the reviewer; the commit is yours.
+hypothesis. You are the reviewer.
 
 ## The checklist
 
@@ -35,8 +33,7 @@ and compares afterwards:
 
 ## The commit boundary
 
-**The relay never commits.** Not on success, not on a clean gate run, not ever. Committing belongs
-to whoever reviewed the diff, and that is you.
+**LOCAL CHANGE:** The relay and implementer never commit. The orchestrator may commit only after the gates pass and the diff holds, and only under existing applicable authority. Otherwise preserve verified work uncommitted. Reuse applicable standing authority without asking again.
 
 This is not a limitation to work around. If you find yourself wanting the implementer to commit, the
 review step is being skipped.
@@ -59,7 +56,8 @@ node "<skill-dir>/scripts/relay.mjs" --brief delta-brief.txt --cd /path/to/repo 
 
 ## Authorization model
 
-Delegation alone does not authorize committing or discarding work. Commit only when the user explicitly authorized it; otherwise leave verified changes intact and uncommitted. Preserve user and partial work; do not discard or revert without explicit user authorization. Two limits on that mandate:
+Delegation alone does not authorize committing or discarding work. Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority. Two limits on that mandate:
 
 **Surface, don't absorb.** Report ZCode's design decisions, its defensible-but-unasked turns, and
 non-blocking nitpicks. Your reviewer's summary should let the human disagree with a choice they
@@ -71,7 +69,7 @@ Do not expand the mandate yourself, and do not let the implementer expand it for
 
 ## What to tell the human
 
-After landing, say what actually happened:
+After review, say what actually happened:
 
 - what changed, and why
 - which gates you ran, and their real output

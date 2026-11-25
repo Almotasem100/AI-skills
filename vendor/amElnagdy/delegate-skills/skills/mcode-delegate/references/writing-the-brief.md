@@ -1,5 +1,7 @@
 # Writing the brief
 
+<!-- LOCAL CHANGE: commit authority, scoped rework, and work preservation. -->
+
 A brief is the entire task as MiniMax Code will see it. It runs in a fresh process with **no memory of
 your conversation, no access to your prior notes, and no shared context** — only the text you send and
 whatever it can read from the working tree (including the repo's own `AGENTS.md`, which it reads).
@@ -20,17 +22,17 @@ from wandering into unrelated refactors.
 </task>
 
 <verification_loop>
-Run these before finishing and fix anything they surface, don't just report it:
+Run these before finishing and fix failures caused by your changes:
   <the project's real test command>
   <the project's real lint/format command>
   <the project's real build/typecheck command>
-Confirm the working tree shows only the intended changes afterward.
+Confirm your edits are limited to the intended changes.
 </verification_loop>
 
 <action_safety>
 Keep changes scoped to the task. No unrelated refactors, renames, or cleanup unless required for
-correctness. Do NOT run git add or git commit — the orchestrator commits after reviewing. Leave the
-work uncommitted in the working tree.
+correctness. Do NOT run git add or git commit. Leave your changes uncommitted for review.
+Make routine in-scope corrections without waiting for approval. Preserve pre-existing user work.
 </action_safety>
 
 <structured_output_contract>
@@ -70,8 +72,9 @@ outside the repository.
 Sibling delegates can rely on a sandbox refusing to write `.git`. This one cannot: with no sandbox,
 MiniMax Code can commit, so the brief has to tell it not to. Record `HEAD` before dispatch and keep the
 "do NOT run git add or git commit" line. If `HEAD` changed, inspect status, staged and unstaged diffs,
-and the intervening log first. Only after confirming the whole commit range belongs to the run, use
-`git reset --soft <recorded-baseline>` so you can review that range as a diff.
+and the intervening log first. Review the commit range without changing branch state. Use
+`git reset --soft <recorded-baseline>` only if existing authorization covers moving the branch and
+the whole commit range belongs to the run.
 
 ## Discover the real gates — don't hardcode
 
@@ -91,8 +94,7 @@ because compliance is only as reliable as what's in front of it.
 ## One task per brief
 
 Keep each brief to a single, bounded job. "Review this, fix what you find, update the docs, and
-suggest a roadmap" produces a muddled run; split it into separate dispatches. One brief → one run →
-one commit keeps review and rollback clean, and lets a later task assume the earlier one landed.
+suggest a roadmap" produces a muddled run; split it into separate dispatches.
 
 MiniMax Code has a step limit. A brief bundling four jobs is also the brief most likely to hit it and
 stop mid-way, reported as `execStatus: limit_exceeded` with a half-finished tree.
@@ -101,10 +103,9 @@ stop mid-way, reported as `execStatus: limit_exceeded` with a half-finished tree
 
 The implementer starts from the brief's facts and there is no steering channel mid-run. Audit the
 fact block before sending — ownership, target branch, constraints, anything a judgment call rests
-on. If a premise turns out wrong while the run is live, stop the run and re-dispatch a corrected
-brief rather than discounting the output afterward; for a write-capable run, inspect the working
-tree and reconcile any partial or premise-contaminated edits — keep or revert them — before the
-re-dispatch.
+on. If a premise turns out wrong while the run is live, stop it, confirm it has stopped, then inspect any partial edits before
+sending a corrected brief.
+Preserve partial edits and pre-existing user work; destructive abandonment requires existing authorization.
 
 ## Expect environment preamble in the reply
 
@@ -129,7 +130,7 @@ data models untouched, and do not write outside services/billing/.
 Run and make green before finishing:
   pytest tests/billing/ -q
   ruff check services/billing/
-Confirm git status shows only refund.py and its test file changed.
+Confirm your changes are limited to refund.py and its test file.
 </verification_loop>
 
 <action_safety>
@@ -144,4 +145,4 @@ Report: (1) the root cause and your fix, (2) files touched, (3) pytest + ruff ou
 ```
 
 Send this with `relay.mjs` (see [dispatch-and-poll.md](dispatch-and-poll.md)); review the result and
-commit it yourself (see [review-and-land.md](review-and-land.md)).
+commit only if authorized (see [review-and-land.md](review-and-land.md)).

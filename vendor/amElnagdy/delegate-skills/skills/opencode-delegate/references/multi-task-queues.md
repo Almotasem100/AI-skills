@@ -4,19 +4,17 @@ The single-task loop scales to a queue, and that's where delegation pays off mos
 across layers, a migration touching many files, a refactor sweep. The discipline that makes a queue
 trustworthy is sequencing and bookkeeping, not parallelism.
 
-## Run sequentially, one commit per task
+## Run sequentially
+
+**LOCAL CHANGE:** After review and passing gates, only the orchestrator commits, and only with existing applicable authority; otherwise leave the work intact and uncommitted.
+Record the pre-dispatch state and review each task's own delta, including staged and untracked changes. Preserve partial and user work; routine in-scope corrections may continue.
 
 Resist the urge to fan out the whole queue at once. Run tasks **one at a time, in dependency order**,
-landing each (review + gates + commit) before dispatching the next. Three reasons:
-
-- **Later tasks assume earlier ones landed.** Task 3's brief can say "the X added in the previous step
-  exists" only if the previous step actually committed.
-- **One commit per task** keeps the history reviewable and any single step revertible.
-- **Each review is honest.** A clean working tree before each dispatch means the next task's
-  `touchedFiles` shows only *its* changes, not a pile-up from earlier tasks.
+reviewing each and running its gates before dispatching the next. Later briefs can
+rely on earlier reviewed work that remains available, committed or not.
 
 Parallelism is occasionally worth it for genuinely independent tasks on separate files, but it
-sacrifices the clean-tree-per-task property and makes review harder. Default to sequential. (Each fresh
+makes attribution and review harder. Default to sequential. (Each fresh
 `relay.mjs` dispatch starts a new OpenCode session, so independent tasks don't share context — fold any
 shared constraint into each brief, see below.)
 
@@ -34,14 +32,14 @@ For anything longer than two or three tasks — especially a run the human steps
 single progress file alongside the work. It's the durable record that survives your own context limits
 and lets the human catch up at a glance. A shape that works:
 
-- **Status table** — each task: queued / at-implementer / reviewed+committed (with the commit hash).
-- **Per-task review notes** — what landed, what you verified, the gate outcome. One short paragraph.
+- **Status table** — each task: queued / at-implementer / reviewed (uncommitted or with a commit hash).
+- **Per-task review notes** — what changed, what you verified, the gate outcome. One short paragraph.
 - **"Needs your eyes"** — design decisions OpenCode made, non-blocking nitpicks, anything you want the
   human to overrule or confirm. This is the section they read first.
-- **End-of-run checklist** — what happens after the last task (push, open/update the PR, manual checks
+- **End-of-run checklist** — what happens after the last task (authorized push or PR actions, manual checks
   the human should do).
 
-Update it as each task lands, not in a batch at the end — if the run is interrupted, the file is still
+Update it after each task review, not in a batch at the end — if the run is interrupted, the file is still
 accurate.
 
 ## Close with a coherence check
@@ -53,7 +51,7 @@ verify the whole:
 - Do a repo-wide check for the thing the queue was about (e.g. after a removal, grep the entire tree
   for any surviving reference; after a rename, confirm no stragglers).
 - For schema work, replay all the new migrations from a clean state and check for drift.
-- Then push and open or update the PR, with a description that reflects what actually shipped.
+- Then, if authorized, push and open or update the PR, with a description that reflects what actually shipped.
 
 ## When to stop and ask
 
@@ -64,5 +62,5 @@ opting into the queue. Stop and surface when:
 - A review finds something that calls the *plan* into question, not just the implementation.
 - The gates reveal a problem that affects tasks already "done."
 
-Then report where you are, what's committed, and what the open question is — and wait. A queue that
-quietly works around a broken assumption produces a lot of commits in the wrong direction.
+Then report where you are, what is uncommitted or committed, and what the open question is — and wait. A queue that
+quietly works around a broken assumption produces more changes in the wrong direction.

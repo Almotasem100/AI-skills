@@ -138,6 +138,9 @@ stdout going quiet — a long tool call looks identical to a finished run.
 
 ## Timeouts and aborts
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 `oz` has no timeout flag, so the watchdog is the relay's. When `--timeout` expires the relay kills
 the whole process group (SIGTERM, then SIGKILL after 10s) and writes `status: "timeout"`.
 
@@ -147,9 +150,9 @@ recorded. On Windows the process tree is felled with `taskkill /t /f`; Windows d
 SIGTERM, so the aborted path cannot be driven there.
 
 **A timed-out or aborted run leaves a partially edited tree.** Inspect `git status` and `git diff`
-before re-dispatching. If the state is incoherent, discard it against the recorded baseline rather
-than stashing — a bare `git stash` leaves behind every file the run created. See
-[review-and-land.md](review-and-land.md#rework-through-a-conversation).
+before re-dispatching. Preserve partial work by default. Discard only confirmed run changes against
+the recorded baseline, and only if already authorized; preserve pre-existing work. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md#rework-through-a-conversation).
 
 ## Failure recovery
 

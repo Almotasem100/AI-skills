@@ -2,7 +2,7 @@
 name: kimi-delegate
 description: >-
   Delegate a coding task to the Kimi Code CLI (`kimi`) as a background implementer, then review its
-  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to hand implementation work to Kimi -
+  diff. Use this whenever the user wants to hand implementation work to Kimi -
   phrasings like "have Kimi implement X", "delegate this to Kimi", "run it through Kimi Code", or
   "use Kimi to implement/fix/refactor" - or wants to run a queue of coding tasks through Kimi while
   staying the reviewer. DO NOT USE for tasks small enough to do inline, or when the user wants the code
@@ -15,8 +15,8 @@ metadata:
 # Kimi Delegate
 
 You are the **orchestrator**. Hand a bounded coding task to a separate **implementer** - the Kimi Code
-CLI - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the judgment;
-Kimi does the typing in its own session; you verify and commit.
+CLI - then review what it produced. You write the brief and own the judgment;
+Kimi does the typing in its own session; you verify the result.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
 
@@ -92,7 +92,8 @@ See [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The implementer edits the working tree. The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+The implementer edits the working tree. The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
 
 ## Autonomy and permissions
 
@@ -103,7 +104,10 @@ offers no `--read-only` or `--full-access` option. There is no CLI-enforced read
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't absorb**
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits remain: **surface, don't absorb**
 (report Kimi's design decisions, defensible-but-unasked turns, and non-blocking nitpicks) and **stop
 for scope changes** (if correct completion needs going beyond the brief, ask instead of expanding the
 mandate). See [references/review-and-land.md](references/review-and-land.md).

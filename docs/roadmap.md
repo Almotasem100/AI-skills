@@ -11,7 +11,10 @@ Current state and next steps only. History lives in Git and [docs/records/](reco
   [manifest.md](../manifest.md).
 - **Repository layout** (2026-11 cleanup): installable instructions are in `instructions/`, historical audits and logs
   are in `docs/records/`, and the tests check behavior and structure, not exact wording.
-- **Delegation reliability:** all 19 vendored relay skills now require explicit user authorization for commits or discards and preserve user/partial work in their skill and review guidance. Recovery also requires process/session evidence before another writer and limits fallback to existing approved policy. All 19 skill folders are refresh-supported; Gemini-enabled installations need the overlay-based refresh path.
+- **Delegation reliability:** delegation does not authorize commits or destructive discard. The 19 vendored skills
+  reuse existing authorization and allow routine in-scope corrections while preserving user work. Replacement writers
+  require process or session evidence that the previous implementer stopped or never started. All 19 skill folders
+  are refresh-supported; Gemini-enabled installations need the overlay-based refresh path.
 - **Verification:** `npm test` passes locally. Behavior in installed hosts is checked with the
   [native-smoke pack](../test/native-smoke/README.md) and has not been rerun since the cleanup.
 

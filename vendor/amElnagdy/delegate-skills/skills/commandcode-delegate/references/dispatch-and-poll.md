@@ -167,6 +167,9 @@ process has exited and `result.json` is written — not when a status line says 
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: commandcode_unavailable` (exit 127):** the binary isn't on PATH. Install Command Code, run
   `cmd login` (`cmdc login` on Windows), or set `COMMANDCODE_BIN`, then re-dispatch.
 - **an `error` mentioning `version preflight` (`failed`, or `timeout` at exit 124):** the bounded
@@ -202,7 +205,7 @@ process has exited and `result.json` is written — not when a status line says 
   layer rather than an OS sandbox. Review the diff and report the warning before doing anything else.
 - **Empty `finalMessage`:** this is missing information, not a separate failure state. Read `status`
   and `resultLine`; when the result line is truncated or absent, inspect the event log and diff before
-  landing.
+  accepting the result. <!-- LOCAL CHANGE -->
 
 ## Recovering lost work
 
@@ -217,6 +220,6 @@ much more for a long one).
 ## The commit boundary
 
 The helper never commits — by design, not omission. Under `--yolo` Command Code *can* write `.git`,
-which is the reason: a run that commits itself is a run you must unpick before you can review it. The
-robust contract is: Command Code edits the working tree, the orchestrator reviews and commits. See
-[review-and-land.md](review-and-land.md).
+but it must edit without committing. The orchestrator reviews and commits only if already authorized
+and applicable gates are satisfied. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

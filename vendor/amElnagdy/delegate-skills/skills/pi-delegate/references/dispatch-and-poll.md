@@ -91,6 +91,9 @@ A pre-run usage error exits 2 and writes no result. A missing `pi` exits 127 and
 
 ## When a run misbehaves
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`status: "pi_unavailable"` (exit 127):** install pi (`npm install -g @earendil-works/pi-coding-agent`),
   authenticate, and re-dispatch.
 - **`status: "failed"`:** read `stderrTail`, `stderrPath`, and the tail of `events.jsonl`. Common
@@ -142,5 +145,6 @@ explicitly instead of hanging the run. The relay passes `--no-approve` by defaul
 
 ## The commit boundary
 
-The relay never commits. Pi edits the working tree; the orchestrator reviews, re-runs the gates,
-and commits. See [review-and-land.md](review-and-land.md).
+The relay never commits. Pi edits without committing; the orchestrator reviews, re-runs applicable
+gates, and commits only if already authorized and those gates pass. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).

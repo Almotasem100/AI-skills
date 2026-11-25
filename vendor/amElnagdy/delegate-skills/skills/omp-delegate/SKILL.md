@@ -2,7 +2,7 @@
 name: omp-delegate
 description: >-
   Delegate a coding task to Oh My Pi (`omp`) as a background implementer, then review its
-  diff and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. Use this whenever the user wants to delegate implementation work to
+  diff. Use this whenever the user wants to delegate implementation work to
   Oh My Pi / omp - phrasings like "have omp implement X", "delegate this to oh my pi", "run it
   through omp", "use oh-my-pi to implement/fix/refactor" - or wants to run a queue of coding
   tasks through omp while staying the reviewer. DO NOT USE for tasks small enough to do inline,
@@ -17,8 +17,8 @@ metadata:
 # Oh My Pi Delegate
 
 You are the **orchestrator**. Delegate a bounded coding task to a separate **implementer** - Oh My
-Pi (`omp`) - then review what it produced and commit only if the user explicitly authorized it; otherwise leave the work intact and uncommitted. You write the brief and own the
-judgment; the implementer makes changes in its own session; you verify and commit.
+Pi (`omp`) - then review what it produced. You write the brief and own the
+judgment; the implementer makes changes in its own session; you verify the result.
 
 The loop needs only a shell command and file access, so any comparable orchestrator can drive it.
 
@@ -132,7 +132,8 @@ See [references/review-and-land.md](references/review-and-land.md).
 
 ### 5. Land it
 
-The orchestrator may commit only when the user explicitly authorized it and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
+The orchestrator may commit only under existing applicable authority
+and after the gates pass and the diff holds; otherwise preserve verified work uncommitted. If rework is needed, send a delta brief with `--resume-last` or `--session <id>`, then review again.
 
 ## Autonomy and permissions
 
@@ -150,7 +151,10 @@ would stall until the watchdog. The other controls are:
 
 ## Authorization model
 
-**LOCAL CHANGE:** Delegation is something the human opts into, but delegation alone does not authorize a commit or discard. Commit only if the user explicitly authorized it; otherwise leave verified work uncommitted. Preserve user and partial work; do not discard or revert it without explicit user authorization. Two limits remain: **surface, don't
+**LOCAL CHANGE:** Delegation alone authorizes neither commits nor destructive abandonment.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence. Reuse applicable standing authority
+without asking again. Two limits remain: **surface, don't
 absorb** (report omp's design decisions, defensible-but-unasked turns, and non-blocking nitpicks)
 and **stop for scope changes** (if correct completion needs going beyond the brief, ask instead of
 expanding the mandate). See [references/review-and-land.md](references/review-and-land.md).

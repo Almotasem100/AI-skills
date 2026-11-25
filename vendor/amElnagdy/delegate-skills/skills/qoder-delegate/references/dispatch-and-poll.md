@@ -91,15 +91,18 @@ creating artifacts; missing Qoder exits 127 with `qoder_unavailable`.
 
 ## Failures
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`qoder_unavailable`:** install Qoder CLI, authenticate, and re-dispatch.
 - **Preflight `failed` or `timeout`:** `qodercli --version` failed or exceeded its bound; Qoder was
   not dispatched. Fix the installation before retrying.
 - **`failed`:** read `qoderErrors`, `permissionDenials`, `stderrTail`, `stderr.txt`, and the tail of
   `events.jsonl`. Fix auth, model/context compatibility, permissions, or the brief, then re-dispatch.
-- **`timeout`:** increase `--timeout` or split the task. The relay terminates Qoder's process tree.
-- **`aborted`:** the orchestrator stopped the relay; review any touched files before re-dispatching.
-- **No result after the relay disappears:** treat the run as aborted and inspect the working tree and
-  `events.jsonl`. Native Windows cannot deliver Node a catchable `SIGTERM`.
+- **`timeout`:** the relay attempted to terminate Qoder's process tree. Once Qoder is confirmed stopped,
+  consider increasing `--timeout` or splitting the task.
+- **`aborted` or no result:** do not infer that Qoder stopped or never started. Preserve and inspect
+  the working tree and `events.jsonl`. Native Windows cannot deliver Node a catchable `SIGTERM`.
 - **Empty final message:** inspect the diff; require a structured report in the next delta brief.
 
 ## Recovering lost work

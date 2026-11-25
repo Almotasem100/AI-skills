@@ -40,7 +40,7 @@ for:
 ## The implementer sweep
 
 Generated code fails in systematic ways that gates are structurally blind to. Walk these against every
-diff before you commit:
+diff during review:
 
 - **Hardcoded success or fixture data** on a path the brief says does real work.
 - **Catch-all error handling that returns a default** instead of propagating or recovering explicitly.
@@ -55,22 +55,27 @@ diff before you commit:
 - **Guards for impossible cases** that bury validation that matters at real trust boundaries.
 
 Anything the sweep catches goes back to Antigravity as a delta brief or gets fixed in the tree before
-commit - and either way is reported to the user.
+verification - and either way is reported to the user.
 
 If the `guard-skills` package is installed, run the relevant guard on the diff for the full treatment.
 
 ## The commit boundary
 
-**LOCAL CHANGE:** The orchestrator commits only when the user explicitly authorized a commit and only after the gates pass and the diff holds; otherwise leave the work intact and uncommitted. The implementer never commits. If your project attributes co-authorship, that is the place for
+**LOCAL CHANGE:** The orchestrator may commit only under existing applicable authority and
+after the gates pass and the diff holds; otherwise preserve verified work uncommitted.
+Reuse applicable standing authority without asking again. The implementer never commits. If your project attributes co-authorship, that is the place for
 it.
 
-From dispatch until that commit, the uncommitted working tree is the authoritative copy of the
-implementer's work — the only one you can commit from, and often the only copy at all. Never run `git checkout`, `reset`, `clean`, or a branch switch in the
-workspace between those two points — however messy an interrupted run looks, inspect it first:
+After dispatch, the uncommitted working tree is the authoritative copy of the
+implementer's work — the only one you can commit from, and often the only copy at all. Do not reflexively run `git checkout`, `reset`, `clean`, or a branch switch in the workspace after dispatch — however messy an interrupted run looks, inspect it first:
 `git status`, `git diff`, `git diff --cached` for anything the implementer staged (plain
 `git diff` is blind to the index), and open any untracked files (`??` in `git status`) directly —
-they are the implementer's new files, and no diff shows their contents. The tree is evidence,
-not clutter. **LOCAL CHANGE:** Inspection does not authorize discarding or reverting user/partial work. Preserve it and report premise-invalid changes; discard or revert only with explicit user authorization. The prohibition on reflexive cleanup remains.
+Git diffs do not show untracked contents. Compare with pre-dispatch status, staged and
+unstaged diffs, and untracked contents to isolate the task delta; do not treat the whole index
+or every untracked file as task work. The tree is evidence,
+not clutter.
+Continue ordinary scoped corrections, including removing verified task-created files when needed.
+Preserve user and pre-existing work and partial evidence; destructive abandonment requires applicable authority.
 
 ## Reworking: send the delta, not the whole task
 
@@ -88,7 +93,7 @@ no shortcuts.
 
 ## Surface, don't absorb
 
-Delegation alone does not authorize a commit or discarding work. Preserve user and partial changes; do not discard or revert them without explicit user authorization. Keep the human informed about anything that changes the shape of the work:
+Keep the human informed about anything that changes the shape of the work:
 
 - **Report design decisions** Antigravity made, and any defensible-but-unrequested turns it took.
 - **Note non-blocking nitpicks** you chose not to block on, so the human can overrule you.

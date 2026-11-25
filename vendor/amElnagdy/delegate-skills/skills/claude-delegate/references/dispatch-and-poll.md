@@ -193,6 +193,9 @@ different: it exits 127 **with** `status: "claude_unavailable"`.
 
 ## Failure recovery
 
+Before any write retry, confirm from process or session evidence that the prior implementer
+stopped or never started. <!-- LOCAL CHANGE -->
+
 - **`claude_unavailable`:** install Claude Code, authenticate with `claude auth login`, and verify the
   same PATH the orchestrator uses.
 - **`failed`:** inspect `resultSubtype`, `error`, `stderrTail`, `stderr.txt`, and the tail of
@@ -209,7 +212,7 @@ different: it exits 127 **with** `status: "claude_unavailable"`.
 - **Empty `finalMessage`:** inspect the raw events and diff. Require a closing report in the next brief.
 
 Never clean, reset, or switch branches before inspecting partial work, staged changes, and untracked
-files.
+files. Preserve existing work; destructive discard requires authorization. <!-- LOCAL CHANGE -->
 
 ## Windows launch
 
@@ -224,5 +227,6 @@ mechanics, not the supported-platform shell boundary.
 
 ## Commit boundary
 
-The relay never commits. Claude edits; the orchestrator reviews, re-runs gates, and lands. See
-[review-and-land.md](review-and-land.md).
+The relay never commits. Claude edits without committing; the orchestrator reviews, re-runs
+applicable gates, and commits only if already authorized and those gates pass. <!-- LOCAL CHANGE -->
+See [review-and-land.md](review-and-land.md).
